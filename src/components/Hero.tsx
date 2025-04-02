@@ -7,13 +7,10 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-7xl font-bold leading-tight mb-8">
-            Unlock access to energy markets
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-600 mb-6 max-w-3xl mx-auto leading-relaxed">
-            Connecting smart devices to energy markets with our proprietary software - reducing blackouts, costs and pollution - all within 2 seconds
-          </p>
-          <p className="text-xl md:text-2xl text-blue-600 mb-12 max-w-3xl mx-auto font-semibold">
             Unlocking the Potential of Smart Devices for India
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Connecting smart devices to energy markets with our proprietary software - reducing blackouts, costs and pollution - all within 2 seconds
           </p>
           
           <div className="mt-16">
