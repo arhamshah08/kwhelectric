@@ -24,9 +24,20 @@ const Team = () => {
               </div>
               <h3 className="text-2xl font-bold">Arham Shah</h3>
               <p className="text-blue-600 mb-4">Founder & CEO</p>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-6">
                 Former engineer at Tesla, bringing expertise in energy systems integration and business development.
               </p>
+              <div className="flex items-center justify-center space-x-4">
+                <div className="h-12 w-auto">
+                  <img src="/lovable-uploads/de05d324-e380-47ab-9c87-d2859fd98d1e.png" alt="Tesla" className="h-full object-contain" />
+                </div>
+                <div className="h-12 w-auto">
+                  <img src="/lovable-uploads/81e41dff-ba93-47c5-9f9d-c87553908e60.png" alt="Rivian" className="h-full object-contain" />
+                </div>
+                <div className="h-12 w-auto">
+                  <img src="/lovable-uploads/d67b9a57-1313-4027-b849-4ca33969a1bf.png" alt="IIT" className="h-full object-contain" />
+                </div>
+              </div>
             </div>
           </div>
           
@@ -41,9 +52,20 @@ const Team = () => {
               </div>
               <h3 className="text-2xl font-bold">Mridul Ashokan</h3>
               <p className="text-blue-600 mb-4">Head of Strategy</p>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-6">
                 Strategic leader with background in energy markets and utility operations at GE and Siemens.
               </p>
+              <div className="flex items-center justify-center space-x-4">
+                <div className="h-12 w-auto">
+                  <img src="/lovable-uploads/a45344db-d5b1-42b9-8f04-ccae6ced5aeb.png" alt="GE" className="h-full object-contain" />
+                </div>
+                <div className="h-12 w-auto">
+                  <img src="/lovable-uploads/4c7d492f-dc9c-4a56-8c4c-e39a97b282ea.png" alt="Siemens" className="h-full object-contain" />
+                </div>
+                <div className="h-12 w-auto">
+                  <img src="/lovable-uploads/57b28dac-e1b7-4beb-9430-6b30bc63499b.png" alt="DEWA" className="h-full object-contain" />
+                </div>
+              </div>
             </div>
           </div>
           
@@ -58,9 +80,20 @@ const Team = () => {
               </div>
               <h3 className="text-2xl font-bold">Ved Eti</h3>
               <p className="text-blue-600 mb-4">Head of Technology</p>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-6">
                 Tech innovator with deep experience in IoT systems, API development, and smart grid technologies.
               </p>
+              <div className="flex items-center justify-center space-x-4">
+                <div className="h-12 w-auto">
+                  <img src="/lovable-uploads/7015453a-9323-4200-944a-cc88ff192bab.png" alt="Figma" className="h-full object-contain" />
+                </div>
+                <div className="h-12 w-auto">
+                  <img src="/lovable-uploads/3f1ea2b7-eace-4bc2-baad-285f89f1bd16.png" alt="Crowe" className="h-full object-contain" />
+                </div>
+                <div className="h-12 w-auto">
+                  <img src="/lovable-uploads/014ea8e0-f775-4acc-bf4a-821493b743a2.png" alt="Analog Devices" className="h-full object-contain" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
