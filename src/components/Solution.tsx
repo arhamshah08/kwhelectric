@@ -1,5 +1,5 @@
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BatteryCharging, Cloud, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Solution = () => {
@@ -28,11 +28,7 @@ const Solution = () => {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-blue-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <img 
-                src="/public/lovable-uploads/736d0642-edfe-4373-9444-12728a58bd5c.png" 
-                alt="Battery Storage" 
-                className="w-32 h-32 object-contain"
-              />
+              <BatteryCharging className="w-32 h-32 text-blue-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">Battery Storage</h3>
             <p className="text-gray-700">
@@ -42,11 +38,7 @@ const Solution = () => {
           
           <div className="bg-green-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <img 
-                src="/public/lovable-uploads/42217853-0f10-4688-9837-e101d545f6fb.png" 
-                alt="Smart Buildings" 
-                className="w-32 h-32 object-contain"
-              />
+              <Cloud className="w-32 h-32 text-green-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">Smart Buildings</h3>
             <p className="text-gray-700">
@@ -56,11 +48,7 @@ const Solution = () => {
           
           <div className="bg-purple-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <img 
-                src="/public/lovable-uploads/10049437-c7e4-4b2c-a9b0-2049782e38d5.png" 
-                alt="EV Charging" 
-                className="w-32 h-32 object-contain"
-              />
+              <Zap className="w-32 h-32 text-purple-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">EV Charging</h3>
             <p className="text-gray-700">
