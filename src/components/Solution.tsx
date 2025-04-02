@@ -1,6 +1,5 @@
 
 import { ArrowRight, BatteryFull, Building2, Car } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const Solution = () => {
   return (
@@ -20,9 +19,6 @@ const Solution = () => {
             <h3 className="text-4xl md:text-6xl font-bold leading-tight mb-10">
               Turn energy resources<br />into revenue
             </h3>
-            <Button className="border-gray-300 text-gray-800 bg-slate-50 hover:bg-slate-100 rounded-full px-8 py-6 h-auto text-lg">
-              Get started
-            </Button>
           </div>
         </div>
         
