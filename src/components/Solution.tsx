@@ -17,8 +17,12 @@ const Solution = () => {
           
           <div className="w-full">
             <h3 className="text-4xl md:text-6xl font-bold leading-tight mb-10">
-              Turn energy resources<br />into revenue
+              Prevent blackouts, boost grid capacity
             </h3>
+            <p className="text-xl text-gray-600 max-w-3xl">
+              Integrate distributed assets into your existing grid infrastructure using our B2B platform, 
+              cutting costs, preventing blackouts, and building a more sustainable energy future.
+            </p>
           </div>
         </div>
         
