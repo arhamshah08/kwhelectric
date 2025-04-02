@@ -5,6 +5,10 @@ const Team = () => {
   return (
     <section id="team" className="py-20 md:py-32 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold">The Team</h2>
+        </div>
+        
         <div className="grid md:grid-cols-3 gap-8">
           {/* Arham Shah */}
           <div className="bg-white rounded-xl shadow-sm overflow-hidden transition-all hover:shadow-md">
