@@ -6,8 +6,8 @@ const Solution = () => {
   return (
     <section id="solution" className="py-20 md:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-start mb-16">
-          <div className="md:w-1/3 mb-8 md:mb-0">
+        <div className="flex flex-col items-start mb-16">
+          <div className="mb-8">
             <div className="inline-flex items-center justify-center p-2 bg-blue-50 rounded-md">
               <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -15,7 +15,8 @@ const Solution = () => {
             </div>
             <h2 className="text-2xl font-semibold mt-4">Connecting assets</h2>
           </div>
-          <div className="md:w-2/3">
+          
+          <div className="w-full">
             <h3 className="text-4xl md:text-6xl font-bold leading-tight mb-10">
               Turn energy resources<br />into revenue
             </h3>
