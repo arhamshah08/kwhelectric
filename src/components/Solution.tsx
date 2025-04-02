@@ -1,5 +1,5 @@
 
-import { ArrowRight, Battery, Building2, Car } from "lucide-react";
+import { ArrowRight, BatteryFull, Building2, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Solution = () => {
@@ -19,8 +19,8 @@ const Solution = () => {
             <h3 className="text-4xl md:text-6xl font-bold leading-tight mb-10">
               Turn energy resources<br />into revenue
             </h3>
-            <Button variant="outline" className="border-gray-300 text-gray-800 rounded-full px-8 py-6 h-auto text-lg">
-              Explore partner solutions
+            <Button className="border-gray-300 text-gray-800 bg-slate-50 hover:bg-slate-100 rounded-full px-8 py-6 h-auto text-lg">
+              Get started
             </Button>
           </div>
         </div>
@@ -28,7 +28,7 @@ const Solution = () => {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-blue-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <Battery className="w-20 h-20 text-blue-600 stroke-[1.5]" />
+              <BatteryFull className="w-20 h-20 text-blue-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">Battery Storage</h3>
             <p className="text-gray-700">
