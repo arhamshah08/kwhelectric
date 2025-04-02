@@ -20,7 +20,7 @@ const Team = () => {
                 </Avatar>
               </div>
               <h3 className="text-2xl font-bold">Arham Shah</h3>
-              <p className="text-blue-600 mb-4">Founder & CEO</p>
+              <p className="text-purple-600 mb-4">Founder & CEO</p>
               <p className="text-gray-600 mb-6">
                 Former engineer at Tesla Energy, bringing expertise in energy systems integration and business development.
               </p>
@@ -48,7 +48,7 @@ const Team = () => {
                 </Avatar>
               </div>
               <h3 className="text-2xl font-bold">Mridul Ashokan</h3>
-              <p className="text-blue-600 mb-4">Head of Strategy</p>
+              <p className="text-green-600 mb-4">Head of Strategy</p>
               <p className="text-gray-600 mb-6">
                 Strategic leader with background in energy generation, managment at GE and Siemens and Dubai's Electricity Authority.
               </p>
@@ -76,7 +76,7 @@ const Team = () => {
                 </Avatar>
               </div>
               <h3 className="text-2xl font-bold">Ved Eti</h3>
-              <p className="text-blue-600 mb-4">Head of Technology</p>
+              <p className="text-purple-600 mb-4">Head of Technology</p>
               <p className="text-gray-600 mb-6">
                 Tech innovator with deep experience in IoT systems, API development, and smart grid technologies.
               </p>

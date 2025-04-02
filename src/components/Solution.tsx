@@ -1,5 +1,5 @@
 
-import { ArrowRight, BatteryFull, Building2, Car } from "lucide-react";
+import { BatteryFull, Building2, Car } from "lucide-react";
 
 const Solution = () => {
   return (
