@@ -1,5 +1,5 @@
 
-import { ArrowRight, BatteryCharging, Cloud, Zap } from "lucide-react";
+import { ArrowRight, Battery, Building2, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Solution = () => {
@@ -28,7 +28,7 @@ const Solution = () => {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-blue-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <BatteryCharging className="w-32 h-32 text-blue-600 stroke-[1.5]" />
+              <Battery className="w-26 h-26 text-blue-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">Battery Storage</h3>
             <p className="text-gray-700">
@@ -38,7 +38,7 @@ const Solution = () => {
           
           <div className="bg-green-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <Cloud className="w-32 h-32 text-green-600 stroke-[1.5]" />
+              <Building2 className="w-26 h-26 text-green-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">Smart Buildings</h3>
             <p className="text-gray-700">
@@ -48,7 +48,7 @@ const Solution = () => {
           
           <div className="bg-purple-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <Zap className="w-32 h-32 text-purple-600 stroke-[1.5]" />
+              <Car className="w-26 h-26 text-purple-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">EV Charging</h3>
             <p className="text-gray-700">

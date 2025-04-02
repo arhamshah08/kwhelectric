@@ -1,5 +1,5 @@
 
-import { Zap, CircleUser, CircleDollarSign } from "lucide-react";
+import { Zap, Users, Coins } from "lucide-react";
 
 const Benefits = () => {
   return (
@@ -8,7 +8,7 @@ const Benefits = () => {
         <div className="grid md:grid-cols-3 gap-12">
           <div className="bg-blue-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <Zap className="w-32 h-32 text-blue-600 stroke-[1.5]" />
+              <Zap className="w-26 h-26 text-blue-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">
               A single integration
@@ -20,7 +20,7 @@ const Benefits = () => {
           
           <div className="bg-green-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <CircleUser className="w-32 h-32 text-green-600 stroke-[1.5]" />
+              <Users className="w-26 h-26 text-green-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">
               Powerful and easy-to-use
@@ -32,7 +32,7 @@ const Benefits = () => {
           
           <div className="bg-purple-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <CircleDollarSign className="w-32 h-32 text-purple-600 stroke-[1.5]" />
+              <Coins className="w-26 h-26 text-purple-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">
               Your customers, your brand
