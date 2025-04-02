@@ -3,7 +3,6 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
 import Solution from "@/components/Solution";
-import Benefits from "@/components/Benefits";
 import Team from "@/components/Team";
 import CallToAction from "@/components/CallToAction";
 import Footer from "@/components/Footer";
@@ -16,7 +15,6 @@ const Index = () => {
         <Hero />
         <Problem />
         <Solution />
-        <Benefits />
         <Team />
         <CallToAction />
       </main>

@@ -10,9 +10,6 @@ const Footer = () => {
             <div className="flex items-center mb-4">
               <span className="text-3xl font-bold text-black">kWh</span>
             </div>
-            <p className="text-gray-600 mb-6 max-w-md">
-              Revolutionizing energy distribution with a seamless API that helps utility companies access decentralized energy resources and enhance grid reliability.
-            </p>
             <div className="space-y-3">
               <div className="flex items-center">
                 <Mail className="h-5 w-5 mr-3 text-gray-400" />
