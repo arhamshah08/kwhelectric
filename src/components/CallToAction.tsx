@@ -16,7 +16,10 @@ const CallToAction = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button className="bg-white text-black hover:bg-white/90 px-8 py-6 text-lg group">
+            <Button 
+              className="bg-white text-black hover:bg-white/90 px-8 py-6 text-lg group"
+              onClick={() => window.location.href = "mailto:arham2@illinois.edu"}
+            >
               Get in touch
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
