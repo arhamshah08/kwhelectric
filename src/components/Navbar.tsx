@@ -93,14 +93,6 @@ const Navbar = () => {
                           </p>
                         </a>
                       </li>
-                      <li>
-                        <a href="#" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50">
-                          <div className="text-sm font-medium leading-none">Resources</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            Helpful guides and documentation
-                          </p>
-                        </a>
-                      </li>
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>

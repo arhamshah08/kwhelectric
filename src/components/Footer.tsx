@@ -34,28 +34,6 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Company</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-600 hover:text-black">About Us</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-black">Our Team</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-black">Careers</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-black">Press</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-black">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-gray-500 mb-4 md:mb-0">
-            &copy; 2023 kWh Energy API. All rights reserved.
-          </div>
-          <div className="flex space-x-6">
-            <a href="#" className="text-gray-500 hover:text-black">Privacy Policy</a>
-            <a href="#" className="text-gray-500 hover:text-black">Terms of Service</a>
-            <a href="#" className="text-gray-500 hover:text-black">Cookie Policy</a>
-          </div>
         </div>
       </div>
     </footer>
