@@ -1,7 +1,7 @@
 
 const Team = () => {
   return (
-    <section id="team" className="py-16 md:py-24 bg-white">
+    <section id="team" className="py-20 md:py-32 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold">Our Team</h2>
@@ -11,7 +11,7 @@ const Team = () => {
         </div>
         
         <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="p-6 text-center">
               <div className="h-48 w-48 rounded-full overflow-hidden mx-auto mb-6">
                 <img 
@@ -51,7 +51,7 @@ const Team = () => {
             </div>
           </div>
           
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="p-6 text-center">
               <div className="h-48 w-48 rounded-full overflow-hidden mx-auto mb-6">
                 <img 
@@ -91,7 +91,7 @@ const Team = () => {
             </div>
           </div>
           
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="p-6 text-center">
               <div className="h-48 w-48 rounded-full overflow-hidden mx-auto mb-6">
                 <img 

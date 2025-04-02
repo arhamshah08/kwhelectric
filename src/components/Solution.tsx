@@ -1,110 +1,71 @@
 
-import { ArrowRight, Check } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Solution = () => {
   return (
-    <section id="solution" className="py-16 md:py-24 bg-white">
+    <section id="solution" className="py-20 md:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold">Our Solution</h2>
-          <p className="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
-            The first line of defense against costly and unreliable energy distribution
-          </p>
+        <div className="flex flex-col md:flex-row items-start mb-16">
+          <div className="md:w-1/3 mb-8 md:mb-0">
+            <div className="inline-flex items-center justify-center p-2 bg-blue-50 rounded-md">
+              <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-semibold mt-4">Connecting assets</h2>
+          </div>
+          <div className="md:w-2/3">
+            <h3 className="text-4xl md:text-6xl font-bold leading-tight mb-10">
+              Turn energy resources into revenue
+            </h3>
+            <Button variant="outline" className="border-gray-300 text-gray-800 rounded-full px-8 py-6 h-auto text-lg">
+              Explore partner solutions
+            </Button>
+          </div>
         </div>
         
-        <div className="grid md:grid-cols-5 gap-8 mb-16">
-          <div className="md:col-span-3 space-y-6">
-            <div className="bg-kwh-lightblue/50 rounded-xl p-8">
-              <h3 className="text-2xl font-bold text-kwh-blue mb-4">kWh API: The Energy Bridge</h3>
-              <p className="text-gray-700 mb-6">
-                kWh is an API that enables Energy Distributor companies to seamlessly access IoT Devices, creating a virtual power plant network.
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="mt-1 flex-shrink-0 h-5 w-5 bg-kwh-blue rounded-full flex items-center justify-center">
-                    <Check className="h-3 w-3 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Offsetting excess energy demand</h4>
-                    <p className="text-gray-600">Automatically balances demand during peak hours</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <div className="mt-1 flex-shrink-0 h-5 w-5 bg-kwh-blue rounded-full flex items-center justify-center">
-                    <Check className="h-3 w-3 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Increasing maximum threshold by up to 20%</h4>
-                    <p className="text-gray-600">Virtually expands grid capacity without physical infrastructure</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <div className="mt-1 flex-shrink-0 h-5 w-5 bg-kwh-blue rounded-full flex items-center justify-center">
-                    <Check className="h-3 w-3 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Seamless integration with existing systems</h4>
-                    <p className="text-gray-600">No overhauling required - works with your current infrastructure</p>
-                  </div>
-                </div>
-              </div>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-blue-50 rounded-xl p-8 transition-all hover:shadow-lg">
+            <div className="mb-8">
+              <img 
+                src="public/lovable-uploads/736d0642-edfe-4373-9444-12728a58bd5c.png" 
+                alt="Battery Storage" 
+                className="w-32 h-32 object-contain mx-auto"
+              />
             </div>
-            
-            <Card className="border-0 shadow-lg overflow-hidden">
-              <CardContent className="p-0">
-                <img 
-                  src="public/lovable-uploads/940b50a0-24c1-45d4-a1f6-8d3dd10649b8.png" 
-                  alt="kWh solution diagram" 
-                  className="w-full object-cover"
-                />
-              </CardContent>
-            </Card>
+            <h3 className="text-2xl font-bold mb-4">Battery Storage</h3>
+            <p className="text-gray-700">
+              Realize the full value stack of commercial and residential battery storage systems.
+            </p>
           </div>
           
-          <div className="md:col-span-2">
-            <div className="bg-white rounded-xl shadow-lg h-full p-8 border border-gray-100">
-              <h3 className="text-2xl font-bold text-kwh-blue mb-6">How It Works</h3>
-              
-              <div className="space-y-8">
-                <div className="relative pl-8 border-l-2 border-kwh-blue pb-8">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 bg-kwh-blue rounded-full"></div>
-                  <h4 className="font-semibold text-lg">Connect IoT Devices</h4>
-                  <p className="text-gray-600">Our API connects to IoT thermostats, batteries, and smart devices across the grid.</p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-kwh-blue pb-8">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 bg-kwh-blue rounded-full"></div>
-                  <h4 className="font-semibold text-lg">Predict & Alert</h4>
-                  <p className="text-gray-600">AI algorithms predict peak demand events before they happen.</p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-kwh-blue pb-8">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 bg-kwh-blue rounded-full"></div>
-                  <h4 className="font-semibold text-lg">Orchestrate Response</h4>
-                  <p className="text-gray-600">Automatically adjust thousands of devices to reduce grid load.</p>
-                </div>
-                
-                <div className="relative pl-8">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 bg-kwh-green rounded-full"></div>
-                  <h4 className="font-semibold text-lg">Monitor & Optimize</h4>
-                  <p className="text-gray-600">Real-time analytics dashboard shows savings and performance.</p>
-                </div>
-              </div>
-              
-              <div className="mt-8 pt-4 border-t border-gray-100">
-                <a 
-                  href="#" 
-                  className="inline-flex items-center text-kwh-blue font-medium hover:underline"
-                >
-                  View technical documentation
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
-              </div>
+          <div className="bg-green-50 rounded-xl p-8 transition-all hover:shadow-lg">
+            <div className="mb-8">
+              <img 
+                src="public/lovable-uploads/42217853-0f10-4688-9837-e101d545f6fb.png" 
+                alt="Smart Buildings" 
+                className="w-32 h-32 object-contain mx-auto"
+              />
             </div>
+            <h3 className="text-2xl font-bold mb-4">Smart Buildings</h3>
+            <p className="text-gray-700">
+              Create new value streams from smart thermostats, heat pumps, HVAC and other grid-interactive technologies.
+            </p>
+          </div>
+          
+          <div className="bg-purple-50 rounded-xl p-8 transition-all hover:shadow-lg">
+            <div className="mb-8">
+              <img 
+                src="public/lovable-uploads/10049437-c7e4-4b2c-a9b0-2049782e38d5.png" 
+                alt="EV Charging" 
+                className="w-32 h-32 object-contain mx-auto"
+              />
+            </div>
+            <h3 className="text-2xl font-bold mb-4">EV Charging</h3>
+            <p className="text-gray-700">
+              Connect electric vehicles (EVs) to the grid and monetize smart charging and vehicle-to-everything capabilities.
+            </p>
           </div>
         </div>
       </div>

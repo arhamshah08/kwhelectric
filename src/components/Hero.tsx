@@ -1,45 +1,53 @@
 
-import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   return (
-    <section className="py-16 md:py-24 overflow-hidden">
+    <section className="py-20 md:py-32 bg-gradient-to-b from-white to-blue-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6 animate-fade-in">
-            <h1 className="text-3xl md:text-5xl font-bold leading-tight">
-              A Seamless API for <span className="text-kwh-blue">Utility Companies</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-lg">
-              kWh's API helps utility companies access decentralized energy resources, 
-              increase peak load capacity by up to <span className="font-semibold text-kwh-green">25%</span>, 
-              and deliver smarter, greener energy distribution.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-kwh-blue hover:bg-kwh-blue/90 text-white px-6 py-6 rounded-md">
-                Request Demo
-              </Button>
-              <Button variant="outline" className="group border-kwh-blue text-kwh-blue hover:bg-kwh-blue/5 px-6 py-6 rounded-md">
-                Learn More
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
-          </div>
+        <div className="text-center max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-7xl font-bold leading-tight mb-8">
+            Unlock access to 
+            <br />
+            energy markets
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Connect your distributed energy resources to wholesale 
+            energy markets with our platform and start earning revenue 
+            while creating a cleaner, more resilient grid.
+          </p>
           
-          <div className="relative animate-fade-in">
-            <div className="absolute -top-6 -right-6 w-64 h-64 bg-kwh-blue/10 rounded-full blur-3xl"></div>
-            <div className="absolute -bottom-8 -left-8 w-64 h-64 bg-kwh-green/10 rounded-full blur-3xl"></div>
-            <div className="relative z-10 glass-card rounded-2xl p-8">
-              <div className="space-y-4">
-                <div className="text-3xl font-bold text-kwh-blue mb-4">kWh #141</div>
-                <p className="text-lg">
-                  is developing a <span className="font-semibold">seamless API</span><br />
-                  to help <span className="font-semibold">utility companies</span><br />
-                  access <span className="font-semibold">decentralized energy resources</span><br />
-                  to increase <span className="font-semibold">peak load capacity</span> by up to <span className="font-semibold text-kwh-green">25%</span><br />
-                  because it <span className="font-semibold">reduces outages, lowers costs, and enhances grid reliability</span>.
-                </p>
+          <div className="mt-16">
+            {/* Dashboard preview image */}
+            <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100 mx-auto max-w-5xl">
+              <div className="flex items-center space-x-2 px-4 py-2 bg-gray-50 border-b border-gray-100">
+                <div className="h-3 w-3 bg-red-400 rounded-full"></div>
+                <div className="h-3 w-3 bg-yellow-400 rounded-full"></div>
+                <div className="h-3 w-3 bg-green-400 rounded-full"></div>
+                <div className="ml-2 text-sm text-gray-500">Dashboard</div>
+              </div>
+              <div className="p-2">
+                <div className="grid grid-cols-12 gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="col-span-3 bg-white p-4 rounded shadow-sm">
+                    <div className="h-8 w-24 bg-gray-200 rounded mb-4"></div>
+                    <div className="h-32 bg-gray-100 rounded"></div>
+                  </div>
+                  <div className="col-span-9">
+                    <div className="bg-white p-4 rounded shadow-sm mb-4">
+                      <div className="h-8 w-32 bg-gray-200 rounded mb-4"></div>
+                      <div className="grid grid-cols-4 gap-4">
+                        <div className="h-24 bg-gray-100 rounded"></div>
+                        <div className="h-24 bg-gray-100 rounded"></div>
+                        <div className="h-24 bg-gray-100 rounded"></div>
+                        <div className="h-24 bg-gray-100 rounded"></div>
+                      </div>
+                    </div>
+                    <div className="bg-white p-4 rounded shadow-sm">
+                      <div className="h-8 w-24 bg-gray-200 rounded mb-4"></div>
+                      <div className="h-32 bg-gray-100 rounded"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
