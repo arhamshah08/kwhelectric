@@ -7,7 +7,7 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-7xl font-bold leading-tight mb-8">
-            Boosting your Energy capacity instantaneously
+            Boosting Energy capacity
             <br />
             with a software-only solution
           </h1>
