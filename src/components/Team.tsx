@@ -21,11 +21,10 @@ const Team = () => {
           <div className="bg-white rounded-xl shadow-sm overflow-hidden transition-all hover:shadow-md">
             <div className="p-6 text-center">
               <div className="h-48 w-48 rounded-full overflow-hidden mx-auto mb-6">
-                <img 
-                  src="public/lovable-uploads/3cfc23cf-1978-4a03-adf9-67cd81c7df58.png" 
-                  alt="Arham Shah" 
-                  className="h-full w-full object-cover"
-                />
+                <Avatar className="h-full w-full">
+                  <AvatarImage src="/lovable-uploads/3cfc23cf-1978-4a03-adf9-67cd81c7df58.png" alt="Arham Shah" />
+                  <AvatarFallback>AS</AvatarFallback>
+                </Avatar>
               </div>
               <h3 className="text-2xl font-bold">Arham Shah</h3>
               <p className="text-blue-600 mb-4">Founder & CEO</p>
@@ -49,11 +48,10 @@ const Team = () => {
           <div className="bg-white rounded-xl shadow-sm overflow-hidden transition-all hover:shadow-md">
             <div className="p-6 text-center">
               <div className="h-48 w-48 rounded-full overflow-hidden mx-auto mb-6">
-                <img 
-                  src="public/lovable-uploads/6bbac580-fa78-40de-b8dc-f2cf4c1d1ca6.png" 
-                  alt="Mridul Ashokan" 
-                  className="h-full w-full object-cover"
-                />
+                <Avatar className="h-full w-full">
+                  <AvatarImage src="/lovable-uploads/6bbac580-fa78-40de-b8dc-f2cf4c1d1ca6.png" alt="Mridul Ashokan" />
+                  <AvatarFallback>MA</AvatarFallback>
+                </Avatar>
               </div>
               <h3 className="text-2xl font-bold">Mridul Ashokan</h3>
               <p className="text-blue-600 mb-4">Head of Strategy</p>
@@ -77,11 +75,10 @@ const Team = () => {
           <div className="bg-white rounded-xl shadow-sm overflow-hidden transition-all hover:shadow-md">
             <div className="p-6 text-center">
               <div className="h-48 w-48 rounded-full overflow-hidden mx-auto mb-6">
-                <img 
-                  src="public/lovable-uploads/bffd20c3-bc98-4685-97f7-f09e7ebc91a8.png" 
-                  alt="Ved Eti" 
-                  className="h-full w-full object-cover"
-                />
+                <Avatar className="h-full w-full">
+                  <AvatarImage src="/lovable-uploads/bffd20c3-bc98-4685-97f7-f09e7ebc91a8.png" alt="Ved Eti" />
+                  <AvatarFallback>VE</AvatarFallback>
+                </Avatar>
               </div>
               <h3 className="text-2xl font-bold">Ved Eti</h3>
               <p className="text-blue-600 mb-4">Head of Technology</p>
