@@ -27,27 +27,11 @@ const Hero = () => {
                 <div className="ml-2 text-sm text-gray-500">Dashboard</div>
               </div>
               <div className="p-2">
-                <div className="grid grid-cols-12 gap-4 p-4 bg-gray-50 rounded-lg">
-                  <div className="col-span-3 bg-white p-4 rounded shadow-sm">
-                    <div className="h-8 w-24 bg-gray-200 rounded mb-4"></div>
-                    <div className="h-32 bg-gray-100 rounded"></div>
-                  </div>
-                  <div className="col-span-9">
-                    <div className="bg-white p-4 rounded shadow-sm mb-4">
-                      <div className="h-8 w-32 bg-gray-200 rounded mb-4"></div>
-                      <div className="grid grid-cols-4 gap-4">
-                        <div className="h-24 bg-gray-100 rounded"></div>
-                        <div className="h-24 bg-gray-100 rounded"></div>
-                        <div className="h-24 bg-gray-100 rounded"></div>
-                        <div className="h-24 bg-gray-100 rounded"></div>
-                      </div>
-                    </div>
-                    <div className="bg-white p-4 rounded shadow-sm">
-                      <div className="h-8 w-24 bg-gray-200 rounded mb-4"></div>
-                      <div className="h-32 bg-gray-100 rounded"></div>
-                    </div>
-                  </div>
-                </div>
+                <img 
+                  src="/lovable-uploads/fa065b4b-050d-426d-b49f-ab2c9fc2ff6e.png" 
+                  alt="Energy Dashboard" 
+                  className="w-full h-auto rounded-lg"
+                />
               </div>
             </div>
           </div>

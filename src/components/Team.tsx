@@ -35,7 +35,7 @@ const Team = () => {
                   <img src="/lovable-uploads/81e41dff-ba93-47c5-9f9d-c87553908e60.png" alt="Rivian" className="h-full object-contain" />
                 </div>
                 <div className="h-12 w-auto">
-                  <img src="/lovable-uploads/d67b9a57-1313-4027-b849-4ca33969a1bf.png" alt="IIT" className="h-full object-contain" />
+                  <img src="/lovable-uploads/9816239c-7a38-4f90-8937-5fda04f41d36.png" alt="IIT Gandhinagar" className="h-full object-contain" />
                 </div>
               </div>
             </div>
