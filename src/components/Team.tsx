@@ -49,7 +49,7 @@ const Team = () => {
             <div className="p-6 text-center">
               <div className="h-48 w-48 rounded-full overflow-hidden mx-auto mb-6">
                 <Avatar className="h-full w-full">
-                  <AvatarImage src="/lovable-uploads/6bbac580-fa78-40de-b8dc-f2cf4c1d1ca6.png" alt="Mridul Ashokan" />
+                  <AvatarImage src="/lovable-uploads/cd23e853-fb9a-4901-bd78-e99e3b243bd1.png" alt="Mridul Ashokan" />
                   <AvatarFallback>MA</AvatarFallback>
                 </Avatar>
               </div>
@@ -76,7 +76,7 @@ const Team = () => {
             <div className="p-6 text-center">
               <div className="h-48 w-48 rounded-full overflow-hidden mx-auto mb-6">
                 <Avatar className="h-full w-full">
-                  <AvatarImage src="/lovable-uploads/bffd20c3-bc98-4685-97f7-f09e7ebc91a8.png" alt="Ved Eti" />
+                  <AvatarImage src="/lovable-uploads/fd461f65-ca07-4501-b2b1-11c9af36134e.png" alt="Ved Eti" />
                   <AvatarFallback>VE</AvatarFallback>
                 </Avatar>
               </div>
