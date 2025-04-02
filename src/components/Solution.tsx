@@ -20,7 +20,7 @@ const Solution = () => {
               Prevent blackouts, boost grid capacity
             </h3>
             <p className="text-xl text-gray-600 max-w-3xl">
-              Integrate distributed assets into your existing grid infrastructure using our B2B platform, 
+              Integrate distributed assets into your existing grid infrastructure using our software-only platform, 
               cutting costs, preventing blackouts, and building a more sustainable energy future.
             </p>
           </div>
