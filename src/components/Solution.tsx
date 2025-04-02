@@ -17,7 +17,7 @@ const Solution = () => {
           </div>
           <div className="md:w-2/3">
             <h3 className="text-4xl md:text-6xl font-bold leading-tight mb-10">
-              Turn energy resources into revenue
+              Turn energy resources<br />into revenue
             </h3>
             <Button variant="outline" className="border-gray-300 text-gray-800 rounded-full px-8 py-6 h-auto text-lg">
               Explore partner solutions
@@ -28,7 +28,7 @@ const Solution = () => {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-blue-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <Battery className="w-26 h-26 text-blue-600 stroke-[1.5]" />
+              <Battery className="w-20 h-20 text-blue-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">Battery Storage</h3>
             <p className="text-gray-700">
@@ -38,7 +38,7 @@ const Solution = () => {
           
           <div className="bg-green-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <Building2 className="w-26 h-26 text-green-600 stroke-[1.5]" />
+              <Building2 className="w-20 h-20 text-green-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">Smart Buildings</h3>
             <p className="text-gray-700">
@@ -48,7 +48,7 @@ const Solution = () => {
           
           <div className="bg-purple-50 rounded-xl p-8 transition-all hover:shadow-lg">
             <div className="mb-8 flex items-center justify-center">
-              <Car className="w-26 h-26 text-purple-600 stroke-[1.5]" />
+              <Car className="w-20 h-20 text-purple-600 stroke-[1.5]" />
             </div>
             <h3 className="text-2xl font-bold mb-4">EV Charging</h3>
             <p className="text-gray-700">
