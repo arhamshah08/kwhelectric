@@ -50,7 +50,7 @@ const Team = () => {
               <h3 className="text-2xl font-bold">Mridul Ashokan</h3>
               <p className="text-black mb-4">Head of Strategy</p>
               <p className="text-gray-600 mb-6">
-                Strategic leader with background in energy generation, managment at GE and Siemens and Dubai's Electricity Authority.
+                Strategic leader with background in Energy Generation and Management at General Electric, Siemens and Dubai's Electricity & Water Authority.
               </p>
               <div className="flex items-center justify-center space-x-4">
                 <div className="h-12 w-auto">
