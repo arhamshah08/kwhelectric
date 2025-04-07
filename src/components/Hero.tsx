@@ -21,10 +21,10 @@ const Hero = () => {
           {/* Left column - Main heading and text */}
           <div className="md:pr-6">
             <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 text-gray-900">
-              Unlocking Energy Potential for India's grid
+              Unleashing India's Energy Potential
             </h1>
             <p className="text-lg text-gray-700 mb-8 max-w-2xl leading-relaxed">
-              Connecting smart devices to energy markets with our proprietary software - reducing blackouts, costs and pollution - all within 2 seconds
+              Our smart software connects devices to energy markets — cutting costs, reducing blackouts, and lowering pollution in under 2 seconds.
             </p>
             
             <Button size="lg" className="bg-kwh-blue hover:bg-blue-700 text-white px-6 py-5 text-base rounded-lg">
@@ -35,10 +35,10 @@ const Hero = () => {
           {/* Right column - Form card */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden text-gray-800 p-6">
             <h2 className="text-2xl font-bold mb-3 text-gray-900">
-              Easiest way to earn money by reducing energy usage
+              Earn by Saving Energy — It's That Simple
             </h2>
             <p className="text-gray-600 mb-5">
-              Provide your information and we will provide an earning plan.
+              Share your details and get a customized earnings plan.
             </p>
             
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
