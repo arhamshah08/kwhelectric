@@ -48,7 +48,6 @@ const Hero = () => {
                   type="text"
                   id="location"
                   placeholder="Enter your location"
-                  defaultValue="Champaign, IL"
                   className="w-full px-4 py-3 text-base bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-kwh-blue focus:border-kwh-blue"
                   {...form.register("location")}
                 />
@@ -60,7 +59,6 @@ const Hero = () => {
                   type="email"
                   id="email"
                   placeholder="you@example.com"
-                  defaultValue="arham2@illinois.edu"
                   className="w-full px-4 py-3 text-base bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-kwh-blue focus:border-kwh-blue"
                   {...form.register("email")}
                 />
