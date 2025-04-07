@@ -1,7 +1,16 @@
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 
 const Hero = () => {
+  const form = useForm();
+
+  const onSubmit = (data: any) => {
+    console.log("Form submitted:", data);
+  };
+
   return (
     <section className="relative py-20 md:py-32 bg-white text-gray-800 overflow-hidden">
       {/* Background patterns/grid */}
@@ -25,41 +34,45 @@ const Hero = () => {
           </div>
           
           {/* Right column - Form card */}
-          <div className="bg-white rounded-xl shadow-2xl overflow-hidden text-gray-800">
-            <div className="p-8">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
-                Find out how much you can earn
-              </h2>
-              <p className="text-gray-600 mb-6">
-                Provide your details and we'll identify all the cash generating programs in your area.
-              </p>
-              
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Your Location</label>
-                  <input
-                    type="text"
-                    id="location"
-                    placeholder="Enter your postal code"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                  <input
-                    type="email"
-                    id="email"
-                    placeholder="you@example.com"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  />
-                </div>
-                
-                <Button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 mt-4">
-                  Get your earnings estimate
-                </Button>
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden text-gray-800 p-8">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">
+              Find out how much you can earn
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Provide your details and we'll identify all the cash generating programs in your area.
+            </p>
+            
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="space-y-2">
+                <label htmlFor="location" className="block text-lg font-medium text-gray-700">Your Location</label>
+                <input
+                  type="text"
+                  id="location"
+                  placeholder="Enter your location"
+                  defaultValue="Champaign, IL"
+                  className="w-full px-4 py-4 text-lg bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  {...form.register("location")}
+                />
               </div>
-            </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-lg font-medium text-gray-700">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="you@example.com"
+                  defaultValue="arham2@illinois.edu"
+                  className="w-full px-4 py-4 text-lg bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  {...form.register("email")}
+                />
+              </div>
+              
+              <Button 
+                type="submit"
+                className="w-full bg-green-500 hover:bg-green-600 text-white py-4 text-lg font-medium rounded-lg mt-4">
+                Get your earnings estimate
+              </Button>
+            </form>
           </div>
         </div>
         
