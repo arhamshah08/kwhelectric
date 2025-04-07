@@ -12,12 +12,48 @@ const Hero = () => {
   });
   const { toast } = useToast();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log("Form submitted:", data);
+    
+    // Display toast to the user
     toast({
       title: "Information received",
       description: `Location: ${data.location}, Email: ${data.email}`,
     });
+    
+    // Send data to specified email
+    try {
+      // Using Email.js would be ideal here, but for a simple implementation
+      // we'll use a mailto link that opens in a new tab
+      const subject = encodeURIComponent("New Earnings Estimate Request");
+      const body = encodeURIComponent(`
+        New request for earnings estimate:
+        
+        Location: ${data.location}
+        Email: ${data.email}
+        
+        Timestamp: ${new Date().toLocaleString()}
+      `);
+      
+      // Create a hidden link and programmatically click it
+      const mailtoLink = document.createElement('a');
+      mailtoLink.href = `mailto:arham2@illinois.edu?subject=${subject}&body=${body}`;
+      mailtoLink.target = '_blank';
+      mailtoLink.style.display = 'none';
+      document.body.appendChild(mailtoLink);
+      mailtoLink.click();
+      document.body.removeChild(mailtoLink);
+      
+      // Log success
+      console.log("Email link opened successfully");
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Error",
+        description: "Could not send data to administrator. Please try again later.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
