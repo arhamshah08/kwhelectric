@@ -11,8 +11,10 @@ import {
 
 const Team = () => {
   return (
-    <section id="team" className="py-20 md:py-32 bg-gradient-to-b from-blue-50 to-white">
+    <section id="team" className="py-16 md:py-24 bg-gradient-to-b from-blue-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">The Team Behind The Product</h2>
+        
         <div className="hidden md:block">
           <div className="grid md:grid-cols-3 gap-10">
             {/* Arham Shah */}
@@ -28,10 +30,10 @@ const Team = () => {
                   <p className="text-gray-600 text-center mb-6">
                     Former engineer at Tesla Energy, bringing expertise in energy systems integration and business development.
                   </p>
-                  <div className="flex items-center justify-center space-x-3 mt-auto">
-                    <img src="/lovable-uploads/de05d324-e380-47ab-9c87-d2859fd98d1e.png" alt="Tesla" className="h-8 w-auto object-contain" />
-                    <img src="/lovable-uploads/81e41dff-ba93-47c5-9f9d-c87553908e60.png" alt="Rivian" className="h-8 w-auto object-contain" />
-                    <img src="/lovable-uploads/9816239c-7a38-4f90-8937-5fda04f41d36.png" alt="IIT Gandhinagar" className="h-8 w-auto object-contain" />
+                  <div className="flex items-center justify-center space-x-4 mt-auto">
+                    <img src="/lovable-uploads/de05d324-e380-47ab-9c87-d2859fd98d1e.png" alt="Tesla" className="h-10 w-auto object-contain" />
+                    <img src="/lovable-uploads/81e41dff-ba93-47c5-9f9d-c87553908e60.png" alt="Rivian" className="h-10 w-auto object-contain" />
+                    <img src="/lovable-uploads/9816239c-7a38-4f90-8937-5fda04f41d36.png" alt="IIT Gandhinagar" className="h-10 w-auto object-contain" />
                   </div>
                 </div>
               </CardContent>
@@ -50,10 +52,10 @@ const Team = () => {
                   <p className="text-gray-600 text-center mb-6">
                     Strategic leader with background in energy generation and management at GE, Siemens and Dubai's Electricity Authority.
                   </p>
-                  <div className="flex items-center justify-center space-x-3 mt-auto">
-                    <img src="/lovable-uploads/a45344db-d5b1-42b9-8f04-ccae6ced5aeb.png" alt="GE" className="h-8 w-auto object-contain" />
-                    <img src="/lovable-uploads/4c7d492f-dc9c-4a56-8c4c-e39a97b282ea.png" alt="Siemens" className="h-8 w-auto object-contain" />
-                    <img src="/lovable-uploads/57b28dac-e1b7-4beb-9430-6b30bc63499b.png" alt="DEWA" className="h-8 w-auto object-contain" />
+                  <div className="flex items-center justify-center space-x-4 mt-auto">
+                    <img src="/lovable-uploads/a45344db-d5b1-42b9-8f04-ccae6ced5aeb.png" alt="GE" className="h-10 w-auto object-contain" />
+                    <img src="/lovable-uploads/4c7d492f-dc9c-4a56-8c4c-e39a97b282ea.png" alt="Siemens" className="h-10 w-auto object-contain" />
+                    <img src="/lovable-uploads/57b28dac-e1b7-4beb-9430-6b30bc63499b.png" alt="DEWA" className="h-10 w-auto object-contain" />
                   </div>
                 </div>
               </CardContent>
@@ -72,10 +74,10 @@ const Team = () => {
                   <p className="text-gray-600 text-center mb-6">
                     Tech innovator with deep experience in IoT systems, API development, and smart grid technologies.
                   </p>
-                  <div className="flex items-center justify-center space-x-3 mt-auto">
-                    <img src="/lovable-uploads/7015453a-9323-4200-944a-cc88ff192bab.png" alt="Figma" className="h-8 w-auto object-contain" />
-                    <img src="/lovable-uploads/3f1ea2b7-eace-4bc2-baad-285f89f1bd16.png" alt="Crowe" className="h-8 w-auto object-contain" />
-                    <img src="/lovable-uploads/014ea8e0-f775-4acc-bf4a-821493b743a2.png" alt="Analog Devices" className="h-8 w-auto object-contain" />
+                  <div className="flex items-center justify-center space-x-4 mt-auto">
+                    <img src="/lovable-uploads/7015453a-9323-4200-944a-cc88ff192bab.png" alt="Figma" className="h-10 w-auto object-contain" />
+                    <img src="/lovable-uploads/3f1ea2b7-eace-4bc2-baad-285f89f1bd16.png" alt="Crowe" className="h-10 w-auto object-contain" />
+                    <img src="/lovable-uploads/014ea8e0-f775-4acc-bf4a-821493b743a2.png" alt="Analog Devices" className="h-10 w-auto object-contain" />
                   </div>
                 </div>
               </CardContent>
@@ -101,9 +103,9 @@ const Team = () => {
                       <p className="text-gray-600 text-center text-sm mb-4">
                         Former engineer at Tesla Energy, bringing expertise in energy systems integration.
                       </p>
-                      <div className="flex items-center justify-center space-x-2">
-                        <img src="/lovable-uploads/de05d324-e380-47ab-9c87-d2859fd98d1e.png" alt="Tesla" className="h-6 w-auto object-contain" />
-                        <img src="/lovable-uploads/81e41dff-ba93-47c5-9f9d-c87553908e60.png" alt="Rivian" className="h-6 w-auto object-contain" />
+                      <div className="flex items-center justify-center space-x-3">
+                        <img src="/lovable-uploads/de05d324-e380-47ab-9c87-d2859fd98d1e.png" alt="Tesla" className="h-8 w-auto object-contain" />
+                        <img src="/lovable-uploads/81e41dff-ba93-47c5-9f9d-c87553908e60.png" alt="Rivian" className="h-8 w-auto object-contain" />
                       </div>
                     </div>
                   </CardContent>
@@ -124,9 +126,9 @@ const Team = () => {
                       <p className="text-gray-600 text-center text-sm mb-4">
                         Strategic leader with background in energy generation and management.
                       </p>
-                      <div className="flex items-center justify-center space-x-2">
-                        <img src="/lovable-uploads/a45344db-d5b1-42b9-8f04-ccae6ced5aeb.png" alt="GE" className="h-6 w-auto object-contain" />
-                        <img src="/lovable-uploads/4c7d492f-dc9c-4a56-8c4c-e39a97b282ea.png" alt="Siemens" className="h-6 w-auto object-contain" />
+                      <div className="flex items-center justify-center space-x-3">
+                        <img src="/lovable-uploads/a45344db-d5b1-42b9-8f04-ccae6ced5aeb.png" alt="GE" className="h-8 w-auto object-contain" />
+                        <img src="/lovable-uploads/4c7d492f-dc9c-4a56-8c4c-e39a97b282ea.png" alt="Siemens" className="h-8 w-auto object-contain" />
                       </div>
                     </div>
                   </CardContent>
@@ -147,9 +149,9 @@ const Team = () => {
                       <p className="text-gray-600 text-center text-sm mb-4">
                         Tech innovator with deep experience in IoT systems and API development.
                       </p>
-                      <div className="flex items-center justify-center space-x-2">
-                        <img src="/lovable-uploads/7015453a-9323-4200-944a-cc88ff192bab.png" alt="Figma" className="h-6 w-auto object-contain" />
-                        <img src="/lovable-uploads/3f1ea2b7-eace-4bc2-baad-285f89f1bd16.png" alt="Crowe" className="h-6 w-auto object-contain" />
+                      <div className="flex items-center justify-center space-x-3">
+                        <img src="/lovable-uploads/7015453a-9323-4200-944a-cc88ff192bab.png" alt="Figma" className="h-8 w-auto object-contain" />
+                        <img src="/lovable-uploads/3f1ea2b7-eace-4bc2-baad-285f89f1bd16.png" alt="Crowe" className="h-8 w-auto object-contain" />
                       </div>
                     </div>
                   </CardContent>
