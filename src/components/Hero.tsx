@@ -3,20 +3,20 @@ import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   return (
-    <section className="relative py-20 md:py-32 bg-gradient-to-br from-kwh-blue to-blue-700 text-white overflow-hidden">
+    <section className="relative py-20 md:py-32 bg-white text-gray-800 overflow-hidden">
       {/* Background patterns/grid */}
-      <div className="absolute inset-0 w-full h-full bg-[url('/lovable-uploads/17997903-24cd-4165-b5e1-1eac5a821998.png')] bg-cover opacity-20"></div>
+      <div className="absolute inset-0 w-full h-full bg-[url('/lovable-uploads/17997903-24cd-4165-b5e1-1eac5a821998.png')] bg-cover opacity-10"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left column - Main heading and text */}
           <div className="md:pr-8">
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-8">
-              Get paid to use<br />
-              <span className="text-green-300">less energy</span>
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-8 text-gray-900">
+              Unlocking Energy Potential for India's grid<br />
+              <span className="text-green-600">in 2 seconds</span>
             </h1>
-            <p className="text-xl text-gray-200 mb-12 max-w-2xl leading-relaxed">
-              kWh is the leading virtual power plant operator of distributed energy resources. kWh pays energy users to reduce or shift electricity use in response to grid stress, high prices, and high emissions.
+            <p className="text-xl text-gray-700 mb-12 max-w-2xl leading-relaxed">
+              Connecting smart devices to energy markets with our proprietary software - reducing blackouts, costs and pollution - all within 2 seconds
             </p>
             
             <Button size="lg" className="bg-green-500 hover:bg-green-600 text-white px-8 py-6 text-lg rounded-lg">
@@ -41,7 +41,7 @@ const Hero = () => {
                     type="text"
                     id="location"
                     placeholder="Enter your postal code"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
                 
@@ -51,7 +51,7 @@ const Hero = () => {
                     type="email"
                     id="email"
                     placeholder="you@example.com"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
                 
@@ -65,12 +65,12 @@ const Hero = () => {
         
         {/* Dashboard preview (moved below the main content) */}
         <div className="mt-16">
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden border border-white/20 mx-auto">
-            <div className="flex items-center space-x-2 px-4 py-2 bg-black/30 border-b border-white/10">
+          <div className="bg-gray-100 backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden border border-gray-200 mx-auto">
+            <div className="flex items-center space-x-2 px-4 py-2 bg-gray-200 border-b border-gray-300">
               <div className="h-3 w-3 bg-red-400 rounded-full"></div>
               <div className="h-3 w-3 bg-yellow-400 rounded-full"></div>
               <div className="h-3 w-3 bg-green-400 rounded-full"></div>
-              <div className="ml-2 text-sm text-gray-300">Dashboard</div>
+              <div className="ml-2 text-sm text-gray-600">Dashboard</div>
             </div>
             <div className="p-2">
               <img 
