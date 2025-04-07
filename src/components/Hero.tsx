@@ -1,14 +1,23 @@
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { useToast } from "@/hooks/use-toast";
 
 const Hero = () => {
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      location: "",
+      email: ""
+    }
+  });
+  const { toast } = useToast();
 
   const onSubmit = (data: any) => {
     console.log("Form submitted:", data);
+    toast({
+      title: "Information received",
+      description: `Location: ${data.location}, Email: ${data.email}`,
+    });
   };
 
   return (
@@ -26,10 +35,6 @@ const Hero = () => {
             <p className="text-lg text-gray-700 mb-8 max-w-2xl leading-relaxed">
               Our smart software connects devices to energy markets — cutting costs, reducing blackouts, and lowering pollution in under 2 seconds.
             </p>
-            
-            <Button size="lg" className="bg-kwh-blue hover:bg-blue-700 text-white px-6 py-5 text-base rounded-lg">
-              Learn More
-            </Button>
           </div>
           
           {/* Right column - Form card */}
@@ -49,7 +54,7 @@ const Hero = () => {
                   id="location"
                   placeholder="Enter your location"
                   className="w-full px-4 py-3 text-base bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-kwh-blue focus:border-kwh-blue"
-                  {...form.register("location")}
+                  {...form.register("location", { required: true })}
                 />
               </div>
               
@@ -60,7 +65,7 @@ const Hero = () => {
                   id="email"
                   placeholder="you@example.com"
                   className="w-full px-4 py-3 text-base bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-kwh-blue focus:border-kwh-blue"
-                  {...form.register("email")}
+                  {...form.register("email", { required: true })}
                 />
               </div>
               
