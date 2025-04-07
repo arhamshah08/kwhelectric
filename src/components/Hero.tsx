@@ -22,13 +22,13 @@ const Hero = () => {
           <div className="md:pr-8">
             <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-8 text-gray-900">
               Unlocking Energy Potential for India's grid<br />
-              <span className="text-green-600">in 2 seconds</span>
+              <span className="text-kwh-blue">in 2 seconds</span>
             </h1>
             <p className="text-xl text-gray-700 mb-12 max-w-2xl leading-relaxed">
               Connecting smart devices to energy markets with our proprietary software - reducing blackouts, costs and pollution - all within 2 seconds
             </p>
             
-            <Button size="lg" className="bg-green-500 hover:bg-green-600 text-white px-8 py-6 text-lg rounded-lg">
+            <Button size="lg" className="bg-kwh-blue hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-lg">
               Learn More
             </Button>
           </div>
@@ -50,7 +50,7 @@ const Hero = () => {
                   id="location"
                   placeholder="Enter your location"
                   defaultValue="Champaign, IL"
-                  className="w-full px-4 py-4 text-lg bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-4 py-4 text-lg bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-kwh-blue focus:border-kwh-blue"
                   {...form.register("location")}
                 />
               </div>
@@ -62,14 +62,14 @@ const Hero = () => {
                   id="email"
                   placeholder="you@example.com"
                   defaultValue="arham2@illinois.edu"
-                  className="w-full px-4 py-4 text-lg bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-4 py-4 text-lg bg-blue-50 border border-blue-100 rounded-lg focus:ring-2 focus:ring-kwh-blue focus:border-kwh-blue"
                   {...form.register("email")}
                 />
               </div>
               
               <Button 
                 type="submit"
-                className="w-full bg-green-500 hover:bg-green-600 text-white py-4 text-lg font-medium rounded-lg mt-4">
+                className="w-full bg-kwh-blue hover:bg-blue-700 text-white py-4 text-lg font-medium rounded-lg mt-4">
                 Get your earnings estimate
               </Button>
             </form>
@@ -82,7 +82,7 @@ const Hero = () => {
             <div className="flex items-center space-x-2 px-4 py-2 bg-gray-200 border-b border-gray-300">
               <div className="h-3 w-3 bg-red-400 rounded-full"></div>
               <div className="h-3 w-3 bg-yellow-400 rounded-full"></div>
-              <div className="h-3 w-3 bg-green-400 rounded-full"></div>
+              <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
               <div className="ml-2 text-sm text-gray-600">Dashboard</div>
             </div>
             <div className="p-2">
