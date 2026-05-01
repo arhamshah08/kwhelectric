@@ -19,17 +19,16 @@
     <a href="users.html">Who It's For</a>
     <a href="business.html">Business Model</a>
   </div>
-  <a class="nav-cta" href="mailto:hello@kwhelectric.com">Request Pilot Access</a>
+  <a class="nav-cta" href="#cta" onclick="event.preventDefault();document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Request Pilot Access</a>
 </nav>
 
 <section id="hero">
-  <div class="kicker">Open DER Gateway</div>
   <h1 class="headline">
-    The open gateway every<br>distributed energy asset<br><span class="accent">plugs into.</span>
+    Every energy asset,<br><span class="accent">connected and controllable.</span>
   </h1>
-  <p class="subtext">A hardware-enabled, software-defined control layer that gives aggregators, financiers, OEMs, and utilities real-time visibility and dispatch control across batteries, solar, EV chargers, meters, and flexible loads.</p>
+  <p class="subtext">Real-time visibility and control across your batteries, solar, EV chargers, meters, and flexible loads — through one open gateway.</p>
   <div class="hero-actions">
-    <a class="btn-primary" href="mailto:hello@kwhelectric.com">Request Pilot Access</a>
+    <a class="btn-primary" href="#cta" onclick="event.preventDefault();document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Request Pilot Access</a>
     <a class="btn-ghost" href="architecture.html">See the Architecture</a>
   </div>
   <div class="pill-row">
@@ -44,8 +43,8 @@
 <section id="stats">
   <div class="stats-row">
     <div class="stat-item">
-      <div class="stat-num">Millions</div>
-      <div class="stat-label">DERs to connect — batteries, solar, EV chargers, meters, and flexible loads</div>
+      <div class="stat-num">100M+</div>
+      <div class="stat-label">distributed energy assets globally that need a common control and visibility layer</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">$50k+</div>
@@ -65,23 +64,23 @@
 <section id="how">
   <div class="kicker">How It Works</div>
   <h2 class="headline" style="font-size:62px;">Connect. <span class="accent">Normalize.</span><br>Dispatch. Verify.</h2>
-  <p class="subtext">Select a step to learn more.</p>
+  <p class="subtext">How the gateway works for you. Select a step.</p>
   <div class="steps">
     <div class="step" onclick="toggleStep(this)">
       <div class="step-header"><div class="step-num">1</div><div class="step-name">Connect</div></div>
-      <div class="step-body"><div class="step-body-inner">Install the edge gateway at a home, building, solar site, battery site, or commercial facility. It connects to DERs through local and open protocols — no closed OEM cloud required.</div></div>
+      <div class="step-body"><div class="step-body-inner">Install the gateway at your site. It connects directly to your batteries, solar inverters, EV chargers, and meters using standard protocols — no vendor lock-in, no closed OEM cloud needed.</div></div>
     </div>
     <div class="step" onclick="toggleStep(this)">
       <div class="step-header"><div class="step-num">2</div><div class="step-name">Normalize</div></div>
-      <div class="step-body"><div class="step-body-inner">Convert messy device-specific data into a standard asset model. Batteries, solar inverters, EV chargers, meters, and loads all become readable the same way — one API, any device.</div></div>
+      <div class="step-body"><div class="step-body-inner">Every device speaks a different language. The gateway translates them all into one clean, consistent data stream — so you see everything in one place, in real time.</div></div>
     </div>
     <div class="step" onclick="toggleStep(this)">
       <div class="step-header"><div class="step-num">3</div><div class="step-name">Dispatch</div></div>
-      <div class="step-body"><div class="step-body-inner">Aggregators, utilities, and AI platforms send control signals through open standards and APIs. The gateway translates commands into safe, device-specific actions in real time.</div></div>
+      <div class="step-body"><div class="step-body-inner">Send charge, discharge, curtail, or shift commands to your assets from any platform. The gateway handles the translation — safely, in real time, without custom integrations.</div></div>
     </div>
     <div class="step" onclick="toggleStep(this)">
       <div class="step-header"><div class="step-num">4</div><div class="step-name">Verify</div></div>
-      <div class="step-body"><div class="step-body-inner">Telemetry before, during, and after events proves availability, performance, and response — for VPPs, financiers, utilities, and market settlement. Every session auditable and trusted.</div></div>
+      <div class="step-body"><div class="step-body-inner">Every dispatch event is logged before, during, and after. Your assets' performance is recorded and verifiable — so you can prove response, claim revenue, and build trust.</div></div>
     </div>
   </div>
 </section>
