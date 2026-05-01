@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Model — KWH Electric</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<canvas id="node-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="index.html">KWH <span>Electric</span></a>
+  <div class="nav-links">
+    <a href="index.html#how">How It Works</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="technology.html">Technology</a>
+    <a href="users.html">Who It's For</a>
+    <a href="business.html" class="active">Business Model</a>
+  </div>
+  <a class="nav-cta" href="mailto:hello@kwhelectric.com">Request Pilot Access</a>
+</nav>
+
+<div class="page-hero">
+  <div class="kicker">Business Model</div>
+  <h1 class="headline">Hardware starts the relationship.<br><span class="accent">Software</span> captures<br>the lifecycle value.</h1>
+  <p class="subtext">The gateway is the wedge. The platform — telemetry, dispatch, analytics, AI tools — is the business.</p>
+</div>
+
+<div class="section-body">
+  <div class="model-grid">
+    <div class="model-card">
+      <div class="model-icon">🛒</div>
+      <h3>Hardware Sale</h3>
+      <p>One-time sale or lease of the edge gateway to aggregators, asset owners, installers, or OEM partners. The gateway is the entry point into every site.</p>
+    </div>
+    <div class="model-card">
+      <div class="model-icon">☁️</div>
+      <h3>SaaS Platform Fee</h3>
+      <p>Monthly software fee per device, site, MW, or portfolio for telemetry, dashboards, dispatch control, and analytics. Scales with the fleet.</p>
+    </div>
+    <div class="model-card">
+      <div class="model-icon">📄</div>
+      <h3>OEM Licensing</h3>
+      <p>Embedded software or white-label gateway stack licensed to battery, inverter, EV charger, or smart device OEMs. Makes their hardware platform-ready from the factory.</p>
+    </div>
+    <div class="model-card">
+      <div class="model-icon">📈</div>
+      <h3>Aggregator / VPP Fee</h3>
+      <p>Fee based on enrolled devices, controllable capacity, MW under management, or active dispatch availability. Aligns incentives with aggregator outcomes.</p>
+    </div>
+    <div class="model-card">
+      <div class="model-icon">💸</div>
+      <h3>Performance Revenue</h3>
+      <p>Share of revenue from demand response, peak shaving, VPP dispatch, ancillary services, or market participation. We earn when assets earn.</p>
+    </div>
+    <div class="model-card">
+      <div class="model-icon">🧠</div>
+      <h3>Data + AI Services</h3>
+      <p>Predictive maintenance, optimization, risk scoring, financing analytics, and AI dispatch tools built on top of the standardized data layer.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:80px;">
+    <div class="kicker" style="text-align:center;margin-bottom:12px;">Market Opportunity</div>
+    <h2 style="color:var(--white);font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-0.04em;text-align:center;margin-bottom:12px;">A software layer for the<br>distributed energy transition.</h2>
+    <p style="color:var(--dim);font-size:16px;text-align:center;max-width:560px;margin:0 auto;">The opportunity grows as solar, batteries, EV charging, smart meters, and flexible loads become standard infrastructure.</p>
+  </div>
+
+  <div class="market-row">
+    <div class="market-item">
+      <div class="market-num">Millions</div>
+      <div class="market-label">of distributed assets to be connected globally — batteries, solar, EVs, and flexible loads</div>
+    </div>
+    <div class="market-item">
+      <div class="market-num">$50B+</div>
+      <div class="market-label">DERMS, grid software, VPP, and flexibility markets expanding this decade</div>
+    </div>
+    <div class="market-item">
+      <div class="market-num">Rapid</div>
+      <div class="market-label">adoption of solar, storage, EVs, and controllable home and commercial loads</div>
+    </div>
+    <div class="market-item">
+      <div class="market-num">Mandates</div>
+      <div class="market-label">standards and grid programs driving interoperability requirements worldwide</div>
+    </div>
+  </div>
+
+  <div style="margin-top:64px; background:rgba(40,90,72,0.18); border:1px solid rgba(176,228,204,0.2); border-radius:20px; padding:40px; text-align:center;">
+    <h2 style="color:var(--white);font-size:clamp(24px,3.5vw,40px);font-weight:800;letter-spacing:-0.04em;margin-bottom:12px;">Ready to build with us?</h2>
+    <p style="color:var(--dim);font-size:16px;max-width:540px;margin:0 auto 28px;">We are piloting with aggregators, BESS financiers, OEMs, utilities, and energy partners. Get in touch.</p>
+    <a class="btn-primary" href="mailto:hello@kwhelectric.com">Request Pilot Access</a>
+  </div>
+</div>
+
+<footer>
+  <a class="footer-logo" href="index.html">KWH <span>Electric</span></a>
+  <nav class="footer-nav">
+    <a href="architecture.html">Architecture</a>
+    <a href="technology.html">Technology</a>
+    <a href="users.html">Who It's For</a>
+    <a href="business.html">Business Model</a>
+  </nav>
+  <div class="footer-contact">Palo Alto, California &nbsp;·&nbsp; hello@kwhelectric.com</div>
+</footer>
+
+<script>
+(function(){
+  const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
+  const COUNT=100,BDIST=140,CDIST=200,BOOST=1.8;
+  let mouse={x:-9999,y:-9999},nodes=[];
+  function resize(){const dpr=window.devicePixelRatio||1;canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
+  function rand(a,b){return Math.random()*(b-a)+a;}
+  function init(){nodes=[];const W=window.innerWidth,H=window.innerHeight;for(let i=0;i<COUNT;i++)nodes.push({x:rand(0,W),y:rand(0,H*6),vx:rand(-0.15,0.15),vy:rand(-0.15,0.15),r:rand(4,14),op:rand(0.06,0.25)});}
+  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  window.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});
+  function dist(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return Math.sqrt(dx*dx+dy*dy);}
+  function ef(x){const w=window.innerWidth,z=w*0.1;return x<z?x/z:x>w-z?(w-x)/z:1;}
+  function draw(){const W=window.innerWidth,H=window.innerHeight,par=window.scrollY*0.25;ctx.clearRect(0,0,W,H);for(let i=0;i<COUNT;i++){const a=nodes[i],aY=a.y-par;if(aY<-60||aY>H+60)continue;const dc=dist(a.x,aY,mouse.x,mouse.y),near=dc<CDIST,e=ef(a.x);for(let j=i+1;j<COUNT;j++){const b=nodes[j],bY=b.y-par,dd=dist(a.x,aY,b.x,bY),thr=near?BDIST*BOOST:BDIST;if(dd<thr){const t=1-dd/thr,al=t*(near?0.35:0.09)*e;ctx.beginPath();ctx.moveTo(a.x,aY);ctx.lineTo(b.x,bY);ctx.strokeStyle=`rgba(176,228,204,${al})`;ctx.lineWidth=near?1:0.5;ctx.stroke();}}}for(let i=0;i<COUNT;i++){const n=nodes[i],nY=n.y-par;if(nY<-60||nY>H+60)continue;const dc=dist(n.x,nY,mouse.x,mouse.y),near=dc<CDIST,t=near?(1-dc/CDIST):0;const opacity=Math.min(1,(n.op+t*0.4)*ef(n.x));ctx.beginPath();ctx.arc(n.x,nY,n.r+t*3,0,Math.PI*2);ctx.strokeStyle=`rgba(255,255,255,${opacity})`;ctx.lineWidth=near?1.8:1;ctx.stroke();n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>window.innerWidth)n.vx*=-1;const tH=window.innerHeight*7;if(n.y<0)n.y=tH;if(n.y>tH)n.y=0;}requestAnimationFrame(draw);}
+  window.addEventListener('resize',()=>{resize();init();});
+  resize();init();draw();
+})();
+</script>
+</body>
+</html>
