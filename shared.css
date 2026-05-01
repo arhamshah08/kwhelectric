@@ -385,21 +385,20 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 140px;
-  height: 90px;
+  width: 280px;
+  height: 180px;
 }
 
 .logo-img {
-  max-width: 130px;
-  max-height: 80px;
+  max-width: 260px;
+  max-height: 160px;
   object-fit: contain;
-  opacity: 0.55;
-  filter: grayscale(100%) brightness(2.2);
-  transition: opacity 0.3s, filter 0.3s;
+  opacity: 0.9;
+  filter: none;
+  transition: opacity 0.3s;
 }
 .logo-item:hover .logo-img {
-  opacity: 0.85;
-  filter: grayscale(40%) brightness(1.5);
+  opacity: 1;
 }
 
 @keyframes scroll-logos {
