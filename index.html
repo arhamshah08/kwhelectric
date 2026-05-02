@@ -286,41 +286,47 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 (function(){
   const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
-  const COUNT=130,BDIST=140,CDIST=200,BOOST=1.8;
-  let mouse={x:-9999,y:-9999},nodes=[];
-  function resize(){const dpr=window.devicePixelRatio||1;canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
+  const COUNT=45,BDIST=100,CDIST=150,BOOST=1.5;
+  let mouse={x:-9999,y:-9999},nodes=[],scrollY=0,rafId,lastFrame=0;
+  function resize(){const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
   function rand(a,b){return Math.random()*(b-a)+a;}
-  function init(){nodes=[];const W=window.innerWidth,H=window.innerHeight;for(let i=0;i<COUNT;i++)nodes.push({x:rand(0,W),y:rand(0,H*6),vx:rand(-0.2,0.2),vy:rand(-0.2,0.2),r:rand(5,16),op:rand(0.08,0.3)});}
-  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  function init(){nodes=[];const W=window.innerWidth,H=window.innerHeight;for(let i=0;i<COUNT;i++)nodes.push({x:rand(0,W),y:rand(0,H*6),vx:rand(-0.15,0.15),vy:rand(-0.15,0.15),r:rand(4,12),op:rand(0.07,0.22)});}
+  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
   window.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});
-  function dist(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return Math.sqrt(dx*dx+dy*dy);}
+  window.addEventListener('scroll',()=>{scrollY=window.scrollY;},{passive:true});
+  function dist2(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return dx*dx+dy*dy;}
   function ef(x){const w=window.innerWidth,z=w*0.1;return x<z?x/z:x>w-z?(w-x)/z:1;}
-  function draw(){
-    const W=window.innerWidth,H=window.innerHeight,par=window.scrollY*0.32;
+  function draw(ts){
+    rafId=requestAnimationFrame(draw);
+    if(ts-lastFrame<24)return; // cap at ~40fps
+    lastFrame=ts;
+    const W=window.innerWidth,H=window.innerHeight,par=scrollY*0.32;
     ctx.clearRect(0,0,W,H);
+    const CDIST2=CDIST*CDIST,BDIST2=BDIST*BDIST,BDIST2B=BDIST*BOOST*BDIST*BOOST;
     for(let i=0;i<COUNT;i++){
       const a=nodes[i],aY=a.y-par;
       if(aY<-60||aY>H+60)continue;
-      const dc=dist(a.x,aY,mouse.x,mouse.y),near=dc<CDIST,e=ef(a.x);
+      const dc2=dist2(a.x,aY,mouse.x,mouse.y),near=dc2<CDIST2,e=ef(a.x);
+      const thr2=near?BDIST2B:BDIST2;
       for(let j=i+1;j<COUNT;j++){
-        const b=nodes[j],bY=b.y-par,dd=dist(a.x,aY,b.x,bY),thr=near?BDIST*BOOST:BDIST;
-        if(dd<thr){const t=1-dd/thr,al=t*(near?0.4:0.1)*e;ctx.beginPath();ctx.moveTo(a.x,aY);ctx.lineTo(b.x,bY);ctx.strokeStyle=`rgba(176,228,204,${al})`;ctx.lineWidth=near?1.1:0.6;ctx.stroke();}
+        const b=nodes[j],bY=b.y-par,dd2=dist2(a.x,aY,b.x,bY);
+        if(dd2<thr2){const t=1-Math.sqrt(dd2)/( near?BDIST*BOOST:BDIST),al=t*(near?0.35:0.09)*e;ctx.beginPath();ctx.moveTo(a.x,aY);ctx.lineTo(b.x,bY);ctx.strokeStyle=`rgba(176,228,204,${al})`;ctx.lineWidth=near?1:0.5;ctx.stroke();}
       }
     }
     for(let i=0;i<COUNT;i++){
       const n=nodes[i],nY=n.y-par;
       if(nY<-60||nY>H+60)continue;
-      const dc=dist(n.x,nY,mouse.x,mouse.y),near=dc<CDIST,t=near?(1-dc/CDIST):0;
-      const opacity=Math.min(1,(n.op+t*0.5)*ef(n.x));
-      ctx.beginPath();ctx.arc(n.x,nY,n.r+t*3,0,Math.PI*2);ctx.strokeStyle=`rgba(255,255,255,${opacity})`;ctx.lineWidth=near?2:1.2;ctx.stroke();
+      const dc2=dist2(n.x,nY,mouse.x,mouse.y),near=dc2<CDIST2,t=near?(1-Math.sqrt(dc2)/CDIST):0;
+      const opacity=Math.min(1,(n.op+t*0.4)*ef(n.x));
+      ctx.beginPath();ctx.arc(n.x,nY,n.r+t*2,0,Math.PI*2);ctx.strokeStyle=`rgba(255,255,255,${opacity})`;ctx.lineWidth=near?1.5:1;ctx.stroke();
       n.x+=n.vx;n.y+=n.vy;
       if(n.x<0||n.x>window.innerWidth)n.vx*=-1;
       const tH=window.innerHeight*7;if(n.y<0)n.y=tH;if(n.y>tH)n.y=0;
     }
-    requestAnimationFrame(draw);
   }
-  window.addEventListener('resize',()=>{resize();init();});
-  resize();init();draw();
+  window.addEventListener('resize',()=>{resize();init();},{passive:true});
+  canvas.style.willChange='transform';
+  resize();init();rafId=requestAnimationFrame(draw);
 })();
 </script>
 </body>
