@@ -14,7 +14,6 @@
   <a class="nav-logo" href="index.html"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
   <div class="nav-links">
     <a href="#" class="active" onclick="event.preventDefault();document.getElementById('how').scrollIntoView({behavior:'smooth'})">How It Works</a>
-    <a href="/architecture/">Architecture</a>
     <a href="/technology/">Technology</a>
     <a href="/users/">Who It's For</a>
   </div>
@@ -28,7 +27,7 @@
   <p class="subtext">Real-time visibility and control across your batteries, solar, EV chargers, meters, and flexible loads — through one open gateway.</p>
   <div class="hero-actions">
     <a class="btn-primary" href="#cta" onclick="event.preventDefault();document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Request Pilot Access</a>
-    <a class="btn-ghost" href="/architecture/">See the Architecture</a>
+    <a class="btn-ghost" href="#architecture" onclick="event.preventDefault();document.getElementById('architecture').scrollIntoView({behavior:'smooth'})">See the Architecture</a>
   </div>
   <div class="pill-row">
     <span class="pill">IEEE 2030.5 ready</span>
@@ -83,6 +82,115 @@
         <div style="font-size:14px;color:var(--dim);line-height:1.65;">More assets enrolled by default means more megawatts under management and materially higher participation rates — without adding enrollment overhead.</div>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="architecture" style="padding:80px var(--px);position:relative;z-index:1;">
+  <div style="max-width:860px;margin:0 auto;">
+    <div class="kicker" style="margin-bottom:14px;">Infrastructure</div>
+    <h2 style="color:var(--white);font-size:clamp(24px,3.4vw,42px);font-weight:800;letter-spacing:-0.04em;line-height:1.15;margin-bottom:14px;">Five-Layer Architecture for<br>Dispatch + Telemetry</h2>
+    <p style="color:var(--dim);font-size:16px;max-width:680px;line-height:1.75;margin-bottom:52px;">kWh Electric connects physical DERs to edge intelligence, cloud orchestration, AI workflows, and energy applications through one interoperable infrastructure layer.</p>
+
+    <!-- Stack -->
+    <div style="position:relative;display:flex;flex-direction:column;gap:0;">
+
+      <!-- Layer 5 — Applications -->
+      <div style="background:rgba(251,113,133,0.08);border:1px solid rgba(251,113,133,0.3);border-radius:16px 16px 4px 4px;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="width:4px;height:44px;background:#fb7185;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(251,113,133,0.5);"></div>
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#fb7185;text-transform:uppercase;margin-bottom:4px;">Layer 5</div>
+            <div style="font-size:17px;font-weight:700;color:var(--white);">Applications + Value Layer</div>
+            <div style="font-size:13px;color:var(--dim);margin-top:4px;">Utility orchestration, asset financing, VPP participation, grid services, forecasting, and performance verification.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow 4→5 -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;position:relative;">
+        <span style="font-size:11px;color:rgba(167,139,250,0.6);letter-spacing:0.05em;">AI workflows ↕</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(167,139,250,0.5),transparent);"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(167,139,250,0.4);"></div>
+          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(167,139,250,0.5),transparent);"></div>
+        </div>
+        <span style="font-size:11px;color:rgba(167,139,250,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
+      </div>
+
+      <!-- Layer 4 — MCP + AI -->
+      <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.3);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
+        <div style="width:4px;height:44px;background:#a78bfa;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(167,139,250,0.5);"></div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#a78bfa;text-transform:uppercase;margin-bottom:4px;">Layer 4</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white);">MCP + AI Layer</div>
+          <div style="font-size:13px;color:var(--dim);margin-top:4px;">A secure interface that gives agentic AI systems DER context, telemetry access, and policy-constrained dispatch tools.</div>
+        </div>
+      </div>
+
+      <!-- Arrow 3→4 -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
+        <span style="font-size:11px;color:rgba(34,211,238,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(34,211,238,0.5),transparent);"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(34,211,238,0.4);"></div>
+          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(34,211,238,0.5),transparent);"></div>
+        </div>
+        <span style="font-size:11px;color:rgba(34,211,238,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
+      </div>
+
+      <!-- Layer 3 — Cloud Platform -->
+      <div style="background:rgba(34,211,238,0.07);border:1px solid rgba(34,211,238,0.25);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
+        <div style="width:4px;height:44px;background:#22d3ee;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(34,211,238,0.4);"></div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#22d3ee;text-transform:uppercase;margin-bottom:4px;">Layer 3</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white);">Cloud Platform</div>
+          <div style="font-size:13px;color:var(--dim);margin-top:4px;">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</div>
+        </div>
+      </div>
+
+      <!-- Arrow 2→3 -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
+        <span style="font-size:11px;color:rgba(74,222,128,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(74,222,128,0.5),transparent);"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(74,222,128,0.4);"></div>
+          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(74,222,128,0.5),transparent);"></div>
+        </div>
+        <span style="font-size:11px;color:rgba(74,222,128,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
+      </div>
+
+      <!-- Layer 2 — Edge Gateway -->
+      <div style="background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.28);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
+        <div style="width:4px;height:44px;background:#4ade80;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(74,222,128,0.4);"></div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#4ade80;text-transform:uppercase;margin-bottom:4px;">Layer 2</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white);">Edge Gateway</div>
+          <div style="font-size:13px;color:var(--dim);margin-top:4px;">A one-time device that connects locally to assets, standardizes telemetry, and enables secure dispatch.</div>
+        </div>
+      </div>
+
+      <!-- Arrow 1→2 -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
+        <span style="font-size:11px;color:rgba(251,191,36,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(251,191,36,0.5),transparent);"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(251,191,36,0.4);"></div>
+          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(251,191,36,0.5),transparent);"></div>
+        </div>
+        <span style="font-size:11px;color:rgba(251,191,36,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
+      </div>
+
+      <!-- Layer 1 — Physical DERs -->
+      <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.28);border-radius:4px 4px 16px 16px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
+        <div style="width:4px;height:44px;background:#fbbf24;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(251,191,36,0.4);"></div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#fbbf24;text-transform:uppercase;margin-bottom:4px;">Layer 1</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white);">Physical DER Devices</div>
+          <div style="font-size:13px;color:var(--dim);margin-top:4px;">Batteries, solar inverters, EV chargers, smart meters, and flexible loads.</div>
+        </div>
+      </div>
+
+    </div><!-- end stack -->
   </div>
 </section>
 
@@ -144,7 +252,6 @@
 <footer>
   <a class="footer-logo" href="index.html"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
   <nav class="footer-nav">
-    <a href="/architecture/">Architecture</a>
     <a href="/technology/">Technology</a>
     <a href="/users/">Who It's For</a>
   </nav>
