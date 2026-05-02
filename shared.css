@@ -226,7 +226,8 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  text-align: left;
+  text-align: center;
+  align-items: center;
 }
 .stat-item:first-child { padding-left: 0; }
 
