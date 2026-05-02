@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technology — KWH Electric</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+<canvas id="node-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="/"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
+  <div class="nav-links">
+    <a href="index.html#how">How It Works</a>
+    <a href="/architecture/">Architecture</a>
+    <a href="/technology/" class="active">Technology</a>
+    <a href="/users/">Who It's For</a>
+  </div>
+  <a class="nav-cta" href="index.html#cta">Request Pilot Access</a>
+</nav>
+
+<div class="page-hero">
+  <div class="kicker">Technology</div>
+  <h1 class="headline">The stack behind<br>telemetry, dispatch,<br>and <span class="accent">AI operations.</span></h1>
+  <p class="subtext">A hardware-enabled software platform for secure protocol translation, real-time visibility, reliable fleet control, and agentic automation.</p>
+</div>
+
+<div class="section-body">
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">▣</div>
+      <h3>Edge Gateway</h3>
+      <p>A physical gateway installed near the asset. Connects locally to batteries, solar inverters, EV chargers, smart meters, and flexible loads. Operates offline-safely with store-and-forward resilience.</p>
+      <div class="tag-list">
+        <span class="tag">Local Edge</span>
+        <span class="tag">Secure Boot</span>
+        <span class="tag">Offline-Ready</span>
+        <span class="tag">OTA Updates</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⇄</div>
+      <h3>Protocol Translation</h3>
+      <p>Southbound device protocols are translated into northbound open standards and clean APIs for cloud platforms and partners. One gateway speaks every device's language.</p>
+      <div class="tag-list">
+        <span class="tag">SunSpec</span>
+        <span class="tag">Modbus RTU/TCP</span>
+        <span class="tag">OCPP</span>
+        <span class="tag">IEEE 2030.5</span>
+        <span class="tag">OpenADR</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📡</div>
+      <h3>Telemetry Engine</h3>
+      <p>Real-time status, production, load, state of charge, health, and availability — all in one standardized asset model. High-resolution, auditable, and always live.</p>
+      <div class="tag-list">
+        <span class="tag">Asset Health</span>
+        <span class="tag">State of Charge</span>
+        <span class="tag">Performance</span>
+        <span class="tag">Real-Time</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙</div>
+      <h3>Dispatch Engine</h3>
+      <p>Real-time charge, discharge, curtail, shed, and shift commands across your entire fleet. Implicit enrollment means assets are dispatchable the moment they connect — no manual enrollment steps, more MWuM by default.</p>
+      <div class="tag-list">
+        <span class="tag">VPPs</span>
+        <span class="tag">Demand Response</span>
+        <span class="tag">Peak Shaving</span>
+        <span class="tag">V2G</span>
+        <span class="tag">Implicit Enrollment</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>MCP Server</h3>
+      <p>Provides DER state, forecasts, market signals, and secure tool invocation for AI agents that need to read telemetry or trigger dispatch workflows — without unsafe raw device access.</p>
+      <div class="tag-list">
+        <span class="tag">Context Provider</span>
+        <span class="tag">Tool Invocation</span>
+        <span class="tag">Secure APIs</span>
+        <span class="tag">AI-Ready</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">✓</div>
+      <h3>Verification Layer</h3>
+      <p>Records telemetry before, during, and after dispatch events to prove response, availability, performance, and revenue potential for VPPs, financiers, and market settlement.</p>
+      <div class="tag-list">
+        <span class="tag">M&amp;V</span>
+        <span class="tag">Audit Trail</span>
+        <span class="tag">Revenue Proof</span>
+        <span class="tag">Compliance</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:80px;">
+    <div class="kicker" style="text-align:center;margin-bottom:12px;">Protocol Strategy</div>
+    <h2 style="color:var(--white);font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-0.04em;text-align:center;margin-bottom:12px;">Open protocols without forcing one standard.</h2>
+    <p style="color:var(--dim);font-size:16px;text-align:center;max-width:560px;margin:0 auto 0;">The gateway acts as a translator between local device protocols, cloud services, grid standards, and AI-ready APIs.</p>
+  </div>
+
+  <div class="proto-table">
+    <div class="proto-row header">
+      <div class="proto-cell">Layer</div>
+      <div class="proto-cell">Protocols</div>
+      <div class="proto-cell">Purpose</div>
+      <div class="proto-cell">Gateway Role</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-cell"><b>Southbound Device</b></div>
+      <div class="proto-cell">SunSpec, Modbus RTU/TCP, RS-485, RS-232, MQTT, REST</div>
+      <div class="proto-cell">Connect to inverters, batteries, meters, chargers, and local equipment.</div>
+      <div class="proto-cell">Translate messy device behavior into normalized telemetry and safe local commands.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-cell"><b>Grid Standards</b></div>
+      <div class="proto-cell">IEEE 2030.5, OpenADR 2.0</div>
+      <div class="proto-cell">Receive utility, aggregator, and market signals for DER programs.</div>
+      <div class="proto-cell">Convert grid intent into device-level action while preserving compliance and reliability.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-cell"><b>Cloud + API</b></div>
+      <div class="proto-cell">HTTPS, MQTT, REST, WebSocket, mTLS</div>
+      <div class="proto-cell">Move telemetry, events, and commands between edge and cloud securely.</div>
+      <div class="proto-cell">Expose secure APIs for partners, customers, analytics, and enterprise systems.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-cell"><b>AI + MCP</b></div>
+      <div class="proto-cell">MCP APIs, tool invocation, context providers</div>
+      <div class="proto-cell">Allow agents to read DER state, evaluate goals, and trigger controlled workflows.</div>
+      <div class="proto-cell">Make distributed energy assets usable by AI without exposing unsafe raw control.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a class="footer-logo" href="/"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
+  <nav class="footer-nav">
+    <a href="/architecture/">Architecture</a>
+    <a href="/technology/">Technology</a>
+    <a href="/users/">Who It's For</a>
+  </nav>
+  <div class="footer-contact">Palo Alto, California &nbsp;·&nbsp; hello@kwhelectric.com</div>
+</footer>
+
+<script>
+(function(){
+  const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
+  const COUNT=100,BDIST=140,CDIST=200,BOOST=1.8;
+  let mouse={x:-9999,y:-9999},nodes=[];
+  function resize(){const dpr=window.devicePixelRatio||1;canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
+  function rand(a,b){return Math.random()*(b-a)+a;}
+  function init(){nodes=[];const W=window.innerWidth,H=window.innerHeight;for(let i=0;i<COUNT;i++)nodes.push({x:rand(0,W),y:rand(0,H*8),vx:rand(-0.15,0.15),vy:rand(-0.15,0.15),r:rand(4,14),op:rand(0.06,0.25)});}
+  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  window.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});
+  function dist(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return Math.sqrt(dx*dx+dy*dy);}
+  function ef(x){const w=window.innerWidth,z=w*0.1;return x<z?x/z:x>w-z?(w-x)/z:1;}
+  function draw(){const W=window.innerWidth,H=window.innerHeight,par=window.scrollY*0.25;ctx.clearRect(0,0,W,H);for(let i=0;i<COUNT;i++){const a=nodes[i],aY=a.y-par;if(aY<-60||aY>H+60)continue;const dc=dist(a.x,aY,mouse.x,mouse.y),near=dc<CDIST,e=ef(a.x);for(let j=i+1;j<COUNT;j++){const b=nodes[j],bY=b.y-par,dd=dist(a.x,aY,b.x,bY),thr=near?BDIST*BOOST:BDIST;if(dd<thr){const t=1-dd/thr,al=t*(near?0.35:0.09)*e;ctx.beginPath();ctx.moveTo(a.x,aY);ctx.lineTo(b.x,bY);ctx.strokeStyle=`rgba(176,228,204,${al})`;ctx.lineWidth=near?1:0.5;ctx.stroke();}}}for(let i=0;i<COUNT;i++){const n=nodes[i],nY=n.y-par;if(nY<-60||nY>H+60)continue;const dc=dist(n.x,nY,mouse.x,mouse.y),near=dc<CDIST,t=near?(1-dc/CDIST):0;const opacity=Math.min(1,(n.op+t*0.4)*ef(n.x));ctx.beginPath();ctx.arc(n.x,nY,n.r+t*3,0,Math.PI*2);ctx.strokeStyle=`rgba(255,255,255,${opacity})`;ctx.lineWidth=near?1.8:1;ctx.stroke();n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>window.innerWidth)n.vx*=-1;const tH=window.innerHeight*9;if(n.y<0)n.y=tH;if(n.y>tH)n.y=0;}requestAnimationFrame(draw);}
+  window.addEventListener('resize',()=>{resize();init();});
+  resize();init();draw();
+})();
+</script>
+</body>
+</html>

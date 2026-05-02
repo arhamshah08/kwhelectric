@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture — KWH Electric</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+.arch-wrap {
+  padding: 0 var(--px) 100px;
+  position: relative;
+  z-index: 1;
+}
+
+.arch-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.arch-layer {
+  border: 1px solid rgba(176,228,204,0.15);
+  border-radius: 18px;
+  padding: 24px 28px;
+  background: rgba(40,90,72,0.1);
+}
+
+.arch-layer-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 16px;
+}
+
+.arch-boxes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.arch-box {
+  flex: 1;
+  min-width: 140px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.arch-box-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 5px;
+}
+
+.arch-box-sub {
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+/* Gateway — highlighted */
+.arch-gateway {
+  border-color: rgba(176,228,204,0.5);
+  background: rgba(40,90,72,0.28);
+}
+.arch-gateway .arch-layer-label { color: #4db388; }
+.arch-gateway .arch-box {
+  border-color: rgba(176,228,204,0.18);
+  background: rgba(40,90,72,0.25);
+}
+
+.arch-gateway-badge {
+  display: inline-flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.arch-badge {
+  padding: 6px 14px;
+  background: rgba(40,90,72,0.5);
+  border: 1px solid rgba(176,228,204,0.3);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4db388;
+}
+
+/* Cloud */
+.arch-cloud { background: rgba(255,255,255,0.02); }
+
+.arch-cloud-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.arch-cloud-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.arch-cloud-box {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+}
+
+.arch-cloud-box.dim {
+  color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.02);
+}
+
+/* AI Layer */
+.arch-ai {
+  border-color: rgba(255,200,80,0.3);
+  background: rgba(255,200,80,0.05);
+}
+.arch-ai .arch-layer-label { color: #ffd15c; }
+
+.arch-agents {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.arch-agent {
+  padding: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+.arch-agent b { display: block; color: var(--white); font-size: 13px; margin-bottom: 6px; }
+.arch-agent.green { border-color: rgba(31,191,117,0.4); }
+.arch-agent.yellow { border-color: rgba(255,209,92,0.4); }
+.arch-agent.blue { border-color: rgba(100,160,255,0.4); }
+.arch-agent.red { border-color: rgba(255,107,87,0.4); }
+
+/* Consumers */
+.arch-consumers {
+  background: rgba(40,90,72,0.08);
+}
+
+/* Connectors */
+.arch-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 0;
+}
+
+.arch-arrow {
+  font-size: 20px;
+  color: rgba(176,228,204,0.4);
+  line-height: 1;
+}
+
+.arch-connector-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .arch-agents { grid-template-columns: repeat(3,1fr); }
+  .arch-boxes { flex-direction: column; }
+}
+@media (max-width: 600px) {
+  .arch-agents { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+<canvas id="node-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="/"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
+  <div class="nav-links">
+    <a href="index.html#how">How It Works</a>
+    <a href="/architecture/" class="active">Architecture</a>
+    <a href="/technology/">Technology</a>
+    <a href="/users/">Who It's For</a>
+  </div>
+  <a class="nav-cta" href="index.html#cta">Request Pilot Access</a>
+</nav>
+
+<div class="page-hero">
+  <div class="kicker">Architecture</div>
+  <h1 class="headline">Agentic AI-driven<br><span class="accent">DER gateway</span> ecosystem.</h1>
+  <p class="subtext">An open, interoperable stack connecting physical energy assets to cloud services, AI agents, and external systems — through one hardware-enabled gateway.</p>
+</div>
+
+<div class="arch-wrap">
+  <div class="arch-diagram">
+
+    <!-- ENERGY ASSETS -->
+    <div class="arch-layer">
+      <div class="arch-layer-label">Energy Assets</div>
+      <div class="arch-boxes">
+        <div class="arch-box">
+          <div class="arch-box-title">☀ Solar Inverters</div>
+          <div class="arch-box-sub">Production · curtailment · inverter state</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">⚡ Battery Storage</div>
+          <div class="arch-box-sub">State of charge · charge/discharge · health</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">🔌 EV Chargers</div>
+          <div class="arch-box-sub">Managed charging · future V2G paths</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">📊 Smart Meters</div>
+          <div class="arch-box-sub">Load · export · site-level data</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">⚙ Flexible Loads</div>
+          <div class="arch-box-sub">HVAC · industrial · controllable loads</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-connector">
+      <div class="arch-arrow">↓</div>
+      <div class="arch-connector-label">SunSpec · Modbus RTU/TCP · RS-485 · RS-232 · MQTT · REST</div>
+    </div>
+
+    <!-- DER GATEWAY -->
+    <div class="arch-layer arch-gateway">
+      <div class="arch-layer-label">DER Gateway — Edge Device</div>
+      <div class="arch-gateway-badge">
+        <span class="arch-badge">IEEE 2030.5 Client</span>
+        <span class="arch-badge">Optional OpenADR VEN</span>
+        <span class="arch-badge">Offline-safe · Store-and-forward</span>
+        <span class="arch-badge">OTA Updates</span>
+      </div>
+      <div class="arch-boxes">
+        <div class="arch-box">
+          <div class="arch-box-title">Southbound Protocols</div>
+          <div class="arch-box-sub">SunSpec · Modbus · RS-485 · MQTT · local interfaces</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">Local Edge Logic</div>
+          <div class="arch-box-sub">Policy engine · automation rules · local inference</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">Edge Digital Twin</div>
+          <div class="arch-box-sub">Local asset model · real-time state synchronization</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">Security</div>
+          <div class="arch-box-sub">PKI · mTLS · TLS · secure boot · device identity</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-connector">
+      <div class="arch-arrow">↓</div>
+      <div class="arch-connector-label">HTTPS · MQTT · mTLS · TLS 1.3 — secure bi-directional</div>
+    </div>
+
+    <!-- CLOUD PLATFORM -->
+    <div class="arch-layer arch-cloud">
+      <div class="arch-layer-label">Cloud Platform</div>
+      <div class="arch-cloud-inner">
+        <div class="arch-cloud-row">
+          <div class="arch-cloud-box">Device Registry</div>
+          <div class="arch-cloud-box">Telemetry Ingestion</div>
+          <div class="arch-cloud-box">Rules Engine</div>
+          <div class="arch-cloud-box">Fleet Control</div>
+          <div class="arch-cloud-box">Digital Twin</div>
+          <div class="arch-cloud-box">Dashboards</div>
+          <div class="arch-cloud-box">MCP Server</div>
+        </div>
+        <div class="arch-cloud-row">
+          <div class="arch-cloud-box dim">Time Series DB</div>
+          <div class="arch-cloud-box dim">Stream Processing</div>
+          <div class="arch-cloud-box dim">API Gateway · REST · WebSocket</div>
+          <div class="arch-cloud-box dim">Multi-Tenant · RBAC</div>
+          <div class="arch-cloud-box dim">Monitoring · Observability</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-connector">
+      <div class="arch-arrow">↓</div>
+    </div>
+
+    <!-- AI LAYER -->
+    <div class="arch-layer arch-ai">
+      <div class="arch-layer-label">Agentic AI Layer — Autonomous · Goal-Driven · Policy-Constrained</div>
+      <div class="arch-agents">
+        <div class="arch-agent green">
+          <b>Fleet Optimization</b>Optimizes DER dispatch for cost, efficiency, and portfolio objectives.
+        </div>
+        <div class="arch-agent yellow">
+          <b>Market Participation</b>Maximizes revenue from energy markets and demand response programs.
+        </div>
+        <div class="arch-agent blue">
+          <b>Forecasting</b>Predicts solar generation, load, prices, and battery behavior.
+        </div>
+        <div class="arch-agent red">
+          <b>Anomaly Detection</b>Detects faults, anomalies, and performance degradation early.
+        </div>
+        <div class="arch-agent green">
+          <b>Policy Compliance</b>Enforces grid constraints, safety rules, and regulatory requirements.
+        </div>
+        <div class="arch-agent blue">
+          <b>Customer Value</b>Optimizes customer savings, reliability, and comfort outcomes.
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-connector">
+      <div class="arch-arrow">↓</div>
+      <div class="arch-connector-label">REST · WebSocket · MCP APIs · tool invocation · context providers</div>
+    </div>
+
+    <!-- CONSUMERS -->
+    <div class="arch-layer arch-consumers">
+      <div class="arch-layer-label">Consumers</div>
+      <div class="arch-boxes">
+        <div class="arch-box">
+          <div class="arch-box-title">Aggregators / VPPs</div>
+          <div class="arch-box-sub">Dispatch and fleet control</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">BESS Financiers</div>
+          <div class="arch-box-sub">Asset monitoring and M&amp;V</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">Utilities / ISOs</div>
+          <div class="arch-box-sub">Grid visibility and DR signals</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">OEMs</div>
+          <div class="arch-box-sub">Standards compliance layer</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title">Energy AI Platforms</div>
+          <div class="arch-box-sub">MCP tools, context, and dispatch</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <a class="footer-logo" href="/"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
+  <nav class="footer-nav">
+    <a href="/architecture/">Architecture</a>
+    <a href="/technology/">Technology</a>
+    <a href="/users/">Who It's For</a>
+  </nav>
+  <div class="footer-contact">Palo Alto, California &nbsp;·&nbsp; hello@kwhelectric.com</div>
+</footer>
+
+<script>
+(function(){
+  const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
+  const COUNT=100,BDIST=140,CDIST=200,BOOST=1.8;
+  let mouse={x:-9999,y:-9999},nodes=[];
+  function resize(){const dpr=window.devicePixelRatio||1;canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
+  function rand(a,b){return Math.random()*(b-a)+a;}
+  function init(){nodes=[];const W=window.innerWidth,H=window.innerHeight;for(let i=0;i<COUNT;i++)nodes.push({x:rand(0,W),y:rand(0,H*8),vx:rand(-0.15,0.15),vy:rand(-0.15,0.15),r:rand(4,14),op:rand(0.06,0.25)});}
+  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  window.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});
+  function dist(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return Math.sqrt(dx*dx+dy*dy);}
+  function ef(x){const w=window.innerWidth,z=w*0.1;return x<z?x/z:x>w-z?(w-x)/z:1;}
+  function draw(){
+    const W=window.innerWidth,H=window.innerHeight,par=window.scrollY*0.25;
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<COUNT;i++){
+      const a=nodes[i],aY=a.y-par;if(aY<-60||aY>H+60)continue;
+      const dc=dist(a.x,aY,mouse.x,mouse.y),near=dc<CDIST,e=ef(a.x);
+      for(let j=i+1;j<COUNT;j++){const b=nodes[j],bY=b.y-par,dd=dist(a.x,aY,b.x,bY),thr=near?BDIST*BOOST:BDIST;if(dd<thr){const t=1-dd/thr,al=t*(near?0.35:0.09)*e;ctx.beginPath();ctx.moveTo(a.x,aY);ctx.lineTo(b.x,bY);ctx.strokeStyle=`rgba(176,228,204,${al})`;ctx.lineWidth=near?1:0.5;ctx.stroke();}}
+    }
+    for(let i=0;i<COUNT;i++){const n=nodes[i],nY=n.y-par;if(nY<-60||nY>H+60)continue;const dc=dist(n.x,nY,mouse.x,mouse.y),near=dc<CDIST,t=near?(1-dc/CDIST):0;const opacity=Math.min(1,(n.op+t*0.4)*ef(n.x));ctx.beginPath();ctx.arc(n.x,nY,n.r+t*3,0,Math.PI*2);ctx.strokeStyle=`rgba(255,255,255,${opacity})`;ctx.lineWidth=near?1.8:1;ctx.stroke();n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>window.innerWidth)n.vx*=-1;const tH=window.innerHeight*9;if(n.y<0)n.y=tH;if(n.y>tH)n.y=0;}
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{resize();init();});
+  resize();init();draw();
+})();
+</script>
+</body>
+</html>
