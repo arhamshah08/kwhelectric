@@ -226,11 +226,9 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-right: 1px solid rgba(255,255,255,0.12);
   text-align: left;
 }
 .stat-item:first-child { padding-left: 0; }
-.stat-item:last-child { border-right: none; }
 
 .stat-num {
   font-size: 42px;
