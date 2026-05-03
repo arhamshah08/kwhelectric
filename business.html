@@ -108,7 +108,7 @@
 <script>
 (function(){
   const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
-  const COUNT=100,BDIST=140,CDIST=200,BOOST=1.8;
+  const COUNT=200,BDIST=140,CDIST=200,BOOST=1.8;
   let mouse={x:-9999,y:-9999},nodes=[];
   function resize(){const dpr=window.devicePixelRatio||1;canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
   function rand(a,b){return Math.random()*(b-a)+a;}
