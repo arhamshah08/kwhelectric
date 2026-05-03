@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="/favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KWH Electric — Open DER Gateway</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,26 +12,19 @@
 <canvas id="node-canvas"></canvas>
 
 <nav>
-  <a class="nav-logo" href="index.html">KWH <span>Electric</span></a>
+  <a class="nav-logo" href="index.html"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
   <div class="nav-links">
-    <a href="#how" class="active">How It Works</a>
-    <a href="architecture.html">Architecture</a>
-    <a href="technology.html">Technology</a>
-    <a href="users.html">Who It's For</a>
-    <a href="business.html">Business Model</a>
+    <a href="#" class="active" onclick="event.preventDefault();document.getElementById('how').scrollIntoView({behavior:'smooth'})">How It Works</a>
+    <a href="/technology/">Technology</a>
+    <a href="/users/">Who It's For</a>
   </div>
   <a class="nav-cta" href="#cta" onclick="event.preventDefault();document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Request Pilot Access</a>
 </nav>
 
 <section id="hero">
   <h1 class="headline">
-    Every energy asset,<br><span class="accent">connected and controllable.</span>
+    Every energy asset,<br><span class="accent">visible and dispatchable.</span>
   </h1>
-  <p class="subtext">Real-time visibility and control across your batteries, solar, EV chargers, meters, and flexible loads — through one open gateway.</p>
-  <div class="hero-actions">
-    <a class="btn-primary" href="#cta" onclick="event.preventDefault();document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Request Pilot Access</a>
-    <a class="btn-ghost" href="architecture.html">See the Architecture</a>
-  </div>
   <div class="pill-row">
     <span class="pill">IEEE 2030.5 ready</span>
     <span class="pill">Open protocols</span>
@@ -44,19 +38,19 @@
   <div class="stats-row">
     <div class="stat-item">
       <div class="stat-num">100M+</div>
-      <div class="stat-label">distributed energy assets globally that need a common control and visibility layer</div>
+      <div class="stat-label">DERs with no common control layer</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">$50k+</div>
-      <div class="stat-label">Integration tax aggregators pay maintaining custom OEM API connections</div>
+      <div class="stat-label">Integration tax per DISCOM, per month, per OEM</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">Real&#8209;time</div>
-      <div class="stat-label">Telemetry, dispatch, and AI operations — all live, all the time</div>
+      <div class="stat-label">Telemetry and dispatch, always live</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">Implicit</div>
-      <div class="stat-label">Enrollment — devices register automatically, no utility campaigns needed</div>
+      <div class="stat-num">Agentic</div>
+      <div class="stat-label">AI-native from the ground up</div>
     </div>
   </div>
 </section>
@@ -64,9 +58,8 @@
 
 <!-- IMPLICIT ENROLLMENT -->
 <section id="implicit" style="padding: 0 var(--px) 80px; position: relative; z-index: 1;">
-  <div style="background: rgba(40,90,72,0.15); border: 1px solid rgba(176,228,204,0.22); border-radius: 24px; padding: 48px; max-width: 1040px; margin: 0 auto;">
-    <div class="kicker" style="margin-bottom:14px;">Core business value</div>
-    <h2 style="color:var(--white);font-size:clamp(26px,3.8vw,48px);font-weight:800;letter-spacing:-0.04em;line-height:1.18;margin-bottom:16px;">Implicit enrollment.<br>No campaigns. More MWuM.</h2>
+  <div style="background: rgba(40,90,72,0.15); border: 1px solid rgba(176,228,204,0.22); border-radius: 24px; padding: 48px; max-width: var(--content-width); margin: 0 auto;">
+<h2 style="color:var(--white);font-size:clamp(26px,3.8vw,48px);font-weight:800;letter-spacing:-0.04em;line-height:1.18;margin-bottom:16px;">Implicit enrollment.<br>No campaigns. More MWuM.</h2>
     <p style="color:var(--dim);font-size:17px;max-width:640px;line-height:1.75;margin-bottom:36px;">Today, utilities run fragmented enrollment campaigns just to get devices into demand response programs — low participation, high cost, slow ramp. With KWH Electric, enrollment is implicit. When a device connects to the gateway, it is automatically available. No outreach. No dropoff. Just more megawatts under management.</p>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
       <div style="background:rgba(255,255,255,0.04);border:1px solid var(--faint);border-radius:14px;padding:22px;">
@@ -88,8 +81,115 @@
   </div>
 </section>
 
+<section id="architecture" style="padding:80px var(--px);position:relative;z-index:1;">
+  <div style="max-width:var(--content-width);margin:0 auto;">
+    <h2 style="color:var(--white);font-size:clamp(24px,3.4vw,42px);font-weight:800;letter-spacing:-0.04em;line-height:1.15;margin-bottom:14px;">Five-Layer Architecture for<br>Dispatch + Telemetry</h2>
+    <p style="color:var(--dim);font-size:16px;max-width:680px;line-height:1.75;margin-bottom:52px;">kWh Electric connects physical DERs to edge intelligence, cloud orchestration, AI workflows, and energy applications through one interoperable infrastructure layer.</p>
+
+    <!-- Stack -->
+    <div style="position:relative;display:flex;flex-direction:column;gap:0;">
+
+      <!-- Layer 5 — Applications -->
+      <div style="background:rgba(251,113,133,0.08);border:1px solid rgba(251,113,133,0.3);border-radius:16px 16px 4px 4px;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="width:4px;height:44px;background:#fb7185;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(251,113,133,0.5);"></div>
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#fb7185;text-transform:uppercase;margin-bottom:4px;">Layer 5</div>
+            <div style="font-size:17px;font-weight:700;color:var(--white);">Applications + Value Layer</div>
+            <div style="font-size:13px;color:var(--dim);margin-top:4px;">Utility orchestration, asset financing, VPP participation, grid services, forecasting, and performance verification.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow 4→5 -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;position:relative;">
+        <span style="font-size:11px;color:rgba(167,139,250,0.6);letter-spacing:0.05em;">AI workflows ↕</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(167,139,250,0.5),transparent);"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(167,139,250,0.4);"></div>
+          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(167,139,250,0.5),transparent);"></div>
+        </div>
+        <span style="font-size:11px;color:rgba(167,139,250,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
+      </div>
+
+      <!-- Layer 4 — MCP + AI -->
+      <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.3);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
+        <div style="width:4px;height:44px;background:#a78bfa;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(167,139,250,0.5);"></div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#a78bfa;text-transform:uppercase;margin-bottom:4px;">Layer 4</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white);">MCP + AI Layer</div>
+          <div style="font-size:13px;color:var(--dim);margin-top:4px;">A secure interface that gives agentic AI systems DER context, telemetry access, and policy-constrained dispatch tools.</div>
+        </div>
+      </div>
+
+      <!-- Arrow 3→4 -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
+        <span style="font-size:11px;color:rgba(34,211,238,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(34,211,238,0.5),transparent);"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(34,211,238,0.4);"></div>
+          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(34,211,238,0.5),transparent);"></div>
+        </div>
+        <span style="font-size:11px;color:rgba(34,211,238,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
+      </div>
+
+      <!-- Layer 3 — Cloud Platform -->
+      <div style="background:rgba(34,211,238,0.07);border:1px solid rgba(34,211,238,0.25);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
+        <div style="width:4px;height:44px;background:#22d3ee;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(34,211,238,0.4);"></div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#22d3ee;text-transform:uppercase;margin-bottom:4px;">Layer 3</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white);">Cloud Platform</div>
+          <div style="font-size:13px;color:var(--dim);margin-top:4px;">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</div>
+        </div>
+      </div>
+
+      <!-- Arrow 2→3 -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
+        <span style="font-size:11px;color:rgba(74,222,128,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(74,222,128,0.5),transparent);"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(74,222,128,0.4);"></div>
+          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(74,222,128,0.5),transparent);"></div>
+        </div>
+        <span style="font-size:11px;color:rgba(74,222,128,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
+      </div>
+
+      <!-- Layer 2 — Edge Gateway -->
+      <div style="background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.28);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
+        <div style="width:4px;height:44px;background:#4ade80;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(74,222,128,0.4);"></div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#4ade80;text-transform:uppercase;margin-bottom:4px;">Layer 2</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white);">Edge Gateway</div>
+          <div style="font-size:13px;color:var(--dim);margin-top:4px;">A one-time device that connects locally to assets, standardizes telemetry, and enables secure dispatch.</div>
+        </div>
+      </div>
+
+      <!-- Arrow 1→2 -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
+        <span style="font-size:11px;color:rgba(251,191,36,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(251,191,36,0.5),transparent);"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(251,191,36,0.4);"></div>
+          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(251,191,36,0.5),transparent);"></div>
+        </div>
+        <span style="font-size:11px;color:rgba(251,191,36,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
+      </div>
+
+      <!-- Layer 1 — Physical DERs -->
+      <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.28);border-radius:4px 4px 16px 16px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
+        <div style="width:4px;height:44px;background:#fbbf24;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(251,191,36,0.4);"></div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#fbbf24;text-transform:uppercase;margin-bottom:4px;">Layer 1</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white);">Physical DER Devices</div>
+          <div style="font-size:13px;color:var(--dim);margin-top:4px;">Batteries, solar inverters, EV chargers, smart meters, and flexible loads.</div>
+        </div>
+      </div>
+
+    </div><!-- end stack -->
+  </div>
+</section>
+
 <section id="how">
-  <div class="kicker">How It Works</div>
   <h2 class="headline" style="font-size:62px;">Connect. <span class="accent">Normalize.</span><br>Dispatch. Verify.</h2>
   <p class="subtext">How the gateway works for you. Select a step.</p>
   <div class="steps">
@@ -116,17 +216,15 @@
   <p style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:32px;">Backed by</p>
   <div class="carousel-outer">
     <div class="carousel-track">
-      <div class="logo-item"><img class="logo-img" src="Chicago%20Booth%20Logo.jpg" alt="Chicago Booth"></div>
+      <div class="logo-item"><img class="logo-img" src="Polsky%20CNVC.png" alt="Polsky CNVC"></div>
       <div class="logo-item"><img class="logo-img" src="Entrecorps%20Logo.png" alt="EntreCORPS"></div>
       <div class="logo-item"><img class="logo-img" src="iVenture%20loo.jpg" alt="iVenture Accelerator"></div>
       <div class="logo-item"><img class="logo-img" src="Samayang%20Logo.png" alt="Samayang"></div>
-      <div class="logo-item"><img class="logo-img" src="Stanford%20Climate%20Ventures%20Logo.png" alt="Stanford Climate Ventures"></div>
       <div class="logo-item"><img class="logo-img" src="TEC%20Logo.png" alt="TEC"></div>
-      <div class="logo-item"><img class="logo-img" src="Chicago%20Booth%20Logo.jpg" alt="Chicago Booth"></div>
+      <div class="logo-item"><img class="logo-img" src="Polsky%20CNVC.png" alt="Polsky CNVC"></div>
       <div class="logo-item"><img class="logo-img" src="Entrecorps%20Logo.png" alt="EntreCORPS"></div>
       <div class="logo-item"><img class="logo-img" src="iVenture%20loo.jpg" alt="iVenture Accelerator"></div>
       <div class="logo-item"><img class="logo-img" src="Samayang%20Logo.png" alt="Samayang"></div>
-      <div class="logo-item"><img class="logo-img" src="Stanford%20Climate%20Ventures%20Logo.png" alt="Stanford Climate Ventures"></div>
       <div class="logo-item"><img class="logo-img" src="TEC%20Logo.png" alt="TEC"></div>
     </div>
   </div>
@@ -134,24 +232,22 @@
 
 <section id="cta">
   <h2 class="headline" style="font-size:52px;">Build the control layer for<br><span class="accent">distributed energy.</span></h2>
-  <p class="subtext">We are working with aggregators, BESS financiers, OEMs, and utilities piloting real-time telemetry, real-time dispatch, and AI-ready operations — with implicit enrollment that eliminates fragmented utility campaigns, increases MWuM, and drives higher participation rates.</p>
+  <p class="subtext">Are you a utility, aggregator, OEM, or asset financier? Maximise your savings by running a pilot with us. Reach out for questions.</p>
   <div class="email-form">
     <input class="email-input" type="email" id="email-field" placeholder="your@company.com">
     <button class="btn-primary" id="submit-btn" onclick="submitEmail()">Request Pilot Access</button>
   </div>
   <div id="form-success" style="display:none;font-size:16px;color:#4db388;margin-top:24px;font-weight:600;">Request sent. We will be in touch shortly.</div>
-  <div id="form-error" style="display:none;font-size:14px;color:rgba(255,80,80,0.8);margin-top:16px;">Something went wrong. Please email us at hello@kwhelectric.com</div>
+  <div id="form-error" style="display:none;font-size:14px;color:rgba(255,80,80,0.8);margin-top:16px;">Something went wrong. Please email us at arhams@kwhelectric.io</div>
 </section>
 
 <footer>
-  <a class="footer-logo" href="index.html">KWH <span>Electric</span></a>
+  <a class="footer-logo" href="index.html"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
   <nav class="footer-nav">
-    <a href="architecture.html">Architecture</a>
-    <a href="technology.html">Technology</a>
-    <a href="users.html">Who It's For</a>
-    <a href="business.html">Business Model</a>
+    <a href="/technology/">Technology</a>
+    <a href="/users/">Who It's For</a>
   </nav>
-  <div class="footer-contact">Palo Alto, California &nbsp;·&nbsp; hello@kwhelectric.com</div>
+  <div class="footer-contact">Palo Alto, California &nbsp;·&nbsp; arhams@kwhelectric.io</div>
 </footer>
 
 <script>
@@ -189,41 +285,47 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 (function(){
   const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
-  const COUNT=260,BDIST=140,CDIST=200,BOOST=1.8;
-  let mouse={x:-9999,y:-9999},nodes=[];
-  function resize(){const dpr=window.devicePixelRatio||1;canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
+  const COUNT=68,BDIST=100,CDIST=150,BOOST=1.5;
+  let mouse={x:-9999,y:-9999},nodes=[],scrollY=0,rafId,lastFrame=0;
+  function resize(){const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
   function rand(a,b){return Math.random()*(b-a)+a;}
-  function init(){nodes=[];const W=window.innerWidth,H=window.innerHeight;for(let i=0;i<COUNT;i++)nodes.push({x:rand(0,W),y:rand(0,H*6),vx:rand(-0.2,0.2),vy:rand(-0.2,0.2),r:rand(5,16),op:rand(0.08,0.3)});}
-  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  function init(){nodes=[];const W=window.innerWidth,H=window.innerHeight;for(let i=0;i<COUNT;i++)nodes.push({x:rand(0,W),y:rand(0,H*6),vx:rand(-0.15,0.15),vy:rand(-0.15,0.15),r:rand(4,12),op:rand(0.07,0.22)});}
+  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
   window.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});
-  function dist(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return Math.sqrt(dx*dx+dy*dy);}
+  window.addEventListener('scroll',()=>{scrollY=window.scrollY;},{passive:true});
+  function dist2(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return dx*dx+dy*dy;}
   function ef(x){const w=window.innerWidth,z=w*0.1;return x<z?x/z:x>w-z?(w-x)/z:1;}
-  function draw(){
-    const W=window.innerWidth,H=window.innerHeight,par=window.scrollY*0.32;
+  function draw(ts){
+    rafId=requestAnimationFrame(draw);
+    if(ts-lastFrame<24)return; // cap at ~40fps
+    lastFrame=ts;
+    const W=window.innerWidth,H=window.innerHeight,par=scrollY*0.32;
     ctx.clearRect(0,0,W,H);
+    const CDIST2=CDIST*CDIST,BDIST2=BDIST*BDIST,BDIST2B=BDIST*BOOST*BDIST*BOOST;
     for(let i=0;i<COUNT;i++){
       const a=nodes[i],aY=a.y-par;
       if(aY<-60||aY>H+60)continue;
-      const dc=dist(a.x,aY,mouse.x,mouse.y),near=dc<CDIST,e=ef(a.x);
+      const dc2=dist2(a.x,aY,mouse.x,mouse.y),near=dc2<CDIST2,e=ef(a.x);
+      const thr2=near?BDIST2B:BDIST2;
       for(let j=i+1;j<COUNT;j++){
-        const b=nodes[j],bY=b.y-par,dd=dist(a.x,aY,b.x,bY),thr=near?BDIST*BOOST:BDIST;
-        if(dd<thr){const t=1-dd/thr,al=t*(near?0.4:0.1)*e;ctx.beginPath();ctx.moveTo(a.x,aY);ctx.lineTo(b.x,bY);ctx.strokeStyle=`rgba(176,228,204,${al})`;ctx.lineWidth=near?1.1:0.6;ctx.stroke();}
+        const b=nodes[j],bY=b.y-par,dd2=dist2(a.x,aY,b.x,bY);
+        if(dd2<thr2){const t=1-Math.sqrt(dd2)/( near?BDIST*BOOST:BDIST),al=t*(near?0.35:0.09)*e;ctx.beginPath();ctx.moveTo(a.x,aY);ctx.lineTo(b.x,bY);ctx.strokeStyle=`rgba(176,228,204,${al})`;ctx.lineWidth=near?1:0.5;ctx.stroke();}
       }
     }
     for(let i=0;i<COUNT;i++){
       const n=nodes[i],nY=n.y-par;
       if(nY<-60||nY>H+60)continue;
-      const dc=dist(n.x,nY,mouse.x,mouse.y),near=dc<CDIST,t=near?(1-dc/CDIST):0;
-      const opacity=Math.min(1,(n.op+t*0.5)*ef(n.x));
-      ctx.beginPath();ctx.arc(n.x,nY,n.r+t*3,0,Math.PI*2);ctx.strokeStyle=`rgba(255,255,255,${opacity})`;ctx.lineWidth=near?2:1.2;ctx.stroke();
+      const dc2=dist2(n.x,nY,mouse.x,mouse.y),near=dc2<CDIST2,t=near?(1-Math.sqrt(dc2)/CDIST):0;
+      const opacity=Math.min(1,(n.op+t*0.4)*ef(n.x));
+      ctx.beginPath();ctx.arc(n.x,nY,n.r+t*2,0,Math.PI*2);ctx.strokeStyle=`rgba(255,255,255,${opacity})`;ctx.lineWidth=near?1.5:1;ctx.stroke();
       n.x+=n.vx;n.y+=n.vy;
       if(n.x<0||n.x>window.innerWidth)n.vx*=-1;
       const tH=window.innerHeight*7;if(n.y<0)n.y=tH;if(n.y>tH)n.y=0;
     }
-    requestAnimationFrame(draw);
   }
-  window.addEventListener('resize',()=>{resize();init();});
-  resize();init();draw();
+  window.addEventListener('resize',()=>{resize();init();},{passive:true});
+  canvas.style.willChange='transform';
+  resize();init();rafId=requestAnimationFrame(draw);
 })();
 </script>
 </body>

@@ -7,6 +7,7 @@
   --dim: rgba(255,255,255,0.45);
   --faint: rgba(255,255,255,0.08);
   --px: clamp(20px, 8vw, 120px);
+  --content-width: 1080px;
 }
 
 html { scroll-behavior: smooth; }
@@ -87,11 +88,11 @@ nav {
 .headline {
   font-size: 80px;
   font-weight: 800;
-  line-height: 1.22;
+  line-height: 1.38;
   letter-spacing: -0.03em;
   color: var(--white);
   margin-bottom: 28px;
-  max-width: 900px;
+  max-width: var(--content-width);
 }
 .headline .accent {
   background: var(--green);
@@ -216,23 +217,19 @@ nav {
   display: flex;
   gap: 0;
   width: 100%;
-  max-width: 960px;
-  border: 1px solid var(--faint);
-  border-radius: 16px;
-  overflow: hidden;
+  max-width: var(--content-width);
 }
 
 .stat-item {
   flex: 1;
-  padding: 40px 24px;
+  padding: 0 32px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
-  border-right: 1px solid var(--faint);
   text-align: center;
+  align-items: center;
 }
-.stat-item:last-child { border-right: none; }
+.stat-item:first-child { padding-left: 0; }
 
 .stat-num {
   font-size: 42px;
@@ -246,7 +243,7 @@ nav {
   font-size: 13px;
   color: var(--dim);
   line-height: 1.5;
-  max-width: 160px;
+  max-width: 180px;
 }
 
 /* HOW IT WORKS */
@@ -265,7 +262,7 @@ nav {
   gap: 12px;
   margin-top: 64px;
   width: 100%;
-  max-width: 1000px;
+  max-width: var(--content-width);
 }
 
 .step {
