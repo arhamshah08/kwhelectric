@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 (function(){
   const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
-  const COUNT=68,BDIST=100,CDIST=150,BOOST=1.5;
+  const COUNT=272,BDIST=100,CDIST=150,BOOST=1.5;
   let mouse={x:-9999,y:-9999},nodes=[],scrollY=0,rafId,lastFrame=0;
   function resize(){const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
   function rand(a,b){return Math.random()*(b-a)+a;}
