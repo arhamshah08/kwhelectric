@@ -59,12 +59,13 @@
       gap:56px clamp(40px, 6vw, 88px) !important;
     }
     .backed-logo {
-      border-radius:12px; height:99px; width:99px; overflow:hidden; flex-shrink:0;
+      border-radius:12px; height:99px; width:99px; min-width:99px; max-width:99px; flex:0 0 99px;
+      overflow:hidden; flex-shrink:0;
       background:#fff; display:flex; align-items:center; justify-content:center;
-      padding:14px 12px; box-sizing:border-box;
+      padding:12px; box-sizing:border-box;
     }
-    .backed-logo img { width:100%; height:100%; object-fit:contain; display:block; }
-    .backed-logo--nfh { padding:10px 8px; }
+    .backed-logo img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; display:block; }
+    .backed-logo--nfh { padding:10px; }
     @media (max-width: 768px) {
       [data-nav-links] { display: none !important; }
       [data-grid] { display: flex !important; flex-direction: column !important; gap: 24px !important; }
