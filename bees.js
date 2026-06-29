@@ -45,15 +45,31 @@
     canvas.height = Math.round(hRect.height);
     hero.insertBefore(canvas, hero.firstChild);
     const ctx = canvas.getContext('2d');
+    const heroTitle = hero.querySelector('.hero-title') || hero.querySelector('h1');
+    const DOT_OPACITY_HONEYCOMB = 0.8;
+    const DOT_OPACITY_OVER_TITLE = 0.3;
     let lastDotX = -999, lastDotY = -999;
+
+    function dotOverTitle(bx, by) {
+      if (!heroTitle) return false;
+      const hR = hero.getBoundingClientRect();
+      const tR = heroTitle.getBoundingClientRect();
+      const pad = 3.5;
+      const left = tR.left - hR.left - pad;
+      const top = tR.top - hR.top - pad;
+      const right = tR.right - hR.left + pad;
+      const bottom = tR.bottom - hR.top + pad;
+      return bx >= left && bx <= right && by >= top && by <= bottom;
+    }
 
     function dropDot() {
       const bx = gsap.getProperty(bee, 'x') + 28;
       const by = gsap.getProperty(bee, 'y') + 23;
       if (Math.hypot(bx - lastDotX, by - lastDotY) >= 18) {
+        const opacity = dotOverTitle(bx, by) ? DOT_OPACITY_OVER_TITLE : DOT_OPACITY_HONEYCOMB;
         ctx.beginPath();
         ctx.arc(bx, by, 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(205,127,50,0.8)';
+        ctx.fillStyle = 'rgba(205,127,50,' + opacity + ')';
         ctx.fill();
         lastDotX = bx;
         lastDotY = by;
