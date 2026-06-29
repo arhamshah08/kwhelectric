@@ -31,7 +31,8 @@
     const cellRect = cellEl.getBoundingClientRect();
 
     const lx = lRect.left - hRect.left + lRect.width * 0.5 - 28;
-    const ly = lRect.top  - hRect.top  - 22;
+    // Feet on "t" crossbar (~22% from glyph top); −13.5 = alignOrigin (62%) to feet + bounce settle
+    const ly = lRect.top - hRect.top + lRect.height * 0.22 - 13.5;
 
     const cellLeft = cellRect.left - hRect.left;
     const cellTop  = cellRect.top  - hRect.top;
