@@ -63,8 +63,8 @@
       background:#fff; display:flex; align-items:center; justify-content:center;
       padding:14px 12px; box-sizing:border-box;
     }
-    .backed-logo--wide { width:168px; padding:18px 14px; }
     .backed-logo img { width:100%; height:100%; object-fit:contain; display:block; }
+    .backed-logo--nfh { padding:10px 8px; }
     @media (max-width: 768px) {
       [data-nav-links] { display: none !important; }
       [data-grid] { display: flex !important; flex-direction: column !important; gap: 24px !important; }
@@ -191,14 +191,16 @@
     <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
       <svg width="72" height="72" viewBox="0 0 72 72">
         <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#C9A020"/>
-        <path d="M19 26 C21 23 23 29 25 26" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M19 33 C21 30 23 36 25 33" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M19 40 C21 37 23 43 25 40" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M28 33 L33 33" stroke="rgba(255,251,240,0.9)" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M30 30 L33 33 L30 36" stroke="rgba(255,251,240,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <line x1="36" y1="26" x2="50" y2="26" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
-        <line x1="36" y1="33" x2="50" y2="33" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
-        <line x1="36" y1="40" x2="50" y2="40" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
+        <g transform="translate(4, 0)">
+          <path d="M19 26 C21 23 23 29 25 26" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M19 33 C21 30 23 36 25 33" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M19 40 C21 37 23 43 25 40" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M28 33 L33 33" stroke="rgba(255,251,240,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M30 30 L33 33 L30 36" stroke="rgba(255,251,240,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <line x1="36" y1="26" x2="50" y2="26" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="36" y1="33" x2="50" y2="33" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="36" y1="40" x2="50" y2="40" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
+        </g>
       </svg>
       <div>
         <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Normalize</h3>
@@ -212,7 +214,9 @@
     <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
       <svg width="72" height="72" viewBox="0 0 72 72">
         <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#C9A020"/>
-        <path d="M42 19 L29 37 L37 37 L30 53 L44 35 L36 35 Z" fill="rgba(255,251,240,0.95)"/>
+        <g transform="translate(0, -3)">
+          <path d="M42 19 L29 37 L37 37 L30 53 L44 35 L36 35 Z" fill="rgba(255,251,240,0.95)"/>
+        </g>
       </svg>
       <div>
         <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Dispatch</h3>
@@ -226,7 +230,9 @@
     <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
       <svg width="72" height="72" viewBox="0 0 72 72">
         <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#C9A020"/>
-        <path d="M20 34 L32 46 L52 22" stroke="rgba(255,251,240,0.95)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <g transform="translate(36,36) scale(0.82) translate(-36,-36)">
+          <path d="M20 34 L32 46 L52 22" stroke="rgba(255,251,240,0.95)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </g>
       </svg>
       <div>
         <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Verify</h3>
@@ -440,13 +446,13 @@
         <div style="position:absolute;left:0;top:0;bottom:0;width:72px;background:linear-gradient(to right,#C9A020,transparent);z-index:1;pointer-events:none;"></div>
         <div style="position:absolute;right:0;top:0;bottom:0;width:72px;background:linear-gradient(to left,#C9A020,transparent);z-index:1;pointer-events:none;"></div>
         <div style="display:flex;align-items:center;gap:18px;animation:logo-scroll 26s linear infinite;width:max-content;">
-          <div class="backed-logo backed-logo--wide"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
+          <div class="backed-logo backed-logo--nfh"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Entrecorps Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="EntreCORPS" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Samayang Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Samayang" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/pasted-1782743184735-0.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Landuyt Center" /></div>
-          <div class="backed-logo backed-logo--wide"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
+          <div class="backed-logo backed-logo--nfh"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Entrecorps Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="EntreCORPS" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
