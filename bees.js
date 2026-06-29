@@ -52,7 +52,7 @@
       if (Math.hypot(bx - lastDotX, by - lastDotY) >= 18) {
         ctx.beginPath();
         ctx.arc(bx, by, 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(251,207,46,0.8)';
+        ctx.fillStyle = 'rgba(205,127,50,0.8)';
         ctx.fill();
         lastDotX = bx;
         lastDotY = by;
@@ -177,13 +177,13 @@
       'position:absolute;border-radius:50%;pointer-events:none;z-index:1;' +
       'box-sizing:border-box;transform-origin:50% 50%;' +
       'border:4px dashed rgba(28,20,6,0.5);' +
-      'box-shadow:0 0 30px rgba(255,180,40,0.16), inset 0 0 30px rgba(255,180,40,0.07);';
+      'box-shadow:0 0 30px rgba(205,127,50,0.16), inset 0 0 30px rgba(205,127,50,0.07);';
     sec.appendChild(ring);
 
     const ripple = document.createElement('div');
     ripple.style.cssText =
       'position:absolute;width:46px;height:46px;border-radius:50%;pointer-events:none;' +
-      'z-index:1;box-sizing:border-box;opacity:0;border:2px solid rgba(214,158,30,0.9);';
+      'z-index:1;box-sizing:border-box;opacity:0;border:2px solid rgba(205,127,50,0.9);';
     sec.appendChild(ripple);
 
     const bb = document.createElement('div');
