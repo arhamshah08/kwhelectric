@@ -1,320 +1,554 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<link rel="icon" type="image/png" href="/favicon.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KWH Electric — Open DER Gateway</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+<script src="./support.js"></script>
 </head>
 <body>
-<canvas id="node-canvas"></canvas>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; background: #FFFBF0; }
+    a { text-decoration: none; color: inherit; }
+    input, textarea, button { font-family: inherit; }
+    input:focus, textarea:focus { outline: 2px solid rgba(201,160,32,0.45); outline-offset: 1px; }
+    @keyframes logo-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    /* ── BEES ── */
+    #bee-cell {
+      position:absolute; left:30%; top:72%;
+      width:60px; height:50px;
+      transform:translate(-50%, -50%);
+      overflow:hidden; pointer-events:none; z-index:3;
+    }
+    #bee { position:absolute; top:0; left:0; pointer-events:none; transform:translate(2px,70px); }
+    #arch-stack-inner { position:relative; z-index:2; }
+    .hero-inner {
+      position:relative; z-index:1; text-align:center;
+      width:100%; max-width:1280px; margin:0 auto;
+      padding:0 clamp(20px, 4vw, 56px);
+    }
+    .hero-title {
+      font-size:clamp(34px, 7.2vw, 108px);
+      font-weight:700; color:#FFFBF0;
+      letter-spacing:-0.035em; line-height:1.05;
+      margin:0 auto 32px;
+      max-width:min(1200px, 100%);
+    }
+    .hero-line1 { display:block; }
+    .hero-line2 { display:block; white-space:nowrap; }
+    .hero-sub {
+      font-size:clamp(16px, 1.5vw, 20px);
+      color:rgba(255,251,240,0.8);
+      max-width:min(720px, 100%);
+      margin:0 auto 48px; line-height:1.68; font-weight:400;
+    }
+    .section-heading-wide {
+      max-width:min(960px, 92vw) !important;
+      margin-left:auto !important; margin-right:auto !important;
+    }
+    .how-grid {
+      max-width:min(1120px, 94vw) !important;
+      gap:56px clamp(40px, 6vw, 88px) !important;
+    }
+    .backed-logo {
+      border-radius:12px; height:99px; width:99px; overflow:hidden; flex-shrink:0;
+      background:#fff; display:flex; align-items:center; justify-content:center;
+      padding:14px 12px; box-sizing:border-box;
+    }
+    .backed-logo--wide { width:168px; padding:18px 14px; }
+    .backed-logo img { width:100%; height:100%; object-fit:contain; display:block; }
+    @media (max-width: 768px) {
+      [data-nav-links] { display: none !important; }
+      [data-grid] { display: flex !important; flex-direction: column !important; gap: 24px !important; }
+      #hero > div:last-child { padding: 0 clamp(16px, 4vw, 24px) !important; }
+      .hero-title { font-size: clamp(30px, 8.5vw, 52px); }
+      .hero-line2 { white-space: nowrap; letter-spacing: -0.03em; }
+      #problem { padding: 72px 24px !important; }
+      #how-it-works { padding: 72px 24px 0 !important; }
+      #how-it-works [data-grid] { max-width: 100% !important; gap: 40px !important; }
+      #platform-features { padding: 72px 24px !important; }
+      #platform-features > div { max-width: 100% !important; }
+      #who { padding: 72px 24px !important; }
+      #who > div { max-width: 100% !important; }
+      #architecture { padding: 72px 24px !important; }
+      #architecture > div > div { max-width: 100% !important; }
+      #contact { padding: 72px 24px 80px !important; }
+      #contact > div { max-width: 100% !important; }
+      [data-name-row] { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</helmet>
 
-<nav>
-  <a class="nav-logo" href="index.html"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
-  <div class="nav-links">
-    <a href="#" class="active" onclick="event.preventDefault();document.getElementById('how').scrollIntoView({behavior:'smooth'})">How It Works</a>
-    <a href="/technology/">Technology</a>
+<!-- ══════════════════════════════════════════════════
+     NAV
+══════════════════════════════════════════════════ -->
+<nav style="{{ navStyle }}">
+  <a href="#hero" style="display:flex;align-items:center;">
+    <sc-if value="{{ notScrolled }}" hint-placeholder-val="{{ true }}">
+      <img src="assets/kwh-logo-mark-light.png" height="34" alt="kWh Electric" style="display:block;" />
+    </sc-if>
+    <sc-if value="{{ scrolled }}" hint-placeholder-val="{{ false }}">
+      <img src="assets/kwh-logo-mark.png" height="34" alt="kWh Electric" style="display:block;" />
+    </sc-if>
+  </a>
+  <div data-nav-links="" style="display:flex;align-items:center;gap:26px;">
+    <a href="#problem" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">The Problem</a>
+    <a href="#how-it-works" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">How It Works</a>
+    <a href="#architecture" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Architecture</a>
+    <a href="#contact" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Get In Touch</a>
+
   </div>
-  <a class="nav-cta" href="#cta" onclick="event.preventDefault();document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Request Pilot Access</a>
 </nav>
 
-<section id="hero">
-  <h1 class="headline">
-    Every energy asset,<br><span class="accent">visible and dispatchable.</span>
-  </h1>
-  <div class="pill-row">
-    <span class="pill">Open protocols</span>
-    <span class="pill">Real-time telemetry</span>
-    <span class="pill">Dispatch-enabled</span>
-    <span class="pill">MCP + AI-ready</span>
+<!-- ══════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════ -->
+<section id="hero" style="position:relative;height:100vh;min-height:580px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+  <div style="position:absolute;inset:0;background:url(uploads/hero-bg.webp) center/cover no-repeat;"></div>
+  <div style="position:absolute;inset:0;background:rgba(10,5,0,0.55);"></div>
+  <div id="bee-cell" aria-hidden="true">
+    <svg id="bee" viewBox="0 0 56 38" xmlns="http://www.w3.org/2000/svg" width="56" height="38" aria-hidden="true">
+      <defs><clipPath id="bee-body-clip"><ellipse cx="26" cy="23" rx="17" ry="9.5"/></clipPath></defs>
+      <ellipse cx="26" cy="23" rx="17" ry="9.5" fill="#FBCF2E"/>
+      <g clip-path="url(#bee-body-clip)">
+        <rect x="13" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>
+        <rect x="25" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>
+      </g>
+      <circle cx="44" cy="22" r="7.5" fill="#FBCF2E"/>
+      <circle cx="47" cy="19" r="2.2" fill="#1a1a1a"/>
+      <circle cx="47.8" cy="18.4" r="0.7" fill="#fff"/>
+      <polygon points="9,20 9,26 3,23" fill="#666"/>
+      <line x1="41" y1="15" x2="35" y2="4" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>
+      <circle cx="35" cy="4" r="1.9" fill="#1a1a1a"/>
+      <line x1="45" y1="14" x2="43" y2="3" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>
+      <circle cx="43" cy="3" r="1.9" fill="#1a1a1a"/>
+      <ellipse id="bw1" cx="17" cy="9" rx="14" ry="8.5" fill="rgba(210,235,255,0.88)" stroke="rgba(140,180,230,0.6)" stroke-width="0.8"/>
+      <ellipse id="bw2" cx="21" cy="21" rx="11" ry="6.5" fill="rgba(210,235,255,0.75)" stroke="rgba(140,180,230,0.5)" stroke-width="0.7"/>
+    </svg>
   </div>
-</section>
-
-<section id="stats">
-  <div style="width:100%;max-width:var(--content-width);display:flex;align-items:stretch;gap:0;">
-
-    <!-- Problem -->
-    <div style="flex:1;display:flex;flex-direction:column;padding-right:48px;border-right:1px solid rgba(255,255,255,0.08);">
-      <div class="kicker" style="margin-bottom:28px;text-align:center;">The problem</div>
-      <div style="display:flex;flex:1;">
-        <div class="stat-item" style="flex:1;padding-left:0;">
-          <div class="stat-num">100M+</div>
-          <div class="stat-label">DERs with no common control layer</div>
-        </div>
-        <div class="stat-item" style="flex:1;">
-          <div class="stat-num" style="color:#f87171;">$50k+</div>
-          <div class="stat-label">Integration tax per DISCOM, per month, per OEM</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Solution -->
-    <div style="flex:1;display:flex;flex-direction:column;padding-left:48px;">
-      <div class="kicker" style="margin-bottom:28px;text-align:center;">How we solve it</div>
-      <div style="display:flex;flex:1;">
-        <div class="stat-item" style="flex:1;padding-left:0;">
-          <div class="stat-num" style="color:#4db388;">Real&#8209;time</div>
-          <div class="stat-label">Telemetry and dispatch across all 100M+ assets, always live</div>
-        </div>
-        <div class="stat-item" style="flex:1;">
-          <div class="stat-num" style="color:#4db388;">$0</div>
-          <div class="stat-label">Integration tax — one gateway, every DISCOM, every OEM</div>
-        </div>
-      </div>
-    </div>
+  <div class="hero-inner">
+    <h1 class="hero-title">
+      <span class="hero-line1">Every energy asse<span id="bee-land">t</span>,</span>
+      <span class="hero-line2">visible and dispatchable.</span>
+    </h1>
+    <p class="hero-sub">
+      Real-time telemetry and dispatch across every OEM, every DISCOM. One gateway, zero integration tax.
+    </p>
 
   </div>
 </section>
 
+<!-- ══════════════════════════════════════════════════
+     THE PROBLEM — gold section
+══════════════════════════════════════════════════ -->
+<section id="problem" style="background:#C9A020;padding:100px 48px;text-align:center;">
+  <div style="display:flex;justify-content:center;margin-bottom:52px;">
+    <img src="assets/kwh-logo-mark.png" height="80" alt="kWh Electric" style="display:block;" />
+  </div>
+  <p style="font-size:clamp(16px,1.4vw,19px);line-height:1.75;color:#0B0B0E;max-width:min(820px,92vw);margin:0 auto;font-weight:400;">
+    100 million DERs are deployed globally — but every utility, OEM, and aggregator speaks a different protocol. The result: a $50,000+ monthly integration tax per DISCOM, per OEM, and no common dispatch layer across the world's distributed energy fleet.
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     HOW IT WORKS — cream section
+══════════════════════════════════════════════════ -->
+<section id="how-it-works" style="background:#FFFBF0;padding:104px 48px 0;text-align:center;">
+  <p style="color:#C9A020;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 20px;">HOW IT WORKS</p>
+  <h2 class="section-heading-wide" style="font-size:clamp(28px,4vw,50px);font-weight:700;color:#0B0B0E;margin:0 auto 72px;line-height:1.1;letter-spacing:-0.03em;">
+    Connect. Normalize. Dispatch. Verify.
+  </h2>
+
+  <!-- 4-step 2×2 grid -->
+  <div data-grid="" class="how-grid" style="display:grid;grid-template-columns:repeat(2,1fr);margin:0 auto;padding-bottom:96px;text-align:center;">
+
+    <!-- 1: Connect -->
+    <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
+      <svg width="72" height="72" viewBox="0 0 72 72">
+        <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#C9A020"/>
+        <line x1="36" y1="7" x2="36" y2="59" stroke="rgba(255,251,240,0.22)" stroke-width="1.5"/>
+        <line x1="59" y1="20" x2="13" y2="46" stroke="rgba(255,251,240,0.22)" stroke-width="1.5"/>
+        <line x1="13" y1="20" x2="59" y2="46" stroke="rgba(255,251,240,0.22)" stroke-width="1.5"/>
+        <circle cx="36" cy="33" r="5" fill="rgba(255,251,240,0.3)"/>
+      </svg>
+      <div>
+        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Connect</h3>
+        <p style="font-size:15px;color:#4A3A1F;line-height:1.62;font-weight:400;margin:0;">
+          Install the kWh Electric gateway at site. Standard protocols: IEEE 2030.5, OpenADR, SunSpec. No vendor lock-in, no closed OEM cloud.
+        </p>
+      </div>
+    </div>
+
+    <!-- 2: Normalize -->
+    <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
+      <svg width="72" height="72" viewBox="0 0 72 72">
+        <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#C9A020"/>
+        <path d="M19 26 C21 23 23 29 25 26" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M19 33 C21 30 23 36 25 33" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M19 40 C21 37 23 43 25 40" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M28 33 L33 33" stroke="rgba(255,251,240,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M30 30 L33 33 L30 36" stroke="rgba(255,251,240,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <line x1="36" y1="26" x2="50" y2="26" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="36" y1="33" x2="50" y2="33" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="36" y1="40" x2="50" y2="40" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Normalize</h3>
+        <p style="font-size:15px;color:#4A3A1F;line-height:1.62;font-weight:400;margin:0;">
+          Translates every device language into one clean, consistent data stream. No more per-OEM integration work.
+        </p>
+      </div>
+    </div>
+
+    <!-- 3: Dispatch -->
+    <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
+      <svg width="72" height="72" viewBox="0 0 72 72">
+        <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#C9A020"/>
+        <path d="M42 19 L29 37 L37 37 L30 53 L44 35 L36 35 Z" fill="rgba(255,251,240,0.95)"/>
+      </svg>
+      <div>
+        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Dispatch</h3>
+        <p style="font-size:15px;color:#4A3A1F;line-height:1.62;font-weight:400;margin:0;">
+          Send charge, discharge, curtail, and shift commands from any platform, in real time — to any DER, at any scale.
+        </p>
+      </div>
+    </div>
+
+    <!-- 4: Verify -->
+    <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
+      <svg width="72" height="72" viewBox="0 0 72 72">
+        <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#C9A020"/>
+        <path d="M20 34 L32 46 L52 22" stroke="rgba(255,251,240,0.95)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div>
+        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Verify</h3>
+        <p style="font-size:15px;color:#4A3A1F;line-height:1.62;font-weight:400;margin:0;">
+          Every dispatch event logged before, during, and after. Provable response, claimable revenue for every asset.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Solve teaser -->
+  <div style="padding:72px 0 0;border-top:1px solid #E8D9A8;text-align:center;">
+    <div style="display:flex;justify-content:center;margin-bottom:20px;">
+      <img src="assets/kwh-logo-mark.png" height="52" alt="kWh Electric" style="display:block;opacity:0.75;" />
+    </div>
+    <p style="font-size:clamp(22px,3vw,40px);color:#C9A020;font-weight:700;letter-spacing:-0.025em;margin:0;">
+      kWh Electric eliminates the integration tax.
+    </p>
+  </div>
+</section>
 
 
-<section id="architecture" style="padding:80px var(--px);position:relative;z-index:1;">
-  <div style="max-width:var(--content-width);margin:0 auto;">
-    <h2 style="color:var(--white);font-size:clamp(24px,3.4vw,42px);font-weight:800;letter-spacing:-0.04em;line-height:1.15;margin-bottom:14px;">Five-Layer Architecture for<br>Dispatch + Telemetry</h2>
-    <p style="color:var(--dim);font-size:16px;max-width:680px;line-height:1.75;margin-bottom:52px;">kWh Electric connects physical DERs to edge intelligence, cloud orchestration, AI workflows, and energy applications through one interoperable infrastructure layer.</p>
 
-    <!-- Stack -->
-    <div style="position:relative;display:flex;flex-direction:column;gap:0;">
+<!-- ══════════════════════════════════════════════════
+     FIVE-LAYER ARCHITECTURE — dark + honeycomb
+══════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════
+     PLATFORM FEATURES — dark cards
+══════════════════════════════════════════════════ -->
+<section id="platform-features" style="background:#FFFBF0;padding:96px 64px;">
+  <div style="max-width:1160px;margin:0 auto;">
+    <p style="color:#C9A020;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-align:center;margin:0 0 16px;">THE PLATFORM</p>
+    <h2 style="font-size:clamp(28px,3.8vw,48px);font-weight:700;color:#0B0B0E;text-align:center;margin:0 0 56px;letter-spacing:-0.025em;line-height:1.1;">Hardware-enabled software infrastructure.</h2>
+    <div data-grid="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
 
-      <!-- Layer 5 — Applications -->
-      <div style="background:rgba(251,113,133,0.08);border:1px solid rgba(251,113,133,0.3);border-radius:16px 16px 4px 4px;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
-        <div style="display:flex;align-items:center;gap:16px;">
-          <div style="width:4px;height:44px;background:#fb7185;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(251,113,133,0.5);"></div>
-          <div>
-            <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#fb7185;text-transform:uppercase;margin-bottom:4px;">Layer 5</div>
-            <div style="font-size:17px;font-weight:700;color:var(--white);">Applications + Value Layer</div>
-            <div style="font-size:13px;color:var(--dim);margin-top:4px;">Utility orchestration, asset financing, VPP participation, grid services, forecasting, and performance verification.</div>
+      <!-- Edge Gateway -->
+      <div style="background:#FFFFFF;border:1px solid #E8D9A8;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:0;">
+        <div style="margin-bottom:22px;">
+          <svg width="30" height="30" viewBox="0 0 30 30">
+            <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#C9A020"/>
+            <rect x="9" y="9" width="12" height="12" rx="1" fill="rgba(255,251,240,0.22)"/>
+            <rect x="11" y="11" width="8" height="8" rx="0.5" fill="rgba(255,251,240,0.85)"/>
+          </svg>
+        </div>
+        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 12px;letter-spacing:-0.015em;">Edge Gateway</h3>
+        <p style="font-size:15px;color:#4A3A1F;line-height:1.68;margin:0 0 28px;font-weight:400;flex:1;">A physical device installed at your site that connects to every asset locally. Offline-safe, no cloud dependency.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">Local Edge</span>
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">Offline-Ready</span>
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">OTA Updates</span>
+        </div>
+      </div>
+
+      <!-- Protocol Translation -->
+      <div style="background:#FFFFFF;border:1px solid #E8D9A8;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:0;">
+        <div style="margin-bottom:22px;">
+          <svg width="30" height="30" viewBox="0 0 30 30">
+            <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#C9A020"/>
+            <path d="M8 11 L19 11 M16 9 L19 11 L16 13" stroke="rgba(255,251,240,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M22 19 L11 19 M14 17 L11 19 L14 21" stroke="rgba(255,251,240,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 12px;letter-spacing:-0.015em;">Protocol Translation</h3>
+        <p style="font-size:15px;color:#4A3A1F;line-height:1.68;margin:0 0 28px;font-weight:400;flex:1;">Every device speaks a different language. The gateway translates them all into one clean API. No custom integrations per OEM.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">SunSpec</span>
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">Modbus</span>
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">OCPP</span>
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">OpenADR</span>
+        </div>
+      </div>
+
+      <!-- AI Interface -->
+      <div style="background:#FFFFFF;border:1px solid #E8D9A8;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:0;">
+        <div style="margin-bottom:22px;">
+          <svg width="30" height="30" viewBox="0 0 30 30">
+            <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#C9A020"/>
+            <path d="M15 8 C15 8 16.5 13 21 15 C16.5 17 15 22 15 22 C15 22 13.5 17 9 15 C13.5 13 15 8 15 8Z" fill="rgba(255,251,240,0.9)"/>
+          </svg>
+        </div>
+        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 12px;letter-spacing:-0.015em;">AI Interface</h3>
+        <p style="font-size:15px;color:#4A3A1F;line-height:1.68;margin:0 0 28px;font-weight:400;flex:1;">A secure interface for AI agents to read asset data and trigger dispatch. No raw device control exposed.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">Context Provider</span>
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">Tool Invocation</span>
+          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #E8D9A8;border-radius:6px;padding:5px 12px;font-weight:500;">AI-Ready</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     WHO IT'S FOR — dark audience grid
+══════════════════════════════════════════════════ -->
+<section id="who" style="background:#C9A020;padding:96px 64px;">
+  <div style="max-width:1160px;margin:0 auto;">
+    <h2 style="font-size:clamp(48px,7vw,96px);font-weight:700;color:#0B0B0E;text-align:center;margin:0 0 64px;letter-spacing:-0.04em;line-height:0.95;">Who it's for.</h2>
+    <div data-grid="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+
+      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
+        <div style="margin-bottom:16px;"><svg width="40" height="40" viewBox="0 0 40 40"><polygon points="28,13 24,20 16,20 12,13 16,6 24,6" fill="rgba(11,11,14,0.72)"/><polygon points="21,26 17,33 9,33 5,26 9,19 17,19" fill="rgba(11,11,14,0.72)"/><polygon points="35,26 31,33 23,33 19,26 23,19 31,19" fill="rgba(11,11,14,0.72)"/></svg></div><h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 12px;letter-spacing:-0.015em;">Aggregators / VPP Operators</h3>
+        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Dispatch a unified fleet of any asset type, from any manufacturer, in real time.</p>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
+        <div style="margin-bottom:16px;"><svg width="40" height="40" viewBox="0 0 40 40"><rect x="10" y="13" width="20" height="23" rx="2" fill="rgba(11,11,14,0.72)"/><rect x="15" y="9" width="10" height="5" rx="1.5" fill="rgba(11,11,14,0.72)"/><rect x="12" y="27" width="16" height="6" rx="1" fill="rgba(255,251,240,0.45)"/></svg></div><h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 12px;letter-spacing:-0.015em;">BESS Financiers</h3>
+        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Real-time visibility into the health and performance of every battery in your portfolio.</p>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
+        <div style="margin-bottom:16px;"><svg width="40" height="40" viewBox="0 0 40 40"><rect x="12" y="12" width="16" height="16" rx="2" fill="rgba(11,11,14,0.72)"/><rect x="5" y="16" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="5" y="22" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="28" y="16" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="28" y="22" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="16" y="5" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="22" y="5" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="16" y="28" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="22" y="28" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/></svg></div><h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 12px;letter-spacing:-0.015em;">OEMs</h3>
+        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Make your hardware interoperable and dispatch-ready without building a full software platform.</p>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
+        <div style="margin-bottom:16px;"><svg width="40" height="40" viewBox="0 0 40 40"><path d="M20 4 L36 20 L20 36 L4 20 Z" fill="rgba(11,11,14,0.72)"/><line x1="4" y1="20" x2="36" y2="20" stroke="rgba(255,251,240,0.38)" stroke-width="1.5"/><line x1="20" y1="4" x2="20" y2="36" stroke="rgba(255,251,240,0.38)" stroke-width="1.5"/></svg></div><h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 12px;letter-spacing:-0.015em;">Utilities / DISCOMs</h3>
+        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">See behind-the-meter assets and dispatch flexible capacity. Devices join automatically, no campaigns needed.</p>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
+        <div style="margin-bottom:16px;"><svg width="40" height="40" viewBox="0 0 40 40"><path d="M20 3 C20 3 22 17.5 37 20 C22 22.5 20 37 20 37 C20 37 18 22.5 3 20 C18 17.5 20 3 20 3Z" fill="rgba(11,11,14,0.72)"/></svg></div><h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 12px;letter-spacing:-0.015em;">Energy AI Platforms</h3>
+        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Clean, standardized data and dispatch APIs for your optimization and AI workflows.</p>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
+        <div style="margin-bottom:16px;"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="7" fill="rgba(11,11,14,0.72)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(45 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(90 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(135 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(180 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(225 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(270 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(315 20 20)"/></svg></div><h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 12px;letter-spacing:-0.015em;">Commercial Asset Owners</h3>
+        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Lower bills, grid revenue, and full visibility from your solar, batteries, and EV chargers.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="architecture" style="position:relative;background:#120d04;padding:96px 64px;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:url(uploads/hero-bg.webp) center/cover no-repeat;opacity:0.18;"></div>
+  <div id="arch-stack-inner" style="position:relative;z-index:2;max-width:960px;margin:0 auto;">
+
+    <p style="color:rgba(255,251,240,0.8);font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-align:center;margin:0 0 20px;">FIVE-LAYER ARCHITECTURE</p>
+    <h2 style="font-size:clamp(28px,4vw,50px);font-weight:700;color:#FFFBF0;text-align:center;margin:0 0 72px;letter-spacing:-0.03em;line-height:1.1;">
+      Five layers from physica<span id="stack-bee-land">l</span> device<br>to AI operation.
+    </h2>
+
+    <!-- L5 -->
+    <div data-grid="" style="border-top:3px solid #C9A020;padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:700;color:#C9A020;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L5</span>
+      <div>
+        <h3 style="font-size:18px;font-weight:700;color:#C9A020;margin:0 0 10px;letter-spacing:-0.015em;">Applications + Value Layer</h3>
+        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">Utility orchestration, asset financing, VPP participation, grid services, forecasting, performance verification.</p>
+      </div>
+    </div>
+
+    <!-- L4 -->
+    <div data-grid="" style="border-top:2px solid rgba(201,160,32,0.35);padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:700;color:#C9A020;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L4</span>
+      <div>
+        <h3 style="font-size:18px;font-weight:700;color:#C9A020;margin:0 0 10px;letter-spacing:-0.015em;">MCP + AI Layer</h3>
+        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">Agentic AI systems with DER context, telemetry access, and policy-constrained dispatch tools.</p>
+      </div>
+    </div>
+
+    <!-- L3 -->
+    <div data-grid="" style="border-top:2px solid rgba(201,160,32,0.35);padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:700;color:#C9A020;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L3</span>
+      <div>
+        <h3 style="font-size:18px;font-weight:700;color:#C9A020;margin:0 0 10px;letter-spacing:-0.015em;">Cloud Platform</h3>
+        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</p>
+      </div>
+    </div>
+
+    <!-- L2 -->
+    <div data-grid="" style="border-top:2px solid rgba(201,160,32,0.35);padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:700;color:#C9A020;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L2</span>
+      <div>
+        <h3 style="font-size:18px;font-weight:700;color:#C9A020;margin:0 0 10px;letter-spacing:-0.015em;">Edge Gateway</h3>
+        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">One-time device installation. Connects locally to every DER, standardizes telemetry, enables secure dispatch — no closed OEM cloud dependency.</p>
+      </div>
+    </div>
+
+    <!-- L1 -->
+    <div data-grid="" style="border-top:2px solid rgba(201,160,32,0.35);border-bottom:2px solid rgba(201,160,32,0.35);padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:700;color:#C9A020;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L1</span>
+      <div>
+        <h3 style="font-size:18px;font-weight:700;color:#C9A020;margin:0 0 10px;letter-spacing:-0.015em;">Physical DER Devices</h3>
+        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">Batteries, solar inverters, EV chargers, smart meters, flexible loads — every asset class, every OEM.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     GET IN TOUCH — gold contact section
+══════════════════════════════════════════════════ -->
+<section id="contact" style="background:#C9A020;padding:96px 48px 112px;">
+  <div style="max-width:720px;margin:0 auto;">
+    <p style="color:white;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-align:center;margin:0 0 22px;">GET IN TOUCH</p>
+    <h2 style="font-size:clamp(30px,4.5vw,56px);font-weight:700;color:#0B0B0E;text-align:center;line-height:1.08;margin:0 0 24px;letter-spacing:-0.03em;">
+      Talk to the <img src="assets/kwh-logo-mark.png" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> engineering team.
+    </h2>
+    <p style="font-size:17px;color:#0B0B0E;text-align:center;line-height:1.68;max-width:440px;margin:0 auto 44px;font-weight:400;">
+      Connect with us about piloting the edge gateway or integrating with the cloud platform.
+    </p>
+
+    <!-- Backed by carousel -->
+    <div style="text-align:center;margin-bottom:52px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,0.35);">
+      <p style="font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin:0 0 20px;">BACKED BY</p>
+      <div style="position:relative;overflow:hidden;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:72px;background:linear-gradient(to right,#C9A020,transparent);z-index:1;pointer-events:none;"></div>
+        <div style="position:absolute;right:0;top:0;bottom:0;width:72px;background:linear-gradient(to left,#C9A020,transparent);z-index:1;pointer-events:none;"></div>
+        <div style="display:flex;align-items:center;gap:18px;animation:logo-scroll 26s linear infinite;width:max-content;">
+          <div class="backed-logo backed-logo--wide"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Entrecorps Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="EntreCORPS" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Samayang Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Samayang" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/pasted-1782743184735-0.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Landuyt Center" /></div>
+          <div class="backed-logo backed-logo--wide"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Entrecorps Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="EntreCORPS" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Samayang Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Samayang" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/pasted-1782743184735-0.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Landuyt Center" /></div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div style="background:rgba(255,255,255,0.22);border-radius:3px;padding:48px;text-align:center;">
+        <p style="font-size:20px;color:#0B0B0E;font-weight:500;margin:0;">Message received — we'll be in touch shortly.</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <form onSubmit="{{ handleSubmit }}" style="display:flex;flex-direction:column;gap:28px;">
+
+        <div>
+            <div data-name-row="" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+            <div>
+              <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">First Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
+              <input type="text" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
+            </div>
+            <div>
+              <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Last Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
+              <input type="text" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Arrow 4→5 -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;position:relative;">
-        <span style="font-size:11px;color:rgba(167,139,250,0.6);letter-spacing:0.05em;">AI workflows ↕</span>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(167,139,250,0.5),transparent);"></div>
-          <div style="width:5px;height:5px;border-radius:50%;background:rgba(167,139,250,0.4);"></div>
-          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(167,139,250,0.5),transparent);"></div>
-        </div>
-        <span style="font-size:11px;color:rgba(167,139,250,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
-      </div>
-
-      <!-- Layer 4 — MCP + AI -->
-      <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.3);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
-        <div style="width:4px;height:44px;background:#a78bfa;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(167,139,250,0.5);"></div>
         <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#a78bfa;text-transform:uppercase;margin-bottom:4px;">Layer 4</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white);">MCP + AI Layer</div>
-          <div style="font-size:13px;color:var(--dim);margin-top:4px;">A secure interface that gives agentic AI systems DER context, telemetry access, and policy-constrained dispatch tools.</div>
+          <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Email <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
+          <input type="email" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
         </div>
-      </div>
 
-      <!-- Arrow 3→4 -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
-        <span style="font-size:11px;color:rgba(34,211,238,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(34,211,238,0.5),transparent);"></div>
-          <div style="width:5px;height:5px;border-radius:50%;background:rgba(34,211,238,0.4);"></div>
-          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(34,211,238,0.5),transparent);"></div>
-        </div>
-        <span style="font-size:11px;color:rgba(34,211,238,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
-      </div>
-
-      <!-- Layer 3 — Cloud Platform -->
-      <div style="background:rgba(34,211,238,0.07);border:1px solid rgba(34,211,238,0.25);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
-        <div style="width:4px;height:44px;background:#22d3ee;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(34,211,238,0.4);"></div>
         <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#22d3ee;text-transform:uppercase;margin-bottom:4px;">Layer 3</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white);">Cloud Platform</div>
-          <div style="font-size:13px;color:var(--dim);margin-top:4px;">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</div>
+          <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Message</label>
+          <textarea rows="5" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;resize:vertical;"></textarea>
         </div>
-      </div>
 
-      <!-- Arrow 2→3 -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
-        <span style="font-size:11px;color:rgba(74,222,128,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(74,222,128,0.5),transparent);"></div>
-          <div style="width:5px;height:5px;border-radius:50%;background:rgba(74,222,128,0.4);"></div>
-          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(74,222,128,0.5),transparent);"></div>
-        </div>
-        <span style="font-size:11px;color:rgba(74,222,128,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
-      </div>
-
-      <!-- Layer 2 — Edge Gateway -->
-      <div style="background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.28);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
-        <div style="width:4px;height:44px;background:#4ade80;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(74,222,128,0.4);"></div>
         <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#4ade80;text-transform:uppercase;margin-bottom:4px;">Layer 2</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white);">Edge Gateway</div>
-          <div style="font-size:13px;color:var(--dim);margin-top:4px;">A one-time device that connects locally to assets, standardizes telemetry, and enables secure dispatch.</div>
+          <button type="submit" style="display:inline-flex;align-items:center;padding:15px 40px;background:#0B0B0E;border:none;border-radius:999px;color:white;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;" style-hover="background:#2a2a2a">
+            SUBMIT
+          </button>
         </div>
-      </div>
+      </form>
+    </sc-if>
 
-      <!-- Arrow 1→2 -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
-        <span style="font-size:11px;color:rgba(251,191,36,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(251,191,36,0.5),transparent);"></div>
-          <div style="width:5px;height:5px;border-radius:50%;background:rgba(251,191,36,0.4);"></div>
-          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(251,191,36,0.5),transparent);"></div>
-        </div>
-        <span style="font-size:11px;color:rgba(251,191,36,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
-      </div>
+    <p style="font-size:13px;color:rgba(0,0,0,0.5);text-align:center;margin:48px 0 0;font-weight:400;">
+      Palo Alto, California &nbsp;·&nbsp; <a href="mailto:arham@kwhelectric.io" style="color:rgba(0,0,0,0.65);">arham@kwhelectric.io</a>
+    </p>
 
-      <!-- Layer 1 — Physical DERs -->
-      <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.28);border-radius:4px 4px 16px 16px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
-        <div style="width:4px;height:44px;background:#fbbf24;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(251,191,36,0.4);"></div>
-        <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#fbbf24;text-transform:uppercase;margin-bottom:4px;">Layer 1</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white);">Physical DER Devices</div>
-          <div style="font-size:13px;color:var(--dim);margin-top:4px;">Batteries, solar inverters, EV chargers, smart meters, and flexible loads.</div>
-        </div>
-      </div>
-
-    </div><!-- end stack -->
   </div>
 </section>
 
-<section id="how">
-  <h2 class="headline" style="font-size:62px;">Connect. <span class="accent">Normalize.</span><br>Dispatch. Verify.</h2>
-  <p class="subtext">How the gateway works for you. Select a step.</p>
-  <div class="steps">
-    <div class="step" onclick="toggleStep(this)">
-      <div class="step-header"><div class="step-num">1</div><div class="step-name">Connect</div></div>
-      <div class="step-body"><div class="step-body-inner">Install the gateway at your site. It connects directly to your batteries, solar inverters, EV chargers, and meters using standard protocols — no vendor lock-in, no closed OEM cloud needed.</div></div>
-    </div>
-    <div class="step" onclick="toggleStep(this)">
-      <div class="step-header"><div class="step-num">2</div><div class="step-name">Normalize</div></div>
-      <div class="step-body"><div class="step-body-inner">Every device speaks a different language. The gateway translates them all into one clean, consistent data stream — so you see everything in one place, in real time.</div></div>
-    </div>
-    <div class="step" onclick="toggleStep(this)">
-      <div class="step-header"><div class="step-num">3</div><div class="step-name">Dispatch</div></div>
-      <div class="step-body"><div class="step-body-inner">Send charge, discharge, curtail, or shift commands to your assets from any platform. The gateway handles the translation — safely, in real time, without custom integrations.</div></div>
-    </div>
-    <div class="step" onclick="toggleStep(this)">
-      <div class="step-header"><div class="step-num">4</div><div class="step-name">Verify</div></div>
-      <div class="step-body"><div class="step-body-inner">Every dispatch event is logged before, during, and after. Your assets' performance is recorded and verifiable — so you can prove response, claim revenue, and build trust.</div></div>
-    </div>
-  </div>
-</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { submitted: false, scrolled: false };
 
-<section id="supporters">
-  <p style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:32px;">Backed by</p>
-  <div class="carousel-outer">
-    <div class="carousel-track">
-      <div class="logo-item"><img class="logo-img" src="Polsky%20CNVC.png" alt="Polsky CNVC"></div>
-      <div class="logo-item"><img class="logo-img" src="Entrecorps%20Logo.png" alt="EntreCORPS"></div>
-      <div class="logo-item"><img class="logo-img" src="iVenture%20loo.jpg" alt="iVenture Accelerator"></div>
-      <div class="logo-item"><img class="logo-img" src="Samayang%20Logo.png" alt="Samayang"></div>
-      <div class="logo-item"><img class="logo-img" src="TEC%20Logo.png" alt="TEC"></div>
-      <div class="logo-item"><img class="logo-img" src="Polsky%20CNVC.png" alt="Polsky CNVC"></div>
-      <div class="logo-item"><img class="logo-img" src="Entrecorps%20Logo.png" alt="EntreCORPS"></div>
-      <div class="logo-item"><img class="logo-img" src="iVenture%20loo.jpg" alt="iVenture Accelerator"></div>
-      <div class="logo-item"><img class="logo-img" src="Samayang%20Logo.png" alt="Samayang"></div>
-      <div class="logo-item"><img class="logo-img" src="TEC%20Logo.png" alt="TEC"></div>
-    </div>
-  </div>
-</section>
-
-<section id="cta">
-  <h2 class="headline" style="font-size:52px;">Build the control layer for<br><span class="accent">distributed energy.</span></h2>
-  <p class="subtext">Are you a utility, aggregator, OEM, or asset financier? Maximise your savings by running a pilot with us. Reach out for questions.</p>
-  <div class="email-form">
-    <input class="email-input" type="email" id="email-field" placeholder="your@company.com">
-    <button class="btn-primary" id="submit-btn" onclick="submitEmail()">Request Pilot Access</button>
-  </div>
-  <div id="form-success" style="display:none;font-size:16px;color:#4db388;margin-top:24px;font-weight:600;">Request sent. We will be in touch shortly.</div>
-  <div id="form-error" style="display:none;font-size:14px;color:rgba(255,80,80,0.8);margin-top:16px;">Something went wrong. Please email us at arham@kwhelectric.io</div>
-</section>
-
-<footer>
-  <a class="footer-logo" href="index.html"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
-  <nav class="footer-nav">
-    <a href="/technology/">Technology</a>
-  </nav>
-  <div class="footer-contact">Palo Alto, California &nbsp;·&nbsp; arham@kwhelectric.io</div>
-</footer>
-
-<script>
-function toggleStep(el) {
-  const wasActive = el.classList.contains('active');
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  if (!wasActive) el.classList.add('active');
-}
-function submitEmail() {
-  const field = document.getElementById('email-field');
-  const btn = document.getElementById('submit-btn');
-  const email = field.value.trim();
-  if (!email || !email.includes('@')) {
-    field.style.borderColor = 'rgba(255,80,80,0.7)';
-    setTimeout(() => { field.style.borderColor = ''; }, 1400);
-    return;
+  componentDidMount() {
+    const onScroll = () => this.setState({ scrolled: window.scrollY > 70 });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    this._cleanup = () => window.removeEventListener('scroll', onScroll);
   }
-  btn.textContent = 'Sending...'; btn.disabled = true; btn.style.opacity = '0.6'; field.disabled = true;
-  fetch('https://formspree.io/f/mlgawbwl', {
-    method: 'POST',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, _subject: 'KWH Electric Pilot Access Request' })
-  }).then(r => {
-    if (r.ok) { btn.style.display='none'; field.style.display='none'; document.getElementById('form-success').style.display='block'; }
-    else throw new Error();
-  }).catch(() => {
-    btn.textContent='Request Pilot Access'; btn.disabled=false; btn.style.opacity='1'; field.disabled=false;
-    document.getElementById('form-error').style.display='block';
-  });
-}
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('email-field').addEventListener('keydown', e => { if (e.key==='Enter') submitEmail(); });
-});
-</script>
-<script>
-(function(){
-  const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
-  const COUNT=272,BDIST=100,CDIST=150,BOOST=1.5;
-  let mouse={x:-9999,y:-9999},nodes=[],scrollY=0,rafId,lastFrame=0;
-  function resize(){const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
-  function rand(a,b){return Math.random()*(b-a)+a;}
-  function init(){nodes=[];const W=window.innerWidth,H=window.innerHeight;for(let i=0;i<COUNT;i++)nodes.push({x:rand(0,W),y:rand(0,H*6),vx:rand(-0.15,0.15),vy:rand(-0.15,0.15),r:rand(4,12),op:rand(0.07,0.22)});}
-  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
-  window.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});
-  window.addEventListener('scroll',()=>{scrollY=window.scrollY;},{passive:true});
-  function dist2(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return dx*dx+dy*dy;}
-  function ef(x){const w=window.innerWidth,z=w*0.1;return x<z?x/z:x>w-z?(w-x)/z:1;}
-  function draw(ts){
-    rafId=requestAnimationFrame(draw);
-    if(ts-lastFrame<24)return; // cap at ~40fps
-    lastFrame=ts;
-    const W=window.innerWidth,H=window.innerHeight,par=scrollY*0.32;
-    ctx.clearRect(0,0,W,H);
-    const CDIST2=CDIST*CDIST,BDIST2=BDIST*BDIST,BDIST2B=BDIST*BOOST*BDIST*BOOST;
-    for(let i=0;i<COUNT;i++){
-      const a=nodes[i],aY=a.y-par;
-      if(aY<-60||aY>H+60)continue;
-      const dc2=dist2(a.x,aY,mouse.x,mouse.y),near=dc2<CDIST2,e=ef(a.x);
-      const thr2=near?BDIST2B:BDIST2;
-      for(let j=i+1;j<COUNT;j++){
-        const b=nodes[j],bY=b.y-par,dd2=dist2(a.x,aY,b.x,bY);
-        if(dd2<thr2){const t=1-Math.sqrt(dd2)/( near?BDIST*BOOST:BDIST),al=t*(near?0.35:0.09)*e;ctx.beginPath();ctx.moveTo(a.x,aY);ctx.lineTo(b.x,bY);ctx.strokeStyle=`rgba(176,228,204,${al})`;ctx.lineWidth=near?1:0.5;ctx.stroke();}
-      }
-    }
-    for(let i=0;i<COUNT;i++){
-      const n=nodes[i],nY=n.y-par;
-      if(nY<-60||nY>H+60)continue;
-      const dc2=dist2(n.x,nY,mouse.x,mouse.y),near=dc2<CDIST2,t=near?(1-Math.sqrt(dc2)/CDIST):0;
-      const opacity=Math.min(1,(n.op+t*0.4)*ef(n.x));
-      ctx.beginPath();ctx.arc(n.x,nY,n.r+t*2,0,Math.PI*2);ctx.strokeStyle=`rgba(255,255,255,${opacity})`;ctx.lineWidth=near?1.5:1;ctx.stroke();
-      n.x+=n.vx;n.y+=n.vy;
-      if(n.x<0||n.x>window.innerWidth)n.vx*=-1;
-      const tH=window.innerHeight*7;if(n.y<0)n.y=tH;if(n.y>tH)n.y=0;
-    }
+
+  componentWillUnmount() {
+    if (this._cleanup) this._cleanup();
   }
-  window.addEventListener('resize',()=>{resize();init();},{passive:true});
-  canvas.style.willChange='transform';
-  resize();init();rafId=requestAnimationFrame(draw);
-})();
+
+  renderVals() {
+    const { submitted, scrolled } = this.state;
+    return {
+      submitted,
+      notSubmitted: !submitted,
+      scrolled,
+      notScrolled: !scrolled,
+      navStyle: {
+        position: 'fixed',
+        top: 0, left: 0, right: 0,
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '18px 48px',
+        background: scrolled ? 'rgba(255,251,240,0.97)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
+        boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.07)' : 'none',
+        transition: 'background 0.3s, box-shadow 0.3s',
+      },
+      navLinkColor: scrolled ? '#0B0B0E' : 'rgba(255,251,240,0.9)',
+      handleSubmit: (e) => {
+        e.preventDefault();
+        this.setState({ submitted: true });
+      },
+    };
+  }
+}
+
 </script>
+<script src="./bees.js"></script>
 </body>
 </html>
