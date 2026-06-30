@@ -188,19 +188,26 @@
     yb.innerHTML = beeSVGMarkup('sb', '#FBCF2E');
     sec.appendChild(yb);
 
-    const ring = document.createElement('div');
+    const ring = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     ring.id = 'stack-shield';
-    ring.style.cssText =
-      'position:absolute;border-radius:50%;pointer-events:none;z-index:1;' +
-      'box-sizing:border-box;transform-origin:50% 50%;' +
-      'border:4px dashed rgba(28,20,6,0.5);' +
-      'box-shadow:0 0 30px rgba(205,127,50,0.16), inset 0 0 30px rgba(205,127,50,0.07);';
+    ring.setAttribute('style',
+      'position:absolute;pointer-events:none;z-index:1;overflow:visible;transform-origin:50% 50%;');
+    const ringPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    ringPoly.setAttribute('fill', 'none');
+    ringPoly.setAttribute('stroke', 'rgba(28,20,6,0.5)');
+    ringPoly.setAttribute('stroke-width', '4');
+    ringPoly.setAttribute('stroke-dasharray', '12 8');
+    ring.appendChild(ringPoly);
     sec.appendChild(ring);
 
-    const ripple = document.createElement('div');
-    ripple.style.cssText =
-      'position:absolute;width:46px;height:46px;border-radius:50%;pointer-events:none;' +
-      'z-index:1;box-sizing:border-box;opacity:0;border:2px solid rgba(205,127,50,0.9);';
+    const ripple = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    ripple.setAttribute('style',
+      'position:absolute;width:46px;height:46px;pointer-events:none;z-index:1;opacity:0;overflow:visible;');
+    const ripplePoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    ripplePoly.setAttribute('fill', 'none');
+    ripplePoly.setAttribute('stroke', 'rgba(205,127,50,0.9)');
+    ripplePoly.setAttribute('stroke-width', '2');
+    ripple.appendChild(ripplePoly);
     sec.appendChild(ripple);
 
     const bb = document.createElement('div');
@@ -213,6 +220,15 @@
     const C = { x:0, y:0 };
     let D = 0;
 
+    function hexPoints(cx, cy, r) {
+      const pts = [];
+      for (let i = 0; i < 6; i++) {
+        const ang = (Math.PI / 3) * i - Math.PI / 2;
+        pts.push((cx + r * Math.cos(ang)).toFixed(1) + ',' + (cy + r * Math.sin(ang)).toFixed(1));
+      }
+      return pts.join(' ');
+    }
+
     function layout() {
       const sR = sec.getBoundingClientRect();
       const lR = land.getBoundingClientRect();
@@ -222,10 +238,12 @@
       C.x = lR.left - sR.left + lR.width * 0.5;
       C.y = lR.top  - sR.top  + lR.height * 0.5;
       D = Math.min(sR.height * 1.08, window.innerWidth * 0.8);
-      ring.style.width  = D + 'px';
-      ring.style.height = D + 'px';
+      ring.setAttribute('width', D);
+      ring.setAttribute('height', D);
       ring.style.left = (C.x - D / 2) + 'px';
       ring.style.top  = (C.y - D / 2) + 'px';
+      ringPoly.setAttribute('points', hexPoints(D / 2, D / 2, D / 2 - 6));
+      ripplePoly.setAttribute('points', hexPoints(23, 23, 20));
     }
     layout();
     window.addEventListener('resize', layout);
@@ -328,7 +346,17 @@
     io.observe(sec);
   }
 
+  function initFlipPin() {
+    if (window.__kwhFlipPin) return;
+    window.__kwhFlipPin = true;
+    document.addEventListener('click', function (e) {
+      const card = e.target.closest('[data-flip]');
+      if (card) card.classList.toggle('pinned');
+    });
+  }
+
   function boot() {
+    initFlipPin();
     waitForGsap(() => {
       waitForEl('bee', () => setTimeout(launchBee, 700));
       waitForEl('stack-bee-land', () => mountStackDefense());

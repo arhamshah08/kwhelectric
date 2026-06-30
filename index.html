@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kWh Electric</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="shortcut icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
 <script src="./support.js"></script>
@@ -66,6 +70,101 @@
     }
     .backed-logo img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; display:block; }
     .backed-logo--nfh { padding:10px; }
+    /* ── FLIP CARDS ── */
+    .flip { perspective:1000px; cursor:pointer; }
+    .flip-inner { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform 0.5s ease; }
+    .flip:hover .flip-inner, .flip.pinned .flip-inner { transform:rotateY(180deg); }
+    .flip-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:14px; }
+    .flip-back { transform:rotateY(180deg); }
+    /* ── CREAM HONEYCOMB BACKGROUND (flat-top hex grid) ── */
+    .cream-hex-section {
+      position:relative; overflow:hidden;
+      background-color:#FFFBF0 !important;
+    }
+    .cream-hex-section::before {
+      content:'';
+      position:absolute; top:0; left:0; right:0; bottom:0;
+      width:100%; height:100%;
+      pointer-events:none; z-index:0;
+      background-color:#FFFBF0;
+      background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2772.00%27%20height%3D%2741.57%27%20viewBox%3D%270%200%2072.00%2041.57%27%3E%3Cpolygon%20points%3D%2724.00%2C0.00%2012.00%2C20.78%20-12.00%2C20.78%20-24.00%2C0.00%20-12.00%2C-20.78%2012.00%2C-20.78%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2724.00%2C41.57%2012.00%2C62.35%20-12.00%2C62.35%20-24.00%2C41.57%20-12.00%2C20.78%2012.00%2C20.78%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2796.00%2C0.00%2084.00%2C20.78%2060.00%2C20.78%2048.00%2C0.00%2060.00%2C-20.78%2084.00%2C-20.78%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2796.00%2C41.57%2084.00%2C62.35%2060.00%2C62.35%2048.00%2C41.57%2060.00%2C20.78%2084.00%2C20.78%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2760.00%2C20.78%2048.00%2C41.57%2024.00%2C41.57%2012.00%2C20.78%2024.00%2C0.00%2048.00%2C0.00%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2760.00%2C-20.78%2048.00%2C0.00%2024.00%2C0.00%2012.00%2C-20.78%2024.00%2C-41.57%2048.00%2C-41.57%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2760.00%2C62.35%2048.00%2C83.14%2024.00%2C83.14%2012.00%2C62.35%2024.00%2C41.57%2048.00%2C41.57%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3C%2Fsvg%3E");
+      background-size:72px 41.57px;
+      background-repeat:repeat;
+      background-position:0 0;
+    }
+    .cream-hex-section > * { position:relative; z-index:1; }
+    .cream-hex-section section { background:transparent; }
+    /* ── HOW IT WORKS HEX FLIPS (flat-top honeycomb) ── */
+    .how-hex-grid {
+      --hex-w: clamp(180px, 24vw, 250px);
+      --hex-h: calc(0.78 * var(--hex-w));
+      --col: calc(0.75 * var(--hex-w));   /* horizontal step between columns */
+      --off: calc(0.5 * var(--hex-h));    /* alternating vertical offset     */
+      position:relative; z-index:1;
+      width:calc(3 * var(--col) + var(--hex-w));
+      height:calc(var(--hex-h) + var(--off));
+      margin:0 auto;
+    }
+    .how-hex-grid .hex-flip {
+      position:absolute;
+      width:var(--hex-w);
+      height:var(--hex-h);
+      transform:scale(0.93);
+    }
+    .how-hex-grid .hex-flip:nth-child(1) { left:0;                    top:var(--off); }
+    .how-hex-grid .hex-flip:nth-child(2) { left:var(--col);           top:0; }
+    .how-hex-grid .hex-flip:nth-child(3) { left:calc(2 * var(--col)); top:var(--off); }
+    .how-hex-grid .hex-flip:nth-child(4) { left:calc(3 * var(--col)); top:0; }
+    .how-hex-grid .hex-flip:hover, .how-hex-grid .hex-flip.pinned { z-index:10; }
+    .hex-flip .flip-inner { width:100%; height:100%; }
+    .hex-face {
+      clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      border-radius:0;
+    }
+    .hex-face-front {
+      background:#2B1A08; display:flex; align-items:center; justify-content:center;
+      padding:0 17%;
+    }
+    .hex-face-front::before {
+      content:''; position:absolute; inset:0;
+      clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      background:#CD7F32; transform:scale(0.94); z-index:0;
+      transition:background 0.3s ease;
+    }
+    .how-hex-grid .hex-flip:hover .hex-face-front::before { background:#B86F28; }
+    .hex-face-back {
+      background:#2B1A08; transform:rotateY(180deg);
+      display:flex; align-items:center; justify-content:center;
+      padding:0 16%; text-align:center; overflow:hidden;
+    }
+    .hex-face-back::before {
+      content:''; position:absolute; inset:0;
+      clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      background:#FFF7E6; transform:scale(0.94); z-index:0;
+    }
+    .hex-face-back p { font-size:clamp(12.5px,1.5vw,15.5px); color:#4A3A1F; line-height:1.42; margin:0; font-weight:500; position:relative; z-index:1; }
+    .hex-word { font-size:clamp(26px,4.2vw,40px); font-weight:700; color:#FFFBF0; margin:0; letter-spacing:-0.03em; line-height:1.05; text-align:center; position:relative; z-index:1; }
+    /* ── SCORECARD FLIPS ── */
+    .score-flip { min-height:156px; cursor:pointer; }
+    .score-flip .flip-face { display:flex; flex-direction:column; justify-content:center; padding:22px 24px; box-sizing:border-box; overflow:hidden; border-radius:16px; }
+    .score-flip .flip-front { background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.32); }
+    .score-flip--light .flip-front { background:#FFFFFF; border:1px solid #E3D2B0; box-shadow:0 1px 2px rgba(120,80,30,0.05); }
+    .score-flip .flip-back { background:#0B0B0E; border:1px solid rgba(255,255,255,0.15); align-items:flex-start; justify-content:center; text-align:left; }
+    .score-flip--light .flip-back { background:#CD7F32; border:1px solid #B86F28; }
+    .score-flip .flip-back p { font-size:clamp(15px,1.5vw,18px); line-height:1.5; margin:0; font-weight:400; color:rgba(255,251,240,0.92); max-width:100%; }
+    .score-flip--light .flip-back p { color:#0B0B0E; }
+    .card-front-split { display:flex; flex-direction:column; align-items:flex-start; gap:16px; width:100%; }
+    .card-front-left { display:flex; align-items:center; gap:13px; }
+    .card-front-left svg { width:38px; height:38px; }
+    .card-front-right { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-start; align-items:center; }
+    .card-category-title { font-size:clamp(18px,2vw,23px); font-weight:700; color:#0B0B0E; margin:0; letter-spacing:-0.02em; line-height:1.18; }
+    .score-tag { font-size:12px; color:#6B5A3F; border:1px solid #D9B896; border-radius:6px; padding:4px 11px; font-weight:500; white-space:nowrap; }
+    .score-flip .flip-face svg { flex-shrink:0; }
+    /* ── PROBLEM METRICS ── */
+    .problem-metrics { display:grid; grid-template-columns:1fr 1fr; gap:32px 48px; max-width:900px; margin:0 auto 28px; }
+    .problem-metric-num { font-size:clamp(40px,6vw,72px); font-weight:700; color:#0B0B0E; letter-spacing:-0.04em; line-height:1; margin:0 0 8px; }
+    .problem-metric-label { font-size:clamp(15px,1.5vw,18px); color:rgba(11,11,14,0.75); line-height:1.4; margin:0; font-weight:500; }
+    .problem-support { font-size:clamp(16px,1.6vw,19px); color:rgba(11,11,14,0.85); max-width:640px; margin:0 auto; line-height:1.55; font-weight:400; }
     .card-icon-title {
       display: flex;
       align-items: center;
@@ -73,22 +172,37 @@
     }
     .card-icon-title svg { flex-shrink: 0; display: block; }
     @media (max-width: 768px) {
-      .card-icon-title { gap: 12px; }
+      .card-front-split { flex-direction:column; gap:14px; }
+      .card-front-right { max-width:100%; justify-content:flex-start; }
       [data-nav-links] { display: none !important; }
       [data-grid] { display: flex !important; flex-direction: column !important; gap: 24px !important; }
       #hero > div:last-child { padding: 0 clamp(16px, 4vw, 24px) !important; }
       .hero-title { font-size: clamp(30px, 8.5vw, 52px); }
       .hero-line2 { white-space: nowrap; letter-spacing: -0.03em; }
-      #problem { padding: 72px 24px !important; }
-      #how-it-works { padding: 72px 24px 0 !important; }
+      #problem { padding: 64px 24px !important; }
+      #how-it-works { padding: 64px 24px 0 !important; }
+      .how-hex-grid {
+        --hex-w: min(280px, 82vw) !important;
+        width:var(--hex-w) !important;
+        height:auto !important;
+        display:flex !important; flex-direction:column !important; align-items:center !important;
+        gap:14px !important;
+      }
+      .how-hex-grid .hex-flip {
+        position:static !important;
+        left:auto !important; top:auto !important;
+        width:var(--hex-w) !important;
+        height:calc(0.78 * var(--hex-w)) !important;
+      }
+      .problem-metrics { grid-template-columns:1fr !important; gap:24px !important; }
       #how-it-works [data-grid] { max-width: 100% !important; gap: 40px !important; }
-      #platform-features { padding: 72px 24px !important; }
+      #platform-features { padding: 64px 24px !important; }
       #platform-features > div { max-width: 100% !important; }
-      #who { padding: 72px 24px !important; }
+      #who { padding: 64px 24px !important; }
       #who > div { max-width: 100% !important; }
-      #architecture { padding: 72px 24px !important; }
+      #architecture { padding: 64px 24px !important; }
       #architecture > div > div { max-width: 100% !important; }
-      #contact { padding: 72px 24px 80px !important; }
+      #contact { padding: 64px 24px 72px !important; }
       #contact > div { max-width: 100% !important; }
       [data-name-row] { grid-template-columns: 1fr !important; }
     }
@@ -157,109 +271,72 @@
 <!-- ══════════════════════════════════════════════════
      THE PROBLEM — gold section
 ══════════════════════════════════════════════════ -->
-<section id="problem" style="background:#CD7F32;padding:100px 48px;text-align:center;">
-  <div style="display:flex;justify-content:center;margin-bottom:52px;">
-    <img src="assets/kwh-logo-mark.png" height="80" alt="kWh Electric" style="display:block;" />
+<section id="problem" style="background:#CD7F32;padding:64px 48px;text-align:center;">
+  <div class="problem-metrics">
+    <div>
+      <p class="problem-metric-num">100M+</p>
+      <p class="problem-metric-label">DERs deployed globally</p>
+    </div>
+    <div>
+      <p class="problem-metric-num">$50K+</p>
+      <p class="problem-metric-label">monthly integration tax per DISCOM, per OEM</p>
+    </div>
   </div>
-  <p style="font-size:clamp(16px,1.4vw,19px);line-height:1.75;color:#0B0B0E;max-width:min(820px,92vw);margin:0 auto;font-weight:400;">
-    100 million DERs are deployed globally — but every utility, OEM, and aggregator speaks a different protocol. The result: a $50,000+ monthly integration tax per DISCOM, per OEM, and no common dispatch layer across the world's distributed energy fleet.
-  </p>
+  <p class="problem-support">No common dispatch layer across the world's distributed energy fleet.</p>
 </section>
 
 <!-- ══════════════════════════════════════════════════
-     HOW IT WORKS — cream section
+     HOW IT WORKS + PLATFORM — cream honeycomb band
 ══════════════════════════════════════════════════ -->
-<section id="how-it-works" style="background:#FFFBF0;padding:104px 48px 0;text-align:center;">
-  <p style="color:#CD7F32;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 20px;">HOW IT WORKS</p>
-  <h2 class="section-heading-wide" style="font-size:clamp(28px,4vw,50px);font-weight:700;color:#0B0B0E;margin:0 auto 72px;line-height:1.1;letter-spacing:-0.03em;">
-    Connect. Normalize. Dispatch. Verify.
-  </h2>
+<div class="cream-hex-section">
+<section id="how-it-works" style="padding:72px 48px 64px;text-align:center;">
 
-  <!-- 4-step 2×2 grid -->
-  <div data-grid="" class="how-grid" style="display:grid;grid-template-columns:repeat(2,1fr);margin:0 auto;padding-bottom:96px;text-align:center;">
+  <div class="how-hex-grid">
 
-    <!-- 1: Connect -->
-    <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
-      <svg width="72" height="72" viewBox="0 0 72 72">
-        <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#CD7F32"/>
-        <line x1="36" y1="7" x2="36" y2="59" stroke="rgba(255,251,240,0.22)" stroke-width="1.5"/>
-        <line x1="59" y1="20" x2="13" y2="46" stroke="rgba(255,251,240,0.22)" stroke-width="1.5"/>
-        <line x1="13" y1="20" x2="59" y2="46" stroke="rgba(255,251,240,0.22)" stroke-width="1.5"/>
-        <circle cx="36" cy="33" r="5" fill="rgba(255,251,240,0.3)"/>
-      </svg>
-      <div>
-        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Connect</h3>
-        <p style="font-size:15px;color:#4A3A1F;line-height:1.62;font-weight:400;margin:0;">
-          Install the kWh Electric gateway at site. Standard protocols: IEEE 2030.5, OpenADR, SunSpec. No vendor lock-in, no closed OEM cloud.
-        </p>
+    <div class="flip hex-flip" data-flip>
+      <div class="flip-inner">
+        <div class="flip-face hex-face hex-face-front">
+          <p class="hex-word">Connect</p>
+        </div>
+        <div class="flip-face hex-face hex-face-back">
+          <p>On-site gateway on open standards — IEEE 2030.5, OpenADR, SunSpec. No vendor lock-in.</p>
+        </div>
       </div>
     </div>
 
-    <!-- 2: Normalize -->
-    <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
-      <svg width="72" height="72" viewBox="0 0 72 72">
-        <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#CD7F32"/>
-        <g transform="translate(4, 0)">
-          <path d="M19 26 C21 23 23 29 25 26" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M19 33 C21 30 23 36 25 33" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M19 40 C21 37 23 43 25 40" stroke="rgba(255,251,240,0.9)" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M28 33 L33 33" stroke="rgba(255,251,240,0.9)" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M30 30 L33 33 L30 36" stroke="rgba(255,251,240,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          <line x1="36" y1="26" x2="50" y2="26" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
-          <line x1="36" y1="33" x2="50" y2="33" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
-          <line x1="36" y1="40" x2="50" y2="40" stroke="rgba(255,251,240,0.9)" stroke-width="2" stroke-linecap="round"/>
-        </g>
-      </svg>
-      <div>
-        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Normalize</h3>
-        <p style="font-size:15px;color:#4A3A1F;line-height:1.62;font-weight:400;margin:0;">
-          Translates every device language into one clean, consistent data stream. No more per-OEM integration work.
-        </p>
+    <div class="flip hex-flip" data-flip>
+      <div class="flip-inner">
+        <div class="flip-face hex-face hex-face-front">
+          <p class="hex-word">Normalize</p>
+        </div>
+        <div class="flip-face hex-face hex-face-back">
+          <p>Translates every device language into one clean, consistent data stream. No more per-OEM integration work.</p>
+        </div>
       </div>
     </div>
 
-    <!-- 3: Dispatch -->
-    <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
-      <svg width="72" height="72" viewBox="0 0 72 72">
-        <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#CD7F32"/>
-        <g transform="translate(0, -3)">
-          <path d="M42 19 L29 37 L37 37 L30 53 L44 35 L36 35 Z" fill="rgba(255,251,240,0.95)"/>
-        </g>
-      </svg>
-      <div>
-        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Dispatch</h3>
-        <p style="font-size:15px;color:#4A3A1F;line-height:1.62;font-weight:400;margin:0;">
-          Send charge, discharge, curtail, and shift commands from any platform, in real time — to any DER, at any scale.
-        </p>
+    <div class="flip hex-flip" data-flip>
+      <div class="flip-inner">
+        <div class="flip-face hex-face hex-face-front">
+          <p class="hex-word">Dispatch</p>
+        </div>
+        <div class="flip-face hex-face hex-face-back">
+          <p>Send charge, discharge, curtail, and shift commands from any platform, in real time — to any DER, at any scale.</p>
+        </div>
       </div>
     </div>
 
-    <!-- 4: Verify -->
-    <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
-      <svg width="72" height="72" viewBox="0 0 72 72">
-        <polygon points="36,7 59,20 59,46 36,59 13,46 13,20" fill="#CD7F32"/>
-        <g transform="translate(36,36) scale(0.82) translate(-36,-36)">
-          <path d="M20 34 L32 46 L52 22" stroke="rgba(255,251,240,0.95)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </g>
-      </svg>
-      <div>
-        <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0 0 10px;letter-spacing:-0.015em;">Verify</h3>
-        <p style="font-size:15px;color:#4A3A1F;line-height:1.62;font-weight:400;margin:0;">
-          Every dispatch event logged before, during, and after. Provable response, claimable revenue for every asset.
-        </p>
+    <div class="flip hex-flip" data-flip>
+      <div class="flip-inner">
+        <div class="flip-face hex-face hex-face-front">
+          <p class="hex-word">Verify</p>
+        </div>
+        <div class="flip-face hex-face hex-face-back">
+          <p>Every dispatch event logged before, during, and after. Provable response, claimable revenue for every asset.</p>
+        </div>
       </div>
     </div>
 
-  </div>
-
-  <!-- Solve teaser -->
-  <div style="padding:72px 0 0;border-top:1px solid #D9B896;text-align:center;">
-    <div style="display:flex;justify-content:center;margin-bottom:20px;">
-      <img src="assets/kwh-logo-mark.png" height="52" alt="kWh Electric" style="display:block;opacity:0.75;" />
-    </div>
-    <p style="font-size:clamp(22px,3vw,40px);color:#CD7F32;font-weight:700;letter-spacing:-0.025em;margin:0;">
-      kWh Electric eliminates the integration tax.
-    </p>
   </div>
 </section>
 
@@ -271,181 +348,250 @@
 <!-- ══════════════════════════════════════════════════
      PLATFORM FEATURES — dark cards
 ══════════════════════════════════════════════════ -->
-<section id="platform-features" style="background:#FFFBF0;padding:96px 64px;">
+<section id="platform-features" style="padding:48px 64px 72px;">
   <div style="max-width:1160px;margin:0 auto;">
-    <p style="color:#CD7F32;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-align:center;margin:0 0 16px;">THE PLATFORM</p>
-    <h2 style="font-size:clamp(28px,3.8vw,48px);font-weight:700;color:#0B0B0E;text-align:center;margin:0 0 56px;letter-spacing:-0.025em;line-height:1.1;">Hardware-enabled software infrastructure.</h2>
+    <h2 style="font-size:clamp(28px,3.8vw,48px);font-weight:700;color:#0B0B0E;text-align:center;margin:0 0 48px;letter-spacing:-0.025em;line-height:1.1;">Hardware-enabled software infrastructure.</h2>
     <div data-grid="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
 
-      <!-- Edge Gateway -->
-      <div style="background:#FFFFFF;border:1px solid #D9B896;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:0;">
-        <div class="card-icon-title" style="margin-bottom:16px;">
-          <svg width="40" height="40" viewBox="0 0 30 30" aria-hidden="true">
-            <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#CD7F32"/>
-            <rect x="9" y="9" width="12" height="12" rx="1" fill="rgba(255,251,240,0.22)"/>
-            <rect x="11" y="11" width="8" height="8" rx="0.5" fill="rgba(255,251,240,0.85)"/>
-          </svg>
-          <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0;letter-spacing:-0.015em;">Edge Gateway</h3>
-        </div>
-        <p style="font-size:15px;color:#4A3A1F;line-height:1.68;margin:0 0 28px;font-weight:400;flex:1;">A physical device installed at your site that connects to every asset locally. Offline-safe, no cloud dependency.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">Local Edge</span>
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">Offline-Ready</span>
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">OTA Updates</span>
-        </div>
-      </div>
-
-      <!-- Protocol Translation -->
-      <div style="background:#FFFFFF;border:1px solid #D9B896;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:0;">
-        <div class="card-icon-title" style="margin-bottom:16px;">
-          <svg width="40" height="40" viewBox="0 0 30 30" aria-hidden="true">
-            <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#CD7F32"/>
-            <path d="M8 11 L19 11 M16 9 L19 11 L16 13" stroke="rgba(255,251,240,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <path d="M22 19 L11 19 M14 17 L11 19 L14 21" stroke="rgba(255,251,240,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-          <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0;letter-spacing:-0.015em;">Protocol Translation</h3>
-        </div>
-        <p style="font-size:15px;color:#4A3A1F;line-height:1.68;margin:0 0 28px;font-weight:400;flex:1;">Every device speaks a different language. The gateway translates them all into one clean API. No custom integrations per OEM.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">SunSpec</span>
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">Modbus</span>
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">OCPP</span>
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">OpenADR</span>
+      <div class="flip score-flip score-flip--light" data-flip style="min-height:158px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
+                  <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#CD7F32"/>
+                  <rect x="9" y="9" width="12" height="12" rx="1" fill="rgba(255,251,240,0.22)"/>
+                  <rect x="11" y="11" width="8" height="8" rx="0.5" fill="rgba(255,251,240,0.85)"/>
+                </svg>
+                <h3 class="card-category-title">Edge Gateway</h3>
+              </div>
+              <div class="card-front-right">
+                <span class="score-tag">Local Edge</span>
+                <span class="score-tag">Policy-as-Code</span>
+                <span class="score-tag">Offline-Ready</span>
+                <span class="score-tag">OTA Updates</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>A physical device installed at your site that connects to every asset locally. Offline-safe, no cloud dependency.</p>
+          </div>
         </div>
       </div>
 
-      <!-- AI Interface -->
-      <div style="background:#FFFFFF;border:1px solid #D9B896;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:0;">
-        <div class="card-icon-title" style="margin-bottom:16px;">
-          <svg width="40" height="40" viewBox="0 0 30 30" aria-hidden="true">
-            <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#CD7F32"/>
-            <path d="M15 8 C15 8 16.5 13 21 15 C16.5 17 15 22 15 22 C15 22 13.5 17 9 15 C13.5 13 15 8 15 8Z" fill="rgba(255,251,240,0.9)"/>
-          </svg>
-          <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0;letter-spacing:-0.015em;">AI Interface</h3>
+      <div class="flip score-flip score-flip--light" data-flip style="min-height:158px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
+                  <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#CD7F32"/>
+                  <path d="M8 11 L19 11 M16 9 L19 11 L16 13" stroke="rgba(255,251,240,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  <path d="M22 19 L11 19 M14 17 L11 19 L14 21" stroke="rgba(255,251,240,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+                <h3 class="card-category-title">Protocol Translation</h3>
+              </div>
+              <div class="card-front-right">
+                <span class="score-tag">SunSpec</span>
+                <span class="score-tag">Modbus</span>
+                <span class="score-tag">OCPP</span>
+                <span class="score-tag">OpenADR</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Every device speaks a different language. The gateway translates them all into one clean API. No custom integrations per OEM.</p>
+          </div>
         </div>
-        <p style="font-size:15px;color:#4A3A1F;line-height:1.68;margin:0 0 28px;font-weight:400;flex:1;">A secure interface for AI agents to read asset data and trigger dispatch. No raw device control exposed.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">Context Provider</span>
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">Tool Invocation</span>
-          <span style="font-size:12.5px;color:#6B5A3F;border:1px solid #D9B896;border-radius:6px;padding:5px 12px;font-weight:500;">AI-Ready</span>
+      </div>
+
+      <div class="flip score-flip score-flip--light" data-flip style="min-height:158px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
+                  <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#CD7F32"/>
+                  <path d="M15 8 C15 8 16.5 13 21 15 C16.5 17 15 22 15 22 C15 22 13.5 17 9 15 C13.5 13 15 8 15 8Z" fill="rgba(255,251,240,0.9)"/>
+                </svg>
+                <h3 class="card-category-title">Cloud-Based</h3>
+              </div>
+              <div class="card-front-right">
+                <span class="score-tag">MCP</span>
+                <span class="score-tag">AI Agents</span>
+                <span class="score-tag">Cloud</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>A cloud layer exposing MCP and AI interfaces, letting agents read asset data and trigger policy-bound dispatch. No raw device control exposed.</p>
+          </div>
         </div>
       </div>
 
     </div>
   </div>
 </section>
+</div>
 
 <!-- ══════════════════════════════════════════════════
-     WHO IT'S FOR — dark audience grid
+     FIVE-LAYER ARCHITECTURE — dark + honeycomb
 ══════════════════════════════════════════════════ -->
-<section id="who" style="background:#CD7F32;padding:96px 64px;">
+<section id="who" style="background:#CD7F32;padding:72px 64px;">
   <div style="max-width:1160px;margin:0 auto;">
-    <h2 style="font-size:clamp(48px,7vw,96px);font-weight:700;color:#0B0B0E;text-align:center;margin:0 0 64px;letter-spacing:-0.04em;line-height:0.95;">Who it's for.</h2>
+    <h2 style="font-size:clamp(40px,6vw,80px);font-weight:700;color:#0B0B0E;text-align:center;margin:0 0 48px;letter-spacing:-0.04em;line-height:0.95;">Who it's for.</h2>
     <div data-grid="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
 
-      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
-        <div class="card-icon-title" style="margin-bottom:14px;">
-          <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><polygon points="28,13 24,20 16,20 12,13 16,6 24,6" fill="rgba(11,11,14,0.72)"/><polygon points="21,26 17,33 9,33 5,26 9,19 17,19" fill="rgba(11,11,14,0.72)"/><polygon points="35,26 31,33 23,33 19,26 23,19 31,19" fill="rgba(11,11,14,0.72)"/></svg>
-          <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0;letter-spacing:-0.015em;">Aggregators / VPP Operators</h3>
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><polygon points="28,13 24,20 16,20 12,13 16,6 24,6" fill="rgba(11,11,14,0.72)"/><polygon points="21,26 17,33 9,33 5,26 9,19 17,19" fill="rgba(11,11,14,0.72)"/><polygon points="35,26 31,33 23,33 19,26 23,19 31,19" fill="rgba(11,11,14,0.72)"/></svg>
+                <h3 class="card-category-title">Aggregators / VPP Operators</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Dispatch a unified fleet of any asset type, from any manufacturer, in real time.</p>
+          </div>
         </div>
-        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Dispatch a unified fleet of any asset type, from any manufacturer, in real time.</p>
       </div>
 
-      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
-        <div class="card-icon-title" style="margin-bottom:14px;">
-          <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><rect x="10" y="13" width="20" height="23" rx="2" fill="rgba(11,11,14,0.72)"/><rect x="15" y="9" width="10" height="5" rx="1.5" fill="rgba(11,11,14,0.72)"/><rect x="12" y="27" width="16" height="6" rx="1" fill="rgba(255,251,240,0.45)"/></svg>
-          <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0;letter-spacing:-0.015em;">BESS Financiers</h3>
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><rect x="10" y="13" width="20" height="23" rx="2" fill="rgba(11,11,14,0.72)"/><rect x="15" y="9" width="10" height="5" rx="1.5" fill="rgba(11,11,14,0.72)"/><rect x="12" y="27" width="16" height="6" rx="1" fill="rgba(255,251,240,0.45)"/></svg>
+                <h3 class="card-category-title">BESS Financiers</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Real-time visibility into the health and performance of every battery in your portfolio.</p>
+          </div>
         </div>
-        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Real-time visibility into the health and performance of every battery in your portfolio.</p>
       </div>
 
-      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
-        <div class="card-icon-title" style="margin-bottom:14px;">
-          <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><rect x="12" y="12" width="16" height="16" rx="2" fill="rgba(11,11,14,0.72)"/><rect x="5" y="16" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="5" y="22" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="28" y="16" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="28" y="22" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="16" y="5" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="22" y="5" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="16" y="28" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="22" y="28" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/></svg>
-          <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0;letter-spacing:-0.015em;">OEMs</h3>
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><rect x="12" y="12" width="16" height="16" rx="2" fill="rgba(11,11,14,0.72)"/><rect x="5" y="16" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="5" y="22" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="28" y="16" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="28" y="22" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="16" y="5" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="22" y="5" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="16" y="28" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="22" y="28" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/></svg>
+                <h3 class="card-category-title">OEMs</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Make your hardware interoperable and dispatch-ready without building a full software platform.</p>
+          </div>
         </div>
-        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Make your hardware interoperable and dispatch-ready without building a full software platform.</p>
       </div>
 
-      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
-        <div class="card-icon-title" style="margin-bottom:14px;">
-          <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L36 20 L20 36 L4 20 Z" fill="rgba(11,11,14,0.72)"/><line x1="4" y1="20" x2="36" y2="20" stroke="rgba(255,251,240,0.38)" stroke-width="1.5"/><line x1="20" y1="4" x2="20" y2="36" stroke="rgba(255,251,240,0.38)" stroke-width="1.5"/></svg>
-          <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0;letter-spacing:-0.015em;">Utilities / DISCOMs</h3>
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L36 20 L20 36 L4 20 Z" fill="rgba(11,11,14,0.72)"/><line x1="4" y1="20" x2="36" y2="20" stroke="rgba(255,251,240,0.38)" stroke-width="1.5"/><line x1="20" y1="4" x2="20" y2="36" stroke="rgba(255,251,240,0.38)" stroke-width="1.5"/></svg>
+                <h3 class="card-category-title">Utilities / DISCOMs</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>See behind-the-meter assets and dispatch flexible capacity. Devices join automatically, no campaigns needed.</p>
+          </div>
         </div>
-        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">See behind-the-meter assets and dispatch flexible capacity. Devices join automatically, no campaigns needed.</p>
       </div>
 
-      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
-        <div class="card-icon-title" style="margin-bottom:14px;">
-          <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 C20 3 22 17.5 37 20 C22 22.5 20 37 20 37 C20 37 18 22.5 3 20 C18 17.5 20 3 20 3Z" fill="rgba(11,11,14,0.72)"/></svg>
-          <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0;letter-spacing:-0.015em;">Energy AI Platforms</h3>
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 C20 3 22 17.5 37 20 C22 22.5 20 37 20 37 C20 37 18 22.5 3 20 C18 17.5 20 3 20 3Z" fill="rgba(11,11,14,0.72)"/></svg>
+                <h3 class="card-category-title">Energy AI Platforms</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Clean, standardized data and dispatch APIs for your optimization and AI workflows.</p>
+          </div>
         </div>
-        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Clean, standardized data and dispatch APIs for your optimization and AI workflows.</p>
       </div>
 
-      <div style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);border-radius:10px;padding:28px 30px;">
-        <div class="card-icon-title" style="margin-bottom:14px;">
-          <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="7" fill="rgba(11,11,14,0.72)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(45 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(90 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(135 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(180 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(225 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(270 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(315 20 20)"/></svg>
-          <h3 style="font-size:18px;font-weight:700;color:#0B0B0E;margin:0;letter-spacing:-0.015em;">Commercial Asset Owners</h3>
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="7" fill="rgba(11,11,14,0.72)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(45 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(90 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(135 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(180 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(225 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(270 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(315 20 20)"/></svg>
+                <h3 class="card-category-title">Commercial Asset Owners</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Lower bills, grid revenue, and full visibility from your solar, batteries, and EV chargers.</p>
+          </div>
         </div>
-        <p style="font-size:15px;color:rgba(11,11,14,0.65);line-height:1.62;margin:0;font-weight:400;">Lower bills, grid revenue, and full visibility from your solar, batteries, and EV chargers.</p>
       </div>
 
     </div>
   </div>
 </section>
 
-<section id="architecture" style="position:relative;background:#120d04;padding:96px 64px;overflow:hidden;">
-  <div style="position:absolute;inset:0;background:url(uploads/hero-bg.webp) center/cover no-repeat;opacity:0.18;"></div>
-  <div id="arch-stack-inner" style="position:relative;z-index:2;max-width:960px;margin:0 auto;">
+<section id="architecture" style="position:relative;background:#120d04;padding:72px 64px;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:url(uploads/hero-bg.webp) center/cover no-repeat;opacity:0.42;"></div>
+  <div id="arch-stack-inner" style="position:relative;z-index:2;max-width:1160px;margin:0 auto;">
 
-    <p style="color:rgba(255,251,240,0.8);font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-align:center;margin:0 0 20px;">FIVE-LAYER ARCHITECTURE</p>
-    <h2 style="font-size:clamp(28px,4vw,50px);font-weight:700;color:#FFFBF0;text-align:center;margin:0 0 72px;letter-spacing:-0.03em;line-height:1.1;">
+    <h2 style="font-size:clamp(28px,4vw,50px);font-weight:700;color:#FFFBF0;text-align:center;margin:0 0 56px;letter-spacing:-0.03em;line-height:1.1;">
       Five layers from physica<span id="stack-bee-land">l</span> device<br>to AI operation.
     </h2>
 
     <!-- L5 -->
-    <div data-grid="" style="border-top:3px solid #CD7F32;padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+    <div data-grid="" style="border-top:3px solid #CD7F32;padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L5</span>
       <div>
-        <h3 style="font-size:18px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Applications + Value Layer</h3>
-        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">Utility orchestration, asset financing, VPP participation, grid services, forecasting, performance verification.</p>
+        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Applications + Value Layer</h3>
+        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">Utility orchestration, asset financing, VPP participation, grid services, forecasting, performance verification.</p>
       </div>
     </div>
 
     <!-- L4 -->
-    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L4</span>
       <div>
-        <h3 style="font-size:18px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">MCP + AI Layer</h3>
-        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">Agentic AI systems with DER context, telemetry access, and policy-constrained dispatch tools.</p>
+        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">MCP + AI Layer</h3>
+        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">Agentic AI systems with DER context, telemetry access, and policy-constrained dispatch tools.</p>
       </div>
     </div>
 
     <!-- L3 -->
-    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L3</span>
       <div>
-        <h3 style="font-size:18px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Cloud Platform</h3>
-        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</p>
+        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Cloud Platform</h3>
+        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</p>
       </div>
     </div>
 
     <!-- L2 -->
-    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L2</span>
       <div>
-        <h3 style="font-size:18px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Edge Gateway</h3>
-        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">One-time device installation. Connects locally to every DER, standardizes telemetry, enables secure dispatch — no closed OEM cloud dependency.</p>
+        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Edge Gateway</h3>
+        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">One-time device installation. Connects locally to every DER, standardizes telemetry, enables secure dispatch — no closed OEM cloud dependency.</p>
       </div>
     </div>
 
     <!-- L1 -->
-    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);border-bottom:2px solid rgba(205,127,50,0.35);padding:22px 0 40px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);border-bottom:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L1</span>
       <div>
-        <h3 style="font-size:18px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Physical DER Devices</h3>
-        <p style="font-size:15px;color:rgba(255,251,240,0.65);line-height:1.7;margin:0;font-weight:400;">Batteries, solar inverters, EV chargers, smart meters, flexible loads — every asset class, every OEM.</p>
+        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Physical DER Devices</h3>
+        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">Batteries, solar inverters, EV chargers, smart meters, flexible loads — every asset class, every OEM.</p>
       </div>
     </div>
 
@@ -455,9 +601,8 @@
 <!-- ══════════════════════════════════════════════════
      GET IN TOUCH — gold contact section
 ══════════════════════════════════════════════════ -->
-<section id="contact" style="background:#CD7F32;padding:96px 48px 112px;">
-  <div style="max-width:720px;margin:0 auto;">
-    <p style="color:white;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-align:center;margin:0 0 22px;">GET IN TOUCH</p>
+<section id="contact" style="background:#CD7F32;padding:72px 48px 80px;">
+  <div style="max-width:1160px;margin:0 auto;">
     <h2 style="font-size:clamp(30px,4.5vw,56px);font-weight:700;color:#0B0B0E;text-align:center;line-height:1.08;margin:0 0 24px;letter-spacing:-0.03em;">
       Talk to the <img src="assets/kwh-logo-mark.png" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> engineering team.
     </h2>
@@ -488,6 +633,7 @@
       </div>
     </div>
 
+    <div style="max-width:720px;margin:0 auto;">
     <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
       <div style="background:rgba(255,255,255,0.22);border-radius:3px;padding:48px;text-align:center;">
         <p style="font-size:20px;color:#0B0B0E;font-weight:500;margin:0;">Message received — we'll be in touch shortly.</p>
@@ -527,6 +673,7 @@
         </div>
       </form>
     </sc-if>
+    </div>
 
     <p style="font-size:13px;color:rgba(0,0,0,0.5);text-align:center;margin:48px 0 0;font-weight:400;">
       Palo Alto, California &nbsp;·&nbsp; <a href="mailto:arham@kwhelectric.io" style="color:rgba(0,0,0,0.65);">arham@kwhelectric.io</a>
