@@ -205,6 +205,17 @@
       #contact { padding: 64px 24px 72px !important; }
       #contact > div { max-width: 100% !important; }
       [data-name-row] { grid-template-columns: 1fr !important; }
+
+      /* Scorecards: no 3D flip on phones — show as tidy self-sizing cards */
+      .score-flip { min-height:0 !important; cursor:default; border-radius:16px; padding:20px 22px 22px; box-sizing:border-box; }
+      .score-flip--light { background:#FFFFFF; border:1px solid #E3D2B0; box-shadow:0 1px 2px rgba(120,80,30,0.05); }
+      .score-flip:not(.score-flip--light) { background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.32); }
+      .score-flip .flip-inner { transform:none !important; height:auto; }
+      .score-flip .flip-face { position:static; inset:auto; transform:none !important; -webkit-backface-visibility:visible; backface-visibility:visible; background:transparent !important; border:none !important; box-shadow:none !important; border-radius:0; padding:0; overflow:visible; justify-content:flex-start; }
+      .score-flip .flip-back { margin-top:14px; padding-top:14px; border-top:1px solid rgba(11,11,14,0.14) !important; }
+      .score-flip .flip-back p, .score-flip--light .flip-back p { color:#0B0B0E !important; font-size:15px !important; line-height:1.5; }
+      .card-front-split { gap:12px !important; }
+      .card-front-right { gap:7px; }
     }
   </style>
 </helmet>
@@ -617,11 +628,13 @@
         <div style="position:absolute;left:0;top:0;bottom:0;width:72px;background:linear-gradient(to right,#CD7F32,transparent);z-index:1;pointer-events:none;"></div>
         <div style="position:absolute;right:0;top:0;bottom:0;width:72px;background:linear-gradient(to left,#CD7F32,transparent);z-index:1;pointer-events:none;"></div>
         <div style="display:flex;align-items:center;gap:18px;animation:logo-scroll 26s linear infinite;width:max-content;">
+          <div class="backed-logo backed-logo--nfh"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Entrecorps Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="EntreCORPS" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Samayang Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Samayang" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/pasted-1782743184735-0.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Landuyt Center" /></div>
+          <div class="backed-logo backed-logo--nfh"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Entrecorps Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="EntreCORPS" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
           <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
