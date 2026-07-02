@@ -181,19 +181,27 @@
       .hero-line2 { white-space: nowrap; letter-spacing: -0.03em; }
       #problem { padding: 64px 24px !important; }
       #how-it-works { padding: 64px 24px 0 !important; }
+      /* Diamond honeycomb on phones: 1 top, 2 middle, 1 bottom — fits one screen */
       .how-hex-grid {
-        --hex-w: min(280px, 82vw) !important;
-        width:var(--hex-w) !important;
-        height:auto !important;
-        display:flex !important; flex-direction:column !important; align-items:center !important;
-        gap:14px !important;
+        --hex-w: min(158px, 43vw) !important;
+        --hex-h: calc(1.1547 * var(--hex-w)) !important;
+        display:block !important;
+        width:calc(2 * var(--hex-w)) !important;
+        height:calc(2.5 * var(--hex-h)) !important;
+        margin:0 auto !important;
       }
       .how-hex-grid .hex-flip {
-        position:static !important;
-        left:auto !important; top:auto !important;
+        position:absolute !important;
         width:var(--hex-w) !important;
-        height:calc(1.1547 * var(--hex-w)) !important;
+        height:var(--hex-h) !important;
       }
+      .how-hex-grid .hex-flip:nth-child(1) { left:calc(0.5 * var(--hex-w)) !important; top:0 !important; }
+      .how-hex-grid .hex-flip:nth-child(2) { left:0 !important; top:calc(0.75 * var(--hex-h)) !important; }
+      .how-hex-grid .hex-flip:nth-child(3) { left:var(--hex-w) !important; top:calc(0.75 * var(--hex-h)) !important; }
+      .how-hex-grid .hex-flip:nth-child(4) { left:calc(0.5 * var(--hex-w)) !important; top:calc(1.5 * var(--hex-h)) !important; }
+      .hex-word { font-size:20px !important; }
+      .hex-face-back { padding:0 18% !important; }
+      .hex-face-back p { font-size:10.5px !important; line-height:1.38 !important; }
       .problem-metrics { grid-template-columns:1fr !important; gap:24px !important; }
       #how-it-works [data-grid] { max-width: 100% !important; gap: 40px !important; }
       #platform-features { padding: 64px 24px !important; }

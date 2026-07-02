@@ -147,6 +147,20 @@
         gsap.timeline({ repeat: -1, yoyo: true, defaults: { ease: 'sine.inOut' } })
           .to('#bw1', { scaleY: 0.62, duration: 0.42 }, 0)
           .to('#bw2', { scaleY: 0.68, duration: 0.46 }, 0.05);
+        // Pin the bee to the "t" and keep it there through zoom/resize.
+        // Delta captures motionPath align offsets + bounce settle empirically.
+        const dx = gsap.getProperty(bee, 'x') - lx;
+        const dy = gsap.getProperty(bee, 'y') - ly;
+        const pin = () => {
+          const hR = hero.getBoundingClientRect();
+          const lR = land.getBoundingClientRect();
+          gsap.set(bee, {
+            x: lR.left - hR.left + lR.width * 0.5 - 28 + dx,
+            y: lR.top  - hR.top  + lR.height * 0.22 - 13.5 + dy
+          });
+        };
+        pin();
+        window.addEventListener('resize', pin);
       });
   }
 
@@ -161,8 +175,8 @@
           '<rect x="25" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>' +
         '</g>' +
         '<circle cx="44" cy="22" r="7.5" fill="' + bodyFill + '"/>' +
-        '<circle cx="47" cy="19" r="2.2" fill="#1a1a1a"/>' +
-        '<circle cx="47.8" cy="18.4" r="0.7" fill="#fff"/>' +
+        '<circle id="' + idp + '-eye" cx="47" cy="19" r="2.2" fill="#1a1a1a"/>' +
+        '<circle id="' + idp + '-eyehi" cx="47.8" cy="18.4" r="0.7" fill="#fff"/>' +
         '<polygon points="9,20 9,26 3,23" fill="#666"/>' +
         '<line x1="41" y1="15" x2="35" y2="4" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>' +
         '<circle cx="35" cy="4" r="1.9" fill="#1a1a1a"/>' +
@@ -258,6 +272,11 @@
       .to('#sbb-w1', { scaleY:0.10, duration:0.10 }, 0)
       .to('#sbb-w2', { scaleY:0.14, duration:0.11 }, 0.02);
 
+    // Eyes glance left and right, forever — gives the bee a curious personality.
+    gsap.to(['#sbb-eye', '#sbb-eyehi'], {
+      x:-2.6, duration:0.85, repeat:-1, yoyo:true, ease:'sine.inOut'
+    });
+
     function orientToward(el, px, py, tx, ty, base) {
       const dx = tx - px, dy = ty - py;
       const faceLeft = dx < 0;
@@ -304,32 +323,70 @@
     const master = gsap.timeline({ paused:true });
     master.to(ring, { scale:1, duration:0.9, ease:'back.out(1.4)' });
 
-    [150, 30, 90].forEach(deg => {
-      master
-        .call(() => { a.ang = deg * Math.PI / 180; a.from='start'; a.to='hit'; a.t=0; place(); })
-        .to(bb, { opacity:0.95, duration:0.25 }, '<')
-        .call(yellowLook, [deg], '<')
-        .to(a, { t:1, duration:1.25, ease:'power1.in', onUpdate:place })
-        .call(impact)
-        .call(() => { a.from='hit'; a.to='recoil'; a.t=0; })
-        .call(yellowRest, null, '<')
-        .to(a, { t:1, duration:0.55, ease:'power2.out', onUpdate:place })
-        .to(bb, { opacity:0, duration:0.3 })
-        .to({}, { duration:0.2 });
-    });
+    // One attempt only — the strike fails, and the bee gives up on attacking.
+    master
+      .call(() => { a.ang = 150 * Math.PI / 180; a.from='start'; a.to='hit'; a.t=0; place(); })
+      .to(bb, { opacity:0.95, duration:0.25 }, '<')
+      .call(yellowLook, [150], '<')
+      .to(a, { t:1, duration:1.25, ease:'power1.in', onUpdate:place })
+      .call(impact)
+      .call(() => { a.from='hit'; a.to='recoil'; a.t=0; })
+      .call(yellowRest, null, '<')
+      .to(a, { t:1, duration:0.55, ease:'power2.out', onUpdate:place });
+
+    // ── Personality: one failed strike, then it sulks, spies, and settles ──
+    let resting = false;
+    function l5Rest() {
+      const sR = sec.getBoundingClientRect();
+      const row = sec.querySelector('[data-grid]');     // first row = L5
+      const lR = (row || sec).getBoundingClientRect();
+      // Feet on the L5 top border line, at its left edge
+      return { x: lR.left - sR.left + 30, y: lR.top - sR.top - 18 };
+    }
+    function secW() { return sec.getBoundingClientRect().width; }
 
     master
-      .call(yellowRest)
-      .to(ring, { scale:1.05, opacity:0, duration:0.7, ease:'power2.in' }, '<')
+      // backs away to the L5 line, still watching the barrier
+      .to(bb, { x:() => l5Rest().x, y:() => l5Rest().y, duration:0.9, ease:'power2.inOut' })
+      .set(bb, { scaleX:1.32, scaleY:1.32, rotation:0 })     // perch level, facing the stack
+      // sits for a moment, glancing both ways
+      .to(bb, { scaleX:-1.32, duration:0.4, ease:'sine.inOut' }, '+=0.6')
+      .to(bb, { scaleX: 1.32, duration:0.4, ease:'sine.inOut' }, '+=0.45')
+      .to({}, { duration:0.5 })
+      // then flies out of the screen to the left
+      .set(bb, { scaleX:-1.32 })
+      .to(bb, { x:-130, y:'-=40', opacity:0, duration:0.85, ease:'power2.in' })
+      .to({}, { duration:1.0 })
+      // peek #1 — edges in from the right, eyes showing, looks one way then the other
       .call(() => {
-        if (ring.parentNode) ring.remove();
-        if (ripple.parentNode) ripple.remove();
-        const rr = D / 2 + 110, ang = 158 * Math.PI / 180;
-        const x = C.x + rr * Math.cos(ang), y = C.y + rr * Math.sin(ang);
-        gsap.set(bb, { x, y });
-        orientToward(bb, x, y, C.x, C.y, 1.32);
+        gsap.set(bb, { x:secW() + 90, y:sec.getBoundingClientRect().height * 0.38, scaleX:-1.32, scaleY:1.32, rotation:0 });
       })
-      .to(bb, { opacity:0.95, duration:0.5 });
+      .to(bb, { x:() => secW() - 44, opacity:0.95, duration:0.7, ease:'power2.out' })
+      .to(bb, { scaleX: 1.32, duration:0.4, ease:'sine.inOut' }, '+=0.7')
+      .to(bb, { scaleX:-1.32, duration:0.4, ease:'sine.inOut' }, '+=0.45')
+      .to(bb, { x:() => secW() + 90, opacity:0, duration:0.6, ease:'power2.in' }, '+=0.5')
+      .to({}, { duration:0.9 })
+      // peek #2 — drops in from the top, same routine
+      .call(() => {
+        gsap.set(bb, { x:secW() * 0.30, y:-90, scaleX:1.32, scaleY:1.32, rotation:0 });
+      })
+      .to(bb, { y:52, opacity:0.95, duration:0.7, ease:'power2.out' })
+      .to(bb, { scaleX:-1.32, duration:0.4, ease:'sine.inOut' }, '+=0.6')
+      .to(bb, { scaleX: 1.32, duration:0.4, ease:'sine.inOut' }, '+=0.45')
+      .to(bb, { y:-90, opacity:0, duration:0.6, ease:'power2.in' }, '+=0.5')
+      .to({}, { duration:0.9 })
+      // returns to its original perch by L5 — and never attacks again
+      .call(() => {
+        const r = l5Rest();
+        gsap.set(bb, { x:-90, y:r.y - 30, scaleX:1.32, scaleY:1.32, rotation:0 });
+      })
+      .to(bb, { x:() => l5Rest().x, y:() => l5Rest().y, opacity:0.95, duration:0.9, ease:'power2.out' })
+      .call(() => { resting = true; });
+
+    // Keep the perched bee glued to the L5 line through zoom/resize.
+    window.addEventListener('resize', () => {
+      if (resting) { const r = l5Rest(); gsap.set(bb, { x:r.x, y:r.y }); }
+    });
 
     let started = false;
     const io = new IntersectionObserver((entries) => {
