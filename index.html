@@ -18,11 +18,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; background: #FFFBF0; }
+    *, *::before, *::after { box-sizing: border-box; font-family: inherit; }
+    html {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      scroll-behavior: smooth;
+    }
+    html, body { margin: 0; padding: 0; }
+    body { -webkit-font-smoothing: antialiased; background: #FFFBF0; }
+    /* ── SMART DOT CURSOR (desktop) ── */
+    @media (hover: hover) and (pointer: fine) {
+      html.dot-cursor-on, html.dot-cursor-on * { cursor: none !important; }
+      #dot-cursor {
+        position: fixed; left: 0; top: 0; width: 9px; height: 9px;
+        border-radius: 50%; background: rgba(11, 11, 14, 0.45);
+        pointer-events: none; z-index: 10001; transform: translate(-50%, -50%);
+        opacity: 0; transition: opacity 0.12s ease, background-color 0.08s ease, transform 0.08s ease;
+      }
+      html.dot-cursor-on #dot-cursor { opacity: 1; }
+      #dot-cursor.pressed { transform: translate(-50%, -50%) scale(1.15); }
+    }
     a { text-decoration: none; color: inherit; }
-    input, textarea, button { font-family: inherit; }
+    input, textarea, button, select, label { font-family: inherit; }
+    input::placeholder, textarea::placeholder { font-family: inherit; opacity: 1; }
+    #contact, #contact * { font-family: inherit; }
     input:focus, textarea:focus { outline: 2px solid rgba(205,127,50,0.45); outline-offset: 1px; }
     @keyframes logo-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     /* ── BEES ── */
@@ -48,6 +66,7 @@
     }
     .hero-line1 { display:block; }
     .hero-line2 { display:block; white-space:nowrap; }
+    #bee-land { position:relative; display:inline-block; }
     .hero-sub {
       font-size:clamp(16px, 1.5vw, 20px);
       color:rgba(255,251,240,0.8);
@@ -71,7 +90,12 @@
     .backed-logo img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; display:block; }
     .backed-logo--nfh { padding:10px; }
     /* ── FLIP CARDS ── */
-    .flip { perspective:1000px; cursor:pointer; }
+    .flip {
+      perspective:1000px; cursor:pointer;
+      -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none;
+      touch-action:manipulation; outline:none;
+    }
+    .flip:focus, .flip:focus-visible { outline:none; }
     .flip-inner { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform 0.5s ease; }
     .flip:hover .flip-inner, .flip.pinned .flip-inner { transform:rotateY(180deg); }
     .flip-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:14px; }
@@ -109,14 +133,18 @@
       position:absolute;
       width:var(--hex-w);
       height:var(--hex-h);
+      min-width:var(--hex-w);
+      min-height:var(--hex-h);
+      flex-shrink:0;
       transform:scale(0.93);
     }
-    .how-hex-grid .hex-flip:nth-child(1) { left:0;                    top:var(--off); }
-    .how-hex-grid .hex-flip:nth-child(2) { left:var(--col);           top:0; }
-    .how-hex-grid .hex-flip:nth-child(3) { left:calc(2 * var(--col)); top:var(--off); }
-    .how-hex-grid .hex-flip:nth-child(4) { left:calc(3 * var(--col)); top:0; }
+    /* Connect → Dispatch → Normalize → Verify (desktop honeycomb zigzag) */
+    .how-hex-grid .hex-flip:nth-child(1) { left:0;                    top:0; }
+    .how-hex-grid .hex-flip:nth-child(2) { left:var(--col);           top:var(--off); }
+    .how-hex-grid .hex-flip:nth-child(3) { left:calc(2 * var(--col)); top:0; }
+    .how-hex-grid .hex-flip:nth-child(4) { left:calc(3 * var(--col)); top:var(--off); }
     .how-hex-grid .hex-flip:hover, .how-hex-grid .hex-flip.pinned { z-index:10; }
-    .hex-flip .flip-inner { width:100%; height:100%; }
+    .hex-flip .flip-inner { width:100%; height:100%; min-height:var(--hex-h); }
     .hex-face {
       clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       border-radius:0;
@@ -142,29 +170,51 @@
       clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       background:#FFF7E6; transform:scale(0.94); z-index:0;
     }
-    .hex-face-back p { font-size:clamp(12.5px,1.5vw,15.5px); color:#4A3A1F; line-height:1.42; margin:0; font-weight:500; position:relative; z-index:1; }
+    .hex-face-back p { font-size:clamp(13.5px,1.65vw,16.5px); color:#4A3A1F; line-height:1.4; margin:0; font-weight:500; position:relative; z-index:1; }
     .hex-word { font-size:clamp(26px,4.2vw,40px); font-weight:700; color:#FFFBF0; margin:0; letter-spacing:-0.03em; line-height:1.05; text-align:center; position:relative; z-index:1; }
     /* ── SCORECARD FLIPS ── */
     .score-flip { min-height:156px; cursor:pointer; }
     .score-flip .flip-face { display:flex; flex-direction:column; justify-content:center; padding:22px 24px; box-sizing:border-box; overflow:hidden; border-radius:16px; }
     .score-flip .flip-front { background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.32); }
     .score-flip--light .flip-front { background:#FFFFFF; border:1px solid #E3D2B0; box-shadow:0 1px 2px rgba(120,80,30,0.05); }
-    .score-flip .flip-back { background:#0B0B0E; border:1px solid rgba(255,255,255,0.15); align-items:flex-start; justify-content:center; text-align:left; }
+    .score-flip .flip-back { background:#FFF7E6; border:1px solid #E3D2B0; align-items:flex-start; justify-content:center; text-align:left; }
     .score-flip--light .flip-back { background:#CD7F32; border:1px solid #B86F28; }
-    .score-flip .flip-back p { font-size:clamp(15px,1.5vw,18px); line-height:1.5; margin:0; font-weight:400; color:rgba(255,251,240,0.92); max-width:100%; }
+    .score-flip .flip-back p { font-size:clamp(15px,1.5vw,18px); line-height:1.5; margin:0; font-weight:400; color:#0B0B0E; max-width:100%; }
     .score-flip--light .flip-back p { color:#0B0B0E; }
+    @media (min-width: 769px) {
+      #who .score-flip .flip-back {
+        background:#FFF7E6 !important;
+        border:1px solid #E3D2B0 !important;
+      }
+      #who .score-flip .flip-back p { color:#0B0B0E !important; }
+    }
     .card-front-split { display:flex; flex-direction:column; align-items:flex-start; gap:16px; width:100%; }
     .card-front-left { display:flex; align-items:center; gap:13px; }
     .card-front-left svg { width:38px; height:38px; }
     .card-front-right { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-start; align-items:center; }
     .card-category-title { font-size:clamp(18px,2vw,23px); font-weight:700; color:#0B0B0E; margin:0; letter-spacing:-0.02em; line-height:1.18; }
     .score-tag { font-size:12px; color:#6B5A3F; border:1px solid #D9B896; border-radius:6px; padding:4px 11px; font-weight:500; white-space:nowrap; }
+    /* Platform feature cards: never overflow viewport */
+    #platform-features { overflow-x:clip; box-sizing:border-box; padding:48px clamp(20px,4vw,64px) 72px !important; }
+    #platform-features > div { min-width:0; max-width:1160px; margin:0 auto; }
+    #platform-features [data-grid] { display:grid !important; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)) !important; gap:20px !important; min-width:0; width:100%; }
+    #platform-features .score-flip { min-width:0; max-width:100%; overflow:hidden; }
+    #platform-features .card-front-split { min-width:0; width:100%; }
+    #platform-features .card-front-left { min-width:0; flex:1 1 auto; }
+    #platform-features .card-front-right { min-width:0; flex:1 1 100%; }
+    #platform-features .card-category-title { overflow-wrap:break-word; }
+    #platform-features .score-tag { white-space:normal; text-align:center; line-height:1.25; }
     .score-flip .flip-face svg { flex-shrink:0; }
     /* ── PROBLEM METRICS ── */
-    .problem-metrics { display:grid; grid-template-columns:1fr 1fr; gap:32px 48px; max-width:900px; margin:0 auto 28px; }
-    .problem-metric-num { font-size:clamp(40px,6vw,72px); font-weight:700; color:#0B0B0E; letter-spacing:-0.04em; line-height:1; margin:0 0 8px; }
-    .problem-metric-label { font-size:clamp(15px,1.5vw,18px); color:rgba(11,11,14,0.75); line-height:1.4; margin:0; font-weight:500; }
-    .problem-support { font-size:clamp(16px,1.6vw,19px); color:rgba(11,11,14,0.85); max-width:640px; margin:0 auto; line-height:1.55; font-weight:400; }
+    .problem-metrics { display:grid; grid-template-columns:1fr 1fr; gap:28px 40px; max-width:920px; margin:0 auto; align-items:start; }
+    .problem-metric { text-align:center; padding:0; }
+    .problem-metric-num { font-size:clamp(36px,5.5vw,68px); font-weight:700; color:#0B0B0E; letter-spacing:-0.04em; line-height:1; margin:0 0 10px; }
+    .problem-metric-label { font-size:clamp(14px,1.45vw,17px); color:rgba(11,11,14,0.78); line-height:1.45; margin:0; font-weight:500; }
+    /* ── ARCHITECTURE LAYER TYPE (shares .card-category-title metrics) ── */
+    .arch-layer-title { color:#CD7F32; margin:0 0 10px; }
+    #architecture .card-category-title { color:#CD7F32; margin:0 0 10px; }
+    .arch-layer-body { font-size:clamp(15px,1.5vw,18px); color:rgba(255,251,240,0.72); line-height:1.5; margin:0; font-weight:400; }
+    .nav-brand-text { font-size:15px; font-weight:700; letter-spacing:-0.02em; line-height:1; white-space:nowrap; }
     .card-icon-title {
       display: flex;
       align-items: center;
@@ -181,28 +231,48 @@
       .hero-line2 { white-space: nowrap; letter-spacing: -0.03em; }
       #problem { padding: 64px 24px !important; }
       #how-it-works { padding: 64px 24px 0 !important; }
-      /* Diamond honeycomb on phones: 1 top, 2 middle, 1 bottom — fits one screen */
+      /* Vertical honeycomb: transpose of laptop zigzag adjacency */
       .how-hex-grid {
-        --hex-w: min(158px, 43vw) !important;
+        --hex-w: min(158px, calc((100vw - 48px) / 1.5)) !important;
         --hex-h: calc(1.1547 * var(--hex-w)) !important;
+        --col: calc(0.5 * var(--hex-w)) !important;
+        --row: calc(0.75 * var(--hex-h)) !important;
         display:block !important;
-        width:calc(2 * var(--hex-w)) !important;
-        height:calc(2.5 * var(--hex-h)) !important;
+        width:calc(var(--col) + var(--hex-w)) !important;
+        height:calc(3 * var(--row) + var(--hex-h)) !important;
         margin:0 auto !important;
       }
       .how-hex-grid .hex-flip {
         position:absolute !important;
         width:var(--hex-w) !important;
         height:var(--hex-h) !important;
+        min-width:var(--hex-w) !important;
+        min-height:var(--hex-h) !important;
+        flex-shrink:0 !important;
       }
-      .how-hex-grid .hex-flip:nth-child(1) { left:calc(0.5 * var(--hex-w)) !important; top:0 !important; }
-      .how-hex-grid .hex-flip:nth-child(2) { left:0 !important; top:calc(0.75 * var(--hex-h)) !important; }
-      .how-hex-grid .hex-flip:nth-child(3) { left:var(--hex-w) !important; top:calc(0.75 * var(--hex-h)) !important; }
-      .how-hex-grid .hex-flip:nth-child(4) { left:calc(0.5 * var(--hex-w)) !important; top:calc(1.5 * var(--hex-h)) !important; }
+      /* Keep regular hex ratio — mobile flip flattening must not squash height */
+      .how-hex-grid .hex-flip .flip-inner {
+        height:100% !important;
+        min-height:var(--hex-h) !important;
+      }
+      .how-hex-grid .hex-flip .hex-face-front {
+        position:absolute !important;
+        inset:0 !important;
+        width:100% !important;
+        height:100% !important;
+        transform:none !important;
+      }
+      /* Connect ↘ Dispatch ↙ Normalize ↘ Verify */
+      .how-hex-grid .hex-flip:nth-child(1) { left:var(--col) !important; top:0 !important; }
+      .how-hex-grid .hex-flip:nth-child(2) { left:0 !important; top:var(--row) !important; }
+      .how-hex-grid .hex-flip:nth-child(3) { left:var(--col) !important; top:calc(2 * var(--row)) !important; }
+      .how-hex-grid .hex-flip:nth-child(4) { left:0 !important; top:calc(3 * var(--row)) !important; }
       .hex-word { font-size:20px !important; }
-      .hex-face-back { padding:0 18% !important; }
-      .hex-face-back p { font-size:10.5px !important; line-height:1.38 !important; }
-      .problem-metrics { grid-template-columns:1fr !important; gap:24px !important; }
+      .hex-face-back { padding:0 16% !important; }
+      .hex-face-back p { font-size:14px !important; line-height:1.42 !important; }
+      .problem-metrics { grid-template-columns:1fr !important; gap:28px !important; max-width:100% !important; }
+      .problem-metric-num { font-size:clamp(34px,10vw,48px) !important; }
+      .problem-metric-label { font-size:15px !important; }
       #how-it-works [data-grid] { max-width: 100% !important; gap: 40px !important; }
       #platform-features { padding: 64px 24px !important; }
       #platform-features > div { max-width: 100% !important; }
@@ -214,14 +284,44 @@
       #contact > div { max-width: 100% !important; }
       [data-name-row] { grid-template-columns: 1fr !important; }
 
-      /* Scorecards: no 3D flip on phones — show as tidy self-sizing cards */
-      .score-flip { min-height:0 !important; cursor:default; border-radius:16px; padding:20px 22px 22px; box-sizing:border-box; }
-      .score-flip--light { background:#FFFFFF; border:1px solid #E3D2B0; box-shadow:0 1px 2px rgba(120,80,30,0.05); }
-      .score-flip:not(.score-flip--light) { background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.32); }
-      .score-flip .flip-inner { transform:none !important; height:auto; }
-      .score-flip .flip-face { position:static; inset:auto; transform:none !important; -webkit-backface-visibility:visible; backface-visibility:visible; background:transparent !important; border:none !important; box-shadow:none !important; border-radius:0; padding:0; overflow:visible; justify-content:flex-start; }
-      .score-flip .flip-back { margin-top:14px; padding-top:14px; border-top:1px solid rgba(11,11,14,0.14) !important; }
-      .score-flip .flip-back p, .score-flip--light .flip-back p { color:#0B0B0E !important; font-size:15px !important; line-height:1.5; }
+      /* All flip cards: front face only — no 3D flip or tap-to-pin */
+      [data-flip], .flip {
+        cursor:default !important;
+        pointer-events:none !important;
+        perspective:none !important;
+      }
+      [data-flip] .flip-inner, .flip .flip-inner {
+        transform:none !important;
+        transition:none !important;
+        transform-style:flat !important;
+        height:100%;
+      }
+      [data-flip]:hover .flip-inner,
+      [data-flip].pinned .flip-inner,
+      .flip:hover .flip-inner,
+      .flip.pinned .flip-inner { transform:none !important; }
+      [data-flip] .flip-back, .flip .flip-back,
+      .hex-flip .hex-face-back { display:none !important; }
+      [data-flip] .flip-front,
+      [data-flip] .flip-face:not(.flip-back),
+      .hex-flip .hex-face-front {
+        position:relative !important;
+        backface-visibility:visible !important;
+        -webkit-backface-visibility:visible !important;
+        transform:none !important;
+      }
+      #who [data-grid] {
+        display:grid !important;
+        grid-template-columns:1fr 1fr !important;
+        gap:16px !important;
+        flex-direction:unset !important;
+      }
+      #who .score-flip { min-height:130px !important; border-radius:16px; }
+      #who .score-flip .flip-front { padding:18px 16px !important; }
+      #who .card-front-left { gap:10px !important; align-items:center; }
+      #who .card-front-left svg { width:36px !important; height:36px !important; flex-shrink:0; }
+      #platform-features .score-flip { min-height:156px !important; border-radius:16px; }
+      #platform-features .score-flip .flip-face { border-radius:16px; }
       .card-front-split { gap:12px !important; }
       .card-front-right { gap:7px; }
     }
@@ -232,9 +332,9 @@
      NAV
 ══════════════════════════════════════════════════ -->
 <nav style="{{ navStyle }}">
-  <a href="#hero" style="display:flex;align-items:center;">
+  <a href="#hero" style="display:flex;align-items:center;gap:10px;">
     <sc-if value="{{ notScrolled }}" hint-placeholder-val="{{ true }}">
-      <img src="assets/kwh-logo-mark-light.png" height="34" alt="kWh Electric" style="display:block;" />
+      <img src="assets/kwh-logo-mark-light.png" height="34" alt="kWh Electric" style="display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.45));" />
     </sc-if>
     <sc-if value="{{ scrolled }}" hint-placeholder-val="{{ false }}">
       <img src="assets/kwh-logo-mark.png" height="34" alt="kWh Electric" style="display:block;" />
@@ -281,31 +381,30 @@
       <span class="hero-line2">visible and dispatchable.</span>
     </h1>
     <p class="hero-sub">
-      Real-time telemetry and dispatch across every OEM, every DISCOM. One gateway, zero integration tax.
+      Making assets intelligent using <img src="assets/kwh-logo-mark-light.png" alt="kWh" style="height:0.78em;vertical-align:-0.06em;display:inline-block;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.35));" /> communication infrastructure
     </p>
 
   </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════
-     THE PROBLEM — gold section
+     THE PROBLEM, gold section
 ══════════════════════════════════════════════════ -->
 <section id="problem" style="background:#CD7F32;padding:64px 48px;text-align:center;">
   <div class="problem-metrics">
-    <div>
-      <p class="problem-metric-num">100M+</p>
-      <p class="problem-metric-label">DERs deployed globally</p>
+    <div class="problem-metric">
+      <p class="problem-metric-num">4+ TW</p>
+      <p class="problem-metric-label">of distributed energy devices worldwide</p>
     </div>
-    <div>
+    <div class="problem-metric">
       <p class="problem-metric-num">$50K+</p>
-      <p class="problem-metric-label">monthly integration tax per DISCOM, per OEM</p>
+      <p class="problem-metric-label">per DISCOM, per OEM, every month</p>
     </div>
   </div>
-  <p class="problem-support">No common dispatch layer across the world's distributed energy fleet.</p>
 </section>
 
 <!-- ══════════════════════════════════════════════════
-     HOW IT WORKS + PLATFORM — cream honeycomb band
+     HOW IT WORKS + PLATFORM, cream honeycomb band
 ══════════════════════════════════════════════════ -->
 <div class="cream-hex-section">
 <section id="how-it-works" style="padding:72px 48px 64px;text-align:center;">
@@ -318,18 +417,7 @@
           <p class="hex-word">Connect</p>
         </div>
         <div class="flip-face hex-face hex-face-back">
-          <p>On-site gateway on open standards — IEEE 2030.5, OpenADR, SunSpec. No vendor lock-in.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="flip hex-flip" data-flip>
-      <div class="flip-inner">
-        <div class="flip-face hex-face hex-face-front">
-          <p class="hex-word">Normalize</p>
-        </div>
-        <div class="flip-face hex-face hex-face-back">
-          <p>Translates every device language into one clean, consistent data stream. No more per-OEM integration work.</p>
+          <p>Open standards gateway: IEEE 2030.5, OpenADR, SunSpec.</p>
         </div>
       </div>
     </div>
@@ -340,7 +428,18 @@
           <p class="hex-word">Dispatch</p>
         </div>
         <div class="flip-face hex-face hex-face-back">
-          <p>Send charge, discharge, curtail, and shift commands from any platform, in real time — to any DER, at any scale.</p>
+          <p>Real-time charge, discharge, curtail, and shift at any scale.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip hex-flip" data-flip>
+      <div class="flip-inner">
+        <div class="flip-face hex-face hex-face-front">
+          <p class="hex-word">Normalize</p>
+        </div>
+        <div class="flip-face hex-face hex-face-back">
+          <p>One clean data stream from every OEM protocol.</p>
         </div>
       </div>
     </div>
@@ -351,7 +450,7 @@
           <p class="hex-word">Verify</p>
         </div>
         <div class="flip-face hex-face hex-face-back">
-          <p>Every dispatch event logged before, during, and after. Provable response, claimable revenue for every asset.</p>
+          <p>Every dispatch logged. Provable response and claimable revenue.</p>
         </div>
       </div>
     </div>
@@ -362,12 +461,12 @@
 
 
 <!-- ══════════════════════════════════════════════════
-     FIVE-LAYER ARCHITECTURE — dark + honeycomb
+     FIVE-LAYER ARCHITECTURE, dark + honeycomb
 ══════════════════════════════════════════════════ -->
 <!-- ══════════════════════════════════════════════════
-     PLATFORM FEATURES — dark cards
+     PLATFORM FEATURES, dark cards
 ══════════════════════════════════════════════════ -->
-<section id="platform-features" style="padding:48px 64px 72px;">
+<section id="platform-features">
   <div style="max-width:1160px;margin:0 auto;">
     <h2 style="font-size:clamp(28px,3.8vw,48px);font-weight:700;color:#0B0B0E;text-align:center;margin:0 0 48px;letter-spacing:-0.025em;line-height:1.1;">Hardware-enabled software infrastructure.</h2>
     <div data-grid="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
@@ -388,7 +487,6 @@
                 <span class="score-tag">Local Edge</span>
                 <span class="score-tag">Policy-as-Code</span>
                 <span class="score-tag">Offline-Ready</span>
-                <span class="score-tag">OTA Updates</span>
               </div>
             </div>
           </div>
@@ -439,6 +537,7 @@
                 <span class="score-tag">MCP</span>
                 <span class="score-tag">AI Agents</span>
                 <span class="score-tag">Cloud</span>
+                <span class="score-tag">OTA Updates</span>
               </div>
             </div>
           </div>
@@ -454,7 +553,7 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════
-     FIVE-LAYER ARCHITECTURE — dark + honeycomb
+     FIVE-LAYER ARCHITECTURE, dark + honeycomb
 ══════════════════════════════════════════════════ -->
 <section id="who" style="background:#CD7F32;padding:72px 64px;">
   <div style="max-width:1160px;margin:0 auto;">
@@ -573,8 +672,8 @@
     <div data-grid="" style="border-top:3px solid #CD7F32;padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L5</span>
       <div>
-        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Applications + Value Layer</h3>
-        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">Utility orchestration, asset financing, VPP participation, grid services, forecasting, performance verification.</p>
+        <h3 class="card-category-title arch-layer-title">Applications + Value Layer</h3>
+        <p class="arch-layer-body">Utility orchestration, asset financing, VPP participation, grid services, forecasting, performance verification.</p>
       </div>
     </div>
 
@@ -582,8 +681,8 @@
     <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L4</span>
       <div>
-        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">MCP + AI Layer</h3>
-        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">Agentic AI systems with DER context, telemetry access, and policy-constrained dispatch tools.</p>
+        <h3 class="card-category-title arch-layer-title">MCP + AI Layer</h3>
+        <p class="arch-layer-body">Agentic AI systems with DER context, telemetry access, and policy-constrained dispatch tools.</p>
       </div>
     </div>
 
@@ -591,8 +690,8 @@
     <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L3</span>
       <div>
-        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Cloud Platform</h3>
-        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</p>
+        <h3 class="card-category-title arch-layer-title">Cloud Platform</h3>
+        <p class="arch-layer-body">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</p>
       </div>
     </div>
 
@@ -600,8 +699,8 @@
     <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L2</span>
       <div>
-        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Edge Gateway</h3>
-        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">One-time device installation. Connects locally to every DER, standardizes telemetry, enables secure dispatch — no closed OEM cloud dependency.</p>
+        <h3 class="card-category-title arch-layer-title">Edge Gateway</h3>
+        <p class="arch-layer-body">One-time device installation. Connects locally to every DER, standardizes telemetry, enables secure dispatch without closed OEM cloud dependency.</p>
       </div>
     </div>
 
@@ -609,8 +708,8 @@
     <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);border-bottom:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
       <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L1</span>
       <div>
-        <h3 style="font-size:20px;font-weight:700;color:#CD7F32;margin:0 0 10px;letter-spacing:-0.015em;">Physical DER Devices</h3>
-        <p style="font-size:16.5px;color:rgba(255,251,240,0.65);line-height:1.6;margin:0;font-weight:400;">Batteries, solar inverters, EV chargers, smart meters, flexible loads — every asset class, every OEM.</p>
+        <h3 class="card-category-title arch-layer-title">Physical DER Devices</h3>
+        <p class="arch-layer-body">Batteries, solar inverters, EV chargers, smart meters, flexible loads: every asset class, every OEM.</p>
       </div>
     </div>
 
@@ -618,12 +717,12 @@
 </section>
 
 <!-- ══════════════════════════════════════════════════
-     GET IN TOUCH — gold contact section
+     GET IN TOUCH, gold contact section
 ══════════════════════════════════════════════════ -->
 <section id="contact" style="background:#CD7F32;padding:72px 48px 80px;">
   <div style="max-width:1160px;margin:0 auto;">
     <h2 style="font-size:clamp(30px,4.5vw,56px);font-weight:700;color:#0B0B0E;text-align:center;line-height:1.08;margin:0 0 24px;letter-spacing:-0.03em;">
-      Talk to the <img src="assets/kwh-logo-mark.png" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> engineering team.
+      Talk to the <img src="assets/kwh-logo-mark.png" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> team.
     </h2>
     <p style="font-size:17px;color:#0B0B0E;text-align:center;line-height:1.68;max-width:440px;margin:0 auto 44px;font-weight:400;">
       Connect with us about piloting the edge gateway or integrating with the cloud platform.
@@ -655,39 +754,44 @@
     <div style="max-width:720px;margin:0 auto;">
     <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
       <div style="background:rgba(255,255,255,0.22);border-radius:3px;padding:48px;text-align:center;">
-        <p style="font-size:20px;color:#0B0B0E;font-weight:500;margin:0;">Message received — we'll be in touch shortly.</p>
+        <p style="font-size:20px;color:#0B0B0E;font-weight:500;margin:0;">Message received. We'll be in touch shortly.</p>
       </div>
     </sc-if>
 
     <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
-      <form onSubmit="{{ handleSubmit }}" style="display:flex;flex-direction:column;gap:28px;">
+      <form id="contact-form" onSubmit="{{ handleSubmit }}" style="display:flex;flex-direction:column;gap:28px;">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" aria-hidden="true" />
 
         <div>
             <div data-name-row="" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
             <div>
               <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">First Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
-              <input type="text" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
+              <input type="text" name="first_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
             </div>
             <div>
               <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Last Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
-              <input type="text" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
+              <input type="text" name="last_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
             </div>
           </div>
         </div>
 
         <div>
           <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Email <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
-          <input type="email" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
+          <input type="email" name="email" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
         </div>
 
         <div>
           <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Message</label>
-          <textarea rows="5" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;resize:vertical;"></textarea>
+          <textarea name="message" rows="5" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;resize:vertical;"></textarea>
         </div>
 
+        <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+          <p style="font-size:14px;color:#C8341A;margin:0;line-height:1.5;">{{ formError }}</p>
+        </sc-if>
+
         <div>
-          <button type="submit" style="display:inline-flex;align-items:center;padding:15px 40px;background:#0B0B0E;border:none;border-radius:999px;color:white;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;" style-hover="background:#2a2a2a">
-            SUBMIT
+          <button type="submit" disabled="{{ submitting }}" style="display:inline-flex;align-items:center;padding:15px 40px;background:#0B0B0E;border:none;border-radius:999px;color:white;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;opacity:{{ submitBtnOpacity }};" style-hover="background:#2a2a2a">
+            {{ submitLabel }}
           </button>
         </div>
       </form>
@@ -702,9 +806,13 @@
 </section>
 
 </x-dc>
+<div id="dot-cursor" aria-hidden="true"></div>
 <script type="text/x-dc" data-dc-script>
+// Replace with your Web3Forms access key from https://web3forms.com
+const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
+
 class Component extends DCLogic {
-  state = { submitted: false, scrolled: false };
+  state = { submitted: false, scrolled: false, submitting: false, formError: null };
 
   componentDidMount() {
     const onScroll = () => this.setState({ scrolled: window.scrollY > 70 });
@@ -717,12 +825,16 @@ class Component extends DCLogic {
   }
 
   renderVals() {
-    const { submitted, scrolled } = this.state;
+    const { submitted, scrolled, submitting, formError } = this.state;
     return {
       submitted,
       notSubmitted: !submitted,
       scrolled,
       notScrolled: !scrolled,
+      submitting,
+      formError,
+      submitLabel: submitting ? 'SENDING…' : 'SUBMIT',
+      submitBtnOpacity: submitting ? '0.65' : '1',
       navStyle: {
         position: 'fixed',
         top: 0, left: 0, right: 0,
@@ -738,9 +850,61 @@ class Component extends DCLogic {
         transition: 'background 0.3s, box-shadow 0.3s',
       },
       navLinkColor: scrolled ? '#0B0B0E' : 'rgba(255,251,240,0.9)',
-      handleSubmit: (e) => {
+      handleSubmit: async (e) => {
         e.preventDefault();
-        this.setState({ submitted: true });
+        if (this.state.submitting) return;
+
+        const form = e.target;
+        const data = new FormData(form);
+        const firstName = (data.get('first_name') || '').toString().trim();
+        const lastName = (data.get('last_name') || '').toString().trim();
+        const email = (data.get('email') || '').toString().trim();
+        const message = (data.get('message') || '').toString().trim();
+
+        if (!firstName || !lastName || !email) {
+          this.setState({ formError: 'Please fill in all required fields.' });
+          return;
+        }
+
+        if (WEB3FORMS_ACCESS_KEY === 'YOUR_WEB3FORMS_ACCESS_KEY') {
+          this.setState({
+            formError: 'Form is not configured yet. Add your Web3Forms access key in index.html.',
+          });
+          return;
+        }
+
+        this.setState({ submitting: true, formError: null });
+
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_ACCESS_KEY,
+              subject: 'New inquiry from kwhelectric.io',
+              from_name: `${firstName} ${lastName}`.trim(),
+              email,
+              message: message || '(no message)',
+              botcheck: data.get('botcheck') || '',
+            }),
+          });
+          const json = await res.json();
+
+          if (res.ok && json.success) {
+            this.setState({ submitted: true, submitting: false, formError: null });
+            return;
+          }
+
+          this.setState({
+            submitting: false,
+            formError: json.message || 'Something went wrong. Please try again or email arham@kwhelectric.io.',
+          });
+        } catch {
+          this.setState({
+            submitting: false,
+            formError: 'Network error. Please check your connection and try again.',
+          });
+        }
       },
     };
   }
