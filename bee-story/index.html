@@ -76,21 +76,24 @@ a{color:#C2932A}a:hover{color:#241f18}
     <p style="font-size:clamp(15px,1.4vw,17px);line-height:1.55;color:#4b4433;font-weight:500;margin:0">Each drop lands in its own cell, and the comb brightens by exactly <em style="font-style:italic;color:#C2932A;font-weight:700">what that bee earned.</em></p>
   </div>
 
-  <div id="introOv" data-screen-label="Beat 0 — the problem" style="position:absolute;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;background:rgba(251,247,234,.97);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;visibility:hidden;overflow:auto">
-    <div id="introInner" style="width:min(1040px,94vw);text-align:center;padding:14px 0">
-      <div style="font-size:13px;font-weight:800;letter-spacing:.22em;color:#9E2B25;margin:0 0 10px">THE PROBLEM</div>
-      <h2 style="font-size:clamp(28px,4.2vw,52px);font-weight:900;letter-spacing:-.025em;line-height:1.02;margin:0 0 10px">One cell for the whole hive.</h2>
-      <p style="font-size:clamp(15px,1.7vw,20px);color:#4b4433;font-weight:500;margin:0 auto 8px;max-width:640px">Pack every bee into a single shared cell and it only takes <em style="font-style:italic;color:#9E2B25;font-weight:700">one raider, one strike</em> — and the entire hive is lost at once.</p>
-      <svg id="svgIntro" viewBox="0 0 900 470" style="width:100%;max-height:60vh;height:auto;display:block;overflow:visible"></svg>
-    </div>
-  </div>
-
-  <div id="solOv" data-screen-label="Beat 1 — the solution" style="position:absolute;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;background:rgba(251,247,234,.97);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;visibility:hidden;overflow:auto">
-    <div id="solInner" style="width:min(1040px,94vw);text-align:center;padding:14px 0">
-      <div style="font-size:13px;font-weight:800;letter-spacing:.22em;color:#C2932A;margin:0 0 10px">THE SOLUTION</div>
-      <h2 style="font-size:clamp(28px,4.2vw,52px);font-weight:900;letter-spacing:-.025em;line-height:1.02;margin:0 0 10px">Every bee sealed in its own cell.</h2>
-      <p style="font-size:clamp(15px,1.7vw,20px);color:#4b4433;font-weight:500;margin:0 auto 8px;max-width:660px">Equal cells. One bee each. When a raider strikes, the shield holds — <em style="font-style:italic;color:#C2932A;font-weight:700">the attack stops outside.</em></p>
-      <svg id="svgSol" viewBox="0 0 900 470" style="width:100%;max-height:60vh;height:auto;display:block;overflow:visible"></svg>
+  <div id="introOv" data-screen-label="Beat 0 — problem then solution" style="position:absolute;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;background:rgba(251,247,234,.97);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;visibility:hidden;overflow:auto">
+    <div id="introInner" style="width:min(1040px,94vw);text-align:center;padding:14px 0;position:relative">
+      <div id="openCopyWrap" style="position:relative;min-height:7.5em">
+        <div id="openCopyProblem">
+          <div style="font-size:13px;font-weight:800;letter-spacing:.22em;color:#9E2B25;margin:0 0 10px">THE PROBLEM</div>
+          <h2 style="font-size:clamp(28px,4.2vw,52px);font-weight:900;letter-spacing:-.025em;line-height:1.02;margin:0 0 10px">One cell for the whole hive.</h2>
+          <p style="font-size:clamp(15px,1.7vw,20px);color:#4b4433;font-weight:500;margin:0 auto 8px;max-width:640px">Pack every bee into a single shared cell and it only takes <em style="font-style:italic;color:#9E2B25;font-weight:700">one raider, one strike</em> — and the entire hive is lost at once.</p>
+        </div>
+        <div id="openCopySol" style="position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none">
+          <div style="font-size:13px;font-weight:800;letter-spacing:.22em;color:#C2932A;margin:0 0 10px">THE SOLUTION</div>
+          <h2 style="font-size:clamp(28px,4.2vw,52px);font-weight:900;letter-spacing:-.025em;line-height:1.02;margin:0 0 10px">Every bee sealed in its own cell.</h2>
+          <p style="font-size:clamp(15px,1.7vw,20px);color:#4b4433;font-weight:500;margin:0 auto 8px;max-width:660px">Equal cells. One bee each. When a raider strikes, the shield holds — <em style="font-style:italic;color:#C2932A;font-weight:700">the attack stops outside.</em></p>
+        </div>
+      </div>
+      <div id="openStage" style="position:relative;width:100%;margin-top:4px">
+        <svg id="svgIntro" viewBox="0 0 900 470" style="width:100%;max-height:60vh;height:auto;display:block;overflow:visible"></svg>
+        <svg id="svgSol" viewBox="0 0 900 470" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;visibility:hidden;overflow:visible;pointer-events:none"></svg>
+      </div>
     </div>
   </div>
 
@@ -609,7 +612,8 @@ a{color:#C2932A}a:hover{color:#241f18}
 
     /* --- INTRO / PROBLEM: one shared cell — raider approaches from outside, then penetrates --- */
     const PR=108, PW=Math.sqrt(3)*PR, PVY=1.5*PR;
-    const swarmPts=[[-.38,-.42],[.36,-.44],[-.52,.08],[.5,.06],[-.28,.4],[.3,.42],[.02,-.55]];
+    /* ring of 7 bees around the rim — center kept clear for the raider's final pose */
+    const swarmPts=[[0,-.58],[.5,-.3],[.52,.22],[.26,.54],[-.26,.54],[-.52,.22],[-.5,-.3]];
     q('#svgIntro').innerHTML=`
       <g class="ghostHex" opacity=".14">
         ${hexPoly(620,170,PR,'none',DGOLD,2.2)}
@@ -624,8 +628,8 @@ a{color:#C2932A}a:hover{color:#241f18}
         <path d="M372 188 L412 228 L392 248 L430 286" stroke="${RED}" stroke-width="5" fill="none" stroke-linecap="round"/>
       </g>
       <g class="inWasp">${bumble(0,0,.78,true)}</g>`;
-    /* start clearly outside, upper-right among the faint empty hex outlines */
-    gsap.set('#svgIntro .inWasp',{x:720,y:108,rotation:14,opacity:0,scale:1});
+    /* start clearly outside, upper-right among the faint empty hex outlines — upright (±30°) */
+    gsap.set('#svgIntro .inWasp',{x:720,y:108,rotation:12,opacity:0,scale:1});
 
     /* --- SOLUTION: equal cells, one bee each — attack stops outside --- */
     const SR=GR, SW=GW, SVY=GVY;
@@ -637,8 +641,10 @@ a{color:#C2932A}a:hover{color:#241f18}
       <g class="solGrow" opacity="0">${solGrow.map(o=>hexPoly(solOrigin[0]+o[0],solOrigin[1]+o[1],SR,'#F6E7B8',DGOLD,2.6)).join('')}</g>
       <g class="solCluster">${solCells.map((o,i)=>`<g class="solCell${i}">${hexPoly(solOrigin[0]+o[0],solOrigin[1]+o[1],SR,i===0?HONEY:'#F2DFA6',DGOLD,3.2)}${peeker(solOrigin[0]+o[0],solOrigin[1]+o[1]+7,1.0)}</g>`).join('')}</g>
       <polygon class="solShield" points="${hexPts(solOrigin[0],solOrigin[1]-SVY,SR)}" fill="none" stroke="${GOLD}" stroke-width="4" stroke-linejoin="round" opacity="0"/>
-      <g class="solWasp">${bumble(0,0,.55,false)}</g>`;
-    gsap.set('#svgSol .solWasp',{x:620,y:40,opacity:0});
+      <g class="solWasp">${bumble(0,0,.55,true)}</g>`;
+    gsap.set('#svgSol .solWasp',{x:620,y:40,rotation:18,opacity:0});
+    gsap.set('#svgSol',{autoAlpha:0});
+    gsap.set('#openCopySol',{autoAlpha:0});
 
     /* --- HONEY: the big payoff page — a hive dripping laminar honey into two large jars --- */
     function jarBig(x,label){
@@ -666,8 +672,7 @@ a{color:#C2932A}a:hover{color:#241f18}
 
     /* ================= PAGE NAVIGATION (overlays + world scenes) ================= */
     const PAGES=[
-      {ov:'#introOv',inner:'#introInner',demo:'intro'},
-      {ov:'#solOv',inner:'#solInner',demo:'sol'},
+      {ov:'#introOv',inner:'#introInner',demo:'open'},
       {label:'s0'},
       {label:'s1'},
       {label:'s2'},
@@ -676,7 +681,7 @@ a{color:#C2932A}a:hover{color:#241f18}
       {ov:'#honeyOv',inner:'#honeyInner',demo:'honey'},
       {ov:'#finaleOv',inner:'#finaleInner',demo:'finale'},
     ];
-    const OVS=[['#introOv','#introInner'],['#solOv','#solInner'],['#honeyOv','#honeyInner'],['#finaleOv','#finaleInner']];
+    const OVS=[['#introOv','#introInner'],['#honeyOv','#honeyInner'],['#finaleOv','#finaleInner']];
     const N=PAGES.length;
     let cur=0,drv=null,transLock=false;
     const driving=()=>!!(drv&&drv.isActive())||transLock;
@@ -688,40 +693,53 @@ a{color:#C2932A}a:hover{color:#241f18}
     function playOverlay(name){
       if(!name)return;
       if(demos[name]){
-        if(name==='intro'&&!RM&&demos.intro)demos.intro.restart();
-        if(name==='sol'&&!RM&&demos.sol)demos.sol.restart();
+        if(name==='open'&&!RM&&demos.open)demos.open.restart();
         return;
       }
       demos[name]=true;
       if(RM)return;
-      if(name==='intro'){
-        demos.intro=gsap.timeline({repeat:-1,repeatDelay:1.0});
-        demos.intro
+      if(name==='open'){
+        /* one continuous slide: problem (dive → center → THEN break) → solution (shield holds) */
+        demos.open=gsap.timeline({repeat:-1,repeatDelay:.7});
+        demos.open
+          /* ---- PROBLEM phase ---- */
+          .set('#openCopyProblem',{autoAlpha:1})
+          .set('#openCopySol',{autoAlpha:0})
+          .set('#svgIntro',{autoAlpha:1})
+          .set('#svgSol',{autoAlpha:0})
           .set('#svgIntro .introBees',{opacity:1,y:0})
           .set('#svgIntro .inStrike',{opacity:0})
-          /* approach from outside the shared cell (upper-right ghost hexes), head-first left into the hive */
-          .set('#svgIntro .inWasp',{x:720,y:108,rotation:14,opacity:0,scale:1})
-          .to('#svgIntro .introBees .peeker',{rotation:(i)=>(i%2?6:-6),duration:.4,yoyo:true,repeat:5,ease:'sine.inOut',stagger:.05},0)
-          .to('#svgIntro .inWasp',{opacity:1,duration:.4,ease:'power1.out'},0)
-          .to('#svgIntro .inWasp',{x:420,y:236,rotation:32,duration:2.7,ease:'power1.in'},.15)
-          .to('#svgIntro .inStrike',{opacity:1,duration:.12},'+=.18')
-          .to('#svgIntro',{keyframes:[{x:-7,duration:.05},{x:7,duration:.05},{x:-4,duration:.05},{x:0,duration:.06}]},'<')
-          .to('#svgIntro .introBees',{opacity:.2,duration:.55,ease:'power2.out'},'>')
-          .to('#svgIntro .introBees',{y:14,duration:.55,ease:'power2.in'},'<')
-          .to('#svgIntro .inStrike',{opacity:0,duration:.35},'<')
-          .to('#svgIntro .inWasp',{scale:1.06,duration:.4,ease:'power1.out'},'<')
-          .to('#svgIntro .inWasp',{opacity:.3,duration:.55},'>')
-          .to({},{duration:.85});
-      } else if(name==='sol'){
-        demos.sol=gsap.timeline({repeat:-1,repeatDelay:.85});
-        demos.sol
+          .set('#svgIntro .inWasp',{x:720,y:108,rotation:12,opacity:0,scale:1})
           .set('#svgSol .solShield',{opacity:0,strokeWidth:4,scale:.9,transformOrigin:'center'})
           .set('#svgSol .solGrow',{opacity:0})
-          .fromTo('#svgSol .solWasp',{x:640,y:20,rotation:150,opacity:0},{opacity:1,x:450,y:140,rotation:112,duration:1.85,ease:'power2.in'})
-          .fromTo('#svgSol .solShield',{opacity:0,strokeWidth:4,scale:.9},{opacity:1,strokeWidth:11,scale:1,duration:.28,ease:'back.out(2.5)'},'-=.1')
-          .to('#svgSol .solShield',{opacity:0,duration:.55},'+=.12')
-          .to('#svgSol .solWasp',{x:700,y:-20,rotation:50,duration:1.0,ease:'power2.out'},'<')
-          .to('#svgSol .solWasp',{opacity:0,duration:.3},'>');
+          .set('#svgSol .solWasp',{x:640,y:28,rotation:18,opacity:0})
+          .to('#svgIntro .introBees .peeker',{rotation:(i)=>(i%2?6:-6),duration:.35,yoyo:true,repeat:4,ease:'sine.inOut',stagger:.05},0)
+          .to('#svgIntro .inWasp',{opacity:1,duration:.28,ease:'power1.out'},0)
+          /* fast dive into the cell — stay upright (±30°), face flight direction */
+          .to('#svgIntro .inWasp',{x:420,y:230,rotation:22,duration:1.35,ease:'power2.in'},.12)
+          /* HOLD at center — barrier must not break until here */
+          .to({},{duration:.28})
+          .addLabel('strike')
+          .to('#svgIntro .inStrike',{opacity:1,duration:.12})
+          .to('#svgIntro',{keyframes:[{x:-7,duration:.05},{x:7,duration:.05},{x:-4,duration:.05},{x:0,duration:.06}]},'<')
+          .to('#svgIntro .introBees',{opacity:.2,duration:.45,ease:'power2.out'},'>')
+          .to('#svgIntro .introBees',{y:14,duration:.45,ease:'power2.in'},'<')
+          .to('#svgIntro .inStrike',{opacity:0,duration:.3},'<')
+          .to('#svgIntro .inWasp',{scale:1.06,duration:.35,ease:'power1.out'},'<')
+          .to('#svgIntro .inWasp',{opacity:.25,duration:.4},'>')
+          .to({},{duration:.35})
+          /* ---- crossfade to SOLUTION ---- */
+          .to('#openCopyProblem',{autoAlpha:0,duration:.4,ease:'power1.in'},'>')
+          .to('#svgIntro',{autoAlpha:0,duration:.4,ease:'power1.in'},'<')
+          .to('#openCopySol',{autoAlpha:1,duration:.45,ease:'power2.out'},'-=.15')
+          .to('#svgSol',{autoAlpha:1,duration:.45,ease:'power2.out'},'<')
+          /* ---- SOLUTION phase — raider upright (±30°), shield holds ---- */
+          .fromTo('#svgSol .solWasp',{x:640,y:28,rotation:18,opacity:0},{opacity:1,x:450,y:140,rotation:26,duration:1.35,ease:'power2.in'},'+=.1')
+          .fromTo('#svgSol .solShield',{opacity:0,strokeWidth:4,scale:.9},{opacity:1,strokeWidth:11,scale:1,duration:.28,ease:'back.out(2.5)'},'-=.08')
+          .to('#svgSol .solShield',{opacity:0,duration:.5},'+=.12')
+          .to('#svgSol .solWasp',{x:700,y:-10,rotation:8,duration:.9,ease:'power2.out'},'<')
+          .to('#svgSol .solWasp',{opacity:0,duration:.28},'>')
+          .to({},{duration:.7});
       } else if(name==='honey'){
         gsap.utils.toArray('#svgHoney .jfillB').forEach((el,i)=>gsap.fromTo(el,{y:0},{y:-180,duration:4.5+i*1.2,ease:'power1.inOut',delay:.3+i*.4}));
         gsap.fromTo('#svgHoney .flowB1',{opacity:0,x:445,y:212},{opacity:.95,x:250,y:246,duration:1.2,repeat:-1,repeatDelay:.15,ease:'power1.in'});
@@ -747,26 +765,39 @@ a{color:#C2932A}a:hover{color:#241f18}
     function hideOv(sel){ const el=q(sel); if(!el)return; el.style.pointerEvents='none'; gsap.to(el,{autoAlpha:0,duration:.4,ease:'power1.in'}); }
     function showOv(sel,inner,demo){ const el=q(sel); if(!el)return; el.style.pointerEvents='auto';
       gsap.to(el,{autoAlpha:1,duration:.55,ease:'power2.out'});
-      if(inner&&!RM)gsap.fromTo(inner+' > *',{y:24,opacity:0},{y:0,opacity:1,stagger:.1,duration:.7,ease:'power2.out',delay:.12});
+      if(inner&&!RM){
+        /* for the combined open slide, only reveal the problem copy + stage shell — timeline owns sol layers */
+        const kids = sel==='#introOv' ? '#openCopyWrap, #openStage' : (inner+' > *');
+        gsap.fromTo(kids,{y:24,opacity:0},{y:0,opacity:1,stagger:.1,duration:.7,ease:'power2.out',delay:.12});
+      }
       playOverlay(demo);
     }
     /* solution cluster grows into a honeycomb, then hands off to the world at s0 */
     function transitionSolToWorld(done){
-      if(RM){ hideOv('#solOv'); tl.time(tl.labels.s0); done&&done(); return; }
+      if(RM){ hideOv('#introOv'); tl.time(tl.labels.s0); done&&done(); return; }
       transLock=true; updateUI();
-      if(demos.sol&&demos.sol.pause)demos.sol.pause();
-      const el=q('#solOv');
+      if(demos.open&&demos.open.pause)demos.open.pause();
+      const el=q('#introOv');
+      /* ensure solution art is visible for the grow handoff */
+      gsap.set('#openCopyProblem',{autoAlpha:0});
+      gsap.set('#openCopySol',{autoAlpha:1});
+      gsap.set('#svgIntro',{autoAlpha:0});
+      gsap.set('#svgSol',{autoAlpha:1});
       gsap.timeline({
         onComplete:()=>{
           if(el){el.style.pointerEvents='none'; gsap.set(el,{autoAlpha:0});}
           gsap.set('#svgSol .solGrow',{opacity:0});
           gsap.set('#svgSol .solCluster',{scale:1,x:0,y:0,transformOrigin:'450px 240px'});
-          gsap.set('#solInner > *',{clearProps:'opacity,y'});
+          gsap.set('#openCopyProblem',{autoAlpha:1});
+          gsap.set('#openCopySol',{autoAlpha:0});
+          gsap.set('#svgIntro',{autoAlpha:1});
+          gsap.set('#svgSol',{autoAlpha:0});
+          gsap.set('#introInner > *',{clearProps:'opacity,y'});
           transLock=false; updateUI();
           done&&done();
         }
       })
-        .to('#solInner > *:not(#svgSol)',{opacity:0,y:-18,duration:.35,ease:'power1.in'},0)
+        .to('#openCopySol',{opacity:0,y:-18,duration:.35,ease:'power1.in'},0)
         .to('#svgSol .solWasp',{opacity:0,duration:.2},0)
         .to('#svgSol .solShield',{opacity:0,duration:.2},0)
         .to('#svgSol .solGrow',{opacity:.85,duration:.55,ease:'power2.out'},.15)
@@ -795,12 +826,12 @@ a{color:#C2932A}a:hover{color:#241f18}
       cur=i;updateUI();
       OVS.forEach(([s])=>{ if(to.ov!==s) hideOv(s); });
       if(to.label){
-        if(from&&from.ov==='#solOv'&&to.label==='s0'&&i>prev){
+        if(from&&from.ov==='#introOv'&&to.label==='s0'&&i>prev){
           transitionSolToWorld(()=>{ scrubWorld(to.label); });
         } else {
           scrubWorld(to.label);
         }
-      } else if(to.ov==='#introOv'||to.ov==='#solOv'){
+      } else if(to.ov==='#introOv'){
         if(drv){drv.kill();drv=null;} tl.time(0); showOv(to.ov,to.inner,to.demo);
       } else {
         scrubWorld('s4'); showOv(to.ov,to.inner,to.demo);
@@ -841,11 +872,11 @@ a{color:#C2932A}a:hover{color:#241f18}
       window.removeEventListener('touchend',onTE);
       if(drv)drv.kill();
     };
-    /* initial state: the problem-statement overlay is up, world parked at the hero scene */
-    gsap.set('#honeyOv',{autoAlpha:0}); gsap.set('#finaleOv',{autoAlpha:0}); gsap.set('#solOv',{autoAlpha:0});
+    /* initial state: the combined problem→solution overlay is up, world parked at the hero scene */
+    gsap.set('#honeyOv',{autoAlpha:0}); gsap.set('#finaleOv',{autoAlpha:0});
     gsap.set('#introOv',{autoAlpha:1}); q('#introOv').style.pointerEvents='auto';
     tl.time(0);
-    playOverlay('intro');
+    playOverlay('open');
     updateUI();
 
     /* expose for debugging / embed hooks */
