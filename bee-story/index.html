@@ -621,7 +621,7 @@ a{color:#C2932A}a:hover{color:#241f18}
         ${hexPoly(640,340,PR,'none',DGOLD,2.2)}
       </g>
       <ellipse cx="420" cy="392" rx="170" ry="18" fill="#EFE3BE"/>
-      <g class="introCell">${hexPoly(420,230,PR,HONEY,DGOLD,4.2)}</g>
+      <g class="introCell">${hexPoly(420,230,PR,HONEY,DGOLD,4.2,'class="introFill"')}</g>
       <g class="introBees">${swarmPts.map(p=>peeker(420+p[0]*PR,230+p[1]*PR*1.15,.72)).join('')}</g>
       <g class="inStrike" opacity="0">
         ${[0,1,2,3,4,5,6,7].map(k=>{const a=k*Math.PI/4;return `<line x1="${P(420+Math.cos(a)*28)}" y1="${P(230+Math.sin(a)*28)}" x2="${P(420+Math.cos(a)*62)}" y2="${P(230+Math.sin(a)*62)}" stroke="${RED}" stroke-width="6" stroke-linecap="round"/>`;}).join('')}
@@ -699,7 +699,21 @@ a{color:#C2932A}a:hover{color:#241f18}
       demos[name]=true;
       if(RM)return;
       if(name==='open'){
-        /* one continuous slide: problem (dive → center → THEN break) → solution (shield holds) */
+        /* one continuous slide: problem (dive → edge-red → center strike) → solution (shield holds) */
+        /* pointy-top hex containment (center 420,230, radius PR) — red the instant any raider tip crosses in */
+        const introCx=420,introCy=230,introR=PR;
+        const tipLocals=[[0,0],[-40,0],[-52,-8],[-34,-6]]; /* body + forward head (flipped art faces −X) */
+        function tipInIntroHex(bx,by,rotDeg){
+          const r=rotDeg*Math.PI/180,c=Math.cos(r),s=Math.sin(r);
+          for(let i=0;i<tipLocals.length;i++){
+            const lx=tipLocals[i][0],ly=tipLocals[i][1];
+            const px=bx+lx*c-ly*s, py=by+lx*s+ly*c;
+            const dx=Math.abs(px-introCx)/introR, dy=Math.abs(py-introCy)/introR;
+            if(dy<=1 && dx<=Math.sqrt(3)/2 && (dy+dx*Math.sqrt(3)/3)<=1) return true;
+          }
+          return false;
+        }
+        let cellCompromised=false;
         demos.open=gsap.timeline({repeat:-1,repeatDelay:.7});
         demos.open
           /* ---- PROBLEM phase ---- */
@@ -709,15 +723,28 @@ a{color:#C2932A}a:hover{color:#241f18}
           .set('#svgSol',{autoAlpha:0})
           .set('#svgIntro .introBees',{opacity:1,y:0})
           .set('#svgIntro .inStrike',{opacity:0})
+          .set('#svgIntro .introFill',{attr:{fill:HONEY}})
           .set('#svgIntro .inWasp',{x:720,y:108,rotation:12,opacity:0,scale:1})
           .set('#svgSol .solShield',{opacity:0,strokeWidth:4,scale:.9,transformOrigin:'center'})
           .set('#svgSol .solGrow',{opacity:0})
           .set('#svgSol .solWasp',{x:640,y:28,rotation:18,opacity:0})
+          .call(()=>{cellCompromised=false;})
           .to('#svgIntro .introBees .peeker',{rotation:(i)=>(i%2?6:-6),duration:.35,yoyo:true,repeat:4,ease:'sine.inOut',stagger:.05},0)
           .to('#svgIntro .inWasp',{opacity:1,duration:.28,ease:'power1.out'},0)
-          /* fast dive into the cell — stay upright (±30°), face flight direction */
-          .to('#svgIntro .inWasp',{x:420,y:230,rotation:22,duration:1.35,ease:'power2.in'},.12)
-          /* HOLD at center — barrier must not break until here */
+          /* fast dive into the cell — stay upright (±30°), face flight direction;
+             hex goes compromised-red the instant head/body crosses the edge (not at center) */
+          .to('#svgIntro .inWasp',{x:420,y:230,rotation:22,duration:1.35,ease:'power2.in',
+            onUpdate:function(){
+              if(cellCompromised) return;
+              const el=this.targets()[0];
+              const bx=gsap.getProperty(el,'x'), by=gsap.getProperty(el,'y'), rot=gsap.getProperty(el,'rotation');
+              if(tipInIntroHex(bx,by,rot)){
+                cellCompromised=true;
+                gsap.to('#svgIntro .introFill',{attr:{fill:RED},duration:.16,ease:'power1.out'});
+              }
+            }
+          },.12)
+          /* HOLD at center — strike/crack/shatter still land here */
           .to({},{duration:.28})
           .addLabel('strike')
           .to('#svgIntro .inStrike',{opacity:1,duration:.12})
