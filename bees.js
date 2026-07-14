@@ -169,8 +169,14 @@
 
   // ── ARCHITECTURE STACK DEFENSE ─────────────────────────────────────────────
   function beeSVGMarkup(idp, bodyFill) {
+    var isDark = String(bodyFill).toLowerCase() === '#1a1a1a' || String(bodyFill).toLowerCase() === '#15100b';
+    /* Dark raider bee keeps gold antennae/stinger/eye accents — no enclosing body/head stroke. */
+    var accent = isDark ? '#E8C96A' : '#1a1a1a';
+    var stinger = isDark ? '#E8C96A' : '#666';
+    var eye = isDark ? '#FFFDF4' : '#1a1a1a';
+    var eyeHi = isDark ? '#1a1a1a' : '#fff';
     return (
-      '<svg viewBox="0 0 56 38" width="56" height="38" aria-hidden="true">' +
+      '<svg viewBox="0 0 56 38" width="56" height="38" aria-hidden="true" overflow="visible">' +
         '<defs><clipPath id="' + idp + '-clip"><ellipse cx="26" cy="23" rx="17" ry="9.5"/></clipPath></defs>' +
         '<ellipse cx="26" cy="23" rx="17" ry="9.5" fill="' + bodyFill + '"/>' +
         '<g clip-path="url(#' + idp + '-clip)">' +
@@ -178,13 +184,13 @@
           '<rect x="25" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>' +
         '</g>' +
         '<circle cx="44" cy="22" r="7.5" fill="' + bodyFill + '"/>' +
-        '<circle id="' + idp + '-eye" cx="47" cy="19" r="2.2" fill="#1a1a1a"/>' +
-        '<circle id="' + idp + '-eyehi" cx="47.8" cy="18.4" r="0.7" fill="#fff"/>' +
-        '<polygon points="9,20 9,26 3,23" fill="#666"/>' +
-        '<line x1="41" y1="15" x2="35" y2="4" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>' +
-        '<circle cx="35" cy="4" r="1.9" fill="#1a1a1a"/>' +
-        '<line x1="45" y1="14" x2="43" y2="3" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>' +
-        '<circle cx="43" cy="3" r="1.9" fill="#1a1a1a"/>' +
+        '<circle id="' + idp + '-eye" cx="47" cy="19" r="2.2" fill="' + eye + '"/>' +
+        '<circle id="' + idp + '-eyehi" cx="47.8" cy="18.4" r="0.7" fill="' + eyeHi + '"/>' +
+        '<polygon points="9,20 9,26 3,23" fill="' + stinger + '"/>' +
+        '<line x1="41" y1="15" x2="35" y2="4" stroke="' + accent + '" stroke-width="1.3" stroke-linecap="round"/>' +
+        '<circle cx="35" cy="4" r="1.9" fill="' + accent + '"/>' +
+        '<line x1="45" y1="14" x2="43" y2="3" stroke="' + accent + '" stroke-width="1.3" stroke-linecap="round"/>' +
+        '<circle cx="43" cy="3" r="1.9" fill="' + accent + '"/>' +
         '<ellipse id="' + idp + '-w1" cx="17" cy="9" rx="14" ry="8.5" fill="rgba(210,235,255,0.88)" stroke="rgba(140,180,230,0.6)" stroke-width="0.8"/>' +
         '<ellipse id="' + idp + '-w2" cx="21" cy="21" rx="11" ry="6.5" fill="rgba(210,235,255,0.75)" stroke="rgba(140,180,230,0.5)" stroke-width="0.7"/>' +
       '</svg>'
@@ -318,12 +324,13 @@
                      transformOrigin: '50% 62%' });
       C.x = lR.left - sR.left + lR.width * 0.5;
       C.y = lR.top  - sR.top  + lR.height * 0.5;
-      D = Math.min(sR.height * 0.82, window.innerWidth * 0.60);
+      /* ~62% of prior visual size so the dashed hex frames title/layers tightly. */
+      D = Math.min(sR.height * 0.82, window.innerWidth * 0.60) * 0.62;
       ring.setAttribute('width', D);
       ring.setAttribute('height', D);
       ring.style.left = (C.x - D / 2) + 'px';
       ring.style.top  = (C.y - D / 2) + 'px';
-      ringPoly.setAttribute('points', hexPoints(D / 2, D / 2, D / 2 - 6));
+      ringPoly.setAttribute('points', hexPoints(D / 2, D / 2, D / 2 - HEX_INSET));
       ripplePoly.setAttribute('points', hexPoints(23, 23, 20));
     }
     layout();
