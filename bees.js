@@ -42,10 +42,33 @@
     const pivot = { transformOrigin: '50% 62%' };
 
     const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:2;';
+    canvas.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:9;';
     canvas.width  = Math.round(hRect.width);
     canvas.height = Math.round(hRect.height);
-    hero.insertBefore(canvas, hero.firstChild);
+    hero.appendChild(canvas);
+
+    /* Side-profile bee used once free of the hive (not the face peeker). */
+    function sideViewBeeSVG() {
+      return (
+        '<defs><clipPath id="bee-body-clip"><ellipse cx="26" cy="23" rx="17" ry="9.5"/></clipPath></defs>' +
+        '<ellipse cx="26" cy="23" rx="17" ry="9.5" fill="#F6C95C"/>' +
+        '<g clip-path="url(#bee-body-clip)">' +
+          '<rect x="13" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>' +
+          '<rect x="25" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>' +
+        '</g>' +
+        '<circle cx="44" cy="22" r="7.5" fill="#F6C95C"/>' +
+        '<circle cx="47" cy="19" r="2.2" fill="#1a1a1a"/>' +
+        '<circle cx="47.8" cy="18.4" r="0.7" fill="#fff"/>' +
+        '<ellipse cx="42" cy="26" rx="3.2" ry="2.1" fill="#E8998D"/>' +
+        '<polygon points="9,20 9,26 3,23" fill="#666"/>' +
+        '<line x1="41" y1="15" x2="35" y2="4" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>' +
+        '<circle cx="35" cy="4" r="1.9" fill="#C2932A"/>' +
+        '<line x1="45" y1="14" x2="43" y2="3" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>' +
+        '<circle cx="43" cy="3" r="1.9" fill="#C2932A"/>' +
+        '<ellipse id="bw1" cx="17" cy="9" rx="14" ry="8.5" fill="rgba(255,248,228,0.92)" stroke="rgba(194,147,42,0.55)" stroke-width="0.8"/>' +
+        '<ellipse id="bw2" cx="21" cy="21" rx="11" ry="6.5" fill="rgba(255,248,228,0.78)" stroke="rgba(194,147,42,0.45)" stroke-width="0.7"/>'
+      );
+    }
     const ctx = canvas.getContext('2d');
     const heroTitle = hero.querySelector('.hero-title') || hero.querySelector('h1');
     const DOT_OPACITY_HONEYCOMB = 0.8;
@@ -86,7 +109,7 @@
         const dx = x - lastFX, dy = y - lastFY;
         if (Math.abs(dx) > 0.6) faceSign = dx < 0 ? -1 : 1;
         let dip = Math.atan2(dy, Math.max(0.0001, Math.abs(dx))) * 180 / Math.PI;
-        dip = Math.max(-45, Math.min(45, dip));
+        dip = Math.max(-30, Math.min(30, dip)); /* never invert; max ~30° tilt */
         gsap.set(bee, { scaleX: faceSign, scaleY: 1, rotation: faceSign < 0 ? -dip : dip });
       }
       lastFX = x; lastFY = y;
@@ -104,9 +127,17 @@
     function mountBeeOnHero() {
       const bx = gsap.getProperty(bee, 'x');
       const by = gsap.getProperty(bee, 'y');
+      /* Swap face-peeker → side profile the moment it leaves the cell */
+      bee.innerHTML = sideViewBeeSVG();
+      bee.setAttribute('viewBox', '0 0 56 38');
+      bee.setAttribute('width', '56');
+      bee.setAttribute('height', '38');
+      bee.style.zIndex = '10';
+      bee.style.overflow = 'visible';
       hero.appendChild(bee);
-      gsap.set(bee, { x: cellLeft + bx, y: cellTop + by });
+      gsap.set(bee, { x: cellLeft + bx, y: cellTop + by, rotation: Math.max(-30, Math.min(30, gsap.getProperty(bee, 'rotation') || 0)) });
       cellEl.remove();
+      gsap.set(['#bw1', '#bw2'], { transformOrigin: '50% 100%' });
     }
 
     const peekY = clipH - 14;
@@ -114,8 +145,8 @@
     gsap.timeline({ delay: 1.0 })
       .set(bee, { x: 2, y: clipH + 20, opacity: 1, scale: 1, rotation: 0, ...pivot })
       .to(bee, { y: peekY, duration: 0.8, ease: 'power2.out' })
-      .to(bee, { rotation: -25, duration: 0.5 })
-      .to(bee, { rotation: 25, duration: 0.5 })
+      .to(bee, { rotation: -18, duration: 0.5 })
+      .to(bee, { rotation: 18, duration: 0.5 })
       .to(bee, { rotation: 0, duration: 0.4 })
       .call(() => flap.play())
       .to(bee, { y: 0, duration: 0.6, ease: 'back.out(1.7)' })
@@ -785,9 +816,31 @@
     });
   }
 
+  function growSprouts() {
+    const sprouts = document.querySelectorAll('.hero-sprout.is-new');
+    if (!sprouts.length || !window.gsap) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      sprouts.forEach((el) => {
+        el.style.opacity = '1';
+        el.style.transform = 'scaleY(1)';
+      });
+      return;
+    }
+    gsap.to(sprouts, {
+      opacity: 1,
+      scaleY: 1,
+      duration: 0.9,
+      stagger: 0.16,
+      delay: 0.45,
+      ease: 'back.out(1.7)',
+      transformOrigin: '50% 100%'
+    });
+  }
+
   function boot() {
     initFlipPin();
     initDotCursor();
+    growSprouts();
     waitForGsap(() => {
       waitForEl('bee', () => setTimeout(launchBee, 700));
       waitForEl('stack-bee-land', () => mountStackDefense());

@@ -1,66 +1,630 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kWh Electric</title>
 <link rel="icon" type="image/png" href="/favicon.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KWH Electric — Open DER Gateway</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared.css">
+<link rel="shortcut icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+<script src="./support.js"></script>
 </head>
 <body>
-<canvas id="node-canvas"></canvas>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; font-family: inherit; }
+    html {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      scroll-behavior: smooth;
+    }
+    html, body { margin: 0; padding: 0; }
+    body { -webkit-font-smoothing: antialiased; background: #FBF7EA; }
+    /* ── SMART DOT CURSOR (desktop) ── */
+    @media (hover: hover) and (pointer: fine) {
+      html.dot-cursor-on, html.dot-cursor-on * { cursor: none !important; }
+      #dot-cursor {
+        position: fixed; left: 0; top: 0; width: 9px; height: 9px;
+        border-radius: 50%; background: rgba(36, 31, 24, 0.5);
+        pointer-events: none; z-index: 10001; transform: translate(-50%, -50%);
+        opacity: 0; transition: opacity 0.12s ease, background-color 0.08s ease, transform 0.08s ease;
+      }
+      html.dot-cursor-on #dot-cursor { opacity: 1; }
+      #dot-cursor.pressed { transform: translate(-50%, -50%) scale(1.15); }
+    }
+    a { text-decoration: none; color: inherit; }
+    a:hover { color: inherit; }
+    input, textarea, button, select, label { font-family: inherit; }
+    input::placeholder, textarea::placeholder { font-family: inherit; opacity: 1; }
+    #contact, #contact * { font-family: inherit; }
+    input:focus, textarea:focus { outline: 2px solid rgba(194,147,42,0.55); outline-offset: 1px; }
+    @keyframes logo-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    /* ── BEE WINGS + AMBIENT MOTION (bee-story) ── */
+    .wing { transform-origin: 0px 0px; animation: flap .14s ease-in-out infinite alternate; }
+    .wing.back { animation-delay: .05s; opacity: .55; }
+    @keyframes flap { from { transform: rotate(-14deg); } to { transform: rotate(22deg); } }
+    .hoverwrap { animation: hover-bob 2.6s ease-in-out infinite; }
+    @keyframes hover-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+    .hexdot {
+      width: 16px; height: 16px; background: #E4B33C;
+      clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+      animation: cue-bob 1.6s ease-in-out infinite;
+    }
+    @keyframes cue-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+    @media (prefers-reduced-motion: reduce) {
+      .wing, .wing.back, .hoverwrap, .hexdot { animation: none !important; }
+    }
+    /* ── HERO (illustrated bee-story meadow) ── */
+    #hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .55; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27112.80%27%20height%3D%2765.13%27%20viewBox%3D%270%200%20112.80%2065.13%27%3E%3Cpolygon%20points%3D%2737.60%2C0.00%2018.80%2C32.56%20-18.80%2C32.56%20-37.60%2C0.00%20-18.80%2C-32.56%2018.80%2C-32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%27150.40%2C0.00%20131.60%2C32.56%2094.00%2C32.56%2075.20%2C0.00%2094.00%2C-32.56%20131.60%2C-32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C32.56%2075.20%2C65.13%2037.60%2C65.13%2018.80%2C32.56%2037.60%2C0.00%2075.20%2C0.00%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2737.60%2C65.13%2018.80%2C97.69%20-18.80%2C97.69%20-37.60%2C65.13%20-18.80%2C32.56%2018.80%2C32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%27150.40%2C65.13%20131.60%2C97.69%2094.00%2C97.69%2075.20%2C65.13%2094.00%2C32.56%20131.60%2C32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C97.69%2075.20%2C130.25%2037.60%2C130.25%2018.80%2C97.69%2037.60%2C65.13%2075.20%2C65.13%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C-32.56%2075.20%2C0.00%2037.60%2C0.00%2018.80%2C-32.56%2037.60%2C-65.13%2075.20%2C-65.13%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3C/svg%3E");
+      background-size: 112.80px 65.13px; background-repeat: repeat; background-position: 0 0;
+    }
+    #hero-art { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+    #hero-ground { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 150px; display: block; }
+    #hero-sun { position: absolute; right: 7%; top: 13%; width: 150px; height: 150px; }
+    #hero-hoverbee { position: absolute; left: 9%; top: 40%; width: 140px; height: 120px; }
+    .hero-flower { position: absolute; bottom: 78px; transform-origin: 50% 100%; }
+    .hero-flower .stem-plant { transform-origin: 50% 100%; }
+    .hero-sprout { position: absolute; bottom: 78px; overflow: visible; }
+    .hero-sprout.is-new { opacity: 0; transform: scaleY(0); transform-origin: 50% 100%; }
+    #hive-wrap {
+      position: absolute; left: 50%; bottom: 8px; width: 480px; height: 420px;
+      margin-left: -240px; transform-origin: bottom center; z-index: 6;
+    }
+    #hero-hoverbee { z-index: 5; }
+    #hero-art .bee-flight-overlay { z-index: 8 !important; }
+    #bee-cell {
+      position: absolute; left: 150px; top: 150px;
+      width: 60px; height: 50px;
+      overflow: hidden; pointer-events: none; z-index: 3;
+    }
+    #bee { position: absolute; top: 0; left: 0; pointer-events: none; transform: translate(0px, 52px); }
+    #arch-stack-inner { position: relative; z-index: 2; }
+    .hero-inner {
+      position: relative; z-index: 2; text-align: center;
+      width: 100%; max-width: 1280px; margin: 0 auto;
+      padding: calc(74px + 6vh) clamp(20px, 4vw, 56px) 0;
+    }
+    .hero-title {
+      font-size: clamp(34px, 6.8vw, 100px);
+      font-weight: 900; color: #241f18;
+      letter-spacing: -0.03em; line-height: 1.04;
+      margin: 0 auto 24px;
+      max-width: min(1200px, 100%);
+    }
+    .hero-line1 { display: block; }
+    .hero-line2 { display: block; white-space: nowrap; }
+    #bee-land { position: relative; display: inline-block; }
+    .hero-sub {
+      font-size: clamp(16px, 1.5vw, 20px);
+      color: #4b4433;
+      max-width: min(720px, 100%);
+      margin: 0 auto; line-height: 1.62; font-weight: 500;
+    }
+    .scrollcue { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2; }
+    .section-heading-wide {
+      max-width: min(960px, 92vw) !important;
+      margin-left: auto !important; margin-right: auto !important;
+    }
+    .how-grid {
+      max-width: min(1120px, 94vw) !important;
+      gap: 56px clamp(40px, 6vw, 88px) !important;
+    }
+    .accent-bar { width: 40px; height: 3px; background: #C2932A; margin: 0 auto 18px; }
+    .backed-logo {
+      border-radius: 12px; height: 99px; width: 99px; min-width: 99px; max-width: 99px; flex: 0 0 99px;
+      overflow: hidden; flex-shrink: 0;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      padding: 12px; box-sizing: border-box;
+    }
+    .backed-logo img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; display: block; }
+    .backed-logo--nfh { padding: 10px; }
+    /* ── FLIP CARDS ── */
+    .flip {
+      perspective: 1000px; cursor: pointer;
+      -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none;
+      touch-action: manipulation; outline: none;
+    }
+    .flip:focus, .flip:focus-visible { outline: none; }
+    .flip-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.5s ease; }
+    .flip:hover .flip-inner, .flip.pinned .flip-inner { transform: rotateY(180deg); }
+    .flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; }
+    .flip-back { transform: rotateY(180deg); }
+    /* ── CREAM HONEYCOMB BACKGROUND (flat-top hex grid) ── */
+    .cream-hex-section {
+      position: relative; overflow: hidden;
+      background-color: #FBF7EA !important;
+    }
+    .cream-hex-section::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+      background-color: #FBF7EA;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27112.80%27%20height%3D%2765.13%27%20viewBox%3D%270%200%20112.80%2065.13%27%3E%3Cpolygon%20points%3D%2737.60%2C0.00%2018.80%2C32.56%20-18.80%2C32.56%20-37.60%2C0.00%20-18.80%2C-32.56%2018.80%2C-32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%27150.40%2C0.00%20131.60%2C32.56%2094.00%2C32.56%2075.20%2C0.00%2094.00%2C-32.56%20131.60%2C-32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C32.56%2075.20%2C65.13%2037.60%2C65.13%2018.80%2C32.56%2037.60%2C0.00%2075.20%2C0.00%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2737.60%2C65.13%2018.80%2C97.69%20-18.80%2C97.69%20-37.60%2C65.13%20-18.80%2C32.56%2018.80%2C32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%27150.40%2C65.13%20131.60%2C97.69%2094.00%2C97.69%2075.20%2C65.13%2094.00%2C32.56%20131.60%2C32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C97.69%2075.20%2C130.25%2037.60%2C130.25%2018.80%2C97.69%2037.60%2C65.13%2075.20%2C65.13%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C-32.56%2075.20%2C0.00%2037.60%2C0.00%2018.80%2C-32.56%2037.60%2C-65.13%2075.20%2C-65.13%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3C/svg%3E");
+      background-size: 112.80px 65.13px;
+      background-repeat: repeat;
+      background-position: 0 0;
+    }
+    .cream-hex-section > * { position: relative; z-index: 1; }
+    .cream-hex-section section { background: transparent; }
+    /* ── HOW IT WORKS HEX FLIPS (flat-top honeycomb) ── */
+    .how-hex-grid {
+      --hex-w: clamp(170px, 21vw, 240px);
+      --hex-h: calc(0.866 * var(--hex-w));   /* regular flat-top: H = 0.866 * W */
+      --col: calc(0.75 * var(--hex-w));      /* horizontal step (diagonal neighbor) */
+      --off: calc(0.5 * var(--hex-h));       /* alternating vertical offset          */
+      position: relative; z-index: 1;
+      width: calc(3 * var(--col) + var(--hex-w));
+      height: calc(var(--hex-h) + var(--off));
+      margin: 0 auto;
+    }
+    .how-hex-grid .hex-flip {
+      position: absolute;
+      width: var(--hex-w);
+      height: var(--hex-h);
+      min-width: var(--hex-w);
+      min-height: var(--hex-h);
+      flex-shrink: 0;
+      transform: scale(0.93);
+    }
+    /* Connect → Dispatch → Normalize → Verify (desktop honeycomb zigzag) */
+    .how-hex-grid .hex-flip:nth-child(1) { left: 0;                    top: 0; }
+    .how-hex-grid .hex-flip:nth-child(2) { left: var(--col);           top: var(--off); }
+    .how-hex-grid .hex-flip:nth-child(3) { left: calc(2 * var(--col)); top: 0; }
+    .how-hex-grid .hex-flip:nth-child(4) { left: calc(3 * var(--col)); top: var(--off); }
+    .how-hex-grid .hex-flip:hover, .how-hex-grid .hex-flip.pinned { z-index: 10; }
+    .hex-flip .flip-inner { width: 100%; height: 100%; min-height: var(--hex-h); }
+    .hex-face {
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      border-radius: 0;
+    }
+    .hex-face-front {
+      background: #C2932A; display: flex; align-items: center; justify-content: center;
+      padding: 0 17%;
+    }
+    .hex-face-front::before {
+      content: ''; position: absolute; inset: 0;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      background: #E4B33C; transform: scale(0.94); z-index: 0;
+      transition: background 0.3s ease;
+    }
+    .how-hex-grid .hex-flip:hover .hex-face-front::before { background: #F5C044; }
+    .hex-face-back {
+      background: #C2932A; transform: rotateY(180deg);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 16%; text-align: center; overflow: hidden;
+    }
+    .hex-face-back::before {
+      content: ''; position: absolute; inset: 0;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      background: #FFFCF0; transform: scale(0.94); z-index: 0;
+    }
+    .hex-face-back p { font-size: clamp(13.5px,1.65vw,16.5px); color: #4b4433; line-height: 1.4; margin: 0; font-weight: 500; position: relative; z-index: 1; }
+    .hex-word { font-size: clamp(26px,4.2vw,40px); font-weight: 900; color: #241f18; margin: 0; letter-spacing: -0.03em; line-height: 1.05; text-align: center; position: relative; z-index: 1; }
+    /* ── SCORECARD FLIPS ── */
+    .score-flip { min-height: 156px; cursor: pointer; }
+    .score-flip .flip-face { display: flex; flex-direction: column; justify-content: center; padding: 22px 24px; box-sizing: border-box; overflow: hidden; border-radius: 16px; }
+    .score-flip .flip-front { background: rgba(251,247,234,0.62); border: 1px solid rgba(36,31,24,0.14); backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); }
+    .score-flip--light .flip-front { background: rgba(255,252,240,0.9); border: 1px solid rgba(36,31,24,0.09); box-shadow: 0 1px 2px rgba(120,80,30,0.05); backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); }
+    .score-flip .flip-back { background: #FFFCF0; border: 1px solid rgba(36,31,24,0.12); align-items: flex-start; justify-content: center; text-align: left; }
+    .score-flip--light .flip-back { background: #F5C044; border: 1px solid #C2932A; }
+    .score-flip .flip-back p { font-size: clamp(15px,1.5vw,18px); line-height: 1.5; margin: 0; font-weight: 400; color: #241f18; max-width: 100%; }
+    .score-flip--light .flip-back p { color: #241f18; }
+    @media (min-width: 769px) {
+      #who .score-flip .flip-back {
+        background: #FFFCF0 !important;
+        border: 1px solid rgba(36,31,24,0.12) !important;
+      }
+      #who .score-flip .flip-back p { color: #241f18 !important; }
+    }
+    .card-front-split { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; width: 100%; }
+    .card-front-left { display: flex; align-items: center; gap: 13px; }
+    .card-front-left svg { width: 38px; height: 38px; }
+    .card-front-right { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; align-items: center; }
+    .card-category-title { font-size: clamp(18px,2vw,23px); font-weight: 700; color: #241f18; margin: 0; letter-spacing: -0.02em; line-height: 1.18; }
+    .score-tag { font-size: 12px; color: #8a7c58; border: 1px solid rgba(194,147,42,0.5); border-radius: 6px; padding: 4px 11px; font-weight: 500; white-space: nowrap; letter-spacing: 0.02em; }
+    /* Platform feature cards: never overflow viewport */
+    #platform-features { overflow-x: clip; box-sizing: border-box; padding: 48px clamp(20px,4vw,64px) 72px !important; }
+    #platform-features > div { min-width: 0; max-width: 1160px; margin: 0 auto; }
+    #platform-features [data-grid] { display: grid !important; grid-template-columns: repeat(auto-fit,minmax(min(100%,280px),1fr)) !important; gap: 20px !important; min-width: 0; width: 100%; }
+    #platform-features .score-flip { min-width: 0; max-width: 100%; overflow: hidden; }
+    #platform-features .card-front-split { min-width: 0; width: 100%; }
+    #platform-features .card-front-left { min-width: 0; flex: 1 1 auto; }
+    #platform-features .card-front-right { min-width: 0; flex: 1 1 100%; }
+    #platform-features .card-category-title { overflow-wrap: break-word; }
+    #platform-features .score-tag { white-space: normal; text-align: center; line-height: 1.25; }
+    .score-flip .flip-face svg { flex-shrink: 0; }
+    /* ── PROBLEM METRICS ── */
+    .problem-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 40px; max-width: 920px; margin: 0 auto; align-items: start; }
+    .problem-metric { text-align: center; padding: 0; }
+    .problem-metric-num { font-size: clamp(36px,5.5vw,68px); font-weight: 900; color: #241f18; letter-spacing: -0.04em; line-height: 1; margin: 0 0 10px; }
+    .problem-metric-label { font-size: clamp(14px,1.45vw,17px); color: rgba(36,31,24,0.82); line-height: 1.45; margin: 0; font-weight: 500; }
+    /* ── ARCHITECTURE LAYER TYPE (shares .card-category-title metrics) ── */
+    .arch-layer-title { color: #E4B33C; margin: 0 0 10px; }
+    #architecture .card-category-title { color: #E4B33C; margin: 0 0 10px; }
+    .arch-layer-body { font-size: clamp(15px,1.5vw,18px); color: rgba(251,247,234,0.72); line-height: 1.5; margin: 0; font-weight: 400; }
+    #arch-scene { display: block; width: min(760px, 100%); margin: 56px auto 0; }
+    .nav-brand-text { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; white-space: nowrap; }
+    .nav-hexdot {
+      display: inline-block; width: 10px; height: 10px; background: #E4B33C;
+      clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+      margin-right: 7px; vertical-align: -1px;
+    }
+    .card-icon-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .card-icon-title svg { flex-shrink: 0; display: block; }
+    @media (max-width: 1100px) {
+      #hero-hoverbee { display: none; }
+      #hive-wrap { transform: scale(0.84); }
+    }
+    @media (max-width: 768px) {
+      .card-front-split { flex-direction: column; gap: 14px; }
+      .card-front-right { max-width: 100%; justify-content: flex-start; }
+      [data-nav-links] { display: none !important; }
+      [data-grid] { display: flex !important; flex-direction: column !important; gap: 24px !important; }
+      #hero > div:last-child { padding: 0 clamp(16px, 4vw, 24px) !important; }
+      .hero-inner { padding: calc(70px + 4vh) clamp(16px, 4vw, 24px) 0 !important; }
+      .hero-title { font-size: clamp(30px, 8.5vw, 52px); }
+      .hero-line2 { white-space: nowrap; letter-spacing: -0.03em; }
+      #hero-sun { display: none; }
+      .hero-flower--sm { display: none; }
+      #hive-wrap { transform: scale(0.6); bottom: -6px; }
+      #problem { padding: 64px 24px !important; }
+      #how-it-works { padding: 64px 24px 0 !important; }
+      /* Vertical honeycomb: transpose of laptop zigzag adjacency */
+      .how-hex-grid {
+        --hex-w: min(190px, calc((100vw - 48px) / 1.75)) !important;
+        --hex-h: calc(0.866 * var(--hex-w)) !important;
+        --col: calc(0.75 * var(--hex-w)) !important;
+        --row: calc(0.5 * var(--hex-h)) !important;
+        display: block !important;
+        width: calc(var(--col) + var(--hex-w)) !important;
+        height: calc(3 * var(--row) + var(--hex-h)) !important;
+        margin: 0 auto !important;
+      }
+      .how-hex-grid .hex-flip {
+        position: absolute !important;
+        width: var(--hex-w) !important;
+        height: var(--hex-h) !important;
+        min-width: var(--hex-w) !important;
+        min-height: var(--hex-h) !important;
+        flex-shrink: 0 !important;
+      }
+      /* Keep regular hex ratio — mobile flip flattening must not squash height */
+      .how-hex-grid .hex-flip .flip-inner {
+        height: 100% !important;
+        min-height: var(--hex-h) !important;
+      }
+      .how-hex-grid .hex-flip .hex-face-front {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        transform: none !important;
+      }
+      /* Connect ↘ Dispatch ↙ Normalize ↘ Verify */
+      .how-hex-grid .hex-flip:nth-child(1) { left: var(--col) !important; top: 0 !important; }
+      .how-hex-grid .hex-flip:nth-child(2) { left: 0 !important; top: var(--row) !important; }
+      .how-hex-grid .hex-flip:nth-child(3) { left: var(--col) !important; top: calc(2 * var(--row)) !important; }
+      .how-hex-grid .hex-flip:nth-child(4) { left: 0 !important; top: calc(3 * var(--row)) !important; }
+      .hex-word { font-size: 20px !important; }
+      .hex-face-back { padding: 0 16% !important; }
+      .hex-face-back p { font-size: 14px !important; line-height: 1.42 !important; }
+      .problem-metrics { grid-template-columns: 1fr !important; gap: 28px !important; max-width: 100% !important; }
+      .problem-metric-num { font-size: clamp(34px,10vw,48px) !important; }
+      .problem-metric-label { font-size: 15px !important; }
+      #how-it-works [data-grid] { max-width: 100% !important; gap: 40px !important; }
+      #platform-features { padding: 64px 24px !important; }
+      #platform-features > div { max-width: 100% !important; }
+      #who { padding: 64px 24px !important; }
+      #who > div { max-width: 100% !important; }
+      #architecture { padding: 64px 24px !important; }
+      #architecture > div > div { max-width: 100% !important; }
+      #contact { padding: 64px 24px 72px !important; }
+      #contact > div { max-width: 100% !important; }
+      [data-name-row] { grid-template-columns: 1fr !important; }
 
-<nav>
-  <a class="nav-logo" href="index.html"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
-  <div class="nav-links">
-    <a href="#" class="active" onclick="event.preventDefault();document.getElementById('how').scrollIntoView({behavior:'smooth'})">How It Works</a>
-    <a href="/technology/">Technology</a>
+      /* All flip cards: front face only — no 3D flip or tap-to-pin */
+      [data-flip], .flip {
+        cursor: default !important;
+        pointer-events: none !important;
+        perspective: none !important;
+      }
+      [data-flip] .flip-inner, .flip .flip-inner {
+        transform: none !important;
+        transition: none !important;
+        transform-style: flat !important;
+        height: 100%;
+      }
+      [data-flip]:hover .flip-inner,
+      [data-flip].pinned .flip-inner,
+      .flip:hover .flip-inner,
+      .flip.pinned .flip-inner { transform: none !important; }
+      [data-flip] .flip-back, .flip .flip-back,
+      .hex-flip .hex-face-back { display: none !important; }
+      [data-flip] .flip-front,
+      [data-flip] .flip-face:not(.flip-back),
+      .hex-flip .hex-face-front {
+        position: relative !important;
+        backface-visibility: visible !important;
+        -webkit-backface-visibility: visible !important;
+        transform: none !important;
+      }
+      #who [data-grid] {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 16px !important;
+        flex-direction: unset !important;
+      }
+      #who .score-flip { min-height: 130px !important; border-radius: 16px; }
+      #who .score-flip .flip-front { padding: 18px 16px !important; }
+      #who .card-front-left { gap: 10px !important; align-items: center; }
+      #who .card-front-left svg { width: 36px !important; height: 36px !important; flex-shrink: 0; }
+      #platform-features .score-flip { min-height: 156px !important; border-radius: 16px; }
+      #platform-features .score-flip .flip-face { border-radius: 16px; }
+      .card-front-split { gap: 12px !important; }
+      .card-front-right { gap: 7px; }
+    }
+  </style>
+</helmet>
+
+<!-- ══════════════════════════════════════════════════
+     NAV
+══════════════════════════════════════════════════ -->
+<nav style="{{ navStyle }}">
+  <a href="#hero" style="display:flex;align-items:center;gap:10px;">
+    <sc-if value="{{ notScrolled }}" hint-placeholder-val="{{ true }}">
+      <img src="assets/kwh-logo-mark.png" height="34" alt="kWh Electric" style="display:block;" />
+    </sc-if>
+    <sc-if value="{{ scrolled }}" hint-placeholder-val="{{ false }}">
+      <img src="assets/kwh-logo-mark.png" height="34" alt="kWh Electric" style="display:block;" />
+    </sc-if>
+  </a>
+  <div data-nav-links="" style="display:flex;align-items:center;gap:26px;">
+    <a href="#problem" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:500;transition:opacity 0.15s;" style-hover="opacity:0.5">The Problem</a>
+    <a href="#how-it-works" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:500;transition:opacity 0.15s;" style-hover="opacity:0.5">How It Works</a>
+    <a href="#architecture" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:500;transition:opacity 0.15s;" style-hover="opacity:0.5">Architecture</a>
+    <a href="/?story=1" data-story-trigger="" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:500;transition:opacity 0.15s;" style-hover="opacity:0.5"><span class="nav-hexdot" aria-hidden="true"></span>Story</a>
+    <a href="#contact" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:500;transition:opacity 0.15s;" style-hover="opacity:0.5">Get In Touch</a>
+
   </div>
-  <a class="nav-cta" href="#cta" onclick="event.preventDefault();document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Request Pilot Access</a>
 </nav>
 
-<section id="hero">
-  <h1 class="headline">
-    Every energy asset,<br><span class="accent">visible and dispatchable.</span>
-  </h1>
-  <div class="pill-row">
-    <span class="pill">Open protocols</span>
-    <span class="pill">Real-time telemetry</span>
-    <span class="pill">Dispatch-enabled</span>
-    <span class="pill">MCP + AI-ready</span>
+<!-- ══════════════════════════════════════════════════
+     HERO — illustrated meadow + hive (bee-story)
+══════════════════════════════════════════════════ -->
+<section id="hero" style="position:relative;height:100vh;min-height:640px;overflow:hidden;background:#FBF7EA;">
+  <div id="hero-art" aria-hidden="true">
+    <svg id="hero-ground" viewBox="0 0 1200 150" preserveAspectRatio="none">
+  <path d="M0 55 Q 300 15 620 45 T 1200 35 L1200 150 L0 150 Z" fill="#EFE3BC"/>
+  <path d="M0 92 Q 400 58 800 88 T 1200 78 L1200 150 L0 150 Z" fill="#E7D8A8"/>
+  <g stroke="#8fae5f" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8">
+    <path d="M90 70 q-3 -14 -8 -18 M90 70 q2 -12 8 -16"/>
+    <path d="M420 58 q-3 -13 -7 -17 M420 58 q2 -11 7 -15"/>
+    <path d="M760 72 q-3 -14 -8 -18 M760 72 q2 -12 8 -16"/>
+    <path d="M1080 60 q-3 -13 -7 -17 M1080 60 q2 -11 7 -15"/>
+  </g></svg>
+    <svg id="hero-sun" viewBox="0 0 180 180">
+  <defs>
+    <radialGradient id="heroSunGrad" cx="42%" cy="38%" r="58%">
+      <stop offset="0%" stop-color="#FFF8E0"/>
+      <stop offset="35%" stop-color="#F5C044"/>
+      <stop offset="72%" stop-color="#E4B33C"/>
+      <stop offset="100%" stop-color="#C2932A"/>
+    </radialGradient>
+  </defs>
+  <circle cx="90" cy="90" r="42" fill="url(#heroSunGrad)" opacity=".95"/>
+</svg>
+    <svg class="hero-flower" style="left:6%;bottom:78px;" width="106" height="148" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#E9C46A" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#E9C46A" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#E9C46A" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#E9C46A" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#E9C46A" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#E9C46A" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    <svg class="hero-flower hero-flower--sm" style="left:15%;bottom:78px;" width="75" height="95" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#D98A78" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#D98A78" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#D98A78" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#D98A78" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#D98A78" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#D98A78" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    <svg class="hero-flower hero-flower--sm" style="left:26%;bottom:78px;" width="62" height="78" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#EED9A5" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#EED9A5" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#EED9A5" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#EED9A5" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#EED9A5" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#EED9A5" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    <svg class="hero-flower hero-flower--sm" style="left:79%;bottom:78px;" width="84" height="106" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#EED9A5" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#EED9A5" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#EED9A5" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#EED9A5" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#EED9A5" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#EED9A5" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    <svg class="hero-flower" style="left:89%;bottom:78px;" width="110" height="154" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#E9C46A" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#E9C46A" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#E9C46A" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#E9C46A" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#E9C46A" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#E9C46A" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    
+    <svg class="hero-sprout is-new" style="left:34%;" width="36" height="40" viewBox="-18 -8 36 48" aria-hidden="true">
+      <path d="M0 36 q-4 -18 -10 -28 M0 36 q4 -16 10 -26" stroke="#6f8a4a" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="-11" cy="6" rx="7" ry="4" fill="#8fae5f" transform="rotate(-35 -11 6)"/>
+      <ellipse cx="11" cy="8" rx="7" ry="4" fill="#8fae5f" transform="rotate(35 11 8)"/>
+    </svg>
+    <svg class="hero-sprout is-new" style="left:48%;" width="30" height="34" viewBox="-15 -6 30 42" aria-hidden="true">
+      <path d="M0 32 q-3 -14 -8 -22 M0 32 q3 -12 8 -20" stroke="#6f8a4a" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <svg class="hero-sprout is-new" style="left:62%;" width="42" height="48" viewBox="-20 -10 40 56" aria-hidden="true">
+      <path d="M0 42 q-5 -20 -12 -32 M0 42 q5 -18 12 -30" stroke="#6f8a4a" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="-13" cy="8" rx="8" ry="4.5" fill="#8fae5f" transform="rotate(-40 -13 8)"/>
+      <ellipse cx="13" cy="10" rx="8" ry="4.5" fill="#8fae5f" transform="rotate(40 13 10)"/>
+    </svg>
+    <svg class="hero-sprout is-new" style="left:72%;" width="28" height="32" viewBox="-14 -6 28 40" aria-hidden="true">
+      <path d="M0 30 q-3 -12 -7 -20 M0 30 q3 -11 7 -18" stroke="#6f8a4a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    </svg>
+<svg id="hero-hoverbee" class="hoverwrap" viewBox="-95 -85 190 160">
+  <g class="beeG" transform="translate(0,0) scale(0.85,0.85)">
+    <g class="wing back" transform="translate(-14,-26)">
+      <ellipse cx="14" cy="-16" rx="15" ry="24" fill="#FFF8E4" stroke="#C2932A" stroke-width="2" opacity=".9"/>
+    </g>
+    <ellipse cx="-30" cy="0" rx="20" ry="17" fill="#F6C95C"/>
+    <ellipse cx="0" cy="0" rx="34" ry="26" fill="#F6C95C"/>
+    <clipPath id="hbc1"><ellipse cx="0" cy="0" rx="34" ry="26"/></clipPath>
+    <g clip-path="url(#hbc1)">
+      <rect x="-22" y="-30" width="13" height="60" rx="6" fill="#241f18"/>
+      <rect x="1" y="-30" width="13" height="60" rx="6" fill="#241f18"/>
+    </g>
+    <circle cx="30" cy="-4" r="22" fill="#3b2f20"/>
+    <circle cx="38" cy="-8" r="8.5" fill="#FFFDF4"/>
+    <circle cx="41" cy="-7" r="4.6" fill="#241f18"/>
+    <circle cx="43" cy="-10" r="1.8" fill="#fff"/>
+    <ellipse cx="30" cy="6" rx="5.5" ry="3.6" fill="#E8998D"/>
+    <path d="M36 4 q5 5 11 1" stroke="#1a140e" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M22 -24 q-2 -14 -12 -18" stroke="#241f18" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="-44" r="5" fill="#C2932A"/>
+    <path d="M34 -22 q4 -13 14 -15" stroke="#241f18" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="49" cy="-39" r="5" fill="#C2932A"/>
+    <g class="wing" transform="translate(-2,-24)">
+      <ellipse cx="12" cy="-18" rx="17" ry="27" fill="#FFF8E4" stroke="#C2932A" stroke-width="2.5" opacity=".95"/>
+      <path d="M6 -30 q6 8 8 20" stroke="#C2932A" stroke-width="1.6" fill="none" opacity=".5"/>
+    </g>
+  </g></svg>
+    <div id="hive-wrap">
+      <svg viewBox="0 0 480 420" width="480" height="420"><g class="hiveG"><g><polygon points="203.3,108.8 170.7,127.6 138.2,108.8 138.2,71.2 170.7,52.4 203.3,71.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="272.6,108.8 240.0,127.6 207.4,108.8 207.4,71.2 240.0,52.4 272.6,71.2" fill="#F5C044" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="341.8,108.8 309.3,127.6 276.7,108.8 276.7,71.2 309.3,52.4 341.8,71.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="168.6,168.8 136.1,187.6 103.5,168.8 103.5,131.2 136.1,112.4 168.6,131.2" fill="#F5C044" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="237.9,168.8 205.4,187.6 172.8,168.8 172.8,131.2 205.4,112.4 237.9,131.2" fill="#4a350d" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="307.2,168.8 274.6,187.6 242.1,168.8 242.1,131.2 274.6,112.4 307.2,131.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="376.5,168.8 343.9,187.6 311.4,168.8 311.4,131.2 343.9,112.4 376.5,131.2" fill="#F5C044" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="445.8,168.8 413.2,187.6 380.6,168.8 380.6,131.2 413.2,112.4 445.8,131.2" fill="#4a350d" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="64.7,228.8 32.2,247.6 -0.4,228.8 -0.4,191.2 32.2,172.4 64.7,191.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="134.0,228.8 101.4,247.6 68.9,228.8 68.9,191.2 101.4,172.4 134.0,191.2" fill="#4a350d" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="203.3,228.8 170.7,247.6 138.2,228.8 138.2,191.2 170.7,172.4 203.3,191.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="272.6,228.8 240.0,247.6 207.4,228.8 207.4,191.2 240.0,172.4 272.6,191.2" fill="#FFDF7E" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="341.8,228.8 309.3,247.6 276.7,228.8 276.7,191.2 309.3,172.4 341.8,191.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="411.1,228.8 378.6,247.6 346.0,228.8 346.0,191.2 378.6,172.4 411.1,191.2" fill="#4a350d" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="480.4,228.8 447.8,247.6 415.3,228.8 415.3,191.2 447.8,172.4 480.4,191.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="168.6,288.8 136.1,307.6 103.5,288.8 103.5,251.2 136.1,232.4 168.6,251.2" fill="#F5C044" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="237.9,288.8 205.4,307.6 172.8,288.8 172.8,251.2 205.4,232.4 237.9,251.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="307.2,288.8 274.6,307.6 242.1,288.8 242.1,251.2 274.6,232.4 307.2,251.2" fill="#4a350d" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="376.5,288.8 343.9,307.6 311.4,288.8 311.4,251.2 343.9,232.4 376.5,251.2" fill="#F5C044" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="445.8,288.8 413.2,307.6 380.6,288.8 380.6,251.2 413.2,232.4 445.8,251.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="203.3,348.8 170.7,367.6 138.2,348.8 138.2,311.2 170.7,292.4 203.3,311.2" fill="#4a350d" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="272.6,348.8 240.0,367.6 207.4,348.8 207.4,311.2 240.0,292.4 272.6,311.2" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /></g><g><polygon points="341.8,348.8 309.3,367.6 276.7,348.8 276.7,311.2 309.3,292.4 341.8,311.2" fill="#F5C044" stroke="#C2932A" stroke-width="3.5" /></g>
+  <g transform="translate(413.2050807568877,161.2) scale(1.0526315789473684)">
+    <circle cx="0" cy="0" r="15" fill="#3b2f20"/>
+    <circle cx="-5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="-3.4" cy="-2.6" r="2.6" fill="#241f18"/>
+    <circle cx="7" cy="-3" r="5" fill="#FFFDF4"/><circle cx="8.6" cy="-2.6" r="2.6" fill="#241f18"/>
+    <path d="M-8 -12 q-3 -8 -9 -10" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="-18" cy="-23" r="3.2" fill="#C2932A"/>
+    <path d="M6 -13 q3 -8 9 -9" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="16" cy="-23" r="3.2" fill="#C2932A"/>
+  </g>
+  <g transform="translate(274.6410161513775,281.2) scale(1.0526315789473684)">
+    <circle cx="0" cy="0" r="15" fill="#3b2f20"/>
+    <circle cx="-5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="-3.4" cy="-2.6" r="2.6" fill="#241f18"/>
+    <circle cx="7" cy="-3" r="5" fill="#FFFDF4"/><circle cx="8.6" cy="-2.6" r="2.6" fill="#241f18"/>
+    <path d="M-8 -12 q-3 -8 -9 -10" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="-18" cy="-23" r="3.2" fill="#C2932A"/>
+    <path d="M6 -13 q3 -8 9 -9" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="16" cy="-23" r="3.2" fill="#C2932A"/>
+  </g>
+  <g transform="translate(170.71796769724492,341.2) scale(1.0526315789473684)">
+    <circle cx="0" cy="0" r="15" fill="#3b2f20"/>
+    <circle cx="-5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="-3.4" cy="-2.6" r="2.6" fill="#241f18"/>
+    <circle cx="7" cy="-3" r="5" fill="#FFFDF4"/><circle cx="8.6" cy="-2.6" r="2.6" fill="#241f18"/>
+    <path d="M-8 -12 q-3 -8 -9 -10" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="-18" cy="-23" r="3.2" fill="#C2932A"/>
+    <path d="M6 -13 q3 -8 9 -9" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="16" cy="-23" r="3.2" fill="#C2932A"/>
+  </g></g></svg>
+      <div id="bee-cell" aria-hidden="true">
+        <svg id="bee" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg" width="60" height="50" aria-hidden="true">
+          <g transform="translate(30,30)">
+            <circle cx="0" cy="0" r="16" fill="#3b2f20"/>
+            <circle cx="-5.3" cy="-3.2" r="5.3" fill="#FFFDF4"/><circle cx="-3.6" cy="-2.8" r="2.8" fill="#241f18"/>
+            <circle cx="7.4" cy="-3.2" r="5.3" fill="#FFFDF4"/><circle cx="9.1" cy="-2.8" r="2.8" fill="#241f18"/>
+            <path d="M-8.5 -12.7 q-3.2 -8.5 -9.5 -10.6" stroke="#241f18" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="-19" cy="-24.4" r="3.4" fill="#C2932A"/>
+            <path d="M6.4 -13.8 q3.2 -8.5 9.5 -9.5" stroke="#241f18" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="17" cy="-24.4" r="3.4" fill="#C2932A"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="scrollcue"><div class="hexdot"></div></div>
+  </div>
+  <div class="hero-inner">
+    <h1 class="hero-title">
+      <span class="hero-line1">Every energy asse<span id="bee-land">t</span>,</span>
+      <span class="hero-line2">visible and dispatchable.</span>
+    </h1>
+    <p class="hero-sub">
+      Making assets intelligent using <img src="assets/kwh-logo-mark.png" alt="kWh" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> communication infrastructure
+    </p>
+
   </div>
 </section>
 
-<section id="stats">
-  <div style="width:100%;max-width:var(--content-width);display:flex;align-items:stretch;gap:0;">
+<!-- ══════════════════════════════════════════════════
+     THE PROBLEM, gold section
+══════════════════════════════════════════════════ -->
+<section id="problem" style="background:#E4B33C;padding:64px 48px;text-align:center;">
+  <div class="problem-metrics">
+    <div class="problem-metric">
+      <p class="problem-metric-num">4+ TW</p>
+      <p class="problem-metric-label">of distributed energy devices worldwide</p>
+    </div>
+    <div class="problem-metric">
+      <p class="problem-metric-num">$50K+</p>
+      <p class="problem-metric-label">per DISCOM, per OEM, every month</p>
+    </div>
+  </div>
+</section>
 
-    <!-- Problem -->
-    <div style="flex:1;display:flex;flex-direction:column;padding-right:48px;border-right:1px solid rgba(255,255,255,0.08);">
-      <div class="kicker" style="margin-bottom:28px;text-align:center;">The problem</div>
-      <div style="display:flex;flex:1;">
-        <div class="stat-item" style="flex:1;padding-left:0;">
-          <div class="stat-num">100M+</div>
-          <div class="stat-label">DERs with no common control layer</div>
+<!-- ══════════════════════════════════════════════════
+     HOW IT WORKS + PLATFORM, cream honeycomb band
+══════════════════════════════════════════════════ -->
+<div class="cream-hex-section">
+<section id="how-it-works" style="padding:72px 48px 64px;text-align:center;">
+
+  <div class="how-hex-grid">
+
+    <div class="flip hex-flip" data-flip>
+      <div class="flip-inner">
+        <div class="flip-face hex-face hex-face-front">
+          <p class="hex-word">Connect</p>
         </div>
-        <div class="stat-item" style="flex:1;">
-          <div class="stat-num" style="color:#f87171;">$50k+</div>
-          <div class="stat-label">Integration tax per DISCOM, per month, per OEM</div>
+        <div class="flip-face hex-face hex-face-back">
+          <p>Open standards gateway: IEEE 2030.5, OpenADR, SunSpec.</p>
         </div>
       </div>
     </div>
 
-    <!-- Solution -->
-    <div style="flex:1;display:flex;flex-direction:column;padding-left:48px;">
-      <div class="kicker" style="margin-bottom:28px;text-align:center;">How we solve it</div>
-      <div style="display:flex;flex:1;">
-        <div class="stat-item" style="flex:1;padding-left:0;">
-          <div class="stat-num" style="color:#4db388;">Real&#8209;time</div>
-          <div class="stat-label">Telemetry and dispatch across all 100M+ assets, always live</div>
+    <div class="flip hex-flip" data-flip>
+      <div class="flip-inner">
+        <div class="flip-face hex-face hex-face-front">
+          <p class="hex-word">Dispatch</p>
         </div>
-        <div class="stat-item" style="flex:1;">
-          <div class="stat-num" style="color:#4db388;">$0</div>
-          <div class="stat-label">Integration tax — one gateway, every DISCOM, every OEM</div>
+        <div class="flip-face hex-face hex-face-back">
+          <p>Real-time charge, discharge, curtail, and shift at any scale.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip hex-flip" data-flip>
+      <div class="flip-inner">
+        <div class="flip-face hex-face hex-face-front">
+          <p class="hex-word">Normalize</p>
+        </div>
+        <div class="flip-face hex-face hex-face-back">
+          <p>One clean data stream from every OEM protocol.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip hex-flip" data-flip>
+      <div class="flip-inner">
+        <div class="flip-face hex-face hex-face-front">
+          <p class="hex-word">Verify</p>
+        </div>
+        <div class="flip-face hex-face hex-face-back">
+          <p>Every dispatch logged. Provable response and claimable revenue.</p>
         </div>
       </div>
     </div>
@@ -70,251 +634,554 @@
 
 
 
-<section id="architecture" style="padding:80px var(--px);position:relative;z-index:1;">
-  <div style="max-width:var(--content-width);margin:0 auto;">
-    <h2 style="color:var(--white);font-size:clamp(24px,3.4vw,42px);font-weight:800;letter-spacing:-0.04em;line-height:1.15;margin-bottom:14px;">Five-Layer Architecture for<br>Dispatch + Telemetry</h2>
-    <p style="color:var(--dim);font-size:16px;max-width:680px;line-height:1.75;margin-bottom:52px;">kWh Electric connects physical DERs to edge intelligence, cloud orchestration, AI workflows, and energy applications through one interoperable infrastructure layer.</p>
+<!-- ══════════════════════════════════════════════════
+     PLATFORM FEATURES, cream glass cards
+══════════════════════════════════════════════════ -->
+<section id="platform-features">
+  <div style="max-width:1160px;margin:0 auto;">
+    <div class="accent-bar" aria-hidden="true"></div>
+    <h2 style="font-size:clamp(28px,3.8vw,48px);font-weight:900;color:#241f18;text-align:center;margin:0 0 48px;letter-spacing:-0.03em;line-height:1.1;">Hardware-enabled software infrastructure.</h2>
+    <div data-grid="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
 
-    <!-- Stack -->
-    <div style="position:relative;display:flex;flex-direction:column;gap:0;">
-
-      <!-- Layer 5 — Applications -->
-      <div style="background:rgba(251,113,133,0.08);border:1px solid rgba(251,113,133,0.3);border-radius:16px 16px 4px 4px;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
-        <div style="display:flex;align-items:center;gap:16px;">
-          <div style="width:4px;height:44px;background:#fb7185;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(251,113,133,0.5);"></div>
-          <div>
-            <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#fb7185;text-transform:uppercase;margin-bottom:4px;">Layer 5</div>
-            <div style="font-size:17px;font-weight:700;color:var(--white);">Applications + Value Layer</div>
-            <div style="font-size:13px;color:var(--dim);margin-top:4px;">Utility orchestration, asset financing, VPP participation, grid services, forecasting, and performance verification.</div>
+      <div class="flip score-flip score-flip--light" data-flip style="min-height:158px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
+                  <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#E4B33C" stroke="#C2932A" stroke-width="1.2"/>
+                  <rect x="9" y="9" width="12" height="12" rx="1" fill="rgba(36,31,24,0.22)"/>
+                  <rect x="11" y="11" width="8" height="8" rx="0.5" fill="rgba(36,31,24,0.82)"/>
+                </svg>
+                <h3 class="card-category-title">Edge Gateway</h3>
+              </div>
+              <div class="card-front-right">
+                <span class="score-tag">Local Edge</span>
+                <span class="score-tag">Policy-as-Code</span>
+                <span class="score-tag">Offline-Ready</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>A physical device installed at your site that connects to every asset locally. Offline-safe, no cloud dependency.</p>
           </div>
         </div>
       </div>
 
-      <!-- Arrow 4→5 -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;position:relative;">
-        <span style="font-size:11px;color:rgba(167,139,250,0.6);letter-spacing:0.05em;">AI workflows ↕</span>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(167,139,250,0.5),transparent);"></div>
-          <div style="width:5px;height:5px;border-radius:50%;background:rgba(167,139,250,0.4);"></div>
-          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(167,139,250,0.5),transparent);"></div>
-        </div>
-        <span style="font-size:11px;color:rgba(167,139,250,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
-      </div>
-
-      <!-- Layer 4 — MCP + AI -->
-      <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.3);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
-        <div style="width:4px;height:44px;background:#a78bfa;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(167,139,250,0.5);"></div>
-        <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#a78bfa;text-transform:uppercase;margin-bottom:4px;">Layer 4</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white);">MCP + AI Layer</div>
-          <div style="font-size:13px;color:var(--dim);margin-top:4px;">A secure interface that gives agentic AI systems DER context, telemetry access, and policy-constrained dispatch tools.</div>
-        </div>
-      </div>
-
-      <!-- Arrow 3→4 -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
-        <span style="font-size:11px;color:rgba(34,211,238,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(34,211,238,0.5),transparent);"></div>
-          <div style="width:5px;height:5px;border-radius:50%;background:rgba(34,211,238,0.4);"></div>
-          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(34,211,238,0.5),transparent);"></div>
-        </div>
-        <span style="font-size:11px;color:rgba(34,211,238,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
-      </div>
-
-      <!-- Layer 3 — Cloud Platform -->
-      <div style="background:rgba(34,211,238,0.07);border:1px solid rgba(34,211,238,0.25);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
-        <div style="width:4px;height:44px;background:#22d3ee;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(34,211,238,0.4);"></div>
-        <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#22d3ee;text-transform:uppercase;margin-bottom:4px;">Layer 3</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white);">Cloud Platform</div>
-          <div style="font-size:13px;color:var(--dim);margin-top:4px;">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</div>
+      <div class="flip score-flip score-flip--light" data-flip style="min-height:158px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
+                  <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#E4B33C" stroke="#C2932A" stroke-width="1.2"/>
+                  <path d="M8 11 L19 11 M16 9 L19 11 L16 13" stroke="rgba(36,31,24,0.85)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  <path d="M22 19 L11 19 M14 17 L11 19 L14 21" stroke="rgba(36,31,24,0.85)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+                <h3 class="card-category-title">Protocol Translation</h3>
+              </div>
+              <div class="card-front-right">
+                <span class="score-tag">SunSpec</span>
+                <span class="score-tag">Modbus</span>
+                <span class="score-tag">OCPP</span>
+                <span class="score-tag">OpenADR</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Every device speaks a different language. The gateway translates them all into one clean API. No custom integrations per OEM.</p>
+          </div>
         </div>
       </div>
 
-      <!-- Arrow 2→3 -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
-        <span style="font-size:11px;color:rgba(74,222,128,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(74,222,128,0.5),transparent);"></div>
-          <div style="width:5px;height:5px;border-radius:50%;background:rgba(74,222,128,0.4);"></div>
-          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(74,222,128,0.5),transparent);"></div>
-        </div>
-        <span style="font-size:11px;color:rgba(74,222,128,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
-      </div>
-
-      <!-- Layer 2 — Edge Gateway -->
-      <div style="background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.28);border-radius:4px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
-        <div style="width:4px;height:44px;background:#4ade80;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(74,222,128,0.4);"></div>
-        <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#4ade80;text-transform:uppercase;margin-bottom:4px;">Layer 2</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white);">Edge Gateway</div>
-          <div style="font-size:13px;color:var(--dim);margin-top:4px;">A one-time device that connects locally to assets, standardizes telemetry, and enables secure dispatch.</div>
-        </div>
-      </div>
-
-      <!-- Arrow 1→2 -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:6px 0;">
-        <span style="font-size:11px;color:rgba(251,191,36,0.6);letter-spacing:0.05em;">Telemetry ↑</span>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-          <div style="width:1px;height:14px;background:linear-gradient(to top,rgba(251,191,36,0.5),transparent);"></div>
-          <div style="width:5px;height:5px;border-radius:50%;background:rgba(251,191,36,0.4);"></div>
-          <div style="width:1px;height:14px;background:linear-gradient(to bottom,rgba(251,191,36,0.5),transparent);"></div>
-        </div>
-        <span style="font-size:11px;color:rgba(251,191,36,0.6);letter-spacing:0.05em;">Dispatch ↓</span>
-      </div>
-
-      <!-- Layer 1 — Physical DERs -->
-      <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.28);border-radius:4px 4px 16px 16px;padding:22px 28px;display:flex;align-items:center;gap:16px;">
-        <div style="width:4px;height:44px;background:#fbbf24;border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(251,191,36,0.4);"></div>
-        <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#fbbf24;text-transform:uppercase;margin-bottom:4px;">Layer 1</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white);">Physical DER Devices</div>
-          <div style="font-size:13px;color:var(--dim);margin-top:4px;">Batteries, solar inverters, EV chargers, smart meters, and flexible loads.</div>
+      <div class="flip score-flip score-flip--light" data-flip style="min-height:158px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
+                  <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#E4B33C" stroke="#C2932A" stroke-width="1.2"/>
+                  <path d="M15 8 C15 8 16.5 13 21 15 C16.5 17 15 22 15 22 C15 22 13.5 17 9 15 C13.5 13 15 8 15 8Z" fill="rgba(36,31,24,0.85)"/>
+                </svg>
+                <h3 class="card-category-title">Cloud-Based</h3>
+              </div>
+              <div class="card-front-right">
+                <span class="score-tag">MCP</span>
+                <span class="score-tag">AI Agents</span>
+                <span class="score-tag">Cloud</span>
+                <span class="score-tag">OTA Updates</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>A cloud layer exposing MCP and AI interfaces, letting agents read asset data and trigger policy-bound dispatch. No raw device control exposed.</p>
+          </div>
         </div>
       </div>
 
-    </div><!-- end stack -->
-  </div>
-</section>
-
-<section id="how">
-  <h2 class="headline" style="font-size:62px;">Connect. <span class="accent">Normalize.</span><br>Dispatch. Verify.</h2>
-  <p class="subtext">How the gateway works for you. Select a step.</p>
-  <div class="steps">
-    <div class="step" onclick="toggleStep(this)">
-      <div class="step-header"><div class="step-num">1</div><div class="step-name">Connect</div></div>
-      <div class="step-body"><div class="step-body-inner">Install the gateway at your site. It connects directly to your batteries, solar inverters, EV chargers, and meters using standard protocols — no vendor lock-in, no closed OEM cloud needed.</div></div>
-    </div>
-    <div class="step" onclick="toggleStep(this)">
-      <div class="step-header"><div class="step-num">2</div><div class="step-name">Normalize</div></div>
-      <div class="step-body"><div class="step-body-inner">Every device speaks a different language. The gateway translates them all into one clean, consistent data stream — so you see everything in one place, in real time.</div></div>
-    </div>
-    <div class="step" onclick="toggleStep(this)">
-      <div class="step-header"><div class="step-num">3</div><div class="step-name">Dispatch</div></div>
-      <div class="step-body"><div class="step-body-inner">Send charge, discharge, curtail, or shift commands to your assets from any platform. The gateway handles the translation — safely, in real time, without custom integrations.</div></div>
-    </div>
-    <div class="step" onclick="toggleStep(this)">
-      <div class="step-header"><div class="step-num">4</div><div class="step-name">Verify</div></div>
-      <div class="step-body"><div class="step-body-inner">Every dispatch event is logged before, during, and after. Your assets' performance is recorded and verifiable — so you can prove response, claim revenue, and build trust.</div></div>
     </div>
   </div>
 </section>
+</div>
 
-<section id="supporters">
-  <p style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:32px;">Backed by</p>
-  <div class="carousel-outer">
-    <div class="carousel-track">
-      <div class="logo-item"><img class="logo-img" src="Polsky%20CNVC.png" alt="Polsky CNVC"></div>
-      <div class="logo-item"><img class="logo-img" src="uploads/microsoft-for-startups.png" alt="Microsoft for Startups"></div>
-      <div class="logo-item"><img class="logo-img" src="iVenture%20loo.jpg" alt="iVenture Accelerator"></div>
-      <div class="logo-item"><img class="logo-img" src="Samayang%20Logo.png" alt="Samayang"></div>
-      <div class="logo-item"><img class="logo-img" src="TEC%20Logo.png" alt="TEC"></div>
-      <div class="logo-item"><img class="logo-img" src="Polsky%20CNVC.png" alt="Polsky CNVC"></div>
-      <div class="logo-item"><img class="logo-img" src="uploads/microsoft-for-startups.png" alt="Microsoft for Startups"></div>
-      <div class="logo-item"><img class="logo-img" src="iVenture%20loo.jpg" alt="iVenture Accelerator"></div>
-      <div class="logo-item"><img class="logo-img" src="Samayang%20Logo.png" alt="Samayang"></div>
-      <div class="logo-item"><img class="logo-img" src="TEC%20Logo.png" alt="TEC"></div>
+<!-- ══════════════════════════════════════════════════
+     WHO IT'S FOR, gold card grid
+══════════════════════════════════════════════════ -->
+<section id="who" style="background:#E4B33C;padding:72px 64px;">
+  <div style="max-width:1160px;margin:0 auto;">
+    <div class="accent-bar" style="background:#241f18;" aria-hidden="true"></div>
+    <h2 style="font-size:clamp(40px,6vw,80px);font-weight:900;color:#241f18;text-align:center;margin:0 0 48px;letter-spacing:-0.04em;line-height:0.95;">Who it's for.</h2>
+    <div data-grid="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><polygon points="28,13 24,20 16,20 12,13 16,6 24,6" fill="rgba(36,31,24,0.78)"/><polygon points="21,26 17,33 9,33 5,26 9,19 17,19" fill="rgba(36,31,24,0.78)"/><polygon points="35,26 31,33 23,33 19,26 23,19 31,19" fill="rgba(36,31,24,0.78)"/></svg>
+                <h3 class="card-category-title">Aggregators / VPP Operators</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Dispatch a unified fleet of any asset type, from any manufacturer, in real time.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><rect x="10" y="13" width="20" height="23" rx="2" fill="rgba(36,31,24,0.78)"/><rect x="15" y="9" width="10" height="5" rx="1.5" fill="rgba(36,31,24,0.78)"/><rect x="12" y="27" width="16" height="6" rx="1" fill="rgba(251,247,234,0.5)"/></svg>
+                <h3 class="card-category-title">BESS Financiers</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Real-time visibility into the health and performance of every battery in your portfolio.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><rect x="12" y="12" width="16" height="16" rx="2" fill="rgba(36,31,24,0.78)"/><rect x="5" y="16" width="7" height="2.5" rx="1" fill="rgba(36,31,24,0.78)"/><rect x="5" y="22" width="7" height="2.5" rx="1" fill="rgba(36,31,24,0.78)"/><rect x="28" y="16" width="7" height="2.5" rx="1" fill="rgba(36,31,24,0.78)"/><rect x="28" y="22" width="7" height="2.5" rx="1" fill="rgba(36,31,24,0.78)"/><rect x="16" y="5" width="2.5" height="7" rx="1" fill="rgba(36,31,24,0.78)"/><rect x="22" y="5" width="2.5" height="7" rx="1" fill="rgba(36,31,24,0.78)"/><rect x="16" y="28" width="2.5" height="7" rx="1" fill="rgba(36,31,24,0.78)"/><rect x="22" y="28" width="2.5" height="7" rx="1" fill="rgba(36,31,24,0.78)"/></svg>
+                <h3 class="card-category-title">OEMs</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Make your hardware interoperable and dispatch-ready without building a full software platform.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L36 20 L20 36 L4 20 Z" fill="rgba(36,31,24,0.78)"/><line x1="4" y1="20" x2="36" y2="20" stroke="rgba(251,247,234,0.42)" stroke-width="1.5"/><line x1="20" y1="4" x2="20" y2="36" stroke="rgba(251,247,234,0.42)" stroke-width="1.5"/></svg>
+                <h3 class="card-category-title">Utilities / DISCOMs</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>See behind-the-meter assets and dispatch flexible capacity. Devices join automatically, no campaigns needed.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 C20 3 22 17.5 37 20 C22 22.5 20 37 20 37 C20 37 18 22.5 3 20 C18 17.5 20 3 20 3Z" fill="rgba(36,31,24,0.78)"/></svg>
+                <h3 class="card-category-title">Energy AI Platforms</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Clean, standardized data and dispatch APIs for your optimization and AI workflows.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip score-flip" data-flip style="min-height:150px;">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="card-front-split">
+              <div class="card-front-left">
+                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="7" fill="rgba(36,31,24,0.78)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(36,31,24,0.78)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(36,31,24,0.78)" transform="rotate(45 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(36,31,24,0.78)" transform="rotate(90 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(36,31,24,0.78)" transform="rotate(135 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(36,31,24,0.78)" transform="rotate(180 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(36,31,24,0.78)" transform="rotate(225 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(36,31,24,0.78)" transform="rotate(270 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(36,31,24,0.78)" transform="rotate(315 20 20)"/></svg>
+                <h3 class="card-category-title">Commercial Asset Owners</h3>
+              </div>
+            </div>
+          </div>
+          <div class="flip-face flip-back">
+            <p>Lower bills, grid revenue, and full visibility from your solar, batteries, and EV chargers.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<section id="cta">
-  <h2 class="headline" style="font-size:52px;">Build the control layer for<br><span class="accent">distributed energy.</span></h2>
-  <p class="subtext">Are you a utility, aggregator, OEM, or asset financier? Maximise your savings by running a pilot with us. Reach out for questions.</p>
-  <div class="email-form">
-    <input class="email-input" type="email" id="email-field" placeholder="your@company.com">
-    <button class="btn-primary" id="submit-btn" onclick="submitEmail()">Request Pilot Access</button>
+<!-- ══════════════════════════════════════════════════
+     FIVE-LAYER ARCHITECTURE, dark hive
+══════════════════════════════════════════════════ -->
+<section id="architecture" style="position:relative;background:#241f18;padding:72px 64px;overflow:hidden;">
+  <div style="position:absolute;inset:0;pointer-events:none;background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27112.80%27%20height%3D%2765.13%27%20viewBox%3D%270%200%20112.80%2065.13%27%3E%3Cpolygon%20points%3D%2737.60%2C0.00%2018.80%2C32.56%20-18.80%2C32.56%20-37.60%2C0.00%20-18.80%2C-32.56%2018.80%2C-32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E4B33C%27%20stroke-opacity%3D%270.09%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%27150.40%2C0.00%20131.60%2C32.56%2094.00%2C32.56%2075.20%2C0.00%2094.00%2C-32.56%20131.60%2C-32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E4B33C%27%20stroke-opacity%3D%270.09%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C32.56%2075.20%2C65.13%2037.60%2C65.13%2018.80%2C32.56%2037.60%2C0.00%2075.20%2C0.00%27%20fill%3D%27none%27%20stroke%3D%27%23E4B33C%27%20stroke-opacity%3D%270.09%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2737.60%2C65.13%2018.80%2C97.69%20-18.80%2C97.69%20-37.60%2C65.13%20-18.80%2C32.56%2018.80%2C32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E4B33C%27%20stroke-opacity%3D%270.09%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%27150.40%2C65.13%20131.60%2C97.69%2094.00%2C97.69%2075.20%2C65.13%2094.00%2C32.56%20131.60%2C32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E4B33C%27%20stroke-opacity%3D%270.09%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C97.69%2075.20%2C130.25%2037.60%2C130.25%2018.80%2C97.69%2037.60%2C65.13%2075.20%2C65.13%27%20fill%3D%27none%27%20stroke%3D%27%23E4B33C%27%20stroke-opacity%3D%270.09%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C-32.56%2075.20%2C0.00%2037.60%2C0.00%2018.80%2C-32.56%2037.60%2C-65.13%2075.20%2C-65.13%27%20fill%3D%27none%27%20stroke%3D%27%23E4B33C%27%20stroke-opacity%3D%270.09%27%20stroke-width%3D%271.4%27/%3E%3C/svg%3E&quot;);background-size:112.80px 65.13px;background-repeat:repeat;"></div>
+  <div id="arch-stack-inner" style="position:relative;z-index:2;max-width:1160px;margin:0 auto;">
+
+    <div class="accent-bar" aria-hidden="true"></div>
+    <h2 style="font-size:clamp(28px,4vw,50px);font-weight:900;color:#FBF7EA;text-align:center;margin:0 0 56px;letter-spacing:-0.03em;line-height:1.1;">
+      Five layers from physica<span id="stack-bee-land">l</span> device<br>to AI operation.
+    </h2>
+
+    <!-- L5 -->
+    <div data-grid="" style="border-top:3px solid #E4B33C;padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:900;color:#E4B33C;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L5</span>
+      <div>
+        <h3 class="card-category-title arch-layer-title">Applications + Value Layer</h3>
+        <p class="arch-layer-body">Utility orchestration, asset financing, VPP participation, grid services, forecasting, performance verification.</p>
+      </div>
+    </div>
+
+    <!-- L4 -->
+    <div data-grid="" style="border-top:2px solid rgba(228,179,60,0.32);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:900;color:#E4B33C;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L4</span>
+      <div>
+        <h3 class="card-category-title arch-layer-title">MCP + AI Layer</h3>
+        <p class="arch-layer-body">Agentic AI systems with DER context, telemetry access, and policy-constrained dispatch tools.</p>
+      </div>
+    </div>
+
+    <!-- L3 -->
+    <div data-grid="" style="border-top:2px solid rgba(228,179,60,0.32);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:900;color:#E4B33C;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L3</span>
+      <div>
+        <h3 class="card-category-title arch-layer-title">Cloud Platform</h3>
+        <p class="arch-layer-body">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</p>
+      </div>
+    </div>
+
+    <!-- L2 -->
+    <div data-grid="" style="border-top:2px solid rgba(228,179,60,0.32);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:900;color:#E4B33C;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L2</span>
+      <div>
+        <h3 class="card-category-title arch-layer-title">Edge Gateway</h3>
+        <p class="arch-layer-body">One-time device installation. Connects locally to every DER, standardizes telemetry, enables secure dispatch without closed OEM cloud dependency.</p>
+      </div>
+    </div>
+
+    <!-- L1 -->
+    <div data-grid="" style="border-top:2px solid rgba(228,179,60,0.32);border-bottom:2px solid rgba(228,179,60,0.32);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
+      <span style="font-size:44px;font-weight:900;color:#E4B33C;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L1</span>
+      <div>
+        <h3 class="card-category-title arch-layer-title">Physical DER Devices</h3>
+        <p class="arch-layer-body">Batteries, solar inverters, EV chargers, smart meters, flexible loads: every asset class, every OEM.</p>
+      </div>
+    </div>
+
+    <!-- Hive defense scene (decorative) -->
+    <svg id="arch-scene" viewBox="0 0 900 360" aria-hidden="true">
+  <g opacity="0.16"><polygon points="84.8,330.0 64.0,342.0 43.2,330.0 43.2,306.0 64.0,294.0 84.8,306.0" fill="none" stroke="#C2932A" stroke-width="2.5" /><polygon points="126.3,330.0 105.5,342.0 84.7,330.0 84.7,306.0 105.5,294.0 126.3,306.0" fill="none" stroke="#C2932A" stroke-width="2.5" /><polygon points="105.5,366.1 84.8,378.1 64.0,366.1 64.0,342.1 84.8,330.1 105.5,342.1" fill="none" stroke="#C2932A" stroke-width="2.5" /><polygon points="64.0,366.1 43.2,378.1 22.5,366.1 22.5,342.1 43.2,330.1 64.0,342.1" fill="none" stroke="#C2932A" stroke-width="2.5" /><polygon points="147.1,366.1 126.3,378.1 105.5,366.1 105.5,342.1 126.3,330.1 147.1,342.1" fill="none" stroke="#C2932A" stroke-width="2.5" /></g><g opacity="0.14"><polygon points="865.1,55.0 846.0,66.0 826.9,55.0 826.9,33.0 846.0,22.0 865.1,33.0" fill="none" stroke="#C2932A" stroke-width="2.5" /><polygon points="903.1,55.0 884.1,66.0 865.0,55.0 865.0,33.0 884.1,22.0 903.1,33.0" fill="none" stroke="#C2932A" stroke-width="2.5" /><polygon points="884.1,88.1 865.0,99.1 846.0,88.1 846.0,66.1 865.0,55.1 884.1,66.1" fill="none" stroke="#C2932A" stroke-width="2.5" /><polygon points="846.0,88.1 827.0,99.1 807.9,88.1 807.9,66.1 827.0,55.1 846.0,66.1" fill="none" stroke="#C2932A" stroke-width="2.5" /><polygon points="922.1,88.1 903.1,99.1 884.0,88.1 884.0,66.1 903.1,55.1 922.1,66.1" fill="none" stroke="#C2932A" stroke-width="2.5" /></g>
+  <g class="archHive"><polygon points="477.7,206.0 450.0,222.0 422.3,206.0 422.3,174.0 450.0,158.0 477.7,174.0" fill="#F5C044" stroke="#C2932A" stroke-width="3.5" /><polygon points="536.6,206.0 508.9,222.0 481.2,206.0 481.2,174.0 508.9,158.0 536.6,174.0" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /><polygon points="418.8,206.0 391.1,222.0 363.4,206.0 363.4,174.0 391.1,158.0 418.8,174.0" fill="#D9A93A" stroke="#C2932A" stroke-width="3.5" /><polygon points="507.1,257.0 479.4,273.0 451.8,257.0 451.8,225.0 479.4,209.0 507.1,225.0" fill="#F5C044" stroke="#C2932A" stroke-width="3.5" /><polygon points="448.2,257.0 420.6,273.0 392.9,257.0 392.9,225.0 420.6,209.0 448.2,225.0" fill="#4a350d" stroke="#C2932A" stroke-width="3.5" /><polygon points="507.1,155.0 479.4,171.0 451.8,155.0 451.8,123.0 479.4,107.0 507.1,123.0" fill="#4a350d" stroke="#C2932A" stroke-width="3.5" /><polygon points="448.2,155.0 420.6,171.0 392.9,155.0 392.9,123.0 420.6,107.0 448.2,123.0" fill="#F5C044" stroke="#C2932A" stroke-width="3.5" />
+  <g transform="translate(420.5551362713291,250.52) scale(0.8947368421052632)">
+    <circle cx="0" cy="0" r="15" fill="#3b2f20"/>
+    <circle cx="-5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="-3.4" cy="-2.6" r="2.6" fill="#241f18"/>
+    <circle cx="7" cy="-3" r="5" fill="#FFFDF4"/><circle cx="8.6" cy="-2.6" r="2.6" fill="#241f18"/>
+    <path d="M-8 -12 q-3 -8 -9 -10" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="-18" cy="-23" r="3.2" fill="#C2932A"/>
+    <path d="M6 -13 q3 -8 9 -9" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="16" cy="-23" r="3.2" fill="#C2932A"/>
+  </g>
+  <g transform="translate(479.4448637286709,148.52) scale(0.8947368421052632)">
+    <circle cx="0" cy="0" r="15" fill="#3b2f20"/>
+    <circle cx="-5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="-3.4" cy="-2.6" r="2.6" fill="#241f18"/>
+    <circle cx="7" cy="-3" r="5" fill="#FFFDF4"/><circle cx="8.6" cy="-2.6" r="2.6" fill="#241f18"/>
+    <path d="M-8 -12 q-3 -8 -9 -10" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="-18" cy="-23" r="3.2" fill="#C2932A"/>
+    <path d="M6 -13 q3 -8 9 -9" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="16" cy="-23" r="3.2" fill="#C2932A"/>
+  </g></g>
+  <g class="shieldG">
+    <polygon class="shieldHex" points="579.9,265.0 450.0,340.0 320.1,265.0 320.1,115.0 450.0,40.0 579.9,115.0" fill="rgba(228,179,60,.07)" stroke="#E4B33C" stroke-width="6"/>
+    <polygon points="599.0,276.0 450.0,362.0 301.0,276.0 301.0,104.0 450.0,18.0 599.0,104.0" fill="none" stroke="#C2932A" stroke-width="2.5" stroke-dasharray="10 10" opacity=".6"/>
+  </g>
+  <g class="defender hoverwrap">
+  <g class="beeG" transform="translate(318,118) scale(0.72,0.72)">
+    <g class="wing back" transform="translate(-14,-26)">
+      <ellipse cx="14" cy="-16" rx="15" ry="24" fill="#FFF8E4" stroke="#C2932A" stroke-width="2" opacity=".9"/>
+    </g>
+    <ellipse cx="-30" cy="0" rx="20" ry="17" fill="#F6C95C"/>
+    <ellipse cx="0" cy="0" rx="34" ry="26" fill="#F6C95C"/>
+    <clipPath id="hbc2"><ellipse cx="0" cy="0" rx="34" ry="26"/></clipPath>
+    <g clip-path="url(#hbc2)">
+      <rect x="-22" y="-30" width="13" height="60" rx="6" fill="#241f18"/>
+      <rect x="1" y="-30" width="13" height="60" rx="6" fill="#241f18"/>
+    </g>
+    <circle cx="30" cy="-4" r="22" fill="#3b2f20"/>
+    <circle cx="38" cy="-8" r="8.5" fill="#FFFDF4"/>
+    <circle cx="41" cy="-7" r="4.6" fill="#241f18"/>
+    <circle cx="43" cy="-10" r="1.8" fill="#fff"/>
+    <ellipse cx="30" cy="6" rx="5.5" ry="3.6" fill="#E8998D"/>
+    <path d="M36 4 q5 5 11 1" stroke="#1a140e" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M22 -24 q-2 -14 -12 -18" stroke="#241f18" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="-44" r="5" fill="#C2932A"/>
+    <path d="M34 -22 q4 -13 14 -15" stroke="#241f18" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="49" cy="-39" r="5" fill="#C2932A"/>
+    <g class="wing" transform="translate(-2,-24)">
+      <ellipse cx="12" cy="-18" rx="17" ry="27" fill="#FFF8E4" stroke="#C2932A" stroke-width="2.5" opacity=".95"/>
+      <path d="M6 -30 q6 8 8 20" stroke="#C2932A" stroke-width="1.6" fill="none" opacity=".5"/>
+    </g>
+  </g></g>
+  <g class="impact" opacity="0" transform="translate(580,115)">
+    <polygon points="17.3,10.0 0.0,20.0 -17.3,10.0 -17.3,-10.0 -0.0,-20.0 17.3,-10.0" fill="none" stroke="#C4574D" stroke-width="5" opacity="0.71"/><polygon points="31.2,18.0 0.0,36.0 -31.2,18.0 -31.2,-18.0 -0.0,-36.0 31.2,-18.0" fill="none" stroke="#C4574D" stroke-width="5" opacity="0.49"/><polygon points="46.8,27.0 0.0,54.0 -46.8,27.0 -46.8,-27.0 -0.0,-54.0 46.8,-27.0" fill="none" stroke="#C4574D" stroke-width="5" opacity="0.23"/>
+  </g>
+  <g class="waspW" opacity="0">
+  <g class="bumbleInner" transform="translate(0,0) scale(0.72)">
+    <g class="wing back" transform="translate(-18,-34)">
+      <ellipse cx="14" cy="-16" rx="16" ry="24" fill="rgba(200,195,185,.45)" stroke="#6b655a" stroke-width="2"/>
+    </g>
+    <polygon points="-88,-4 -110,4 -88,12" fill="#15100b"/>
+    <ellipse cx="-44" cy="2" rx="28" ry="24" fill="#15100b"/>
+    <ellipse cx="0" cy="0" rx="46" ry="36" fill="#26201a"/>
+    <clipPath id="hbb3"><ellipse cx="0" cy="0" rx="46" ry="36"/></clipPath>
+    <g clip-path="url(#hbb3)">
+      <rect x="-30" y="-40" width="15" height="80" rx="7" fill="#0e0a06"/>
+      <rect x="0" y="-40" width="15" height="80" rx="7" fill="#0e0a06"/>
+      <rect x="-52" y="24" width="110" height="14" fill="#0e0a06" opacity=".6"/>
+    </g>
+    <g stroke="#15100b" stroke-width="2.4" stroke-linecap="round" opacity=".8">
+      <path d="M-20 -34 l-4 -9"/><path d="M-4 -37 l0 -10"/><path d="M12 -35 l4 -9"/>
+      <path d="M-20 34 l-4 9"/><path d="M-2 37 l0 10"/><path d="M14 34 l4 9"/>
+    </g>
+    <circle cx="42" cy="-6" r="26" fill="#15100b"/>
+    <circle cx="51" cy="-10" r="9" fill="#FFF3E0"/>
+    <circle cx="54" cy="-9" r="5" fill="#0e0a06"/>
+    <path d="M40 -24 l20 7" stroke="#0e0a06" stroke-width="5" stroke-linecap="round"/>
+    <path d="M46 6 q6 3 12 -2" stroke="#0e0a06" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M34 -28 q-1 -12 -10 -17" stroke="#15100b" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <circle cx="23" cy="-47" r="5.5" fill="#9E2B25"/>
+    <path d="M48 -26 q4 -12 13 -14" stroke="#15100b" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <circle cx="63" cy="-42" r="5.5" fill="#9E2B25"/>
+    <g class="wing" transform="translate(-4,-32)">
+      <ellipse cx="12" cy="-19" rx="19" ry="28" fill="rgba(215,210,198,.55)" stroke="#6b655a" stroke-width="2.5"/>
+    </g>
+  </g></g></svg>
+
   </div>
-  <div id="form-success" style="display:none;font-size:16px;color:#4db388;margin-top:24px;font-weight:600;">Request sent. We will be in touch shortly.</div>
-  <div id="form-error" style="display:none;font-size:14px;color:rgba(255,80,80,0.8);margin-top:16px;">Something went wrong. Please email us at arham@kwhelectric.io</div>
 </section>
 
-<footer>
-  <a class="footer-logo" href="index.html"><img src="kWh_white.png" alt="KWH Electric" style="height:84px;display:block;"></a>
-  <nav class="footer-nav">
-    <a href="/technology/">Technology</a>
-  </nav>
-  <div class="footer-contact">Palo Alto, California &nbsp;·&nbsp; arham@kwhelectric.io</div>
-</footer>
+<!-- ══════════════════════════════════════════════════
+     GET IN TOUCH, gold contact section
+══════════════════════════════════════════════════ -->
+<section id="contact" style="background:#E4B33C;padding:72px 48px 80px;">
+  <div style="max-width:1160px;margin:0 auto;">
+    <div class="accent-bar" style="background:#241f18;" aria-hidden="true"></div>
+    <h2 style="font-size:clamp(30px,4.5vw,56px);font-weight:900;color:#241f18;text-align:center;line-height:1.08;margin:0 0 24px;letter-spacing:-0.03em;">
+      Talk to the <img src="assets/kwh-logo-mark.png" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> team.
+    </h2>
+    <p style="font-size:17px;color:rgba(36,31,24,0.88);text-align:center;line-height:1.68;max-width:440px;margin:0 auto 44px;font-weight:500;">
+      Connect with us about piloting the edge gateway or integrating with the cloud platform.
+    </p>
 
-<script>
-function toggleStep(el) {
-  const wasActive = el.classList.contains('active');
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  if (!wasActive) el.classList.add('active');
-}
-function submitEmail() {
-  const field = document.getElementById('email-field');
-  const btn = document.getElementById('submit-btn');
-  const email = field.value.trim();
-  if (!email || !email.includes('@')) {
-    field.style.borderColor = 'rgba(255,80,80,0.7)';
-    setTimeout(() => { field.style.borderColor = ''; }, 1400);
-    return;
+    <!-- Backed by carousel -->
+    <div style="max-width:720px;margin:0 auto 52px;text-align:center;padding-bottom:44px;border-bottom:1px solid rgba(36,31,24,0.18);">
+      <p style="font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(36,31,24,0.62);margin:0 0 20px;">BACKED BY</p>
+      <div style="position:relative;overflow:hidden;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:72px;background:linear-gradient(to right,#E4B33C,transparent);z-index:1;pointer-events:none;"></div>
+        <div style="position:absolute;right:0;top:0;bottom:0;width:72px;background:linear-gradient(to left,#E4B33C,transparent);z-index:1;pointer-events:none;"></div>
+        <div style="display:flex;align-items:center;gap:18px;animation:logo-scroll 26s linear infinite;width:max-content;">
+          <div class="backed-logo backed-logo--nfh"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;background:#fff;"><img src="uploads/microsoft-for-startups.png" style="width:100%;height:100%;object-fit:contain;display:block;" alt="Microsoft for Startups" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Samayang Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Samayang" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/pasted-1782743184735-0.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Landuyt Center" /></div>
+          <div class="backed-logo backed-logo--nfh"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;background:#fff;"><img src="uploads/microsoft-for-startups.png" style="width:100%;height:100%;object-fit:contain;display:block;" alt="Microsoft for Startups" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Samayang Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Samayang" /></div>
+          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/pasted-1782743184735-0.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Landuyt Center" /></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:720px;margin:0 auto;">
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div style="background:rgba(251,247,234,0.55);border:1px solid rgba(36,31,24,0.09);border-radius:16px;padding:48px;text-align:center;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);">
+        <p style="font-size:20px;color:#241f18;font-weight:500;margin:0;">Message received. We'll be in touch shortly.</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <form id="contact-form" onSubmit="{{ handleSubmit }}" style="display:flex;flex-direction:column;gap:28px;">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" aria-hidden="true" />
+
+        <div>
+            <div data-name-row="" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+            <div>
+              <label style="display:block;font-size:13.5px;color:#241f18;font-weight:500;margin-bottom:7px;">First Name <span style="color:#9E2B25;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
+              <input type="text" name="first_name" required="" style="width:100%;padding:13px 15px;background:#FFFCF0;border:1px solid rgba(36,31,24,0.09);border-radius:10px;font-size:15px;color:#241f18;" />
+            </div>
+            <div>
+              <label style="display:block;font-size:13.5px;color:#241f18;font-weight:500;margin-bottom:7px;">Last Name <span style="color:#9E2B25;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
+              <input type="text" name="last_name" required="" style="width:100%;padding:13px 15px;background:#FFFCF0;border:1px solid rgba(36,31,24,0.09);border-radius:10px;font-size:15px;color:#241f18;" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:13.5px;color:#241f18;font-weight:500;margin-bottom:7px;">Email <span style="color:#9E2B25;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
+          <input type="email" name="email" required="" style="width:100%;padding:13px 15px;background:#FFFCF0;border:1px solid rgba(36,31,24,0.09);border-radius:10px;font-size:15px;color:#241f18;" />
+        </div>
+
+        <div>
+          <label style="display:block;font-size:13.5px;color:#241f18;font-weight:500;margin-bottom:7px;">Message</label>
+          <textarea name="message" rows="5" style="width:100%;padding:13px 15px;background:#FFFCF0;border:1px solid rgba(36,31,24,0.09);border-radius:10px;font-size:15px;color:#241f18;resize:vertical;"></textarea>
+        </div>
+
+        <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+          <p style="font-size:14px;color:#9E2B25;margin:0;line-height:1.5;">{{ formError }}</p>
+        </sc-if>
+
+        <div>
+          <button type="submit" disabled="{{ submitting }}" style="display:inline-flex;align-items:center;padding:15px 40px;background:#241f18;border:none;border-radius:999px;color:#FBF7EA;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;opacity:{{ submitBtnOpacity }};" style-hover="background:#C2932A">
+            {{ submitLabel }}
+          </button>
+        </div>
+      </form>
+    </sc-if>
+    </div>
+
+    <p style="font-size:13px;color:rgba(36,31,24,0.6);text-align:center;margin:48px 0 0;font-weight:400;">
+      Palo Alto, California &nbsp;·&nbsp; <a href="mailto:arham@kwhelectric.io" style="color:rgba(36,31,24,0.8);">arham@kwhelectric.io</a>
+    </p>
+
+  </div>
+</section>
+
+</x-dc>
+<div id="dot-cursor" aria-hidden="true"></div>
+<script type="text/x-dc" data-dc-script>
+// Replace with your Web3Forms access key from https://web3forms.com
+const WEB3FORMS_ACCESS_KEY = 'e06d54ca-4593-4bf6-b1d4-2b6c9cf99460';
+
+class Component extends DCLogic {
+  state = { submitted: false, scrolled: false, submitting: false, formError: null };
+
+  componentDidMount() {
+    const onScroll = () => this.setState({ scrolled: window.scrollY > 70 });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    this._cleanup = () => window.removeEventListener('scroll', onScroll);
   }
-  btn.textContent = 'Sending...'; btn.disabled = true; btn.style.opacity = '0.6'; field.disabled = true;
-  fetch('https://formspree.io/f/mlgawbwl', {
-    method: 'POST',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, _subject: 'KWH Electric Pilot Access Request' })
-  }).then(r => {
-    if (r.ok) { btn.style.display='none'; field.style.display='none'; document.getElementById('form-success').style.display='block'; }
-    else throw new Error();
-  }).catch(() => {
-    btn.textContent='Request Pilot Access'; btn.disabled=false; btn.style.opacity='1'; field.disabled=false;
-    document.getElementById('form-error').style.display='block';
-  });
-}
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('email-field').addEventListener('keydown', e => { if (e.key==='Enter') submitEmail(); });
-});
-</script>
-<script>
-(function(){
-  const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
-  const COUNT=272,BDIST=100,CDIST=150,BOOST=1.5;
-  let mouse={x:-9999,y:-9999},nodes=[],scrollY=0,rafId,lastFrame=0;
-  function resize(){const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);}
-  function rand(a,b){return Math.random()*(b-a)+a;}
-  function init(){nodes=[];const W=window.innerWidth,H=window.innerHeight;for(let i=0;i<COUNT;i++)nodes.push({x:rand(0,W),y:rand(0,H*6),vx:rand(-0.15,0.15),vy:rand(-0.15,0.15),r:rand(4,12),op:rand(0.07,0.22)});}
-  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
-  window.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});
-  window.addEventListener('scroll',()=>{scrollY=window.scrollY;},{passive:true});
-  function dist2(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return dx*dx+dy*dy;}
-  function ef(x){const w=window.innerWidth,z=w*0.1;return x<z?x/z:x>w-z?(w-x)/z:1;}
-  function draw(ts){
-    rafId=requestAnimationFrame(draw);
-    if(ts-lastFrame<24)return; // cap at ~40fps
-    lastFrame=ts;
-    const W=window.innerWidth,H=window.innerHeight,par=scrollY*0.32;
-    ctx.clearRect(0,0,W,H);
-    const CDIST2=CDIST*CDIST,BDIST2=BDIST*BDIST,BDIST2B=BDIST*BOOST*BDIST*BOOST;
-    for(let i=0;i<COUNT;i++){
-      const a=nodes[i],aY=a.y-par;
-      if(aY<-60||aY>H+60)continue;
-      const dc2=dist2(a.x,aY,mouse.x,mouse.y),near=dc2<CDIST2,e=ef(a.x);
-      const thr2=near?BDIST2B:BDIST2;
-      for(let j=i+1;j<COUNT;j++){
-        const b=nodes[j],bY=b.y-par,dd2=dist2(a.x,aY,b.x,bY);
-        if(dd2<thr2){const t=1-Math.sqrt(dd2)/( near?BDIST*BOOST:BDIST),al=t*(near?0.35:0.09)*e;ctx.beginPath();ctx.moveTo(a.x,aY);ctx.lineTo(b.x,bY);ctx.strokeStyle=`rgba(176,228,204,${al})`;ctx.lineWidth=near?1:0.5;ctx.stroke();}
-      }
-    }
-    for(let i=0;i<COUNT;i++){
-      const n=nodes[i],nY=n.y-par;
-      if(nY<-60||nY>H+60)continue;
-      const dc2=dist2(n.x,nY,mouse.x,mouse.y),near=dc2<CDIST2,t=near?(1-Math.sqrt(dc2)/CDIST):0;
-      const opacity=Math.min(1,(n.op+t*0.4)*ef(n.x));
-      ctx.beginPath();ctx.arc(n.x,nY,n.r+t*2,0,Math.PI*2);ctx.strokeStyle=`rgba(255,255,255,${opacity})`;ctx.lineWidth=near?1.5:1;ctx.stroke();
-      n.x+=n.vx;n.y+=n.vy;
-      if(n.x<0||n.x>window.innerWidth)n.vx*=-1;
-      const tH=window.innerHeight*7;if(n.y<0)n.y=tH;if(n.y>tH)n.y=0;
-    }
+
+  componentWillUnmount() {
+    if (this._cleanup) this._cleanup();
   }
-  window.addEventListener('resize',()=>{resize();init();},{passive:true});
-  canvas.style.willChange='transform';
-  resize();init();rafId=requestAnimationFrame(draw);
-})();
+
+  renderVals() {
+    const { submitted, scrolled, submitting, formError } = this.state;
+    return {
+      submitted,
+      notSubmitted: !submitted,
+      scrolled,
+      notScrolled: !scrolled,
+      submitting,
+      formError,
+      submitLabel: submitting ? 'SENDING…' : 'SUBMIT',
+      submitBtnOpacity: submitting ? '0.65' : '1',
+      navStyle: {
+        position: 'fixed',
+        top: 0, left: 0, right: 0,
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '18px 48px',
+        background: scrolled ? 'rgba(251,247,234,0.96)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
+        boxShadow: scrolled ? '0 1px 0 rgba(36,31,24,0.08)' : 'none',
+        transition: 'background 0.3s, box-shadow 0.3s',
+      },
+      navLinkColor: '#241f18',
+      handleSubmit: async (e) => {
+        e.preventDefault();
+        if (this.state.submitting) return;
+
+        const form = e.target;
+        const data = new FormData(form);
+        const firstName = (data.get('first_name') || '').toString().trim();
+        const lastName = (data.get('last_name') || '').toString().trim();
+        const email = (data.get('email') || '').toString().trim();
+        const message = (data.get('message') || '').toString().trim();
+
+        if (!firstName || !lastName || !email) {
+          this.setState({ formError: 'Please fill in all required fields.' });
+          return;
+        }
+
+        if (WEB3FORMS_ACCESS_KEY === 'YOUR_WEB3FORMS_ACCESS_KEY') {
+          this.setState({
+            formError: 'Form is not configured yet. Add your Web3Forms access key in index.html.',
+          });
+          return;
+        }
+
+        this.setState({ submitting: true, formError: null });
+
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_ACCESS_KEY,
+              subject: 'New inquiry from kwhelectric.io',
+              from_name: `${firstName} ${lastName}`.trim(),
+              email,
+              message: message || '(no message)',
+              botcheck: data.get('botcheck') || '',
+            }),
+          });
+          const json = await res.json();
+
+          if (res.ok && json.success) {
+            this.setState({ submitted: true, submitting: false, formError: null });
+            return;
+          }
+
+          this.setState({
+            submitting: false,
+            formError: json.message || 'Something went wrong. Please try again or email arham@kwhelectric.io.',
+          });
+        } catch {
+          this.setState({
+            submitting: false,
+            formError: 'Network error. Please check your connection and try again.',
+          });
+        }
+      },
+    };
+  }
+}
+
 </script>
+<script src="./bees.js"></script>
+<div id="story-overlay" hidden style="position:fixed;inset:0;z-index:2000;background:#FBF7EA;">
+  <iframe id="story-frame" title="Every bee has a cell — interactive story" src="about:blank" style="border:0;width:100%;height:100%;display:block;"></iframe>
+  <button id="story-close" type="button" aria-label="Close story and return to site" style="position:fixed;top:18px;left:48px;z-index:2001;display:flex;align-items:center;gap:8px;padding:10px 18px;border:none;border-radius:999px;background:rgba(36,31,24,0.92);color:#FBF7EA;font:600 13px/1 'DM Sans',sans-serif;cursor:pointer;box-shadow:0 2px 12px rgba(36,31,24,0.18);">← Back to site</button>
+</div>
+<script src="./story-bridge.js"></script>
 </body>
 </html>
