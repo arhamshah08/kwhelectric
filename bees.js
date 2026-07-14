@@ -200,24 +200,28 @@
 
   // ── ARCHITECTURE STACK DEFENSE ─────────────────────────────────────────────
   function beeSVGMarkup(idp, bodyFill) {
+    var isDark = String(bodyFill).toLowerCase() === '#1a1a1a' || String(bodyFill).toLowerCase() === '#15100b';
+    /* Yellow bumblebee gets a black boundary; dark bee gets a light gold boundary so it reads on dark UI */
+    var outline = isDark ? '#E8C96A' : '#0B0B0E';
+    var sw = isDark ? '2.2' : '1.8';
     return (
-      '<svg viewBox="0 0 56 38" width="56" height="38" aria-hidden="true">' +
+      '<svg viewBox="0 0 56 38" width="56" height="38" aria-hidden="true" overflow="visible">' +
         '<defs><clipPath id="' + idp + '-clip"><ellipse cx="26" cy="23" rx="17" ry="9.5"/></clipPath></defs>' +
-        '<ellipse cx="26" cy="23" rx="17" ry="9.5" fill="' + bodyFill + '"/>' +
+        '<ellipse cx="26" cy="23" rx="17" ry="9.5" fill="' + bodyFill + '" stroke="' + outline + '" stroke-width="' + sw + '"/>' +
         '<g clip-path="url(#' + idp + '-clip)">' +
           '<rect x="13" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>' +
           '<rect x="25" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>' +
         '</g>' +
-        '<circle cx="44" cy="22" r="7.5" fill="' + bodyFill + '"/>' +
-        '<circle id="' + idp + '-eye" cx="47" cy="19" r="2.2" fill="#1a1a1a"/>' +
-        '<circle id="' + idp + '-eyehi" cx="47.8" cy="18.4" r="0.7" fill="#fff"/>' +
-        '<polygon points="9,20 9,26 3,23" fill="#666"/>' +
-        '<line x1="41" y1="15" x2="35" y2="4" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>' +
-        '<circle cx="35" cy="4" r="1.9" fill="#1a1a1a"/>' +
-        '<line x1="45" y1="14" x2="43" y2="3" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>' +
-        '<circle cx="43" cy="3" r="1.9" fill="#1a1a1a"/>' +
-        '<ellipse id="' + idp + '-w1" cx="17" cy="9" rx="14" ry="8.5" fill="rgba(210,235,255,0.88)" stroke="rgba(140,180,230,0.6)" stroke-width="0.8"/>' +
-        '<ellipse id="' + idp + '-w2" cx="21" cy="21" rx="11" ry="6.5" fill="rgba(210,235,255,0.75)" stroke="rgba(140,180,230,0.5)" stroke-width="0.7"/>' +
+        '<circle cx="44" cy="22" r="7.5" fill="' + bodyFill + '" stroke="' + outline + '" stroke-width="' + sw + '"/>' +
+        '<circle id="' + idp + '-eye" cx="47" cy="19" r="2.2" fill="' + (isDark ? '#FFFDF4' : '#1a1a1a') + '"/>' +
+        '<circle id="' + idp + '-eyehi" cx="47.8" cy="18.4" r="0.7" fill="' + (isDark ? '#1a1a1a' : '#fff') + '"/>' +
+        '<polygon points="9,20 9,26 3,23" fill="' + (isDark ? '#E8C96A' : '#666') + '" stroke="' + outline + '" stroke-width="1"/>' +
+        '<line x1="41" y1="15" x2="35" y2="4" stroke="' + outline + '" stroke-width="1.5" stroke-linecap="round"/>' +
+        '<circle cx="35" cy="4" r="1.9" fill="' + (isDark ? '#E8C96A' : '#1a1a1a') + '" stroke="' + outline + '" stroke-width="0.8"/>' +
+        '<line x1="45" y1="14" x2="43" y2="3" stroke="' + outline + '" stroke-width="1.5" stroke-linecap="round"/>' +
+        '<circle cx="43" cy="3" r="1.9" fill="' + (isDark ? '#E8C96A' : '#1a1a1a') + '" stroke="' + outline + '" stroke-width="0.8"/>' +
+        '<ellipse id="' + idp + '-w1" cx="17" cy="9" rx="14" ry="8.5" fill="rgba(255,248,228,0.92)" stroke="' + outline + '" stroke-width="1.2"/>' +
+        '<ellipse id="' + idp + '-w2" cx="21" cy="21" rx="11" ry="6.5" fill="rgba(255,248,228,0.78)" stroke="' + outline + '" stroke-width="1"/>' +
       '</svg>'
     );
   }
@@ -236,8 +240,8 @@
     yb.innerHTML = beeSVGMarkup('sb', '#FBCF2E');
     sec.appendChild(yb);
 
-    const SHIELD_STROKE_BRIGHT = 'rgba(205,127,50,0.85)';
-    const SHIELD_STROKE_REST   = 'rgba(28,20,6,0.5)';
+    const SHIELD_STROKE_BRIGHT = 'rgba(232,201,106,0.95)';
+    const SHIELD_STROKE_REST   = 'rgba(232,201,106,0.55)';
 
     const ring = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     ring.id = 'stack-shield';
@@ -263,7 +267,7 @@
 
     const bb = document.createElement('div');
     bb.id = 'stack-bee2';
-    bb.style.cssText = 'position:absolute;top:0;left:0;width:56px;height:38px;pointer-events:none;z-index:1;';
+    bb.style.cssText = 'position:absolute;top:0;left:0;width:56px;height:38px;pointer-events:none;z-index:5;';
     bb.innerHTML = beeSVGMarkup('sbb', '#1a1a1a');
     sec.appendChild(bb);
     gsap.set(bb, { xPercent:-50, yPercent:-50, scaleX:1.32, scaleY:1.32, transformOrigin:'50% 50%', x:-9999, y:-9999, opacity:0 });
