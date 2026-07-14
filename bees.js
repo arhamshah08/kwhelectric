@@ -18,412 +18,175 @@
     else if ((n || 0) < 80) setTimeout(() => waitForEl(id, cb, (n || 0) + 1), 100);
   }
 
-  // ── HERO: queen signals → 2 workers exit ───────────────────────────────────
-  function paperSideBeeSVG(id) {
-    /* Papercraft side-view matching #hero-hoverbee: striped body, white wings + gold stroke, cheeks, gold antenna tips */
-    const c = id + '-clip';
-    const w1 = id + '-w1';
-    const w2 = id + '-w2';
-    return (
-      '<defs><clipPath id="' + c + '"><ellipse cx="28" cy="24" rx="20" ry="14"/></clipPath></defs>' +
-      '<g class="wing back" transform="translate(4,2)">' +
-        '<ellipse id="' + w2 + '" cx="10" cy="6" rx="12" ry="18" fill="#FFF8E4" stroke="#C2932A" stroke-width="1.6" opacity=".88"/>' +
-      '</g>' +
-      '<ellipse cx="10" cy="24" rx="11" ry="10" fill="#F6C95C" stroke="#241f18" stroke-width="1.4"/>' +
-      '<ellipse cx="28" cy="24" rx="20" ry="14" fill="#F6C95C" stroke="#241f18" stroke-width="1.5"/>' +
-      '<g clip-path="url(#' + c + ')">' +
-        '<rect x="16" y="8" width="7" height="32" rx="3.2" fill="#241f18"/>' +
-        '<rect x="28" y="8" width="7" height="32" rx="3.2" fill="#241f18"/>' +
-      '</g>' +
-      '<circle cx="46" cy="22" r="12" fill="#3b2f20" stroke="#241f18" stroke-width="1.2"/>' +
-      '<circle cx="50" cy="19" r="4.6" fill="#FFFDF4"/>' +
-      '<circle cx="51.6" cy="19.4" r="2.4" fill="#241f18"/>' +
-      '<circle cx="52.6" cy="18" r="0.9" fill="#fff"/>' +
-      '<ellipse cx="46" cy="28" rx="4" ry="2.6" fill="#E8998D"/>' +
-      '<path d="M48 26 q4 3.5 8 0.5" stroke="#1a140e" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
-      '<path d="M42 12 q-2 -10 -8 -13" stroke="#241f18" stroke-width="2" fill="none" stroke-linecap="round"/>' +
-      '<circle cx="33" cy="-2" r="3.2" fill="#C2932A"/>' +
-      '<path d="M49 11 q3 -9 9 -11" stroke="#241f18" stroke-width="2" fill="none" stroke-linecap="round"/>' +
-      '<circle cx="59" cy="-1" r="3.2" fill="#C2932A"/>' +
-      '<g class="wing" transform="translate(18,0)">' +
-        '<ellipse id="' + w1 + '" cx="8" cy="4" rx="14" ry="20" fill="#FFF8E4" stroke="#C2932A" stroke-width="2" opacity=".95"/>' +
-        '<path d="M4 -4 q4 6 5 14" stroke="#C2932A" stroke-width="1.2" fill="none" opacity=".45"/>' +
-      '</g>'
-    );
-  }
-
-  function makeFlyer(id) {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.id = id;
-    svg.setAttribute('viewBox', '0 0 70 44');
-    svg.setAttribute('width', '64');
-    svg.setAttribute('height', '40');
-    svg.setAttribute('aria-hidden', 'true');
-    svg.style.cssText = 'position:absolute;top:0;left:0;overflow:visible;pointer-events:none;z-index:12;';
-    svg.innerHTML = paperSideBeeSVG(id);
-    return svg;
-  }
-
-  function hiveToHeroXY(hiveSvg, cx, cy, hero) {
-    const pt = hiveSvg.createSVGPoint();
-    pt.x = cx; pt.y = cy;
-    const ctm = hiveSvg.getScreenCTM();
-    if (!ctm) return { x: 0, y: 0 };
-    const sp = pt.matrixTransform(ctm);
-    const hR = hero.getBoundingClientRect();
-    return { x: sp.x - hR.left - 32, y: sp.y - hR.top - 20 };
-  }
-
+  // ── HERO BEE ───────────────────────────────────────────────────────────────
   function launchBee() {
-    const land = document.getElementById('bee-land');
-    const hero = document.getElementById('hero');
-    const hiveWrap = document.getElementById('hive-wrap');
-    const hiveSvg = hiveWrap && hiveWrap.querySelector('svg');
-    const queen = document.getElementById('queen-bee');
-    const peekerA = document.getElementById('worker-a-peeker');
-    const peekerB = document.getElementById('worker-b-peeker');
-    if (!land || !hero || !hiveSvg || !queen || !peekerA || !peekerB) return;
+    const bee    = document.getElementById('bee');
+    const land   = document.getElementById('bee-land');
+    const hero   = document.getElementById('hero');
+    const cellEl = document.getElementById('bee-cell');
+    if (!bee || !land || !hero || !cellEl) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return;
+    const hRect    = hero.getBoundingClientRect();
+    const lRect    = land.getBoundingClientRect();
+    const cellRect = cellEl.getBoundingClientRect();
 
-    const hRect = hero.getBoundingClientRect();
-    const lRect = land.getBoundingClientRect();
-    /* Sit on the very top of the "t" stem (not the crossbar) */
-    const LAND_Y_FRAC = -0.02;
-    const LAND_Y_OFF = -10;
-    const lx = lRect.left - hRect.left + lRect.width * 0.5 - 32;
+    const lx = lRect.left - hRect.left + lRect.width * 0.5 - 28;
+    // Feet on upper "t" stem (~12% from glyph top); −13.5 = alignOrigin (62%) to feet + bounce settle
+    const LAND_Y_FRAC = 0.12;
+    const LAND_Y_OFF = -13.5;
     const ly = lRect.top - hRect.top + lRect.height * LAND_Y_FRAC + LAND_Y_OFF;
 
-    const startA = hiveToHeroXY(hiveSvg, 205.4, 161.2, hero);
-    const startB = hiveToHeroXY(hiveSvg, 274.6, 281.2, hero);
-    const deposit = hiveToHeroXY(hiveSvg, 205.4, 270, hero);
-
-    const flowers = hero.querySelectorAll('.hero-flower');
-    let flowerPt = { x: hRect.width * 0.12, y: hRect.height * 0.62 };
-    if (flowers.length) {
-      const fR = flowers[Math.min(1, flowers.length - 1)].getBoundingClientRect();
-      flowerPt = {
-        x: fR.left - hRect.left + fR.width * 0.45 - 32,
-        y: fR.top - hRect.top + fR.height * 0.18 - 20
-      };
-    }
+    const cellLeft = cellRect.left - hRect.left;
+    const cellTop  = cellRect.top  - hRect.top;
+    const clipH = 50;
+    const pivot = { transformOrigin: '50% 62%' };
 
     const canvas = document.createElement('canvas');
-    canvas.className = 'bee-flight-overlay';
-    canvas.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:9;';
-    canvas.width = Math.round(hRect.width);
+    canvas.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:2;';
+    canvas.width  = Math.round(hRect.width);
     canvas.height = Math.round(hRect.height);
-    hero.appendChild(canvas);
+    hero.insertBefore(canvas, hero.firstChild);
     const ctx = canvas.getContext('2d');
+    const heroTitle = hero.querySelector('.hero-title') || hero.querySelector('h1');
+    const DOT_OPACITY_HONEYCOMB = 0.8;
+    const DOT_OPACITY_OVER_TITLE = 0.3;
     let lastDotX = -999, lastDotY = -999;
 
-    function dropNectarDot(beeEl, color) {
-      const bx = gsap.getProperty(beeEl, 'x') + 34;
-      const by = gsap.getProperty(beeEl, 'y') + 22;
-      if (Math.hypot(bx - lastDotX, by - lastDotY) < 14) return;
-      ctx.beginPath();
-      ctx.arc(bx, by, 2.8, 0, Math.PI * 2);
-      ctx.fillStyle = color || 'rgba(245,192,68,0.85)';
-      ctx.fill();
-      lastDotX = bx; lastDotY = by;
+    function dotOverTitle(bx, by) {
+      if (!heroTitle) return false;
+      const hR = hero.getBoundingClientRect();
+      const tR = heroTitle.getBoundingClientRect();
+      const pad = 3.5;
+      const left = tR.left - hR.left - pad;
+      const top = tR.top - hR.top - pad;
+      const right = tR.right - hR.left + pad;
+      const bottom = tR.bottom - hR.top + pad;
+      return bx >= left && bx <= right && by >= top && by <= bottom;
     }
 
-    function orient(beeEl, state) {
-      const x = gsap.getProperty(beeEl, 'x');
-      const y = gsap.getProperty(beeEl, 'y');
-      if (state.lastX != null) {
-        const dx = x - state.lastX, dy = y - state.lastY;
-        if (Math.abs(dx) > 0.5) state.face = dx < 0 ? -1 : 1;
+    function dropDot() {
+      const bx = gsap.getProperty(bee, 'x') + 28;
+      const by = gsap.getProperty(bee, 'y') + 23;
+      if (Math.hypot(bx - lastDotX, by - lastDotY) >= 18) {
+        const opacity = dotOverTitle(bx, by) ? DOT_OPACITY_OVER_TITLE : DOT_OPACITY_HONEYCOMB;
+        ctx.beginPath();
+        ctx.arc(bx, by, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(205,127,50,' + opacity + ')';
+        ctx.fill();
+        lastDotX = bx;
+        lastDotY = by;
+      }
+    }
+
+    let lastFX = null, lastFY = null, faceSign = 1;
+    function flightOrient() {
+      const x = gsap.getProperty(bee, 'x');
+      const y = gsap.getProperty(bee, 'y');
+      if (lastFX !== null) {
+        const dx = x - lastFX, dy = y - lastFY;
+        if (Math.abs(dx) > 0.6) faceSign = dx < 0 ? -1 : 1;
         let dip = Math.atan2(dy, Math.max(0.0001, Math.abs(dx))) * 180 / Math.PI;
-        dip = Math.max(-28, Math.min(28, dip));
-        gsap.set(beeEl, {
-          scaleX: state.face,
-          scaleY: 1,
-          rotation: state.face < 0 ? -dip : dip,
-          transformOrigin: '50% 55%'
-        });
+        dip = Math.max(-45, Math.min(45, dip));
+        gsap.set(bee, { scaleX: faceSign, scaleY: 1, rotation: faceSign < 0 ? -dip : dip });
       }
-      state.lastX = x; state.lastY = y;
+      lastFX = x; lastFY = y;
     }
 
-    function flapWings(id, play) {
-      const w1 = '#' + id + '-w1';
-      const w2 = '#' + id + '-w2';
-      gsap.killTweensOf([w1, w2]);
-      gsap.set([w1, w2], { transformOrigin: '30% 90%' });
-      if (!play) {
-        gsap.set([w1, w2], { rotation: 0, scaleY: 1 });
-        return null;
-      }
-      return gsap.timeline({ repeat: -1, yoyo: true, defaults: { ease: 'sine.inOut' } })
-        .to(w1, { rotation: 26, scaleY: 0.55, duration: 0.09 }, 0)
-        .to(w2, { rotation: -18, scaleY: 0.65, duration: 0.10 }, 0.01);
+    gsap.set(['#bw1', '#bw2'], { transformOrigin: '50% 100%' });
+    const flap = gsap.timeline({ repeat: -1, yoyo: true, paused: true, defaults: { ease: 'sine.inOut' } })
+      .to('#bw1', { scaleY: 0.08, duration: 0.10 }, 0)
+      .to('#bw2', { scaleY: 0.12, duration: 0.11 }, 0.02);
+
+    const R = Math.min(hRect.height * 0.11, 95);
+    const emergeX = cellLeft + 2;
+    const emergeY = cellTop;
+
+    function mountBeeOnHero() {
+      const bx = gsap.getProperty(bee, 'x');
+      const by = gsap.getProperty(bee, 'y');
+      hero.appendChild(bee);
+      gsap.set(bee, { x: cellLeft + bx, y: cellTop + by });
+      cellEl.remove();
     }
 
-    /* Queen pulse + hex signal packets toward workers */
-    function sendQueenSignal(done) {
-      const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      pulse.setAttribute('cx', '240');
-      pulse.setAttribute('cy', '210');
-      pulse.setAttribute('r', '18');
-      pulse.setAttribute('fill', 'none');
-      pulse.setAttribute('stroke', '#E4B33C');
-      pulse.setAttribute('stroke-width', '3');
-      pulse.setAttribute('opacity', '0.9');
-      const signalLayer = document.getElementById('queen-signal');
-      if (signalLayer) signalLayer.appendChild(pulse);
-      gsap.to(pulse, {
-        attr: { r: 52 },
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power2.out',
-        onComplete: () => pulse.remove()
-      });
-      gsap.fromTo(queen, { opacity: 1 }, {
-        opacity: 0.55, duration: 0.28, yoyo: true, repeat: 5, ease: 'sine.inOut'
-      });
-      const signal = signalLayer;
-      if (!signal) { done(); return; }
-      const targets = [
-        { x: 205.4, y: 161.2 },
-        { x: 274.6, y: 281.2 }
-      ];
-      targets.forEach((t, i) => {
-        for (let k = 0; k < 3; k++) {
-          const hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-          const s = 5 + k;
-          hex.setAttribute('points',
-            (0) + ',' + (-s) + ' ' + (s * 0.87) + ',' + (-s * 0.5) + ' ' +
-            (s * 0.87) + ',' + (s * 0.5) + ' ' + (0) + ',' + (s) + ' ' +
-            (-s * 0.87) + ',' + (s * 0.5) + ' ' + (-s * 0.87) + ',' + (-s * 0.5)
-          );
-          hex.setAttribute('fill', '#E4B33C');
-          hex.setAttribute('opacity', '0');
-          hex.setAttribute('transform', 'translate(240,210)');
-          signal.appendChild(hex);
-          gsap.to(hex, {
-            opacity: 0.85,
-            duration: 0.2,
-            delay: i * 0.12 + k * 0.08,
-            onComplete: () => {
-              gsap.to(hex, {
-                attr: { transform: 'translate(' + t.x + ',' + t.y + ')' },
-                opacity: 0,
-                duration: 0.7,
-                ease: 'power2.out',
-                onComplete: () => hex.remove()
-              });
-            }
+    const peekY = clipH - 14;
+
+    gsap.timeline({ delay: 1.0 })
+      .set(bee, { x: 2, y: clipH + 20, opacity: 1, scale: 1, rotation: 0, ...pivot })
+      .to(bee, { y: peekY, duration: 0.8, ease: 'power2.out' })
+      .to(bee, { rotation: -25, duration: 0.5 })
+      .to(bee, { rotation: 25, duration: 0.5 })
+      .to(bee, { rotation: 0, duration: 0.4 })
+      .call(() => flap.play())
+      .to(bee, { y: 0, duration: 0.6, ease: 'back.out(1.7)' })
+      .call(mountBeeOnHero)
+      .to(bee, {
+        duration: 9.6,
+        ease: 'power1.inOut',
+        onUpdate: () => { dropDot(); flightOrient(); },
+        motionPath: {
+          path: [
+            { x: emergeX,       y: emergeY       },
+            { x: lx - 1.7 * R,  y: ly - 0.10 * R },
+            { x: lx - 0.65 * R, y: ly - 0.55 * R },
+            { x: lx + 0.25 * R, y: ly - 1.20 * R },
+            { x: lx + 0.60 * R, y: ly - 1.85 * R },
+            { x: lx - 0.20 * R, y: ly - 2.35 * R },
+            { x: lx - 1.00 * R, y: ly - 1.75 * R },
+            { x: lx - 0.65 * R, y: ly - 1.05 * R },
+            { x: lx + 0.30 * R, y: ly - 0.45 * R },
+            { x: lx,            y: ly           }
+          ],
+          curviness: 1.1,
+          autoRotate: false,
+          alignOrigin: [0.5, 0.62]
+        }
+      })
+      .call(() => flap.pause())
+      .to(bee, { rotation: -8, scaleX: 1, scaleY: 1, y: '+=4', duration: 0.22, ease: 'bounce.out' })
+      .call(() => {
+        gsap.to(canvas, { opacity: 0, duration: 0.35, ease: 'power1.out', onComplete: () => canvas.remove() });
+        gsap.set(['#bw1', '#bw2'], { scaleY: 1, transformOrigin: '50% 100%' });
+        gsap.timeline({ repeat: -1, yoyo: true, defaults: { ease: 'sine.inOut' } })
+          .to('#bw1', { scaleY: 0.62, duration: 0.42 }, 0)
+          .to('#bw2', { scaleY: 0.68, duration: 0.46 }, 0.05);
+        // Pin the bee to the "t" and keep it there through zoom/resize.
+        // Delta captures motionPath align offsets + bounce settle empirically.
+        const dx = gsap.getProperty(bee, 'x') - lx;
+        const dy = gsap.getProperty(bee, 'y') - ly;
+        const pin = () => {
+          const hR = hero.getBoundingClientRect();
+          const lR = land.getBoundingClientRect();
+          gsap.set(bee, {
+            x: lR.left - hR.left + lR.width * 0.5 - 28 + dx,
+            y: lR.top  - hR.top  + lR.height * LAND_Y_FRAC + LAND_Y_OFF + dy
           });
-        }
+        };
+        pin();
+        window.addEventListener('resize', pin);
       });
-      gsap.delayedCall(1.1, done);
-    }
-
-    function darkenNectarCell() {
-      const depositCell = document.querySelector('#nectar-deposit-cell .hive-cell-poly');
-      const nL = document.querySelector('#nectar-neighbor-l .hive-cell-poly');
-      const nLL = document.querySelector('#nectar-neighbor-ll .hive-cell-poly');
-      if (depositCell) gsap.to(depositCell, { attr: { fill: '#E0B03A' }, duration: 0.8, ease: 'power1.out' });
-      if (nL) gsap.to(nL, { attr: { fill: '#E8BC48' }, duration: 0.9, ease: 'power1.out' });
-      if (nLL) gsap.to(nLL, { attr: { fill: '#DDB24A' }, duration: 1.0, ease: 'power1.out' });
-    }
-
-    function blossomAfterNectar() {
-      const sprouts = document.querySelectorAll('.hero-sprout.is-new');
-      if (!sprouts.length) return;
-      gsap.set(sprouts, { opacity: 0, scaleY: 0, transformOrigin: '50% 100%' });
-      sprouts.forEach((el) => {
-        const petals = el.querySelector('.blossom-petals');
-        if (petals) gsap.set(petals, { scale: 0.15, opacity: 0, transformOrigin: '50% 80%' });
-      });
-      const tl = gsap.timeline({ delay: 2.4 });
-      sprouts.forEach((el, i) => {
-        const petals = el.querySelector('.blossom-petals');
-        tl.to(el, {
-          opacity: 1,
-          scaleY: 1,
-          duration: 1.6,
-          ease: 'power2.out',
-          transformOrigin: '50% 100%'
-        }, i * 0.35);
-        if (petals) {
-          tl.to(petals, {
-            scale: 1,
-            opacity: 1,
-            duration: 2.0,
-            ease: 'power2.out'
-          }, i * 0.35 + 0.55);
-        }
-      });
-    }
-
-    const beeA = makeFlyer('hero-worker-a');
-    const beeB = makeFlyer('hero-worker-b');
-    hero.appendChild(beeA);
-    hero.appendChild(beeB);
-    gsap.set([beeA, beeB], { opacity: 0, transformOrigin: '50% 55%' });
-
-    const stateA = { lastX: null, lastY: null, face: 1 };
-    const stateB = { lastX: null, lastY: null, face: -1 };
-    let flapA = null, flapB = null;
-    const R = Math.min(hRect.height * 0.1, 88);
-
-    const master = gsap.timeline({ delay: 0.85 });
-
-    master.call(() => { sendQueenSignal(() => {}); });
-    master.to({}, { duration: 1.05 });
-
-    /* Workers emerge: hide peekers, show side-view flyers */
-    master.addLabel('emerge');
-    master.call(() => {
-      gsap.to([peekerA, peekerB], { opacity: 0, duration: 0.25 });
-      gsap.set(beeA, { x: startA.x, y: startA.y, opacity: 1, scaleX: 1, scaleY: 1, rotation: 0 });
-      gsap.set(beeB, { x: startB.x, y: startB.y, opacity: 1, scaleX: -1, scaleY: 1, rotation: 0 });
-      flapA = flapWings('hero-worker-a', true);
-      flapB = flapWings('hero-worker-b', true);
-    }, 'emerge');
-
-    /* Worker A → top of “t” */
-    master.to(beeA, {
-      duration: 7.8,
-      ease: 'power1.inOut',
-      onUpdate: () => orient(beeA, stateA),
-      motionPath: {
-        path: [
-          { x: startA.x, y: startA.y },
-          { x: startA.x - 0.4 * R, y: startA.y - 0.8 * R },
-          { x: lx - 1.2 * R, y: ly + 0.4 * R },
-          { x: lx - 0.3 * R, y: ly - 0.9 * R },
-          { x: lx + 0.35 * R, y: ly - 1.55 * R },
-          { x: lx - 0.15 * R, y: ly - 0.55 * R },
-          { x: lx, y: ly }
-        ],
-        curviness: 1.15,
-        autoRotate: false,
-        alignOrigin: [0.5, 0.55]
-      }
-    }, 'emerge');
-
-    master.call(() => {
-      if (flapA) flapA.pause();
-      flapWings('hero-worker-a', false);
-      gsap.set(beeA, { rotation: -6, scaleX: 1, scaleY: 1 });
-      const dx = gsap.getProperty(beeA, 'x') - lx;
-      const dy = gsap.getProperty(beeA, 'y') - ly;
-      const pin = () => {
-        const hR = hero.getBoundingClientRect();
-        const lR = land.getBoundingClientRect();
-        gsap.set(beeA, {
-          x: lR.left - hR.left + lR.width * 0.5 - 32 + dx,
-          y: lR.top - hR.top + lR.height * LAND_Y_FRAC + LAND_Y_OFF + dy
-        });
-      };
-      pin();
-      window.addEventListener('resize', pin);
-      gsap.to('#' + beeA.id + '-w1', {
-        scaleY: 0.72, duration: 0.5, yoyo: true, repeat: -1, ease: 'sine.inOut',
-        transformOrigin: '30% 90%'
-      });
-    }, 'emerge+=7.8');
-
-    /* Worker B → flower collect → deposit → peeker (parallel) */
-    master.to(beeB, {
-      duration: 4.2,
-      ease: 'power1.inOut',
-      onUpdate: () => { orient(beeB, stateB); dropNectarDot(beeB, 'rgba(232,180,70,0.55)'); },
-      motionPath: {
-        path: [
-          { x: startB.x, y: startB.y },
-          { x: (startB.x + flowerPt.x) * 0.5, y: Math.min(startB.y, flowerPt.y) - 0.6 * R },
-          { x: flowerPt.x, y: flowerPt.y }
-        ],
-        curviness: 1.1,
-        autoRotate: false,
-        alignOrigin: [0.5, 0.55]
-      }
-    }, 'emerge+=0.15');
-
-    master.to(beeB, {
-      y: '+=6', duration: 0.35, yoyo: true, repeat: 3, ease: 'sine.inOut',
-      onUpdate: () => dropNectarDot(beeB, 'rgba(245,200,80,0.9)')
-    }, 'emerge+=4.4');
-
-    master.to(beeB, {
-      duration: 4.6,
-      ease: 'power1.inOut',
-      onUpdate: () => { orient(beeB, stateB); dropNectarDot(beeB, 'rgba(205,140,40,0.75)'); },
-      motionPath: {
-        path: [
-          { x: flowerPt.x, y: flowerPt.y },
-          { x: (flowerPt.x + deposit.x) * 0.45, y: Math.min(flowerPt.y, deposit.y) - 0.7 * R },
-          { x: deposit.x + 40, y: deposit.y - 30 },
-          { x: deposit.x, y: deposit.y }
-        ],
-        curviness: 1.05,
-        autoRotate: false,
-        alignOrigin: [0.5, 0.55]
-      }
-    }, 'emerge+=5.9');
-
-    master.call(() => {
-      darkenNectarCell();
-      dropNectarDot(beeB, 'rgba(200,130,30,0.95)');
-    }, 'emerge+=10.5');
-
-    master.to(beeB, {
-      duration: 1.4,
-      ease: 'power2.inOut',
-      onUpdate: () => orient(beeB, stateB),
-      motionPath: {
-        path: [
-          { x: deposit.x, y: deposit.y },
-          { x: startB.x, y: startB.y }
-        ],
-        curviness: 0.6,
-        autoRotate: false,
-        alignOrigin: [0.5, 0.55]
-      }
-    }, 'emerge+=10.7');
-
-    master.call(() => {
-      if (flapB) flapB.pause();
-      flapWings('hero-worker-b', false);
-      gsap.to(beeB, { opacity: 0, duration: 0.2 });
-      /* Sit as peeker in the nectar-filled deposit cell */
-      peekerB.setAttribute('transform', 'translate(205.4,281.2) scale(1.05)');
-      gsap.set(peekerB, { opacity: 0 });
-      gsap.to(peekerB, { opacity: 1, duration: 0.35 });
-      gsap.to(canvas, { opacity: 0, duration: 0.5, onComplete: () => canvas.remove() });
-      blossomAfterNectar();
-    }, 'emerge+=12.2');
   }
 
   // ── ARCHITECTURE STACK DEFENSE ─────────────────────────────────────────────
   function beeSVGMarkup(idp, bodyFill) {
-    var isDark = String(bodyFill).toLowerCase() === '#1a1a1a' || String(bodyFill).toLowerCase() === '#15100b';
-    /* Yellow bumblebee gets a black boundary; dark bee gets a light gold boundary so it reads on dark UI */
-    var outline = isDark ? '#E8C96A' : '#0B0B0E';
-    var sw = isDark ? '2.2' : '1.8';
     return (
-      '<svg viewBox="0 0 56 38" width="56" height="38" aria-hidden="true" overflow="visible">' +
+      '<svg viewBox="0 0 56 38" width="56" height="38" aria-hidden="true">' +
         '<defs><clipPath id="' + idp + '-clip"><ellipse cx="26" cy="23" rx="17" ry="9.5"/></clipPath></defs>' +
-        '<ellipse cx="26" cy="23" rx="17" ry="9.5" fill="' + bodyFill + '" stroke="' + outline + '" stroke-width="' + sw + '"/>' +
+        '<ellipse cx="26" cy="23" rx="17" ry="9.5" fill="' + bodyFill + '"/>' +
         '<g clip-path="url(#' + idp + '-clip)">' +
           '<rect x="13" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>' +
           '<rect x="25" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>' +
         '</g>' +
-        '<circle cx="44" cy="22" r="7.5" fill="' + bodyFill + '" stroke="' + outline + '" stroke-width="' + sw + '"/>' +
-        '<circle id="' + idp + '-eye" cx="47" cy="19" r="2.2" fill="' + (isDark ? '#FFFDF4' : '#1a1a1a') + '"/>' +
-        '<circle id="' + idp + '-eyehi" cx="47.8" cy="18.4" r="0.7" fill="' + (isDark ? '#1a1a1a' : '#fff') + '"/>' +
-        '<polygon points="9,20 9,26 3,23" fill="' + (isDark ? '#E8C96A' : '#666') + '" stroke="' + outline + '" stroke-width="1"/>' +
-        '<line x1="41" y1="15" x2="35" y2="4" stroke="' + outline + '" stroke-width="1.5" stroke-linecap="round"/>' +
-        '<circle cx="35" cy="4" r="1.9" fill="' + (isDark ? '#E8C96A' : '#1a1a1a') + '" stroke="' + outline + '" stroke-width="0.8"/>' +
-        '<line x1="45" y1="14" x2="43" y2="3" stroke="' + outline + '" stroke-width="1.5" stroke-linecap="round"/>' +
-        '<circle cx="43" cy="3" r="1.9" fill="' + (isDark ? '#E8C96A' : '#1a1a1a') + '" stroke="' + outline + '" stroke-width="0.8"/>' +
-        '<ellipse id="' + idp + '-w1" cx="17" cy="9" rx="14" ry="8.5" fill="rgba(255,248,228,0.92)" stroke="' + outline + '" stroke-width="1.2"/>' +
-        '<ellipse id="' + idp + '-w2" cx="21" cy="21" rx="11" ry="6.5" fill="rgba(255,248,228,0.78)" stroke="' + outline + '" stroke-width="1"/>' +
+        '<circle cx="44" cy="22" r="7.5" fill="' + bodyFill + '"/>' +
+        '<circle id="' + idp + '-eye" cx="47" cy="19" r="2.2" fill="#1a1a1a"/>' +
+        '<circle id="' + idp + '-eyehi" cx="47.8" cy="18.4" r="0.7" fill="#fff"/>' +
+        '<polygon points="9,20 9,26 3,23" fill="#666"/>' +
+        '<line x1="41" y1="15" x2="35" y2="4" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>' +
+        '<circle cx="35" cy="4" r="1.9" fill="#1a1a1a"/>' +
+        '<line x1="45" y1="14" x2="43" y2="3" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>' +
+        '<circle cx="43" cy="3" r="1.9" fill="#1a1a1a"/>' +
+        '<ellipse id="' + idp + '-w1" cx="17" cy="9" rx="14" ry="8.5" fill="rgba(210,235,255,0.88)" stroke="rgba(140,180,230,0.6)" stroke-width="0.8"/>' +
+        '<ellipse id="' + idp + '-w2" cx="21" cy="21" rx="11" ry="6.5" fill="rgba(210,235,255,0.75)" stroke="rgba(140,180,230,0.5)" stroke-width="0.7"/>' +
       '</svg>'
     );
   }
@@ -442,8 +205,8 @@
     yb.innerHTML = beeSVGMarkup('sb', '#FBCF2E');
     sec.appendChild(yb);
 
-    const SHIELD_STROKE_BRIGHT = 'rgba(232,201,106,0.95)';
-    const SHIELD_STROKE_REST   = 'rgba(232,201,106,0.55)';
+    const SHIELD_STROKE_BRIGHT = 'rgba(205,127,50,0.85)';
+    const SHIELD_STROKE_REST   = 'rgba(28,20,6,0.5)';
 
     const ring = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     ring.id = 'stack-shield';
@@ -469,7 +232,7 @@
 
     const bb = document.createElement('div');
     bb.id = 'stack-bee2';
-    bb.style.cssText = 'position:absolute;top:0;left:0;width:56px;height:38px;pointer-events:none;z-index:5;';
+    bb.style.cssText = 'position:absolute;top:0;left:0;width:56px;height:38px;pointer-events:none;z-index:1;';
     bb.innerHTML = beeSVGMarkup('sbb', '#1a1a1a');
     sec.appendChild(bb);
     gsap.set(bb, { xPercent:-50, yPercent:-50, scaleX:1.32, scaleY:1.32, transformOrigin:'50% 50%', x:-9999, y:-9999, opacity:0 });
@@ -1025,17 +788,8 @@
   function boot() {
     initFlipPin();
     initDotCursor();
-    /* Sprouts/blossoms stay hidden until Worker B deposits nectar (see blossomAfterNectar). */
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.querySelectorAll('.hero-sprout.is-new').forEach((el) => {
-        el.style.opacity = '1';
-        el.style.transform = 'scaleY(1)';
-        const petals = el.querySelector('.blossom-petals');
-        if (petals) { petals.style.opacity = '1'; petals.style.transform = 'scale(1)'; }
-      });
-    }
     waitForGsap(() => {
-      waitForEl('queen-bee', () => setTimeout(launchBee, 700));
+      waitForEl('bee', () => setTimeout(launchBee, 700));
       waitForEl('stack-bee-land', () => mountStackDefense());
     });
   }
