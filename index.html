@@ -208,11 +208,15 @@
     #platform-features .card-category-title { overflow-wrap:break-word; }
     #platform-features .score-tag { white-space:normal; text-align:center; line-height:1.25; }
     .score-flip .flip-face svg { flex-shrink:0; }
-    /* ── PROBLEM METRICS ── */
-    .problem-metrics { display:grid; grid-template-columns:1fr 1fr; gap:28px 40px; max-width:920px; margin:0 auto; align-items:start; }
-    .problem-metric { text-align:center; padding:0; }
-    .problem-metric-num { font-size:clamp(36px,5.5vw,68px); font-weight:700; color:#0B0B0E; letter-spacing:-0.04em; line-height:1; margin:0 0 10px; }
-    .problem-metric-label { font-size:clamp(14px,1.45vw,17px); color:rgba(11,11,14,0.78); line-height:1.45; margin:0; font-weight:500; }
+    /* ── PROBLEM DIVIDER (thin bronze bar) ── */
+    #problem {
+      background: #CD7F32;
+      height: 16px;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      display: block;
+    }
     /* ── ARCHITECTURE LAYER TYPE (shares .card-category-title metrics) ── */
     .arch-layer-title { color:#CD7F32; margin:0 0 10px; }
     #architecture .card-category-title { color:#CD7F32; margin:0 0 10px; }
@@ -232,7 +236,7 @@
       #hero > div:last-child { padding: 0 clamp(16px, 4vw, 24px) !important; }
       .hero-title { font-size: clamp(30px, 8.5vw, 52px); }
       .hero-line2 { white-space: nowrap; letter-spacing: -0.03em; }
-      #problem { padding: 64px 24px !important; }
+      #problem { height: 16px !important; padding: 0 !important; }
       #how-it-works { padding: 64px 24px 0 !important; }
       /* Vertical honeycomb: transpose of laptop zigzag adjacency */
       .how-hex-grid {
@@ -273,9 +277,6 @@
       .hex-word { font-size:20px !important; }
       .hex-face-back { padding:0 16% !important; }
       .hex-face-back p { font-size:14px !important; line-height:1.42 !important; }
-      .problem-metrics { grid-template-columns:1fr !important; gap:28px !important; max-width:100% !important; }
-      .problem-metric-num { font-size:clamp(34px,10vw,48px) !important; }
-      .problem-metric-label { font-size:15px !important; }
       #how-it-works [data-grid] { max-width: 100% !important; gap: 40px !important; }
       #platform-features { padding: 64px 24px !important; }
       #platform-features > div { max-width: 100% !important; }
@@ -391,20 +392,9 @@
 </section>
 
 <!-- ══════════════════════════════════════════════════
-     THE PROBLEM, gold section
+     THE PROBLEM — thin bronze divider (nav target)
 ══════════════════════════════════════════════════ -->
-<section id="problem" style="background:#CD7F32;padding:64px 48px;text-align:center;">
-  <div class="problem-metrics">
-    <div class="problem-metric">
-      <p class="problem-metric-num">4+ TW</p>
-      <p class="problem-metric-label">of distributed energy devices worldwide</p>
-    </div>
-    <div class="problem-metric">
-      <p class="problem-metric-num">$50K+</p>
-      <p class="problem-metric-label">per DISCOM, per OEM, every month</p>
-    </div>
-  </div>
-</section>
+<div id="problem" aria-hidden="true"></div>
 
 <!-- ══════════════════════════════════════════════════
      HOW IT WORKS + PLATFORM, cream honeycomb band
