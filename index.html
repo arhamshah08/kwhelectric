@@ -41,6 +41,14 @@
     input, textarea, button, select, label { font-family: inherit; }
     input::placeholder, textarea::placeholder { font-family: inherit; opacity: 1; }
     #contact, #contact * { font-family: inherit; }
+    /* Cream form boxes: force the site's tight 2px radius (defeat UA/native rounded controls). */
+    #contact input[type="text"],
+    #contact input[type="email"],
+    #contact textarea {
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: 2px !important;
+    }
     input:focus, textarea:focus { outline: 2px solid rgba(205,127,50,0.45); outline-offset: 1px; }
     @keyframes logo-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     /* ── BEES ── */
@@ -756,7 +764,7 @@
 
     <div style="max-width:720px;margin:0 auto;">
     <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
-      <div style="background:rgba(255,255,255,0.22);border-radius:3px;padding:48px;text-align:center;">
+      <div style="background:rgba(255,255,255,0.22);border-radius:2px;padding:48px;text-align:center;">
         <p style="font-size:20px;color:#0B0B0E;font-weight:500;margin:0;">Message received. We'll be in touch shortly.</p>
       </div>
     </sc-if>
