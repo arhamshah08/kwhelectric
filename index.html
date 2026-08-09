@@ -54,10 +54,13 @@
     #arch-stack-inner { position:relative; z-index:2; }
     .hero-inner {
       position:relative; z-index:1; text-align:center;
-      width:100%; max-width:1280px; margin:0 auto;
+      width:100%; max-width:1280px;
+      margin-left:auto; margin-right:auto;
       padding:0 clamp(20px, 4vw, 56px);
+      min-width:0; box-sizing:border-box;
     }
     .hero-title {
+      display:block; width:100%;
       font-size:clamp(34px, 7.2vw, 108px);
       font-weight:700; color:#FFFBF0;
       letter-spacing:-0.035em; line-height:1.05;
@@ -65,10 +68,17 @@
       max-width:min(1200px, 100%);
       text-align:center;
     }
-    .hero-line1 { display:block; text-align:center; }
-    .hero-line2 { display:block; white-space:nowrap; text-align:center; }
+    .hero-line1 { display:block; width:100%; text-align:center; }
+    /* nowrap line is wider than the title box; text-align alone start-flushes overflow.
+       left:50% + translateX(-50%) centers the max-content box in the viewport. */
+    .hero-line2 {
+      display:block; width:max-content; max-width:none;
+      white-space:nowrap; text-align:center;
+      position:relative; left:50%; transform:translateX(-50%);
+    }
     #bee-land { position:relative; display:inline-block; }
     .hero-sub {
+      display:block; width:100%;
       font-size:clamp(16px, 1.5vw, 20px);
       color:rgba(255,251,240,0.8);
       max-width:min(720px, 100%);
