@@ -41,13 +41,22 @@
     input, textarea, button, select, label { font-family: inherit; }
     input::placeholder, textarea::placeholder { font-family: inherit; opacity: 1; }
     #contact, #contact * { font-family: inherit; }
-    /* Cream form boxes: force the site's tight 2px radius (defeat UA/native rounded controls). */
+    /* Cream rectangular boxes: sharp corners (UA/Safari often softens inputs even at 2px). */
+    :root { --box-radius: 0; }
     #contact input[type="text"],
     #contact input[type="email"],
+    #contact input[type="search"],
     #contact textarea {
       -webkit-appearance: none;
+      -moz-appearance: none;
       appearance: none;
-      border-radius: 2px !important;
+      border: 0 !important;
+      border-radius: var(--box-radius) !important;
+      border-top-left-radius: var(--box-radius) !important;
+      border-top-right-radius: var(--box-radius) !important;
+      border-bottom-left-radius: var(--box-radius) !important;
+      border-bottom-right-radius: var(--box-radius) !important;
+      background-clip: padding-box;
     }
     input:focus, textarea:focus { outline: 2px solid rgba(205,127,50,0.45); outline-offset: 1px; }
     @keyframes logo-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -764,7 +773,7 @@
 
     <div style="max-width:720px;margin:0 auto;">
     <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
-      <div style="background:rgba(255,255,255,0.22);border-radius:2px;padding:48px;text-align:center;">
+      <div style="background:rgba(255,255,255,0.22);border-radius:0;padding:48px;text-align:center;">
         <p style="font-size:20px;color:#0B0B0E;font-weight:500;margin:0;">Message received. We'll be in touch shortly.</p>
       </div>
     </sc-if>
@@ -777,23 +786,23 @@
             <div data-name-row="" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
             <div>
               <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">First Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
-              <input type="text" name="first_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
+              <input type="text" name="first_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:0;font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
             </div>
             <div>
               <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Last Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
-              <input type="text" name="last_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
+              <input type="text" name="last_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:0;font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
             </div>
           </div>
         </div>
 
         <div>
           <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Email <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
-          <input type="email" name="email" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;" />
+          <input type="email" name="email" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:0;font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
         </div>
 
         <div>
           <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Message</label>
-          <textarea name="message" rows="5" style="width:100%;padding:13px 15px;background:#FFFBF0;border:none;border-radius:2px;font-size:15px;color:#0B0B0E;resize:vertical;"></textarea>
+          <textarea name="message" rows="5" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:0;font-size:15px;color:#0B0B0E;resize:vertical;-webkit-appearance:none;appearance:none;"></textarea>
         </div>
 
         <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
