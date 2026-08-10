@@ -41,8 +41,8 @@
     input, textarea, button, select, label { font-family: inherit; }
     input::placeholder, textarea::placeholder { font-family: inherit; opacity: 1; }
     #contact, #contact * { font-family: inherit; }
-    /* Cream rectangular boxes: sharp corners (UA/Safari often softens inputs even at 2px). */
-    :root { --box-radius: 0; }
+    /* Cream rectangular boxes: slight 2px corner (UA/Safari softens inputs without !important). */
+    :root { --box-radius: 2px; }
     #contact input[type="text"],
     #contact input[type="email"],
     #contact input[type="search"],
@@ -111,14 +111,20 @@
       gap:56px clamp(40px, 6vw, 88px) !important;
     }
     .backed-logo {
-      border-radius:12px; height:99px; width:99px; min-width:99px; max-width:99px; flex:0 0 99px;
+      border-radius:var(--box-radius); height:99px; width:99px; min-width:99px; max-width:99px; flex:0 0 99px;
       overflow:hidden; flex-shrink:0;
       background:#fff; display:flex; align-items:center; justify-content:center;
       padding:12px; box-sizing:border-box;
     }
-    .backed-logo img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; display:block; }
+    .backed-logo img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; object-position:center; display:block; margin:auto; }
     .backed-logo--nfh { padding:10px; }
     .backed-logo--nvidia { padding:8px; }
+    .backed-logo--cover { padding:0; }
+    .backed-logo--cover img { width:100%; height:100%; max-width:none; max-height:none; object-fit:cover; }
+    .backed-logo--ms { padding:10px; }
+    .backed-logo--ms img { width:100%; height:100%; max-width:none; max-height:none; object-fit:contain; object-position:center; }
+    .backed-logo--polsky { padding:0; }
+    .backed-logo--polsky img { width:100%; height:100%; max-width:none; max-height:none; object-fit:cover; object-position:center 62%; transform:translateY(3px); }
     /* ── FLIP CARDS ── */
     .flip {
       perspective:1000px; cursor:pointer;
@@ -128,7 +134,7 @@
     .flip:focus, .flip:focus-visible { outline:none; }
     .flip-inner { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform 0.5s ease; }
     .flip:hover .flip-inner, .flip.pinned .flip-inner { transform:rotateY(180deg); }
-    .flip-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:14px; }
+    .flip-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:var(--box-radius); }
     .flip-back { transform:rotateY(180deg); }
     /* ── CREAM HONEYCOMB BACKGROUND (flat-top hex grid) ── */
     .cream-hex-section {
@@ -203,8 +209,9 @@
     .hex-face-back p { font-size:clamp(13.5px,1.65vw,16.5px); color:#4A3A1F; line-height:1.4; margin:0; font-weight:500; position:relative; z-index:1; }
     .hex-word { font-size:clamp(26px,4.2vw,40px); font-weight:700; color:#FFFBF0; margin:0; letter-spacing:-0.03em; line-height:1.05; text-align:center; position:relative; z-index:1; }
     /* ── SCORECARD FLIPS ── */
-    .score-flip { min-height:156px; cursor:pointer; }
-    .score-flip .flip-face { display:flex; flex-direction:column; justify-content:center; padding:22px 24px; box-sizing:border-box; overflow:hidden; border-radius:16px; }
+    .score-flip { min-height:156px; cursor:pointer; border-radius:var(--box-radius); overflow:hidden; }
+    .score-flip .flip-face { display:flex; flex-direction:column; justify-content:center; padding:22px 24px; box-sizing:border-box; overflow:hidden; border-radius:var(--box-radius); }
+    .score-flip .flip-front, .score-flip .flip-back { border-radius:var(--box-radius); }
     .score-flip .flip-front { background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.32); }
     .score-flip--light .flip-front { background:#FFFFFF; border:1px solid #E3D2B0; box-shadow:0 1px 2px rgba(120,80,30,0.05); }
     .score-flip .flip-back { background:#FFF7E6; border:1px solid #E3D2B0; align-items:flex-start; justify-content:center; text-align:left; }
@@ -362,12 +369,12 @@
         gap:16px !important;
         flex-direction:unset !important;
       }
-      #who .score-flip { min-height:130px !important; border-radius:16px; }
+      #who .score-flip { min-height:130px !important; border-radius:var(--box-radius); }
       #who .score-flip .flip-front { padding:18px 16px !important; }
       #who .card-front-left { gap:10px !important; align-items:center; }
       #who .card-front-left svg { width:36px !important; height:36px !important; flex-shrink:0; }
-      #platform-features .score-flip { min-height:156px !important; border-radius:16px; }
-      #platform-features .score-flip .flip-face { border-radius:16px; }
+      #platform-features .score-flip { min-height:156px !important; border-radius:var(--box-radius); }
+      #platform-features .score-flip .flip-face { border-radius:var(--box-radius); }
       .card-front-split { gap:12px !important; }
       .card-front-right { gap:7px; }
     }
@@ -769,26 +776,26 @@
       <div style="position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent);mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent);">
         <div style="display:flex;align-items:center;gap:18px;animation:logo-scroll 26s linear infinite;width:max-content;">
           <div class="backed-logo backed-logo--nfh"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Samayang Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Samayang" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;background:#fff;"><img src="uploads/microsoft-for-startups.png" style="width:100%;height:100%;object-fit:contain;display:block;" alt="Microsoft for Startups" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/Samayang Logo.png" alt="Samayang" /></div>
+          <div class="backed-logo backed-logo--ms"><img src="uploads/microsoft-for-startups.png" alt="Microsoft for Startups" /></div>
           <div class="backed-logo backed-logo--nvidia"><img src="uploads/nvidia-inception.png" alt="NVIDIA Inception Program" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/pasted-1782743184735-0.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Landuyt Center" /></div>
+          <div class="backed-logo backed-logo--polsky"><img src="uploads/Polsky CNVC.png" alt="Polsky CNVC" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/iVenture loo.jpg" alt="iVenture" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/pasted-1782743184735-0.png" alt="Landuyt Center" /></div>
           <div class="backed-logo backed-logo--nfh"><img src="uploads/nfh-logo.png" alt="NFH Networks for Humanity" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Samayang Logo.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Samayang" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;background:#fff;"><img src="uploads/microsoft-for-startups.png" style="width:100%;height:100%;object-fit:contain;display:block;" alt="Microsoft for Startups" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/Samayang Logo.png" alt="Samayang" /></div>
+          <div class="backed-logo backed-logo--ms"><img src="uploads/microsoft-for-startups.png" alt="Microsoft for Startups" /></div>
           <div class="backed-logo backed-logo--nvidia"><img src="uploads/nvidia-inception.png" alt="NVIDIA Inception Program" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/Polsky CNVC.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Polsky CNVC" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/iVenture loo.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="iVenture" /></div>
-          <div style="border-radius:12px;height:99px;width:99px;overflow:hidden;flex-shrink:0;"><img src="uploads/pasted-1782743184735-0.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Landuyt Center" /></div>
+          <div class="backed-logo backed-logo--polsky"><img src="uploads/Polsky CNVC.png" alt="Polsky CNVC" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/iVenture loo.jpg" alt="iVenture" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/pasted-1782743184735-0.png" alt="Landuyt Center" /></div>
         </div>
       </div>
     </div>
 
     <div style="max-width:720px;margin:0 auto;">
     <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
-      <div style="background:rgba(255,255,255,0.22);border-radius:0;padding:48px;text-align:center;">
+      <div style="background:rgba(255,255,255,0.22);border-radius:var(--box-radius);padding:48px;text-align:center;">
         <p style="font-size:20px;color:#0B0B0E;font-weight:500;margin:0;">Message received. We'll be in touch shortly.</p>
       </div>
     </sc-if>
@@ -801,23 +808,23 @@
             <div data-name-row="" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
             <div>
               <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">First Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
-              <input type="text" name="first_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:0;font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
+              <input type="text" name="first_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:var(--box-radius);font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
             </div>
             <div>
               <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Last Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
-              <input type="text" name="last_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:0;font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
+              <input type="text" name="last_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:var(--box-radius);font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
             </div>
           </div>
         </div>
 
         <div>
           <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Email <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
-          <input type="email" name="email" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:0;font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
+          <input type="email" name="email" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:var(--box-radius);font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
         </div>
 
         <div>
           <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Message</label>
-          <textarea name="message" rows="5" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:0;font-size:15px;color:#0B0B0E;resize:vertical;-webkit-appearance:none;appearance:none;"></textarea>
+          <textarea name="message" rows="5" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:var(--box-radius);font-size:15px;color:#0B0B0E;resize:vertical;-webkit-appearance:none;appearance:none;"></textarea>
         </div>
 
         <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
