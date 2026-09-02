@@ -256,6 +256,69 @@
     #architecture .card-category-title { color:#CD7F32; margin:0 0 10px; }
     .arch-layer-body { font-size:clamp(15px,1.5vw,18px); color:rgba(255,251,240,0.72); line-height:1.5; margin:0; font-weight:400; }
     .nav-brand-text { font-size:15px; font-weight:700; letter-spacing:-0.02em; line-height:1; white-space:nowrap; }
+    /* ── PRODUCT SECTIONS ── */
+    .kwh-prod { padding:88px clamp(20px,4vw,64px); }
+    .kwh-prod-inner { max-width:1140px; margin:0 auto; }
+    .kwh-prod-h { font-size:clamp(28px,4.2vw,46px); font-weight:700; letter-spacing:-0.032em; line-height:1.08; margin:0 0 44px; color:#0B0B0E; }
+    .kwh-prod-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:stretch; }
+    .kwh-prod-card { background:#FFFBF0; border:1px solid #E7DAC0; border-radius:var(--box-radius); padding:22px 26px 24px; display:flex; flex-direction:column; min-width:0; box-shadow:0 1px 3px rgba(120,80,30,0.05); }
+    .kwh-prod-fig { flex:0 0 148px; display:flex; align-items:center; justify-content:center; padding:6px 0 20px; }
+    .kwh-prod-body { flex:1; }
+    .kwh-prod-card h3 { font-size:clamp(19px,2vw,23px); font-weight:700; letter-spacing:-0.02em; color:#0B0B0E; margin:0 0 7px; line-height:1.18; }
+    .kwh-prod-card p { font-size:14.5px; line-height:1.6; margin:0; font-weight:400; color:#4A3A24; }
+    #product-gateway.kwh-prod { background:#FFFBF0; }
+    #product-gateway .kwh-prod-grid { grid-template-columns:repeat(3,1fr); }
+    #product-gateway .kwh-prod-card.wide { grid-column:1 / -1; flex-direction:row; align-items:center; gap:44px; }
+    #product-gateway .kwh-prod-card.wide .kwh-prod-fig { flex:0 0 320px; padding:0; }
+    #product-gateway .kwh-prod-card.wide .kwh-prod-body { flex:1; }
+    /* Who it's for — light cards, black text, on the dark honeycomb band */
+    #who.kwh-prod { position:relative; overflow:hidden; background:#120d04; }
+    #who .who-hex-bg { position:absolute; inset:0; background:url(uploads/hero-bg.webp) center/cover no-repeat; opacity:0.30; z-index:0; pointer-events:none; }
+    #who .kwh-prod-inner { position:relative; z-index:1; }
+    #who .kwh-prod-h { color:#FFFBF0; }
+    #who .kwh-prod-grid { grid-template-columns:repeat(3,1fr); }
+    #who .kwh-prod-card { background:#FFFBF0; }
+    /* ── graphic atoms — flat, minimal, black wordmark ── */
+    .kg { display:flex; align-items:center; justify-content:center; gap:16px; width:100%; }
+    .kg-col { display:flex; flex-direction:column; gap:8px; }
+    .kg-tag { display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:500; color:#5B4A2C; white-space:nowrap; }
+    .kg-pill { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:500; white-space:nowrap; background:#F4EEE1; color:#4A3A24; }
+    .kg-dot { width:6px; height:6px; border-radius:50%; background:#CD7F32; flex-shrink:0; }
+    .kg-mark { height:19px; width:auto; display:block; }
+    .kg-arrow { color:#C3B394; font-size:13px; line-height:1; }
+    .kg-lines { width:38px; height:96px; flex-shrink:0; }
+    .kg-lines path { stroke:#D8C6A2; stroke-width:1.4; fill:none; }
+    .kg-code { font-family:ui-monospace,Menlo,monospace; font-size:11.5px; line-height:2; width:100%; color:#9A8A6C; }
+    .kg-code .row { display:flex; align-items:center; gap:8px; }
+    .kg-code .lead { flex:1; border-top:1px dashed #DAC9A6; }
+    .kg-code .rhs { color:#1F9C6B; }
+    .kg-log { font-family:ui-monospace,Menlo,monospace; font-size:11px; line-height:2; width:100%; }
+    .kg-log .hd { display:flex; align-items:center; gap:7px; margin-bottom:5px; color:#9A8A6C; }
+    .kg-log .live { width:7px; height:7px; border-radius:50%; background:#1F9C6B; flex-shrink:0; }
+    .kg-log .ev { display:flex; align-items:center; gap:8px; color:#5B4A2C; }
+    .kg-log .ev .v { margin-left:auto; color:#B7793A; }
+    .kg-steps { display:flex; flex-direction:column; gap:11px; width:100%; max-width:280px; }
+    .kg-steps li { display:flex; align-items:center; gap:11px; font-size:12.5px; color:#5B4A2C; list-style:none; }
+    .kg-steps .sd { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .kg-modes { display:flex; width:100%; text-align:left; }
+    .kg-modes > div { flex:1; padding:0 18px; }
+    .kg-modes > div:first-child { padding-left:0; }
+    .kg-modes > div + div { border-left:1px solid #E7DAC0; }
+    .kg-modes b { display:block; font-size:13px; font-weight:700; color:#0B0B0E; margin-bottom:4px; }
+    .kg-modes span { font-size:11.5px; line-height:1.45; color:#6E5E42; }
+    @media (max-width:900px){ .kwh-prod-grid, #who .kwh-prod-grid, #product-gateway .kwh-prod-grid { grid-template-columns:1fr 1fr; } #product-gateway .kwh-prod-card.wide { flex-direction:column; align-items:stretch; gap:0; } #product-gateway .kwh-prod-card.wide .kwh-prod-fig { flex:none; } }
+    @media (max-width:600px){ .kwh-prod-grid, #who .kwh-prod-grid, #product-gateway .kwh-prod-grid { grid-template-columns:1fr; } .kwh-prod { padding:56px 22px; } .kwh-prod-h { margin-bottom:32px; } }
+    /* ── SITE FOOTER ── */
+    .site-footer { background:#120d04; color:rgba(255,251,240,0.72); padding:72px clamp(20px,4vw,64px) 40px; }
+    .site-footer-inner { max-width:1160px; margin:0 auto; display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr 1fr; gap:40px 32px; }
+    .site-footer img.foot-logo { height:26px; width:auto; display:block; margin-bottom:16px; }
+    .site-footer .foot-tag { font-size:13.5px; line-height:1.6; margin:0; max-width:260px; color:rgba(255,251,240,0.6); }
+    .site-footer h4 { font-size:12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,251,240,0.5); margin:0 0 14px; }
+    .site-footer a { display:block; font-size:14px; color:rgba(255,251,240,0.78); margin-bottom:10px; transition:color 0.15s; }
+    .site-footer a:hover { color:#CD7F32; }
+    .site-footer-bottom { max-width:1160px; margin:44px auto 0; padding-top:22px; border-top:1px solid rgba(255,251,240,0.12); font-size:13px; color:rgba(255,251,240,0.5); }
+    @media (max-width:900px){ .site-footer-inner { grid-template-columns:1fr 1fr; } }
+    @media (max-width:560px){ .site-footer-inner { grid-template-columns:1fr; gap:28px; } }
     .nav-login {
       display: inline-flex;
       align-items: center;
@@ -386,18 +449,12 @@
 ══════════════════════════════════════════════════ -->
 <nav style="{{ navStyle }}">
   <a href="#hero" style="display:flex;align-items:center;gap:10px;">
-    <sc-if value="{{ notScrolled }}" hint-placeholder-val="{{ true }}">
-      <img src="assets/kwh-logo-mark-light.png" height="34" alt="kWh Electric" style="display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.45));" />
-    </sc-if>
-    <sc-if value="{{ scrolled }}" hint-placeholder-val="{{ false }}">
-      <img src="assets/kwh-logo-mark.png" height="34" alt="kWh Electric" style="display:block;" />
-    </sc-if>
+    <img src="assets/kwh-logo-mark.png?v=3" height="26" alt="kWh Electric" style="display:block;" />
   </a>
   <div data-nav-links="" style="display:flex;align-items:center;gap:26px;">
-    <a href="#problem" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">The Problem</a>
-    <a href="#how-it-works" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">How It Works</a>
-    <a href="#architecture" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Architecture</a>
-    <a href="#contact" style="color:{{ navLinkColor }};font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Get In Touch</a>
+    <a href="#products" style="color:#0B0B0E;font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Products</a>
+    <a href="#who" style="color:#0B0B0E;font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Who It's For</a>
+    <a href="#contact" style="color:#0B0B0E;font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Get In Touch</a>
     <a href="https://portal.kwhelectric.io/" class="nav-login">Login</a>
   </div>
 </nav>
@@ -434,7 +491,7 @@
       <span class="hero-line2">made visible and dispatchable.</span>
     </h1>
     <p class="hero-sub">
-      Enabling asset intelligence using <img src="assets/kwh-logo-mark-light.png" alt="kWh" style="height:0.78em;vertical-align:-0.06em;display:inline-block;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.35));" /> communication infrastructure
+      Enabling asset intelligence using <img src="assets/kwh-logo-mark-light.png?v=3" alt="kWh" style="height:0.78em;vertical-align:-0.06em;display:inline-block;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.35));" /> communication infrastructure
     </p>
 
   </div>
@@ -449,143 +506,89 @@
      HOW IT WORKS + PLATFORM, cream honeycomb band
 ══════════════════════════════════════════════════ -->
 <div class="cream-hex-section">
-<section id="how-it-works" style="padding:72px 48px 64px;text-align:center;">
-
-  <div class="how-hex-grid">
-
-    <div class="flip hex-flip" data-flip>
-      <div class="flip-inner">
-        <div class="flip-face hex-face hex-face-front">
-          <p class="hex-word">Connect</p>
-        </div>
-        <div class="flip-face hex-face hex-face-back">
-          <p>Open standards gateway: IEEE 2030.5, OpenADR, SunSpec.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="flip hex-flip" data-flip>
-      <div class="flip-inner">
-        <div class="flip-face hex-face hex-face-front">
-          <p class="hex-word">Dispatch</p>
-        </div>
-        <div class="flip-face hex-face hex-face-back">
-          <p>Real-time charge, discharge, curtail, and shift at any scale.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="flip hex-flip" data-flip>
-      <div class="flip-inner">
-        <div class="flip-face hex-face hex-face-front">
-          <p class="hex-word">Normalize</p>
-        </div>
-        <div class="flip-face hex-face hex-face-back">
-          <p>One clean data stream from every OEM protocol.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="flip hex-flip" data-flip>
-      <div class="flip-inner">
-        <div class="flip-face hex-face hex-face-front">
-          <p class="hex-word">Verify</p>
-        </div>
-        <div class="flip-face hex-face hex-face-back">
-          <p>Every dispatch logged. Provable response and claimable revenue.</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
 
 <!-- ══════════════════════════════════════════════════
-     FIVE-LAYER ARCHITECTURE, dark + honeycomb
+     PRODUCT 1 — OEM Integration Platform
 ══════════════════════════════════════════════════ -->
-<!-- ══════════════════════════════════════════════════
-     PLATFORM FEATURES, dark cards
-══════════════════════════════════════════════════ -->
-<section id="platform-features">
-  <div style="max-width:1160px;margin:0 auto;">
-    <h2 style="font-size:clamp(28px,3.8vw,48px);font-weight:700;color:#0B0B0E;text-align:center;margin:0 0 48px;letter-spacing:-0.025em;line-height:1.1;">Hardware-enabled software infrastructure.</h2>
-    <div data-grid="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+<section id="products" class="kwh-prod kwh-prod--light">
+  <div class="kwh-prod-inner">
+    <h2 class="kwh-prod-h">One integration surface for every OEM device.</h2>
+    <div class="kwh-prod-grid">
 
-      <div class="flip score-flip score-flip--light" data-flip style="min-height:158px;">
-        <div class="flip-inner">
-          <div class="flip-face flip-front">
-            <div class="card-front-split">
-              <div class="card-front-left">
-                <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
-                  <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#CD7F32"/>
-                  <rect x="9" y="9" width="12" height="12" rx="1" fill="rgba(255,251,240,0.22)"/>
-                  <rect x="11" y="11" width="8" height="8" rx="0.5" fill="rgba(255,251,240,0.85)"/>
-                </svg>
-                <h3 class="card-category-title">Edge Gateway</h3>
-              </div>
-              <div class="card-front-right">
-                <span class="score-tag">Local Edge</span>
-                <span class="score-tag">Policy-as-Code</span>
-                <span class="score-tag">Offline-Ready</span>
-              </div>
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg">
+            <div class="kg-col">
+              <span class="kg-tag"><span class="kg-dot"></span>Batteries</span>
+              <span class="kg-tag"><span class="kg-dot"></span>EV chargers</span>
+              <span class="kg-tag"><span class="kg-dot"></span>Thermostats</span>
+              <span class="kg-tag"><span class="kg-dot"></span>Inverters</span>
+              <span class="kg-tag"><span class="kg-dot"></span>Solar</span>
+            </div>
+            <svg class="kg-lines" viewBox="0 0 38 96" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0 8 C19 8 19 48 38 48"/><path d="M0 28 C19 28 19 48 38 48"/>
+              <path d="M0 48 H38"/><path d="M0 68 C19 68 19 48 38 48"/>
+              <path d="M0 88 C19 88 19 48 38 48"/>
+            </svg>
+            <div class="kg-col" style="align-items:center;gap:6px;">
+              <img class="kg-mark" src="assets/kwh-logo-mark.png?v=3" alt="kWh">
+              <span style="font-size:11px;font-weight:600;color:#8A7A5C;">one API</span>
             </div>
           </div>
-          <div class="flip-face flip-back">
-            <p>A physical device installed at your site that connects to every asset locally. Offline-safe, no cloud dependency.</p>
-          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Connect</h3>
+          <p>Batteries, EV chargers, thermostats, and inverters from any manufacturer reach kWh through one API, instead of one integration per OEM.</p>
         </div>
       </div>
 
-      <div class="flip score-flip score-flip--light" data-flip style="min-height:158px;">
-        <div class="flip-inner">
-          <div class="flip-face flip-front">
-            <div class="card-front-split">
-              <div class="card-front-left">
-                <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
-                  <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#CD7F32"/>
-                  <path d="M8 11 L19 11 M16 9 L19 11 L16 13" stroke="rgba(255,251,240,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                  <path d="M22 19 L11 19 M14 17 L11 19 L14 21" stroke="rgba(255,251,240,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-                <h3 class="card-category-title">Protocol Translation</h3>
-              </div>
-              <div class="card-front-right">
-                <span class="score-tag">SunSpec</span>
-                <span class="score-tag">Modbus</span>
-                <span class="score-tag">OCPP</span>
-                <span class="score-tag">OpenADR</span>
-              </div>
-            </div>
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg-code">
+            <div class="row"><span># oem field</span><span style="margin-left:auto;">canonical</span></div>
+            <div class="row"><span>battery_soc_pct</span><span class="lead"></span><span class="rhs">state_of_charge</span></div>
+            <div class="row"><span>power_w</span><span class="lead"></span><span class="rhs">active_power</span></div>
+            <div class="row"><span>tstat_setpt_f</span><span class="lead"></span><span class="rhs">target_temp</span></div>
+            <div class="row"><span>dev_uid</span><span class="lead"></span><span class="rhs">oem_device_id</span></div>
           </div>
-          <div class="flip-face flip-back">
-            <p>Every device speaks a different language. The gateway translates them all into one clean API. No custom integrations per OEM.</p>
-          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Normalize</h3>
+          <p>Units, timestamps, and enums map into one canonical model at ingestion. Fields with no equivalent are preserved, so nothing is lost.</p>
         </div>
       </div>
 
-      <div class="flip score-flip score-flip--light" data-flip style="min-height:158px;">
-        <div class="flip-inner">
-          <div class="flip-face flip-front">
-            <div class="card-front-split">
-              <div class="card-front-left">
-                <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
-                  <polygon points="15,3 25,9 25,21 15,27 5,21 5,9" fill="#CD7F32"/>
-                  <path d="M15 8 C15 8 16.5 13 21 15 C16.5 17 15 22 15 22 C15 22 13.5 17 9 15 C13.5 13 15 8 15 8Z" fill="rgba(255,251,240,0.9)"/>
-                </svg>
-                <h3 class="card-category-title">Cloud-Based</h3>
-              </div>
-              <div class="card-front-right">
-                <span class="score-tag">MCP</span>
-                <span class="score-tag">AI Agents</span>
-                <span class="score-tag">Cloud</span>
-                <span class="score-tag">OTA Updates</span>
-              </div>
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg" style="flex-direction:column;gap:10px;">
+            <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8A7A5C;">POST /devices/&#42;/commands &nbsp;<span style="color:#B7793A;">set_charge_mode</span></div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;">
+              <span class="kg-pill">BESS <span style="color:#1F9C6B;">&#10003;</span></span>
+              <span class="kg-pill">Inverter <span style="color:#1F9C6B;">&#10003;</span></span>
+              <span class="kg-pill">EV charger <span style="color:#1F9C6B;">&#10003;</span></span>
             </div>
+            <div style="font-size:11px;color:#8A7A5C;">one command &rarr; every native API, tracked</div>
           </div>
-          <div class="flip-face flip-back">
-            <p>A cloud layer exposing MCP and AI interfaces, letting agents read asset data and trigger policy-bound dispatch. No raw device control exposed.</p>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Dispatch</h3>
+          <p>Issue one canonical command and kWh translates it into each manufacturer's native API, then tracks execution across the whole fleet.</p>
+        </div>
+      </div>
+
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg-log">
+            <div class="hd"><span class="live"></span>dispatch log</div>
+            <div class="ev"><span>12:04:31</span><span>dispatch.sent</span><span class="v">fleet A</span></div>
+            <div class="ev"><span>12:04:33</span><span>response.ack</span><span class="v">1,284 assets</span></div>
+            <div class="ev"><span>12:04:41</span><span>delivered.kW</span><span class="v">2.6 MW</span></div>
+            <div class="ev"><span>12:05:00</span><span>settlement</span><span class="v">verified</span></div>
           </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Verify</h3>
+          <p>Every dispatch is logged with a provable response, so performance is auditable and the revenue behind it is claimable.</p>
         </div>
       </div>
 
@@ -595,106 +598,77 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════
-     FIVE-LAYER ARCHITECTURE, dark + honeycomb
+     PRODUCT 2 — Open Protocol Gateway
 ══════════════════════════════════════════════════ -->
-<section id="who" style="background:#CD7F32;padding:72px 64px;">
-  <div style="max-width:1160px;margin:0 auto;">
-    <h2 style="font-size:clamp(40px,6vw,80px);font-weight:700;color:#0B0B0E;text-align:center;margin:0 0 48px;letter-spacing:-0.04em;line-height:0.95;">Who it's for.</h2>
-    <div data-grid="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+<section id="product-gateway" class="kwh-prod kwh-prod--light">
+  <div class="kwh-prod-inner">
+    <h2 class="kwh-prod-h">Open standards, delivered at the site edge.</h2>
+    <div class="kwh-prod-grid">
 
-      <div class="flip score-flip" data-flip style="min-height:150px;">
-        <div class="flip-inner">
-          <div class="flip-face flip-front">
-            <div class="card-front-split">
-              <div class="card-front-left">
-                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><polygon points="28,13 24,20 16,20 12,13 16,6 24,6" fill="rgba(11,11,14,0.72)"/><polygon points="21,26 17,33 9,33 5,26 9,19 17,19" fill="rgba(11,11,14,0.72)"/><polygon points="35,26 31,33 23,33 19,26 23,19 31,19" fill="rgba(11,11,14,0.72)"/></svg>
-                <h3 class="card-category-title">Aggregators / VPP Operators</h3>
-              </div>
-            </div>
+      <div class="kwh-prod-card wide">
+        <div class="kwh-prod-fig">
+          <div class="kg" style="flex-direction:column;gap:9px;">
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;"><span class="kg-pill">Utilities</span><span class="kg-pill">Aggregators</span></div>
+            <span class="kg-arrow">&#8595;</span>
+            <img class="kg-mark" src="assets/kwh-logo-mark.png?v=3" alt="kWh" style="height:22px;">
+            <span class="kg-arrow">&#8595;</span>
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;"><span class="kg-pill"><span class="kg-dot"></span>Batteries</span><span class="kg-pill"><span class="kg-dot"></span>Inverters</span><span class="kg-pill"><span class="kg-dot"></span>EV chargers</span><span class="kg-pill"><span class="kg-dot"></span>Solar</span></div>
           </div>
-          <div class="flip-face flip-back">
-            <p>Dispatch a unified fleet of any asset type, from any manufacturer, in real time.</p>
-          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>One shared language</h3>
+          <p>kWh sits between the market side and the device side and translates in both directions, right at the site edge &mdash; so utilities and aggregators reach every asset without ever handling a single device dialect.</p>
         </div>
       </div>
 
-      <div class="flip score-flip" data-flip style="min-height:150px;">
-        <div class="flip-inner">
-          <div class="flip-face flip-front">
-            <div class="card-front-split">
-              <div class="card-front-left">
-                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><rect x="10" y="13" width="20" height="23" rx="2" fill="rgba(11,11,14,0.72)"/><rect x="15" y="9" width="10" height="5" rx="1.5" fill="rgba(11,11,14,0.72)"/><rect x="12" y="27" width="16" height="6" rx="1" fill="rgba(255,251,240,0.45)"/></svg>
-                <h3 class="card-category-title">BESS Financiers</h3>
-              </div>
-            </div>
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg-modes">
+            <div><b>Software</b><span>A license on your existing edge hardware</span></div>
+            <div><b>Hardware</b><span>A palm-sized kWh gateway, provisioned by kWh</span></div>
           </div>
-          <div class="flip-face flip-back">
-            <p>Real-time visibility into the health and performance of every battery in your portfolio.</p>
-          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Two modes</h3>
+          <p>Run the gateway as a license or as a palm-sized kWh device. Same protocol stack, same policy model, either way.</p>
         </div>
       </div>
 
-      <div class="flip score-flip" data-flip style="min-height:150px;">
-        <div class="flip-inner">
-          <div class="flip-face flip-front">
-            <div class="card-front-split">
-              <div class="card-front-left">
-                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><rect x="12" y="12" width="16" height="16" rx="2" fill="rgba(11,11,14,0.72)"/><rect x="5" y="16" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="5" y="22" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="28" y="16" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="28" y="22" width="7" height="2.5" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="16" y="5" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="22" y="5" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="16" y="28" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="22" y="28" width="2.5" height="7" rx="1" fill="rgba(11,11,14,0.72)"/></svg>
-                <h3 class="card-category-title">OEMs</h3>
-              </div>
-            </div>
-          </div>
-          <div class="flip-face flip-back">
-            <p>Make your hardware interoperable and dispatch-ready without building a full software platform.</p>
-          </div>
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <ul class="kg-steps">
+            <li><span class="sd" style="background:#F59E0B;"></span>Cloud link lost</li>
+            <li><span class="sd" style="background:#1F9C6B;"></span>Local policy keeps programs running</li>
+            <li><span class="sd" style="background:#9A8A6C;"></span>Link restored</li>
+            <li><span class="sd" style="background:#1F9C6B;"></span>State auto-resynced</li>
+          </ul>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Resilience</h3>
+          <p>Local policy keeps programs running through connectivity gaps, then resyncs automatically when the cloud link returns.</p>
         </div>
       </div>
 
-      <div class="flip score-flip" data-flip style="min-height:150px;">
-        <div class="flip-inner">
-          <div class="flip-face flip-front">
-            <div class="card-front-split">
-              <div class="card-front-left">
-                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L36 20 L20 36 L4 20 Z" fill="rgba(11,11,14,0.72)"/><line x1="4" y1="20" x2="36" y2="20" stroke="rgba(255,251,240,0.38)" stroke-width="1.5"/><line x1="20" y1="4" x2="20" y2="36" stroke="rgba(255,251,240,0.38)" stroke-width="1.5"/></svg>
-                <h3 class="card-category-title">Utilities / DISCOMs</h3>
-              </div>
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg" style="flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;">
+              <span class="kg-pill">Substation</span><span class="kg-arrow">&rarr;</span>
+              <span class="kg-pill">Feeder</span><span class="kg-arrow">&rarr;</span>
+              <span class="kg-pill">Transformer</span>
             </div>
-          </div>
-          <div class="flip-face flip-back">
-            <p>See behind-the-meter assets and dispatch flexible capacity. Devices join automatically, no campaigns needed.</p>
+            <span class="kg-arrow">&#8595;</span>
+            <img class="kg-mark" src="assets/kwh-logo-mark.png?v=3" alt="kWh">
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;">
+              <span class="kg-tag"><span class="kg-dot"></span>Battery</span>
+              <span class="kg-tag"><span class="kg-dot"></span>EV</span>
+              <span class="kg-tag"><span class="kg-dot"></span>Solar</span>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="flip score-flip" data-flip style="min-height:150px;">
-        <div class="flip-inner">
-          <div class="flip-face flip-front">
-            <div class="card-front-split">
-              <div class="card-front-left">
-                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 C20 3 22 17.5 37 20 C22 22.5 20 37 20 37 C20 37 18 22.5 3 20 C18 17.5 20 3 20 3Z" fill="rgba(11,11,14,0.72)"/></svg>
-                <h3 class="card-category-title">Energy AI Platforms</h3>
-              </div>
-            </div>
-          </div>
-          <div class="flip-face flip-back">
-            <p>Clean, standardized data and dispatch APIs for your optimization and AI workflows.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="flip score-flip" data-flip style="min-height:150px;">
-        <div class="flip-inner">
-          <div class="flip-face flip-front">
-            <div class="card-front-split">
-              <div class="card-front-left">
-                <svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="7" fill="rgba(11,11,14,0.72)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(45 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(90 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(135 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(180 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(225 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(270 20 20)"/><rect x="19" y="4" width="2" height="7" rx="1" fill="rgba(11,11,14,0.72)" transform="rotate(315 20 20)"/></svg>
-                <h3 class="card-category-title">Commercial Asset Owners</h3>
-              </div>
-            </div>
-          </div>
-          <div class="flip-face flip-back">
-            <p>Lower bills, grid revenue, and full visibility from your solar, batteries, and EV chargers.</p>
-          </div>
+        <div class="kwh-prod-body">
+          <h3>Coverage</h3>
+          <p>See feeders, transformers, and devices along real grid topology so utilities and platforms can coordinate flexible capacity at scale.</p>
         </div>
       </div>
 
@@ -702,61 +676,24 @@
   </div>
 </section>
 
-<section id="architecture" style="position:relative;background:#120d04;padding:72px 64px;overflow:hidden;">
-  <div style="position:absolute;inset:0;background:url(uploads/hero-bg.webp) center/cover no-repeat;opacity:0.42;"></div>
-  <div id="arch-stack-inner" style="position:relative;z-index:2;max-width:1160px;margin:0 auto;">
-
-    <h2 style="font-size:clamp(28px,4vw,50px);font-weight:700;color:#FFFBF0;text-align:center;margin:0 0 56px;letter-spacing:-0.03em;line-height:1.1;">
-      Five layers from physica<span id="stack-bee-land">l</span> device<br>to AI operation.
-    </h2>
-
-    <!-- L5 -->
-    <div data-grid="" style="border-top:3px solid #CD7F32;padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
-      <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L5</span>
-      <div>
-        <h3 class="card-category-title arch-layer-title">Applications + Value Layer</h3>
-        <p class="arch-layer-body">Utility orchestration, asset financing, VPP participation, grid services, forecasting, performance verification.</p>
-      </div>
+<!-- ══════════════════════════════════════════════════
+     WHO IT'S FOR (dark honeycomb, black cards)
+══════════════════════════════════════════════════ -->
+<section id="who" class="kwh-prod kwh-prod--dark">
+  <div class="who-hex-bg" aria-hidden="true"></div>
+  <div class="kwh-prod-inner">
+    <h2 class="kwh-prod-h">Who it's for.</h2>
+    <div class="kwh-prod-grid">
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Aggregators &amp; VPP operators</h3><p>Dispatch a unified fleet of any asset type, from any manufacturer, in real time.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>BESS financiers</h3><p>Real-time visibility into the health and performance of every battery in your portfolio.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>OEMs</h3><p>Make your hardware interoperable and dispatch-ready without building a full software platform.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Utilities &amp; DISCOMs</h3><p>See behind-the-meter assets and dispatch flexible capacity. Devices join automatically, no campaigns needed.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Energy AI platforms</h3><p>Clean, standardized data and dispatch APIs for your optimization and AI workflows.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Commercial asset owners</h3><p>Lower bills, grid revenue, and full visibility from your solar, batteries, and EV chargers.</p></div></div>
     </div>
-
-    <!-- L4 -->
-    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
-      <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L4</span>
-      <div>
-        <h3 class="card-category-title arch-layer-title">MCP + AI Layer</h3>
-        <p class="arch-layer-body">Agentic AI systems with DER context, telemetry access, and policy-constrained dispatch tools.</p>
-      </div>
-    </div>
-
-    <!-- L3 -->
-    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
-      <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L3</span>
-      <div>
-        <h3 class="card-category-title arch-layer-title">Cloud Platform</h3>
-        <p class="arch-layer-body">Multi-tenant infrastructure for fleet onboarding, telemetry ingestion, event processing, and dispatch orchestration.</p>
-      </div>
-    </div>
-
-    <!-- L2 -->
-    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
-      <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L2</span>
-      <div>
-        <h3 class="card-category-title arch-layer-title">Edge Gateway</h3>
-        <p class="arch-layer-body">One-time device installation. Connects locally to every DER, standardizes telemetry, enables secure dispatch without closed OEM cloud dependency.</p>
-      </div>
-    </div>
-
-    <!-- L1 -->
-    <div data-grid="" style="border-top:2px solid rgba(205,127,50,0.35);border-bottom:2px solid rgba(205,127,50,0.35);padding:18px 0 28px;display:grid;grid-template-columns:72px 1fr;gap:0 32px;align-items:start;">
-      <span style="font-size:44px;font-weight:700;color:#CD7F32;line-height:1;font-feature-settings:'tnum' 1;letter-spacing:-0.02em;">L1</span>
-      <div>
-        <h3 class="card-category-title arch-layer-title">Physical DER Devices</h3>
-        <p class="arch-layer-body">Batteries, solar inverters, EV chargers, smart meters, flexible loads: every asset class, every OEM.</p>
-      </div>
-    </div>
-
   </div>
 </section>
+
 
 <!-- ══════════════════════════════════════════════════
      GET IN TOUCH, gold contact section
@@ -764,7 +701,7 @@
 <section id="contact" style="background:#CD7F32;padding:72px 48px 80px;">
   <div style="max-width:1160px;margin:0 auto;">
     <h2 style="font-size:clamp(30px,4.5vw,56px);font-weight:700;color:#0B0B0E;text-align:center;line-height:1.08;margin:0 0 24px;letter-spacing:-0.03em;">
-      Talk to the <img src="assets/kwh-logo-mark.png" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> team.
+      Talk to the <img src="assets/kwh-logo-mark.png?v=3" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> team.
     </h2>
     <p style="font-size:17px;color:#0B0B0E;text-align:center;line-height:1.68;max-width:440px;margin:0 auto 44px;font-weight:400;">
       Connect with us about piloting the edge gateway or integrating with the cloud platform.
@@ -847,6 +784,41 @@
   </div>
 </section>
 
+<!-- ══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <img class="foot-logo" src="assets/kwh-logo-mark-light.png?v=3" alt="kWh Electric" />
+      <p class="foot-tag">Communication infrastructure that makes every energy asset visible and dispatchable.</p>
+    </div>
+    <div>
+      <h4>Solutions</h4>
+      <a href="#products">OEM Integration Platform</a>
+      <a href="#product-gateway">Open Protocol Gateway</a>
+    </div>
+    <div>
+      <h4>Who it's for</h4>
+      <a href="#who">Aggregators &amp; VPPs</a>
+      <a href="#who">OEMs</a>
+      <a href="#who">Financiers</a>
+      <a href="#who">Utilities</a>
+    </div>
+    <div>
+      <h4>Resources</h4>
+      <a href="#contact">Book a demo</a>
+      <a href="https://portal.kwhelectric.io/" target="_blank" rel="noopener">Sign in</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="#how-it-works">How it works</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="site-footer-bottom">© 2026 kWh Electric · Palo Alto, California</div>
+</footer>
+
 </x-dc>
 <div id="dot-cursor" aria-hidden="true"></div>
 <script type="text/x-dc" data-dc-script>
@@ -884,14 +856,14 @@ class Component extends DCLogic {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '18px 48px',
-        background: scrolled ? 'rgba(255,251,240,0.97)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-        boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.07)' : 'none',
-        transition: 'background 0.3s, box-shadow 0.3s',
+        padding: '14px 48px',
+        background: '#FFFBF0',
+        backdropFilter: 'none',
+        WebkitBackdropFilter: 'none',
+        boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.08)' : '0 1px 0 rgba(0,0,0,0.05)',
+        transition: 'box-shadow 0.3s',
       },
-      navLinkColor: scrolled ? '#0B0B0E' : 'rgba(255,251,240,0.9)',
+      navLinkColor: '#0B0B0E',
       handleSubmit: async (e) => {
         e.preventDefault();
         if (this.state.submitting) return;
