@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>kWh Electric</title>
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="shortcut icon" type="image/png" href="favicon.png">
-<link rel="apple-touch-icon" href="favicon.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="shortcut icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
 <script src="./support.js"></script>
@@ -442,36 +442,22 @@
       .card-front-right { gap:7px; }
     }
   </style>
-  <link rel="stylesheet" href="_shared/nav.css?v8">
 </helmet>
 
 <!-- ══════════════════════════════════════════════════
      NAV
 ══════════════════════════════════════════════════ -->
-<nav style="{{ navStyle }}" class="kwh-nav" id="site-nav">
-  <a href="index.html" class="kwh-nav-brand">
-    <img class="mark-dark" src="assets/kwh-logo-mark.png?v=3" alt="kWh Electric" />
+<nav style="{{ navStyle }}">
+  <a href="#hero" style="display:flex;align-items:center;gap:10px;">
+    <img src="assets/kwh-logo-mark.png?v=3" height="26" alt="kWh Electric" style="display:block;" />
   </a>
-  <button class="kwh-nav-toggle" type="button" aria-label="Open menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-  </button>
-  <div class="kwh-nav-links">
-    <a href="index.html">Home</a>
-    <span class="kwh-nav-dot" aria-hidden="true"></span>
-    <div class="kwh-nav-item">
-      <button type="button" data-solutions-toggle aria-haspopup="true">Solutions
-        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>
-      </button>
-      <div class="kwh-mega" role="menu"><a href="solutions/index.html"><strong>Our Solutions</strong><span>One platform to connect, normalize, and dispatch energy assets.</span></a><a href="solutions/aggregators.html"><strong>Aggregators & VPPs</strong><span>Launch and scale programs across mixed OEM fleets.</span></a><a href="solutions/oems.html"><strong>OEMs</strong><span>Make devices program-ready without building every downstream integration.</span></a><a href="solutions/financiers.html"><strong>Financiers</strong><span>Portfolio visibility and performance data across battery fleets.</span></a><a href="solutions/utilities.html"><strong>Utilities & Energy Platforms</strong><span>Behind-the-meter visibility and flexible capacity at scale.</span></a></div>
-    </div>
-    <span class="kwh-nav-dot" aria-hidden="true"></span>
-    <a href="docs/oem-integration-platform.html">Guide</a>
-    <span class="kwh-nav-dot" aria-hidden="true"></span>
-    <a href="demo.html" class="kwh-nav-demo">Book a Demo</a>
-    <a href="https://portal.kwhelectric.io/" class="kwh-nav-signin" target="_blank" rel="noopener">Sign In</a>
+  <div data-nav-links="" style="display:flex;align-items:center;gap:26px;">
+    <a href="#products" style="color:#0B0B0E;font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Products</a>
+    <a href="#who" style="color:#0B0B0E;font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Who It's For</a>
+    <a href="#contact" style="color:#0B0B0E;font-size:13.5px;font-weight:400;transition:opacity 0.15s;" style-hover="opacity:0.5">Get In Touch</a>
+    <a href="https://portal.kwhelectric.io/" class="nav-login">Login</a>
   </div>
 </nav>
-<div class="kwh-nav-overlay" aria-hidden="true"></div>
 
 <!-- ══════════════════════════════════════════════════
      HERO
@@ -940,6 +926,5 @@ class Component extends DCLogic {
 
 </script>
 <script src="./bees.js"></script>
-<script src="_shared/nav.js?v8"></script>
 </body>
 </html>

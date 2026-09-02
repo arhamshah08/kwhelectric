@@ -1,0 +1,213 @@
+/* Scroll-driven "solution" section: left continuous scroll, right sticky flip panel */
+.sol {
+  background: var(--cream);
+  padding: 72px 0 40px;
+  position: relative;
+}
+.sol-head {
+  width: min(1160px, 92vw);
+  margin: 0 auto 52px;
+  text-align: center;
+}
+.sol-head .eyebrow {
+  color: var(--bronze);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+.sol-head h2 {
+  font-size: clamp(28px, 3.6vw, 44px);
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+  line-height: 1.1;
+}
+.sol-head p {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 56ch;
+  margin: 0 auto;
+}
+
+.sol-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  width: min(1160px, 92vw);
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* Left: continuously scrolling steps */
+.sol-steps { padding: 2vh 0; }
+.sol-step {
+  min-height: 46vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 0;
+}
+.sol-step .step-label { display: none; }
+.sol-step h3 {
+  font-size: clamp(21px, 2.4vw, 28px);
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+  line-height: 1.2;
+}
+.sol-step p {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 44ch;
+  margin: 0;
+}
+.sol-callout {
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: color-mix(in srgb, var(--step-accent, var(--bronze)) 12%, var(--cream));
+  border: 1px solid color-mix(in srgb, var(--step-accent, var(--bronze)) 32%, transparent);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--dark);
+  max-width: max-content;
+  line-height: 1.4;
+}
+.sol-callout .i {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--dark);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Right: sticky panel whose position holds while the inner visual flips */
+.sol-visual {
+  position: sticky;
+  top: 108px;
+  height: min(52vh, 420px);
+}
+.sol-shell {
+  height: 100%;
+  border-radius: 2px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent, var(--bronze)) 7%, var(--cream));
+  border: 1px solid color-mix(in srgb, var(--accent, var(--bronze)) 20%, transparent);
+  transition: background 0.6s ease, border-color 0.6s ease;
+}
+.sol-frame {
+  position: absolute;
+  inset: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: perspective(1200px) rotateY(10deg) translateY(14px) scale(0.97);
+  transition: opacity 0.5s ease, transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1);
+  pointer-events: none;
+}
+.sol-frame.is-active {
+  opacity: 1;
+  transform: perspective(1200px) rotateY(0) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Live mockup UI kit (no image dependencies) */
+.viz {
+  width: min(360px, 100%);
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(15, 12, 4, 0.16);
+  padding: 22px 20px;
+  font-size: 13px;
+  color: #14161a;
+}
+.viz-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0 0 16px;
+  letter-spacing: -0.01em;
+}
+.viz-box {
+  border: 1px solid #ECEFF3;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+.viz-box.tint { background: color-mix(in srgb, var(--accent) 8%, #fff); border-color: color-mix(in srgb, var(--accent) 20%, #fff); }
+.viz-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.viz-row + .viz-row { margin-top: 10px; }
+.viz-label { color: #6B7280; font-size: 11px; }
+.viz-strong { font-weight: 700; font-size: 15px; }
+.viz-xl { font-weight: 700; font-size: 22px; letter-spacing: -0.02em; }
+.viz-mini { color: #9AA1AB; font-size: 11px; }
+.viz-bar { height: 8px; border-radius: 999px; background: #EEF0F3; overflow: hidden; margin: 12px 0; position: relative; }
+.viz-bar > i { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+.viz-bar .pct { position: absolute; top: -1px; font-size: 10px; font-weight: 700; color: #fff; transform: translateX(-50%); }
+.viz-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.viz-chip { font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 14%, #fff); color: var(--accent); white-space: nowrap; }
+.viz-chip.solid { background: var(--accent); color: #fff; }
+.viz-chip.plain { background: #F1F3F5; color: #4B5563; }
+.viz-split { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.viz-split.div > div + div { border-left: 1px solid #EEF0F3; padding-left: 12px; }
+.viz-li { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid #F0F2F4; }
+.viz-li:first-child { border-top: 0; }
+.viz-ic { width: 26px; height: 26px; border-radius: 7px; background: color-mix(in srgb, var(--accent) 14%, #fff); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 700; font-size: 12px; }
+.viz-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.viz-dot.g { background: #22C55E; }
+.viz-dot.a { background: #F59E0B; }
+.viz-dot.r { background: #EF4444; }
+.viz-badge { display: inline-flex; align-items: center; gap: 7px; font-weight: 700; font-size: 13px; color: #16A34A; }
+.viz-badge .tick { width: 20px; height: 20px; border-radius: 50%; background: #16A34A; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
+.viz-code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #0F1720; color: #CBD5E1; border-radius: 12px; padding: 14px; font-size: 11px; line-height: 1.7; white-space: pre; overflow: auto; margin: 0; }
+.viz-code .k { color: #7DD3FC; }
+.viz-code .s { color: #86EFAC; }
+.viz-code .m { color: #64748B; }
+.viz-arrow { text-align: center; color: var(--accent); font-size: 16px; margin: 2px 0; }
+
+/* Inline per-step visual (mobile only) */
+.sol-step-viz { display: none; }
+.sol-step-viz .sol-shell {
+  height: auto;
+  min-height: 380px;
+  margin-top: 18px;
+  border-radius: 22px;
+}
+.sol-step-viz .sol-frame {
+  position: relative;
+  inset: 0;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* Solution "why" strip below the scroll */
+.sol-why {
+  width: min(1160px, 92vw);
+  margin: 0 auto;
+  padding: 24px 0 8px;
+}
+
+@media (max-width: 860px) {
+  .sol-grid { display: block; }
+  .sol-visual { display: none; }
+  .sol-steps { padding: 0; }
+  .sol-step { min-height: 0; padding: 24px 0; }
+  .sol-step-viz { display: block; }
+}

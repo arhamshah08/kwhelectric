@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OEM Integration Platform  -  Technical Overview | kWh Electric Docs</title>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="docs.css" />
+</head>
+<body>
+
+<header class="docs-header">
+  <button class="mobile-menu-btn" type="button" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+  <a class="brand" href="../index.html">
+    <img src="../assets/kwh-logo-mark-light.png?v=3" alt="kWh Electric" />
+  </a>
+  <nav class="docs-tabs" aria-label="Documentation sections">
+    <a class="docs-tab is-active" href="oem-integration-platform.html">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h12v10H2z"/><path d="M5 3v10M9 6h4M9 9h3"/></svg>
+      Guide
+    </a>
+    <a class="docs-tab" href="oem-integration-platform.html#api-reference">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 4l-3 4 3 4M11 4l3 4-3 4"/></svg>
+      API Reference
+    </a>
+  </nav>
+  <div class="docs-search">
+    <input type="search" id="docs-search" placeholder="Search" aria-label="Search documentation" />
+    <kbd>⌘K</kbd>
+  </div>
+</header>
+
+<div class="sidebar-overlay" aria-hidden="true"></div>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <div class="docs-sidebar-label">Documentation</div>
+    <a class="docs-nav-item is-active" href="oem-integration-platform.html" data-search="oem integration platform technical overview">OEM Integration Platform</a>
+    <div class="docs-nav-sub">
+      <a class="docs-nav-item" href="#oem-integration-overview" data-search="oem integration overview architecture">Overview</a>
+      <a class="docs-nav-item" href="#integration-methods" data-search="integration methods rest api webhooks">Integration Methods</a>
+      <a class="docs-nav-item" href="#data-model" data-search="data model entities telemetry">Data Model</a>
+      <a class="docs-nav-item" href="#oem-data-mapping" data-search="oem data mapping canonical">OEM Data Mapping</a>
+      <a class="docs-nav-item" href="#device-enrollment" data-search="device enrollment oauth">Device Enrollment</a>
+      <a class="docs-nav-item" href="#device-control" data-search="device control commands">Device Control</a>
+      <a class="docs-nav-item" href="#integration-lifecycle" data-search="integration lifecycle">Integration Lifecycle</a>
+      <a class="docs-nav-item" href="#reliability-data-quality" data-search="reliability data quality">Reliability &amp; Data Quality</a>
+      <a class="docs-nav-item" href="#api-reference" data-search="api reference devices telemetry commands">API Reference</a>
+      <a class="docs-nav-item" href="#oem-integration-faq" data-search="faq frequently asked questions">FAQ</a>
+    </div>
+    <div class="docs-sidebar-footer">kWh Electric · Preview docs</div>
+  </aside>
+
+  <main class="docs-main">
+    <header class="docs-page-header">
+      <h1>OEM Integration Platform  -  Technical Overview</h1>
+      <p class="docs-subtitle">A unified integration layer for connecting energy and smart-device OEM ecosystems  -  batteries, thermostats, water heaters, and other connected devices  -  into a single, consistent data and control interface.</p>
+    </header>
+
+    <article class="docs-content">
+
+      <h2 id="oem-integration-overview">1. OEM Integration Overview</h2>
+      <p>Energy and smart-device ecosystems are fragmented. A residential battery, a smart thermostat, and a smart water heater each expose telemetry and control through completely different OEM APIs  -  different authentication schemes, different data models, different units, different event semantics. Any company building an application on top of multiple device categories (energy management, demand response, home automation, insurance, utility programs) ends up re-solving the same integration problem for every OEM it connects to.</p>
+      <p>The platform is designed as a standardized integration and normalization layer that sits between OEM device ecosystems and downstream applications. Instead of every application team building and maintaining bespoke connectors to each OEM (e.g., a battery manufacturer's cloud API, a thermostat manufacturer's cloud API, a water heater manufacturer's cloud API), the platform provides:</p>
+      <ul>
+        <li>A single integration point for onboarding new OEMs</li>
+        <li>A canonical, cross-OEM data model for devices, telemetry, and events</li>
+        <li>A consistent way to enroll devices and issue control commands, regardless of the underlying OEM protocol</li>
+      </ul>
+      <p><strong>What problems this solves:</strong></p>
+      <ul>
+        <li><strong>For downstream applications:</strong> one API and one data model instead of N different OEM schemas</li>
+        <li><strong>For the ecosystem:</strong> faster time-to-integration when a new OEM or device category is added, since only the OEM-specific mapping layer changes  -  not the applications built on top</li>
+      </ul>
+
+      <h3>Architecture</h3>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+flowchart TD
+    A["OEM Devices<br/>Battery / Thermostat / Water Heater / etc."] --> B["OEM Cloud APIs & Event Streams"]
+    B --> C["Integration & Ingestion Layer"]
+    C --> D["Normalization & Data Quality"]
+    D --> E["Unified Device Data Model<br/>Telemetry · Events · Enrollment · Control State"]
+    E --> F["APIs / Events"]
+    F --> G["Downstream Applications"]
+    G -.->|Control Commands| E
+    E -.->|Translated Commands| C
+    C -.->|OEM-specific Command Format| B
+    B -.-> A
+        </div>
+      </div>
+      <p>Telemetry and enrollment data flow left to right (device → application). Control commands flow right to left (application → device), passing back through the same normalization layer so a command issued in canonical form is translated into the correct OEM-specific call.</p>
+
+      <hr />
+
+      <h2 id="integration-methods">2. Integration Methods</h2>
+      <div class="docs-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>When it's appropriate</th>
+              <th>Typical data</th>
+              <th>Key considerations</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>REST APIs</strong></td>
+              <td>On-demand reads, enrollment actions, issuing control commands, low-to-moderate call volume</td>
+              <td>Device metadata, current state, historical telemetry queries, control commands</td>
+              <td>Auth (OAuth2/API key), rate limits, request idempotency for write operations</td>
+            </tr>
+            <tr>
+              <td><strong>Event streams / Pub-Sub</strong></td>
+              <td>Near-real-time telemetry and state-change events at scale</td>
+              <td>Telemetry readings, device online/offline events, alarms/diagnostics</td>
+              <td>Consumer offset management, at-least-once delivery, ordering <em>not</em> guaranteed across partitions  -  see <a href="#reliability-data-quality">Reliability</a></td>
+            </tr>
+            <tr>
+              <td><strong>Webhooks</strong></td>
+              <td>OEM-initiated push notifications for discrete events (enrollment status change, firmware update, alert)</td>
+              <td>Event payloads, status changes</td>
+              <td>Signature verification, retry/backoff on non-2xx responses, idempotency keys to handle re-delivery</td>
+            </tr>
+            <tr>
+              <td><strong>Batch ingestion</strong></td>
+              <td>Historical backfill, OEMs that only expose bulk export (CSV/file-based) rather than live APIs</td>
+              <td>Historical telemetry, device inventories</td>
+              <td>File format validation, deduplication against already-ingested data, late-arriving batch handling</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Most production OEM integrations combine at least two of these: a REST API for enrollment/control and either an event stream or webhooks for ongoing telemetry.</p>
+
+      <hr />
+
+      <h2 id="data-model">3. Data Model</h2>
+      <p>OEM-specific schemas are mapped into a consistent <strong>canonical data model</strong>. Applications built on the platform interact only with this canonical model and are not exposed to OEM-specific field names, units, or structures.</p>
+      <p>Core entities:</p>
+      <div class="docs-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Entity</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Device</strong></td><td>A single connected unit (battery, thermostat, water heater, etc.), identified by a canonical device ID mapped to the OEM's native device ID</td></tr>
+            <tr><td><strong>Device Metadata</strong></td><td>Make, model, category, firmware version, install location, capabilities (e.g., supports control vs. telemetry-only)</td></tr>
+            <tr><td><strong>Telemetry</strong></td><td>Time-series readings emitted by the device (e.g., state of charge, temperature, power draw)</td></tr>
+            <tr><td><strong>Enrollment / Connection State</strong></td><td>Whether a device is linked, its authorization status, and connection health</td></tr>
+            <tr><td><strong>Events</strong></td><td>Discrete occurrences  -  alerts, faults, connectivity changes, firmware updates</td></tr>
+            <tr><td><strong>Control Command / Command State</strong></td><td>A control action issued to a device and its execution status (pending, acknowledged, completed, failed)</td></tr>
+            <tr><td><strong>Diagnostics / Alerts</strong></td><td>Fault codes, warnings, and health indicators normalized across OEMs where the OEM exposes them</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Example: Device Metadata</h3>
+      <pre><code>{
+  "device_id": "dev_8f2c1a",
+  "canonical_type": "battery",
+  "oem": "oem_a",
+  "oem_device_id": "PWX-993211",
+  "model": "Battery Gen2",
+  "firmware_version": "3.4.1",
+  "capabilities": ["telemetry", "control"],
+  "install_location": {
+    "site_id": "site_44a1",
+    "timezone": "America/Los_Angeles"
+  },
+  "status": "active"
+}</code></pre>
+
+      <h3>Example: Telemetry Event</h3>
+      <pre><code>{
+  "device_id": "dev_8f2c1a",
+  "timestamp": "2026-08-31T09:12:04Z",
+  "metric": "state_of_charge",
+  "value": 62.5,
+  "unit": "percent",
+  "source": "event_stream"
+}</code></pre>
+
+      <h3>Example: Device Event</h3>
+      <pre><code>{
+  "device_id": "dev_9a01f7",
+  "event_type": "connectivity_lost",
+  "severity": "warning",
+  "timestamp": "2026-08-31T09:15:41Z",
+  "details": {
+    "last_seen": "2026-08-31T08:52:10Z"
+  }
+}</code></pre>
+
+      <hr />
+
+      <h2 id="oem-data-mapping">4. OEM Data Mapping</h2>
+      <p>Each OEM exposes its own field names, units, and structures. The mapping layer translates each OEM's native schema into the canonical model above, so downstream applications never handle OEM-specific formats directly.</p>
+      <div class="docs-table-wrap">
+        <table>
+          <thead>
+            <tr><th>OEM field (example)</th><th>Canonical field</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>battery_soc_pct</code> (OEM A)</td><td><code>telemetry.state_of_charge</code> (unit: percent)</td></tr>
+            <tr><td><code>soc</code> (OEM B, 0–1 scale)</td><td><code>telemetry.state_of_charge</code> (converted to percent)</td></tr>
+            <tr><td><code>tstat_setpoint_f</code> (OEM C)</td><td><code>telemetry.target_temperature</code> (unit: celsius, converted)</td></tr>
+            <tr><td><code>dev_uid</code> (OEM A)</td><td><code>device.oem_device_id</code></td></tr>
+            <tr><td><code>serial</code> (OEM B)</td><td><code>device.oem_device_id</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Mapping also normalizes:</p>
+      <ul>
+        <li><strong>Units</strong>  -  all canonical values use a fixed unit per metric; OEM-native units are converted at ingestion</li>
+        <li><strong>Timestamps</strong>  -  all timestamps normalized to UTC ISO 8601, regardless of the timezone or format the OEM provides</li>
+        <li><strong>Enumerations</strong>  -  OEM-specific status codes are mapped to a fixed canonical enum (e.g., varying "online/active/connected" states become a single <code>connected</code> value)</li>
+        <li><strong>Missing values</strong>  -  represented explicitly as <code>null</code> rather than omitted, so applications can distinguish "not reported by OEM" from "zero"</li>
+        <li><strong>Optional fields</strong>  -  canonical schema marks fields as optional where not all OEMs/device categories provide them (e.g., firmware version may be unavailable for some water heater OEMs)</li>
+        <li><strong>OEM-specific extensions</strong>  -  fields with no canonical equivalent are preserved under a namespaced <code>oem_extensions</code> object rather than dropped, so no OEM data is silently lost</li>
+      </ul>
+      <pre><code>{
+  "device_id": "dev_8f2c1a",
+  "target_temperature": 51.7,
+  "unit": "celsius",
+  "oem_extensions": {
+    "oem_a": {
+      "eco_mode": true
+    }
+  }
+}</code></pre>
+
+      <hr />
+
+      <h2 id="device-enrollment">5. Device Enrollment</h2>
+      <p>Enrollment is the process by which a device account (typically an end customer's OEM account or a specific device) is linked into the platform so telemetry and control become available.</p>
+      <p>Typical enrollment flow:</p>
+      <ol>
+        <li><strong>Authorization</strong>  -  customer authorizes access via OEM OAuth flow (or OEM-provided linking mechanism)</li>
+        <li><strong>Device discovery</strong>  -  platform queries the OEM API to enumerate devices available under the authorized account</li>
+        <li><strong>Mapping to canonical model</strong>  -  each discovered device is assigned a canonical <code>device_id</code> and its metadata is normalized</li>
+        <li><strong>Capability detection</strong>  -  platform records which capabilities (telemetry read, control write) the device/OEM actually supports, since this varies by OEM and device tier</li>
+        <li><strong>Activation</strong>  -  device begins ingesting telemetry and becomes eligible for control commands, if supported</li>
+      </ol>
+      <p><em>Exact enrollment UX and OAuth flow details are OEM-specific and defined per integration.</em></p>
+
+      <hr />
+
+      <h2 id="device-control">6. Device Control</h2>
+      <p>Where an OEM supports it, the platform allows control commands to be issued to a device using the canonical model rather than the OEM's native command format.</p>
+      <ul>
+        <li>Commands are submitted against a canonical <code>device_id</code> with a canonical command type (e.g., <code>set_target_temperature</code>, <code>set_charge_mode</code>)</li>
+        <li>The platform translates the command into the OEM-specific API call or message format</li>
+        <li>Command execution is tracked as asynchronous state: <code>pending → acknowledged → completed | failed</code>, since most OEM devices do not confirm control actions synchronously</li>
+        <li>Not all devices or OEMs support control for all parameters  -  supported control actions are exposed per device via its capability metadata (see <a href="#data-model">Data Model</a>)</li>
+      </ul>
+      <p><em>Which specific control actions are supported per OEM/device category is defined during that OEM's integration and documented separately.</em></p>
+
+      <hr />
+
+      <h2 id="integration-lifecycle">7. Integration Lifecycle</h2>
+      <div class="docs-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Stage</th><th>What happens</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>1. Authentication / access setup</strong></td><td>Credentials or OAuth client configured for the OEM's API; scopes and permissions confirmed</td></tr>
+            <tr><td><strong>2. Schema discovery</strong></td><td>OEM's data model, available endpoints/streams, and supported device categories are catalogued</td></tr>
+            <tr><td><strong>3. Field mapping</strong></td><td>OEM fields are mapped to the canonical model, including units, enums, and any OEM-specific extensions</td></tr>
+            <tr><td><strong>4. Initial / backfill ingestion</strong></td><td>Historical or existing device data is ingested to populate the canonical model before real-time ingestion begins</td></tr>
+            <tr><td><strong>5. Real-time ingestion</strong></td><td>Live telemetry and events begin flowing via the appropriate integration method (stream, webhook, or polling)</td></tr>
+            <tr><td><strong>6. Validation &amp; reconciliation</strong></td><td>Ingested data is checked against OEM source data for completeness and correctness before rollout</td></tr>
+            <tr><td><strong>7. Production rollout</strong></td><td>Integration is enabled for live customer devices under that OEM</td></tr>
+            <tr><td><strong>8. Monitoring</strong></td><td>Ongoing tracking of ingestion health, data freshness, and error rates for the integration</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr />
+
+      <h2 id="reliability-data-quality">8. Reliability &amp; Data Quality</h2>
+      <p>Production integrations across multiple OEM data sources need to handle inconsistency at the source. The platform's normalization layer is designed around the following:</p>
+      <ul>
+        <li><strong>Duplicate messages</strong>  -  ingestion is idempotent per event using a deterministic key (device ID + timestamp + metric), so re-delivered messages don't produce duplicate records</li>
+        <li><strong>Out-of-order events</strong>  -  events are ordered by their canonical timestamp rather than arrival order; late-arriving data is inserted into its correct time position rather than appended</li>
+        <li><strong>Missing telemetry</strong>  -  gaps are represented explicitly rather than interpolated, so applications can distinguish "device didn't report" from "value was zero"</li>
+        <li><strong>Delayed data</strong>  -  ingestion timestamp and event timestamp are tracked separately so downstream consumers can identify and handle lag</li>
+        <li><strong>Invalid values</strong>  -  values outside expected physical ranges (e.g., negative percentage) are flagged and quarantined rather than passed through silently</li>
+        <li><strong>Schema changes</strong>  -  OEM schema/version changes are handled at the mapping layer so canonical output remains stable even if an OEM changes its native API</li>
+        <li><strong>Retries</strong>  -  failed ingestion or command delivery is retried with backoff; retry behavior is method-specific (see <a href="#integration-methods">Integration Methods</a>)</li>
+        <li><strong>Timestamp normalization</strong>  -  all timestamps are converted to UTC at ingestion, regardless of source format or timezone</li>
+      </ul>
+
+      <hr />
+
+      <h2 id="api-reference">9. API Reference  -  Minimal Example</h2>
+      <p>The following illustrates the shape of the canonical API. It is a representative example, not a complete or currently implemented specification.</p>
+
+      <h3><code>GET /devices</code></h3>
+      <p>Returns devices enrolled under the authenticated account.</p>
+      <pre><code>GET /devices</code></pre>
+      <pre><code>{
+  "devices": [
+    { "device_id": "dev_8f2c1a", "canonical_type": "battery", "status": "active" },
+    { "device_id": "dev_9a01f7", "canonical_type": "thermostat", "status": "active" }
+  ]
+}</code></pre>
+
+      <h3><code>GET /devices/{device_id}</code></h3>
+      <p>Returns canonical metadata for a specific device.</p>
+      <pre><code>GET /devices/dev_8f2c1a</code></pre>
+      <pre><code>{
+  "device_id": "dev_8f2c1a",
+  "canonical_type": "battery",
+  "model": "Battery Gen2",
+  "capabilities": ["telemetry", "control"],
+  "status": "active"
+}</code></pre>
+
+      <h3><code>GET /devices/{device_id}/telemetry</code></h3>
+      <p>Returns telemetry readings for a device over a time range.</p>
+      <pre><code>GET /devices/dev_8f2c1a/telemetry?metric=state_of_charge&amp;since=2026-08-30T00:00:00Z</code></pre>
+      <pre><code>{
+  "device_id": "dev_8f2c1a",
+  "metric": "state_of_charge",
+  "readings": [
+    { "timestamp": "2026-08-30T00:00:00Z", "value": 58.2 },
+    { "timestamp": "2026-08-30T01:00:00Z", "value": 59.0 }
+  ]
+}</code></pre>
+
+      <h3><code>POST /devices/{device_id}/commands</code></h3>
+      <p>Issues a control command to a device that supports it.</p>
+      <pre><code>POST /devices/dev_8f2c1a/commands
+{
+  "command_type": "set_charge_mode",
+  "parameters": { "mode": "backup_reserve" }
+}</code></pre>
+      <pre><code>{
+  "command_id": "cmd_3391a",
+  "device_id": "dev_8f2c1a",
+  "status": "pending"
+}</code></pre>
+
+      <hr />
+
+      <h2 id="oem-integration-faq">10. OEM Integration FAQ</h2>
+
+      <div class="faq-item">
+        <h3>How do we authenticate to the platform?</h3>
+        <p>Access is scoped per OEM integration using OAuth2 or API-key based credentials. Exact flow details are finalized per OEM during onboarding.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How are OEM-specific fields handled?</h3>
+        <p>Fields with no canonical equivalent are preserved under an <code>oem_extensions</code> namespace rather than discarded, so no data is lost even if it isn't part of the standard model.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How is real-time data delivered?</h3>
+        <p>Via event streams or webhooks, depending on what the OEM supports. Both are consumed into the same canonical model on the platform side.</p>
+      </div>
+      <div class="faq-item">
+        <h3>What happens when messages arrive out of order?</h3>
+        <p>Events are re-ordered by canonical timestamp on ingestion, not by arrival order.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How are duplicate events handled?</h3>
+        <p>Ingestion is idempotent per event using a deterministic key, so re-delivered messages don't create duplicate records.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How are schema changes on the OEM side managed?</h3>
+        <p>Schema changes are absorbed at the OEM-specific mapping layer, so the canonical model and downstream applications remain unaffected.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can historical data be ingested?</h3>
+        <p>Yes  -  batch/backfill ingestion is part of the standard integration lifecycle, run before real-time ingestion is enabled.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How is device identity maintained across systems?</h3>
+        <p>Each device receives a canonical <code>device_id</code> that is mapped to the OEM's native device identifier and remains stable even if OEM-side identifiers change.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How are OEM-specific extensions supported without breaking the canonical model?</h3>
+        <p>They're additive  -  stored alongside the canonical fields rather than replacing or altering the core schema.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Is device control supported, or only telemetry?</h3>
+        <p>Both, where the OEM and device support it. Control commands are issued in canonical form and translated to the OEM-specific format; supported actions vary by device and are exposed via device capability metadata.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How is an integration monitored once in production?</h3>
+        <p>Through ingestion health, data freshness, and error-rate tracking established during the monitoring stage of the integration lifecycle.</p>
+      </div>
+
+    </article>
+
+    <div class="docs-updated">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>
+      Updated September 2026
+    </div>
+
+    <nav class="docs-page-nav" aria-label="Page navigation">
+      <a href="#integration-methods">
+        <span class="nav-label">Next</span>
+        <span class="nav-title">Integration Methods →</span>
+      </a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-label="On this page">
+    <div class="docs-toc-label">On this page</div>
+    <nav class="docs-toc-inner">
+      <a href="#oem-integration-overview" data-section="oem-integration-overview">OEM Integration Overview</a>
+      <a href="#integration-methods" data-section="integration-methods">Integration Methods</a>
+      <a href="#data-model" data-section="data-model">Data Model</a>
+      <a href="#oem-data-mapping" data-section="oem-data-mapping">OEM Data Mapping</a>
+      <a href="#device-enrollment" data-section="device-enrollment">Device Enrollment</a>
+      <a href="#device-control" data-section="device-control">Device Control</a>
+      <a href="#integration-lifecycle" data-section="integration-lifecycle">Integration Lifecycle</a>
+      <a href="#reliability-data-quality" data-section="reliability-data-quality">Reliability &amp; Data Quality</a>
+      <a href="#api-reference" data-section="api-reference">API Reference</a>
+      <a href="#oem-integration-faq" data-section="oem-integration-faq">OEM Integration FAQ</a>
+    </nav>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

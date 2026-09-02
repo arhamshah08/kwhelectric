@@ -1,0 +1,218 @@
+/* DERApi-inspired mega-menu nav for kWh preview site */
+:root {
+  --nav-h: 64px;
+}
+
+.kwh-nav,
+.site-nav.kwh-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px clamp(16px, 4vw, 48px);
+  background: #FFFBF0;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+  transition: box-shadow 0.25s;
+}
+.kwh-nav.is-scrolled { box-shadow: 0 1px 0 rgba(0,0,0,0.10); }
+
+.kwh-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.kwh-nav-brand img { height: 24px; width: auto; display: block; }
+.kwh-nav-brand .mark-light { display: none; }
+.kwh-nav-brand .mark-dark { display: block; }
+
+.kwh-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kwh-nav-links > a,
+.kwh-nav-links > .kwh-nav-item > button {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--dark);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  font-family: inherit;
+  transition: opacity 0.15s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.kwh-nav-links > a:hover,
+.kwh-nav-links > .kwh-nav-item > button:hover { opacity: 0.6; }
+
+.kwh-nav-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--bronze);
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+.kwh-nav-item { position: relative; }
+.kwh-nav-item > button svg {
+  width: 10px;
+  height: 10px;
+  opacity: 0.7;
+  transition: transform 0.2s;
+}
+.kwh-nav-item.is-open > button svg { transform: rotate(180deg); }
+
+.kwh-mega {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 340px;
+  background: #FFFBF0;
+  border: 1px solid #E3D2B0;
+  border-radius: 2px;
+  padding: 6px;
+  box-shadow: 0 18px 44px rgba(60,40,15,0.16);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+  transform: translateX(-50%) translateY(-6px);
+}
+/* Invisible bridge so the pointer never crosses a dead gap between
+   the Solutions button and the panel (this was closing the menu). */
+.kwh-mega::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  right: -24px;
+  top: -18px;
+  height: 18px;
+}
+.kwh-nav-item.is-open .kwh-mega,
+.kwh-nav-item:hover .kwh-mega {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.kwh-mega a {
+  display: block;
+  padding: 14px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.kwh-mega a + a { border-top: 1px solid #EFE3C9; }
+.kwh-mega a:hover { background: #F4EEE1; }
+.kwh-mega strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0B0B0E;
+  margin-bottom: 4px;
+}
+.kwh-mega a:hover strong { color: var(--bronze); }
+.kwh-mega span {
+  display: block;
+  font-size: 13px;
+  color: #7A6A4C;
+  line-height: 1.45;
+}
+
+/* Demo + Sign In: same treatment as every other nav link (no pill, no divider) */
+.kwh-nav-demo,
+.kwh-nav-signin {
+  display: inline-flex !important;
+  align-items: center;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  padding: 8px 12px !important;
+  margin-left: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  color: var(--dark) !important;
+}
+.kwh-nav-demo:hover,
+.kwh-nav-signin:hover { opacity: 0.6; }
+
+.kwh-nav-toggle {
+  display: none;
+  background: none;
+  border: 0;
+  padding: 8px;
+  color: var(--dark);
+  cursor: pointer;
+}
+
+.kwh-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 999;
+}
+.kwh-nav-overlay.is-visible { display: block; }
+
+@media (max-width: 900px) {
+  .kwh-nav-toggle { display: block; }
+  .kwh-nav-links {
+    display: none;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--cream);
+    padding: 16px;
+    overflow-y: auto;
+    z-index: 1001;
+  }
+  .kwh-nav.is-open .kwh-nav-links { display: flex; }
+  .kwh-nav-links > a,
+  .kwh-nav-links > .kwh-nav-item > button {
+    color: var(--dark) !important;
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--border);
+    justify-content: space-between;
+  }
+  .kwh-nav-dot { display: none; }
+  .kwh-nav-signin { border-left: none !important; padding-left: 8px !important; }
+  .kwh-mega {
+    position: static;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    min-width: 0;
+    box-shadow: none;
+    border: none;
+    background: var(--cream-soft);
+    margin: 0 0 8px;
+    display: none;
+  }
+  .kwh-nav-item.is-open .kwh-mega { display: block; }
+  .kwh-nav-item:hover .kwh-mega { display: none; }
+  .kwh-nav-item.is-open:hover .kwh-mega { display: block; }
+  .kwh-mega a { padding: 12px; }
+  .kwh-mega strong { color: var(--brown); }
+  .kwh-mega span { color: var(--muted); }
+}

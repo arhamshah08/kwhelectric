@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OEMs | kWh Electric Solutions</title>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../_shared/brand.css?v8" />
+<link rel="stylesheet" href="../_shared/nav.css?v8" />
+<link rel="stylesheet" href="../_shared/pages.css?v8" />
+<link rel="stylesheet" href="../_shared/solution-scroll.css?v8" />
+</head>
+<body><nav class="kwh-nav is-scrolled" id="site-nav">
+  <a href="../index.html" class="kwh-nav-brand">
+    <img class="mark-dark" src="../assets/kwh-logo-mark.png?v=3" alt="kWh Electric" />
+  </a>
+  <button class="kwh-nav-toggle" type="button" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+  <div class="kwh-nav-links">
+    <a href="../index.html">Home</a>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <div class="kwh-nav-item">
+      <button type="button" data-solutions-toggle aria-haspopup="true">Solutions
+        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+      <div class="kwh-mega" role="menu"><a href="index.html"><strong>Our Solutions</strong><span>One platform to connect, normalize, and dispatch energy assets.</span></a><a href="aggregators.html"><strong>Aggregators & VPPs</strong><span>Launch and scale programs across mixed OEM fleets.</span></a><a href="oems.html"><strong>OEMs</strong><span>Make devices program-ready without building every downstream integration.</span></a><a href="financiers.html"><strong>Financiers</strong><span>Portfolio visibility and performance data across battery fleets.</span></a><a href="utilities.html"><strong>Utilities & Energy Platforms</strong><span>Behind-the-meter visibility and flexible capacity at scale.</span></a></div>
+    </div>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <a href="../docs/oem-integration-platform.html">Guide</a>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <a href="../demo.html" class="kwh-nav-demo">Book a Demo</a>
+    <a href="https://portal.kwhelectric.io/" class="kwh-nav-signin" target="_blank" rel="noopener">Sign In</a>
+  </div>
+</nav>
+<div class="kwh-nav-overlay" aria-hidden="true"></div>
+<header class="page-hero">
+  <div class="wrap">
+    <h1>Expand program access for your devices</h1>
+    <p>Device manufacturers expose telemetry and control through proprietary clouds. kWh gives OEMs a single path to reach aggregators, utilities, and energy platforms.</p>
+    <a class="btn-bronze" href="../demo.html">Book a Demo</a>
+  </div>
+</header>
+
+<section class="sol">
+  <div class="sol-head">
+    <h2><img src="../assets/kwh-logo-mark.png?v=3" alt="kWh" style="height:0.82em;vertical-align:-0.03em;display:inline-block;" /> for OEMs</h2>
+    <p>One integration surface, from first connection to verified outcome.</p>
+  </div>
+  <div class="sol-grid">
+    <div class="sol-steps">
+      <div class="sol-step" data-accent="#1F9C6B" style="--step-accent:#1F9C6B">
+        <h3>Step 1: Connect your cloud</h3>
+        <p>Connect your device cloud once. kWh detects your telemetry and control endpoints and confirms scopes.</p>
+        <div class="sol-callout"><span class="i">i</span><span>Manufacturer-sanctioned APIs only.</span></div>
+        <div class="sol-step-viz"><div class="sol-shell" style="--accent:#1F9C6B"><div class="sol-frame is-active" style="--accent:#1F9C6B"><div class="viz"><div class="viz-title">Connect your cloud</div><div class="viz-box tint"><div class="viz-row"><span class="viz-label">API credentials</span><span class="viz-chip solid">verified</span></div><div class="viz-row" style="margin-top:8px;"><span class="viz-strong">cloud.your-oem.com</span></div></div><div class="viz-box"><div class="viz-li"><span class="viz-ic">1</span><div><div class="viz-strong">Telemetry endpoint</div><span class="viz-mini">detected · 5 metrics</span></div></div><div class="viz-li"><span class="viz-ic">2</span><div><div class="viz-strong">Control endpoint</div><span class="viz-mini">detected · 3 commands</span></div></div></div></div></div></div></div>
+      </div>      <div class="sol-step" data-accent="#CD7F32" style="--step-accent:#CD7F32">
+        <h3>Step 2: Map fields once</h3>
+        <p>Your native fields map to the canonical model. Units, timestamps, and enums are normalized at ingestion.</p>
+        <div class="sol-callout"><span class="i">i</span><span>Map once; every downstream app benefits.</span></div>
+        <div class="sol-step-viz"><div class="sol-shell" style="--accent:#CD7F32"><div class="sol-frame is-active" style="--accent:#CD7F32"><div class="viz"><div class="viz-title">Field mapping</div><pre class="viz-code"><span class="m"># your schema        canonical</span>
+battery_soc_pct   → <span class="s">state_of_charge</span>
+tstat_setpoint_f  → <span class="s">target_temperature</span>
+dev_uid           → <span class="s">oem_device_id</span></pre><div class="viz-chips"><span class="viz-chip">units normalized</span><span class="viz-chip">UTC timestamps</span><span class="viz-chip plain">enums mapped</span></div></div></div></div></div>
+      </div>      <div class="sol-step" data-accent="#2563EB" style="--step-accent:#2563EB">
+        <h3>Step 3: Reach downstream apps</h3>
+        <p>Once mapped, your devices are reachable by aggregators, utilities, and platforms through one connection.</p>
+        <div class="sol-callout"><span class="i">i</span><span>New partners connect to kWh, not a new project.</span></div>
+        <div class="sol-step-viz"><div class="sol-shell" style="--accent:#2563EB"><div class="sol-frame is-active" style="--accent:#2563EB"><div class="viz"><div class="viz-title">Connected apps</div><div class="viz-box"><div class="viz-row"><span class="viz-label">Connected via kWh</span><span class="viz-chip solid">4 live</span></div></div><div class="viz-box"><div class="viz-li"><span class="viz-dot g"></span> VPP operator · West</div><div class="viz-li"><span class="viz-dot g"></span> Utility DR program</div><div class="viz-li"><span class="viz-dot g"></span> Energy platform</div><div class="viz-li"><span class="viz-dot a"></span> Financier portfolio</div></div></div></div></div></div>
+      </div>      <div class="sol-step" data-accent="#6D5AE6" style="--step-accent:#6D5AE6">
+        <h3>Step 4: Nothing is lost</h3>
+        <p>OEM-specific fields are preserved under oem_extensions, so your unique data survives normalization.</p>
+        <div class="sol-callout"><span class="i">i</span><span>Fields with no canonical match are never dropped.</span></div>
+        <div class="sol-step-viz"><div class="sol-shell" style="--accent:#6D5AE6"><div class="sol-frame is-active" style="--accent:#6D5AE6"><div class="viz"><div class="viz-title">Preserved data</div><pre class="viz-code">{
+  <span class="k">"device_id"</span>: <span class="s">"dev_8f2c1a"</span>,
+  <span class="k">"target_temperature"</span>: 51.7,
+  <span class="k">"oem_extensions"</span>: {
+    <span class="k">"eco_mode"</span>: true
+  }
+}</pre><div class="viz-box tint"><div class="viz-row"><span>OEM-specific fields</span><span class="viz-badge"><span class="tick">✓</span> preserved</span></div></div></div></div></div></div>
+      </div>
+    </div>
+    <div class="sol-visual">
+      <div class="sol-shell" style="--accent:#1F9C6B">
+        <div class="sol-frame is-active" style="--accent:#1F9C6B"><div class="viz"><div class="viz-title">Connect your cloud</div><div class="viz-box tint"><div class="viz-row"><span class="viz-label">API credentials</span><span class="viz-chip solid">verified</span></div><div class="viz-row" style="margin-top:8px;"><span class="viz-strong">cloud.your-oem.com</span></div></div><div class="viz-box"><div class="viz-li"><span class="viz-ic">1</span><div><div class="viz-strong">Telemetry endpoint</div><span class="viz-mini">detected · 5 metrics</span></div></div><div class="viz-li"><span class="viz-ic">2</span><div><div class="viz-strong">Control endpoint</div><span class="viz-mini">detected · 3 commands</span></div></div></div></div></div><div class="sol-frame" style="--accent:#CD7F32"><div class="viz"><div class="viz-title">Field mapping</div><pre class="viz-code"><span class="m"># your schema        canonical</span>
+battery_soc_pct   → <span class="s">state_of_charge</span>
+tstat_setpoint_f  → <span class="s">target_temperature</span>
+dev_uid           → <span class="s">oem_device_id</span></pre><div class="viz-chips"><span class="viz-chip">units normalized</span><span class="viz-chip">UTC timestamps</span><span class="viz-chip plain">enums mapped</span></div></div></div><div class="sol-frame" style="--accent:#2563EB"><div class="viz"><div class="viz-title">Connected apps</div><div class="viz-box"><div class="viz-row"><span class="viz-label">Connected via kWh</span><span class="viz-chip solid">4 live</span></div></div><div class="viz-box"><div class="viz-li"><span class="viz-dot g"></span> VPP operator · West</div><div class="viz-li"><span class="viz-dot g"></span> Utility DR program</div><div class="viz-li"><span class="viz-dot g"></span> Energy platform</div><div class="viz-li"><span class="viz-dot a"></span> Financier portfolio</div></div></div></div><div class="sol-frame" style="--accent:#6D5AE6"><div class="viz"><div class="viz-title">Preserved data</div><pre class="viz-code">{
+  <span class="k">"device_id"</span>: <span class="s">"dev_8f2c1a"</span>,
+  <span class="k">"target_temperature"</span>: 51.7,
+  <span class="k">"oem_extensions"</span>: {
+    <span class="k">"eco_mode"</span>: true
+  }
+}</pre><div class="viz-box tint"><div class="viz-row"><span>OEM-specific fields</span><span class="viz-badge"><span class="tick">✓</span> preserved</span></div></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <h2>Why teams choose <img src="../assets/kwh-logo-mark.png?v=3" alt="kWh" style="height:0.82em;vertical-align:-0.03em;display:inline-block;" /></h2>
+    <div class="persona-grid"><div class="persona-card"><h3>Reach downstream apps</h3><p>One integration mapping layer instead of bespoke connectors per partner.</p></div><div class="persona-card"><h3>Preserve OEM data</h3><p>Fields without a canonical equivalent are kept in oem_extensions.</p></div><div class="persona-card"><h3>Edge option</h3><p>Pair cloud APIs with the Open Protocol Gateway for site-level open standards.</p></div><div class="persona-card"><h3>Faster partner onboarding</h3><p>New downstream applications connect to kWh, not a new OEM project each time.</p></div></div>
+  </div>
+</section>
+<section class="section cream-hex" style="padding-top:0;">
+  <div class="wrap">
+    <div class="mode-card" style="max-width:660px;">
+      <h3>Open Protocol Gateway</h3>
+      <p>Software license or palm-sized hardware for edge protocol translation.</p>
+      <a href="open-protocol-gateway.html" style="color:var(--bronze);font-weight:600;">Explore Open Protocol Gateway →</a>
+    </div>
+  </div>
+</section>
+<section class="cta-band">
+  <h2>Talk to the <img src="../assets/kwh-logo-mark.png?v=3" alt="kWh" style="height:0.78em;vertical-align:-0.02em;display:inline-block;" /> team</h2>
+  <p>Request a demo tailored to your use case and buyer segment.</p>
+  <a class="btn-primary" href="../demo.html">Book a Demo</a>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div>
+      <img src="../assets/kwh-logo-mark-light.png?v=3" alt="kWh Electric" style="height:26px;margin-bottom:16px;" />
+      <p style="margin:0;font-size:14px;max-width:280px;line-height:1.55;">Communication infrastructure that makes every energy asset visible and dispatchable.</p>
+    </div>
+    <div>
+      <h4>Solutions</h4>
+      <a href="../solutions/oem-integration-platform.html">OEM Integration Platform</a>
+      <a href="../solutions/open-protocol-gateway.html">Open Protocol Gateway</a>
+      <a href="../solutions/index.html">All solutions</a>
+    </div>
+    <div>
+      <h4>Who it's for</h4>
+      <a href="../solutions/aggregators.html">Aggregators &amp; VPPs</a>
+      <a href="../solutions/oems.html">OEMs</a>
+      <a href="../solutions/financiers.html">Financiers</a>
+      <a href="../solutions/utilities.html">Utilities</a>
+    </div>
+    <div>
+      <h4>Resources</h4>
+      <a href="../docs/oem-integration-platform.html">Technical guide</a>
+      <a href="../demo.html">Book a demo</a>
+      <a href="https://portal.kwhelectric.io/">Sign in</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="../index.html">Home</a>
+      <a href="mailto:arham@kwhelectric.io">Contact</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 kWh Electric · Palo Alto, California</span>
+  </div>
+</footer><script src="../_shared/nav.js?v8"></script>
+<script src="../_shared/solution-scroll.js?v8"></script>
+</body>
+</html>

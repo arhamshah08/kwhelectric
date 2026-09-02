@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Book a Demo | kWh Electric</title>
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="_shared/brand.css?v8" />
+<link rel="stylesheet" href="_shared/nav.css?v8" />
+<link rel="stylesheet" href="_shared/pages.css?v8" />
+</head>
+<body><nav class="kwh-nav is-scrolled" id="site-nav">
+  <a href="../index.html" class="kwh-nav-brand">
+    <img class="mark-dark" src="../assets/kwh-logo-mark.png?v=3" alt="kWh Electric" />
+  </a>
+  <button class="kwh-nav-toggle" type="button" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+  <div class="kwh-nav-links">
+    <a href="../index.html">Home</a>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <div class="kwh-nav-item">
+      <button type="button" data-solutions-toggle aria-haspopup="true">Solutions
+        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+      <div class="kwh-mega" role="menu"><a href="index.html"><strong>Our Solutions</strong><span>One platform to connect, normalize, and dispatch energy assets.</span></a><a href="aggregators.html"><strong>Aggregators & VPPs</strong><span>Launch and scale programs across mixed OEM fleets.</span></a><a href="oems.html"><strong>OEMs</strong><span>Make devices program-ready without building every downstream integration.</span></a><a href="financiers.html"><strong>Financiers</strong><span>Portfolio visibility and performance data across battery fleets.</span></a><a href="utilities.html"><strong>Utilities & Energy Platforms</strong><span>Behind-the-meter visibility and flexible capacity at scale.</span></a></div>
+    </div>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <a href="../docs/oem-integration-platform.html">Guide</a>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <a href="../demo.html" class="kwh-nav-demo">Book a Demo</a>
+    <a href="https://portal.kwhelectric.io/" class="kwh-nav-signin" target="_blank" rel="noopener">Sign In</a>
+  </div>
+</nav>
+<div class="kwh-nav-overlay" aria-hidden="true"></div>
+<div class="page-hero" style="padding-bottom:48px;">
+  <div class="wrap">
+    <h1>See how kWh connects your energy assets.</h1>
+    <p>Schedule a 30-minute walkthrough of the OEM Integration Platform, Open Protocol Gateway, or both.</p>
+  </div>
+</div>
+<div class="demo-layout">
+  <div class="demo-aside">
+    <h2>What to expect</h2>
+    <p>We will walk through your use case, show how kWh normalizes OEM data, and discuss integration paths for your team.</p>
+    <ul>
+      <li>Live product overview tailored to your buyer type</li>
+      <li>Technical Q&amp;A on APIs, enrollment, and edge gateway options</li>
+      <li>Next steps for a pilot or integration scoping call</li>
+    </ul>
+    <p style="margin-top:24px;font-size:14px;">Prefer email? <a href="mailto:arham@kwhelectric.io" style="color:var(--bronze);font-weight:600;">arham@kwhelectric.io</a></p>
+  </div>
+  <form class="demo-form" id="demo-form">
+    <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true" />
+    <div class="form-row">
+      <div><label>First name <span class="req">*</span></label><input type="text" name="first_name" required /></div>
+      <div><label>Last name <span class="req">*</span></label><input type="text" name="last_name" required /></div>
+    </div>
+    <label>Work email <span class="req">*</span></label>
+    <input type="email" name="email" required />
+    <label>Company</label>
+    <input type="text" name="company" />
+    <label>Role</label>
+    <input type="text" name="role" />
+    <label>I am a</label>
+    <select name="buyer_type">
+      <option value="">Select buyer type</option>
+      <option>Aggregator / VPP operator</option>
+      <option>OEM</option>
+      <option>Financier</option>
+      <option>Utility / Energy platform</option>
+      <option>Other</option>
+    </select>
+    <label>Product interest</label>
+    <select name="product_interest">
+      <option value="">Select product</option>
+      <option>OEM Integration Platform</option>
+      <option>Open Protocol Gateway</option>
+      <option>Both</option>
+      <option>Not sure yet</option>
+    </select>
+    <label>Message</label>
+    <textarea name="message" rows="4" placeholder="Tell us about your fleet, OEM stack, or use case."></textarea>
+    <p id="demo-status"></p>
+    <button class="btn-primary" type="submit">Request demo</button>
+  </form>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div>
+      <img src="../assets/kwh-logo-mark-light.png?v=3" alt="kWh Electric" style="height:26px;margin-bottom:16px;" />
+      <p style="margin:0;font-size:14px;max-width:280px;line-height:1.55;">Communication infrastructure that makes every energy asset visible and dispatchable.</p>
+    </div>
+    <div>
+      <h4>Solutions</h4>
+      <a href="solutions/oem-integration-platform.html">OEM Integration Platform</a>
+      <a href="solutions/open-protocol-gateway.html">Open Protocol Gateway</a>
+      <a href="solutions/index.html">All solutions</a>
+    </div>
+    <div>
+      <h4>Who it's for</h4>
+      <a href="solutions/aggregators.html">Aggregators &amp; VPPs</a>
+      <a href="solutions/oems.html">OEMs</a>
+      <a href="solutions/financiers.html">Financiers</a>
+      <a href="solutions/utilities.html">Utilities</a>
+    </div>
+    <div>
+      <h4>Resources</h4>
+      <a href="docs/oem-integration-platform.html">Technical guide</a>
+      <a href="demo.html">Book a demo</a>
+      <a href="https://portal.kwhelectric.io/">Sign in</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="index.html">Home</a>
+      <a href="mailto:arham@kwhelectric.io">Contact</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 kWh Electric · Palo Alto, California</span>
+  </div>
+</footer><script src="_shared/nav.js?v8"></script>
+<script src="_shared/demo-form.js?v8"></script>
+</body>
+</html>
