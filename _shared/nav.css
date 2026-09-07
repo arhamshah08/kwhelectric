@@ -39,7 +39,7 @@
 
 .kwh-nav-links > a,
 .kwh-nav-links > .kwh-nav-item > button {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 500;
   color: var(--dark);
   background: none;
@@ -120,7 +120,7 @@
 .kwh-mega a:hover { background: #F4EEE1; }
 .kwh-mega strong {
   display: block;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: #0B0B0E;
   margin-bottom: 4px;
@@ -128,7 +128,7 @@
 .kwh-mega a:hover strong { color: var(--bronze); }
 .kwh-mega span {
   display: block;
-  font-size: 13px;
+  font-size: 16px;
   color: #7A6A4C;
   line-height: 1.45;
 }
@@ -138,7 +138,7 @@
 .kwh-nav-signin {
   display: inline-flex !important;
   align-items: center;
-  font-size: 15px !important;
+  font-size: 18px !important;
   font-weight: 500 !important;
   letter-spacing: normal !important;
   text-transform: none !important;

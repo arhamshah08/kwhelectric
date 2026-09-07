@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Solutions | kWh Electric</title>
+<title>Book a Demo | kWh Electric</title>
 <link rel="icon" type="image/png" href="../favicon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,48 +36,58 @@
   </div>
 </nav>
 <div class="kwh-nav-overlay" aria-hidden="true"></div>
-<header class="page-hero">
+<div class="page-hero" style="padding-bottom:48px;">
   <div class="wrap">
-    <h1>Solutions</h1>
-    <p>kWh Electric provides OEM connectivity APIs and an Edge Gateway so aggregators, OEMs, financiers, and utilities can operate mixed fleets without rebuilding every integration.</p>
-    <a class="btn-bronze" href="/demo/">Book a Demo</a>
+    <h1>Book a Demo</h1>
+    <p>Schedule a 30-minute walkthrough of the OEM Platform, Edge Gateway, or both.</p>
   </div>
-</header>
-<section class="section cream-hex">
-  <div class="wrap">
-    <h2>Products</h2>
-    <p class="lede">Two product lines that work together: cloud APIs for OEM normalization and an edge gateway for open-protocol connectivity.</p>
-    <div class="product-grid">
-      <a class="product-card" href="/solutions/oem-integration-platform/" style="text-decoration:none;color:inherit;">
-        <h3><span class="num">1</span>OEM Platform</h3>
-        <p>Unified API layer for batteries, thermostats, water heaters, and other connected devices. One canonical data model across OEM ecosystems.</p>
-        <span class="link">Explore OEM Platform →</span>
-      </a>
-      <a class="product-card" href="/solutions/open-protocol-gateway/" style="text-decoration:none;color:inherit;">
-        <h3><span class="num">2</span>Edge Gateway</h3>
-        <p>Edge connectivity on open standards. Software license on existing hardware or a palm-sized physical gateway from kWh.</p>
-        <span class="link">Explore Edge Gateway →</span>
-      </a>
+</div>
+<div class="demo-layout">
+  <div class="demo-aside">
+    <h2>What to expect</h2>
+    <p>We will walk through your use case, show how kWh normalizes OEM data, and discuss integration paths for your team.</p>
+    <ul>
+      <li>Live product overview tailored to your buyer type</li>
+      <li>Technical Q&amp;A on APIs, enrollment, and edge gateway options</li>
+      <li>Next steps for a pilot or integration scoping call</li>
+    </ul>
+    <p style="margin-top:24px;font-size:14px;">Prefer email? <a href="mailto:arham@kwhelectric.io" style="color:var(--bronze);font-weight:600;">arham@kwhelectric.io</a></p>
+  </div>
+  <form class="demo-form" id="demo-form">
+    <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true" />
+    <div class="form-row">
+      <div><label>First name <span class="req">*</span></label><input type="text" name="first_name" required /></div>
+      <div><label>Last name <span class="req">*</span></label><input type="text" name="last_name" required /></div>
     </div>
-  </div>
-</section>
-<section class="section">
-  <div class="wrap">
-    <h2>Buyers</h2>
-    <p class="lede">Built for the teams driving distributed energy programs across the US and Australia.</p>
-    <div class="persona-grid">
-      <div class="persona-card"><h3>Aggregators</h3><p>One API and one data model instead of N different OEM schemas. Launch programs faster across mixed fleets.</p><a class="link" href="/solutions/aggregators/">Learn more →</a></div>
-      <div class="persona-card"><h3>OEMs</h3><p>Reach aggregators and platforms through a single onboarding path without building every downstream integration.</p><a class="link" href="/solutions/oems/">Learn more →</a></div>
-      <div class="persona-card"><h3>Financiers</h3><p>Normalized telemetry and device state for portfolio monitoring, underwriting, and performance verification.</p><a class="link" href="/solutions/financiers/">Learn more →</a></div>
-      <div class="persona-card"><h3>Utilities</h3><p>Behind-the-meter visibility, demand response hooks, and open standards at the edge.</p><a class="link" href="/solutions/utilities/">Learn more →</a></div>
-    </div>
-  </div>
-</section>
-<section class="cta-band">
-  <h2>Ready to see <img src="/assets/kwh-logo-mark.png?v=3" alt="kWh" style="height:0.78em;vertical-align:-0.02em;display:inline-block;" /> in action?</h2>
-  <p>Walk through OEM Platform, Edge Gateway, or both with the kWh team.</p>
-  <a class="btn-primary" href="/demo/">Book a Demo</a>
-</section>
+    <label>Work email <span class="req">*</span></label>
+    <input type="email" name="email" required />
+    <label>Company</label>
+    <input type="text" name="company" />
+    <label>Role</label>
+    <input type="text" name="role" />
+    <label>I am a</label>
+    <select name="buyer_type">
+      <option value="">Select buyer type</option>
+      <option>Aggregator / VPP operator</option>
+      <option>OEM</option>
+      <option>Financier</option>
+      <option>Utility / Energy platform</option>
+      <option>Other</option>
+    </select>
+    <label>Product interest</label>
+    <select name="product_interest">
+      <option value="">Select product</option>
+      <option>OEM Platform</option>
+      <option>Edge Gateway</option>
+      <option>Both</option>
+      <option>Not sure yet</option>
+    </select>
+    <label>Message</label>
+    <textarea name="message" rows="4" placeholder="Tell us about your fleet, OEM stack, or use case."></textarea>
+    <p id="demo-status"></p>
+    <button class="btn-primary" type="submit">Request demo</button>
+  </form>
+</div>
 
 <footer class="site-footer">
   <div class="foot-grid">
@@ -114,5 +124,6 @@
     <span>© 2026 kWh Electric · Palo Alto, California</span>
   </div>
 </footer><script src="../_shared/nav.js?v9"></script>
+<script src="../_shared/demo-form.js?v9"></script>
 </body>
 </html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OEM Platform | kWh Electric</title>
+<link rel="icon" type="image/png" href="../../favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../_shared/brand.css?v9" />
+<link rel="stylesheet" href="../../_shared/nav.css?v9" />
+<link rel="stylesheet" href="../../_shared/pages.css?v9" />
+<link rel="stylesheet" href="../../_shared/solution-scroll.css?v9" />
+</head>
+<body><nav class="kwh-nav is-scrolled" id="site-nav">
+  <a href="/" class="kwh-nav-brand">
+    <img class="mark-dark" src="../../assets/kwh-logo-mark.png?v=3" alt="kWh Electric" />
+  </a>
+  <button class="kwh-nav-toggle" type="button" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+  <div class="kwh-nav-links">
+    <a href="/">Home</a>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <div class="kwh-nav-item">
+      <button type="button" data-solutions-toggle aria-haspopup="true">Solutions
+        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+      <div class="kwh-mega" role="menu"><a href="/solutions/"><strong>Solutions</strong><span>One platform to connect, normalize, and dispatch energy assets.</span></a><a href="/solutions/aggregators/"><strong>Aggregators</strong><span>Launch and scale programs across mixed OEM fleets.</span></a><a href="/solutions/oems/"><strong>OEMs</strong><span>Make devices program-ready without building every downstream integration.</span></a><a href="/solutions/financiers/"><strong>Financiers</strong><span>Portfolio visibility and performance data across battery fleets.</span></a><a href="/solutions/utilities/"><strong>Utilities</strong><span>Behind-the-meter visibility and flexible capacity at scale.</span></a></div>
+    </div>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <a href="/docs/oem-integration-platform/">Guide</a>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <a href="/demo/" class="kwh-nav-demo">Book a Demo</a>
+    <a href="https://portal.kwhelectric.io/" class="kwh-nav-signin" target="_blank" rel="noopener">Sign In</a>
+  </div>
+</nav>
+<div class="kwh-nav-overlay" aria-hidden="true"></div>
+<header class="page-hero">
+  <div class="wrap">
+    <h1>OEM Platform</h1>
+    <p>A unified integration and normalization layer between OEM device ecosystems and downstream applications. Batteries, thermostats, water heaters, and more in one consistent data and control interface.</p>
+    <a class="btn-bronze" href="/demo/">Book a Demo</a>
+  </div>
+</header>
+<section class="sol">
+  <div class="sol-head">
+    <h2>One API</h2>
+    <p>Connect, normalize, and control a mixed device fleet through a single integration surface.</p>
+  </div>
+  <div class="sol-grid">
+    <div class="sol-steps">
+      <div class="sol-step" data-accent="#1F9C6B" style="--step-accent:#1F9C6B">
+        <h3>Step 1: Connect any OEM</h3>
+        <p>Link an OEM cloud and kWh enumerates devices, assigns canonical IDs, and records capabilities.</p>
+        <div class="sol-callout"><span class="i">i</span><span>One OAuth connection per OEM, then every device.</span></div>
+        <div class="sol-step-viz"><div class="sol-shell" style="--accent:#1F9C6B"><div class="sol-frame is-active" style="--accent:#1F9C6B"><div class="viz"><div class="viz-title">Enroll devices</div><div class="viz-box tint"><div class="viz-row"><span class="viz-label">OEM cloud</span><span class="viz-chip solid">OAuth linked</span></div><div class="viz-row" style="margin-top:8px;"><span class="viz-strong">BESS · Inverter · EV charger</span></div></div><div class="viz-box"><div class="viz-row"><span class="viz-label">Devices discovered</span><span class="viz-xl">1,284</span></div><div class="viz-bar"><i style="width:100%"></i></div></div><div class="viz-chips"><span class="viz-chip">canonical device_id</span><span class="viz-chip plain">capabilities</span></div></div></div></div></div>
+      </div>      <div class="sol-step" data-accent="#CD7F32" style="--step-accent:#CD7F32">
+        <h3>Step 2: Normalize to one model</h3>
+        <p>OEM-specific schemas are mapped into a single canonical data model for devices, telemetry, and events.</p>
+        <div class="sol-callout"><span class="i">i</span><span>Units, timestamps, and enums normalized at ingestion.</span></div>
+        <div class="sol-step-viz"><div class="sol-shell" style="--accent:#CD7F32"><div class="sol-frame is-active" style="--accent:#CD7F32"><div class="viz"><div class="viz-title">Field mapping</div><pre class="viz-code"><span class="m"># oem schema         canonical</span>
+battery_soc_pct   → <span class="s">state_of_charge</span>
+power_w           → <span class="s">active_power</span>
+dev_uid           → <span class="s">oem_device_id</span></pre><div class="viz-chips"><span class="viz-chip">units</span><span class="viz-chip">UTC</span><span class="viz-chip plain">enums</span></div></div></div></div></div>
+      </div>      <div class="sol-step" data-accent="#2563EB" style="--step-accent:#2563EB">
+        <h3>Step 3: Read, stream, and control</h3>
+        <p>Applications query reads, subscribe to event streams, and issue canonical commands through one interface.</p>
+        <div class="sol-callout"><span class="i">i</span><span>One REST API, one webhook stream, one command schema.</span></div>
+        <div class="sol-step-viz"><div class="sol-shell" style="--accent:#2563EB"><div class="sol-frame is-active" style="--accent:#2563EB"><div class="viz"><div class="viz-title">Canonical command</div><pre class="viz-code"><span class="k">POST</span> /devices/dev_8f2c1a/commands
+{ <span class="k">"command_type"</span>: <span class="s">"set_charge_mode"</span> }</pre><div class="viz-box"><div class="viz-row"><span>Translated to OEM API</span><span class="viz-chip solid">acknowledged</span></div><div class="viz-row"><span>Webhook stream</span><span class="viz-chip">live</span></div></div></div></div></div></div>
+      </div>      <div class="sol-step" data-accent="#6D5AE6" style="--step-accent:#6D5AE6">
+        <h3>Step 4: Preserve everything</h3>
+        <p>Nothing is dropped. OEM-specific fields are preserved so no fidelity is lost through normalization.</p>
+        <div class="sol-callout"><span class="i">i</span><span>Fields with no canonical match live in oem_extensions.</span></div>
+        <div class="sol-step-viz"><div class="sol-shell" style="--accent:#6D5AE6"><div class="sol-frame is-active" style="--accent:#6D5AE6"><div class="viz"><div class="viz-title">Preserved data</div><pre class="viz-code">{
+  <span class="k">"device_id"</span>: <span class="s">"dev_8f2c1a"</span>,
+  <span class="k">"state_of_charge"</span>: 63,
+  <span class="k">"oem_extensions"</span>: { <span class="k">"eco_mode"</span>: true }
+}</pre><div class="viz-box tint"><div class="viz-row"><span>OEM-specific fields</span><span class="viz-badge"><span class="tick">✓</span> preserved</span></div></div></div></div></div></div>
+      </div>
+    </div>
+    <div class="sol-visual">
+      <div class="sol-shell" style="--accent:#1F9C6B">
+        <div class="sol-frame is-active" style="--accent:#1F9C6B"><div class="viz"><div class="viz-title">Enroll devices</div><div class="viz-box tint"><div class="viz-row"><span class="viz-label">OEM cloud</span><span class="viz-chip solid">OAuth linked</span></div><div class="viz-row" style="margin-top:8px;"><span class="viz-strong">BESS · Inverter · EV charger</span></div></div><div class="viz-box"><div class="viz-row"><span class="viz-label">Devices discovered</span><span class="viz-xl">1,284</span></div><div class="viz-bar"><i style="width:100%"></i></div></div><div class="viz-chips"><span class="viz-chip">canonical device_id</span><span class="viz-chip plain">capabilities</span></div></div></div><div class="sol-frame" style="--accent:#CD7F32"><div class="viz"><div class="viz-title">Field mapping</div><pre class="viz-code"><span class="m"># oem schema         canonical</span>
+battery_soc_pct   → <span class="s">state_of_charge</span>
+power_w           → <span class="s">active_power</span>
+dev_uid           → <span class="s">oem_device_id</span></pre><div class="viz-chips"><span class="viz-chip">units</span><span class="viz-chip">UTC</span><span class="viz-chip plain">enums</span></div></div></div><div class="sol-frame" style="--accent:#2563EB"><div class="viz"><div class="viz-title">Canonical command</div><pre class="viz-code"><span class="k">POST</span> /devices/dev_8f2c1a/commands
+{ <span class="k">"command_type"</span>: <span class="s">"set_charge_mode"</span> }</pre><div class="viz-box"><div class="viz-row"><span>Translated to OEM API</span><span class="viz-chip solid">acknowledged</span></div><div class="viz-row"><span>Webhook stream</span><span class="viz-chip">live</span></div></div></div></div><div class="sol-frame" style="--accent:#6D5AE6"><div class="viz"><div class="viz-title">Preserved data</div><pre class="viz-code">{
+  <span class="k">"device_id"</span>: <span class="s">"dev_8f2c1a"</span>,
+  <span class="k">"state_of_charge"</span>: 63,
+  <span class="k">"oem_extensions"</span>: { <span class="k">"eco_mode"</span>: true }
+}</pre><div class="viz-box tint"><div class="viz-row"><span>OEM-specific fields</span><span class="viz-badge"><span class="tick">✓</span> preserved</span></div></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section cream-hex">
+  <div class="wrap two-col">
+    <div>
+      <h2>The Problem</h2>
+      <p class="lede">Every OEM exposes different APIs, auth schemes, units, and event semantics. Teams building on multiple device categories end up re-solving the same integration problem for every manufacturer.</p>
+      <h2>The Solution</h2>
+      <p class="lede">kWh maps OEM-specific schemas into a canonical data model. Applications interact with one API and one schema, not N OEM dialects.</p>
+    </div>
+    <div>
+      <h2>Capabilities</h2>
+      <ul class="feature-list">
+        <li><span class="dot"></span><div><strong>REST APIs</strong><br><span style="color:var(--muted);font-size:14px;">Enrollment, reads, control commands, and historical queries.</span></div></li>
+        <li><span class="dot"></span><div><strong>Event streams &amp; webhooks</strong><br><span style="color:var(--muted);font-size:14px;">Near-real-time telemetry and state-change events at scale.</span></div></li>
+        <li><span class="dot"></span><div><strong>Canonical data model</strong><br><span style="color:var(--muted);font-size:14px;">Devices, telemetry, events, enrollment, and command state.</span></div></li>
+        <li><span class="dot"></span><div><strong>OEM mapping layer</strong><br><span style="color:var(--muted);font-size:14px;">Units, timestamps, and enums normalized at ingestion.</span></div></li>
+      </ul>
+      <p style="margin-top:20px;"><a href="/docs/oem-integration-platform/" style="color:var(--bronze);font-weight:600;">Read technical overview →</a></p>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <h2>Buyers</h2>
+    <div class="persona-grid">
+      <div class="persona-card"><h3>Aggregators</h3><p>Unified fleet dispatch without per-OEM engineering backlog.</p></div>
+      <div class="persona-card"><h3>OEMs</h3><p>Single path for downstream apps to connect to your devices.</p></div>
+      <div class="persona-card"><h3>Financiers</h3><p>Portfolio telemetry and device health in one schema.</p></div>
+      <div class="persona-card"><h3>Utilities</h3><p>OEM connectivity substrate under your own product experience.</p></div>
+    </div>
+  </div>
+</section>
+<section class="cta-band">
+  <h2>See the OEM Platform</h2>
+  <p>Request a technical walkthrough or read the full technical overview in our docs.</p>
+  <a class="btn-primary" href="/demo/" style="margin-right:12px;">Book a Demo</a>
+  <a class="btn-primary" href="/docs/oem-integration-platform/" style="background:var(--dark-warm);">Technical docs</a>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div>
+      <img src="../../assets/kwh-logo-mark-light.png?v=3" alt="kWh Electric" style="height:26px;margin-bottom:16px;" />
+      <p style="margin:0;font-size:18px;max-width:280px;line-height:1.55;">Communication infrastructure that makes every energy asset visible and dispatchable.</p>
+    </div>
+    <div>
+      <h4>Solutions</h4>
+      <a href="/solutions/oem-integration-platform/">OEM Platform</a>
+      <a href="/solutions/open-protocol-gateway/">Edge Gateway</a>
+      <a href="/solutions/">All solutions</a>
+    </div>
+    <div>
+      <h4>Buyers</h4>
+      <a href="/solutions/aggregators/">Aggregators</a>
+      <a href="/solutions/oems/">OEMs</a>
+      <a href="/solutions/financiers/">Financiers</a>
+      <a href="/solutions/utilities/">Utilities</a>
+    </div>
+    <div>
+      <h4>Resources</h4>
+      <a href="/docs/oem-integration-platform/">Technical guide</a>
+      <a href="/demo/">Book a demo</a>
+      <a href="https://portal.kwhelectric.io/">Sign in</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="/">Home</a>
+      <a href="mailto:arham@kwhelectric.io">Contact</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 kWh Electric · Palo Alto, California</span>
+  </div>
+</footer><script src="../../_shared/nav.js?v9"></script>
+<script src="../../_shared/solution-scroll.js?v9"></script>
+</body>
+</html>
