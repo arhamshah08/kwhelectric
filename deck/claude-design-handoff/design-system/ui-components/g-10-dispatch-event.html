@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dispatch Event</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5; --amber:#D97706; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#EDEFED; }
+  body{ display:flex; align-items:center; justify-content:center; padding:40px; font-family:'DM Sans',sans-serif; }
+  .win{ width:1084px; height:560px; background:#fff; border:1px solid var(--ol); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; color:var(--ink); }
+  .chrome{ height:34px; flex-shrink:0; display:flex; align-items:center; gap:7px; padding:0 14px; border-bottom:1px solid var(--ol); }
+  .dot{ width:11px; height:11px; border-radius:50%; } .dot.r{ background:#EF4444; } .dot.y{ background:#F59E0B; }
+  .content{ flex:1; padding:24px 28px; display:flex; flex-direction:column; gap:16px; }
+
+  .top{ display:flex; align-items:center; gap:28px; }
+  .t{ font-size:26px; font-weight:800; }
+  .m{ display:flex; flex-direction:column; }
+  .m .l{ font-size:10.5px; font-weight:700; color:var(--ink-60); }
+  .m .v{ font-size:18px; font-weight:800; }
+
+  .steps{ display:flex; gap:10px; }
+  .step{ flex:1; border:1px solid var(--ol); border-radius:8px; padding:10px 12px; display:flex; align-items:center; gap:8px; }
+  .step .n{ width:20px; height:20px; border-radius:50%; background:var(--g-bg); color:var(--g); font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .step .t2{ font-size:12px; font-weight:700; }
+  .step.active .n{ background:#FEF3C7; color:var(--amber); }
+
+  .chart{ flex:1; border:1px solid var(--ol); border-radius:8px; padding:16px; }
+  .chart-t{ font-size:14px; font-weight:800; }
+  .chart svg{ width:100%; height:100%; display:block; margin-top:6px; }
+
+  .bottom{ display:flex; gap:24px; }
+  .b{ flex:1; text-align:center; }
+  .b .v{ font-size:20px; font-weight:800; }
+  .b .l{ font-size:10.5px; font-weight:700; color:var(--ink-60); }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="chrome"><div class="dot r"></div><div class="dot y"></div></div>
+  <div class="content">
+    <div class="top">
+      <div class="t">Dispatch Event</div>
+      <div class="m"><div class="l">Target</div><div class="v">250 kW</div></div>
+      <div class="m"><div class="l">Window</div><div class="v">12:00 – 12:30</div></div>
+      <div class="m"><div class="l">Fleet</div><div class="v">1,248 assets</div></div>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><span class="t2">Policy check — Passed</span></div>
+      <div class="step active"><span class="n">2</span><span class="t2">Edge execution — Active</span></div>
+      <div class="step"><span class="n">3</span><span class="t2">Acknowledgement</span></div>
+      <div class="step"><span class="n">4</span><span class="t2">Evidence package</span></div>
+    </div>
+    <div class="chart">
+      <div class="chart-t">Actual Response</div>
+      <svg viewBox="0 0 900 140" preserveAspectRatio="none">
+        <rect x="260" y="10" width="380" height="110" fill="#EAF7EE"/>
+        <path d="M20,118 L260,118 L260,30 L640,30 L640,118 L880,118" fill="none" stroke="#D97706" stroke-width="2.2"/>
+        <path d="M20,120 C120,118 200,116 260,112 C320,60 380,36 460,34 C540,34 600,60 640,90 C700,112 800,118 880,120" fill="none" stroke="#16A34A" stroke-width="2.6"/>
+      </svg>
+    </div>
+    <div class="bottom">
+      <div class="b"><div class="v">30 min</div><div class="l">DURATION</div></div>
+      <div class="b"><div class="v">247 kW</div><div class="l">PEAK</div></div>
+      <div class="b"><div class="v">241 kW</div><div class="l">AVERAGE</div></div>
+      <div class="b"><div class="v" style="color:var(--g)">96.4%</div><div class="l">ACCURACY</div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

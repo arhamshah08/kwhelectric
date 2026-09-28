@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>kWh Electric — Redesign previews (localhost)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="_shared/brand.css" />
+<style>
+  body{padding:48px 24px 80px;}
+  .hub{width:min(900px,94vw);margin:0 auto;}
+  h1{font-size:clamp(28px,4vw,42px);letter-spacing:-.03em;margin:0 0 12px;}
+  .note{color:var(--muted);font-size:15px;line-height:1.6;margin:0 0 28px;}
+  .warn{background:rgba(205,127,50,.12);border:1px solid var(--border);padding:14px 16px;border-radius:var(--radius);font-size:14px;margin-bottom:28px;}
+  .opts{display:grid;gap:14px;}
+  .opt{display:block;border:1px solid var(--border);padding:22px 20px;border-radius:var(--radius);background:rgba(255,255,255,.5);transition:border-color .15s;}
+  .opt:hover{border-color:var(--bronze);}
+  .opt h2{margin:0 0 6px;font-size:20px;}
+  .opt p{margin:0;color:var(--muted);font-size:14px;line-height:1.5;}
+  .opt .go{display:inline-block;margin-top:12px;color:var(--bronze);font-weight:600;font-size:14px;}
+</style>
+</head>
+<body>
+<div class="hub">
+  <h1>kWh Electric redesign previews</h1>
+  <p class="note">Localhost-only options. Production <code>index.html</code> and kwhelectric.io are untouched. Same brand (honeycomb, bronze, cream, DM Sans) with richer company + product storytelling.</p>
+  <div class="warn"><strong>Do not push.</strong> These files live under <code>preview/</code> only.</div>
+  <div class="opts">
+    <a class="opt" href="site/"><h2>Site duplicate — DERApi nav</h2><p>Production homepage duplicate with Solutions mega-menu, Book a Demo, persona pages, and integrated docs. For GFS review.</p><span class="go">Open site preview →</span></a>
+    <a class="opt" href="docs/oem-integration-platform.html"><h2>Docs only (legacy)</h2><p>Standalone OEM Integration Platform technical overview.</p><span class="go">Open docs →</span></a>
+    <a class="opt" href="option-b/"><h2>Option B — Split storytelling</h2><p>Texture-like alternating narrative panels, strong demo CTA, company facts in a structured aside.</p><span class="go">Open Option B →</span></a>
+    <a class="opt" href="option-c/"><h2>Option C — Dense enterprise</h2><p>Docs-ish density for Google-for-Startups reviewers: TOC, definition list, product tables, architecture table.</p><span class="go">Open Option C →</span></a>
+  </div>
+</div>
+</body>
+</html>

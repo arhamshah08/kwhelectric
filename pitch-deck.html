@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="html-slides v0.9.4">
+<title>kWh Electric — Investor Pitch Deck</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THEME — "Bold Signal", tuned for kWh Electric
+   Dark charcoal gradient canvas + amber/gold focal cards.
+   Change --gold / --bg0 / --danger below to re-skin globally.
+   ============================================================ */
+:root{
+  --bg0:#17151b; --bg1:#1e1b22; --bg2:#26222b;
+  --card:rgba(255,255,255,.045); --card-hover:rgba(255,255,255,.075);
+  --card-border:rgba(255,255,255,.09);
+  --text:#f5f1e8; --text-dim:#aca497; --text-faint:#6d675e;
+  --gold:#E8A93A; --gold-2:#F2C14B; --gold-deep:#c98a1f;
+  --ink:#18130a;
+  --danger:#FF6A4D; --danger-dim:#3a231d;
+  --line:rgba(232,169,58,.22);
+  --f-display:'Archivo Black','Arial Black',sans-serif;
+  --f-body:'Space Grotesk',-apple-system,sans-serif;
+
+  --title-size: clamp(1.6rem, 4.4vw, 3.6rem);
+  --h2-size: clamp(1.15rem, 2.6vw, 2rem);
+  --h3-size: clamp(.95rem, 1.7vw, 1.3rem);
+  --body-size: clamp(.72rem, 1.15vw, 1.02rem);
+  --small-size: clamp(.6rem, .85vw, .78rem);
+  --micro-size: clamp(.54rem, .72vw, .66rem);
+
+  --slide-padding: clamp(1.4rem, 4.4vw, 4.6rem);
+  --content-gap: clamp(.55rem, 1.6vh, 1.35rem);
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+body{ background:var(--bg0); font-family:var(--f-body); color:var(--text); -webkit-font-smoothing:antialiased; }
+::selection{ background:var(--gold); color:var(--ink); }
+
+/* ============================================================
+   VIEWPORT BASE (mandatory — do not alter positioning rules)
+   ============================================================ */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.slide { width: 100vw; height: 100vh; height: 100dvh; overflow: hidden; scroll-snap-align: start; display: flex; flex-direction: column; position: relative; }
+.slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; max-height: 100%; overflow: hidden; padding: var(--slide-padding); gap: var(--content-gap); position:relative; z-index:1; }
+.card, .container, .content-box { max-width: min(90vw, 1000px); max-height: min(80vh, 700px); }
+.feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+.feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
+.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,250px),1fr)); gap: clamp(.5rem,1.5vw,1rem); }
+img, .image-container { max-width:100%; max-height:min(50vh,400px); object-fit:contain; }
+@media (max-height:700px){ :root{ --slide-padding:clamp(.9rem,3vw,2rem); --content-gap:clamp(.4rem,1.2vh,.9rem); --title-size:clamp(1.3rem,3.8vw,2.5rem); --h2-size:clamp(1rem,2.2vw,1.6rem);} }
+@media (max-height:600px){ :root{ --slide-padding:clamp(.7rem,2.4vw,1.4rem); --content-gap:clamp(.3rem,.9vh,.6rem); --title-size:clamp(1.1rem,3.4vw,2rem); --body-size:clamp(.62rem,1vw,.85rem);} .nav-dots,.keyboard-hint,.decorative{display:none;} }
+@media (max-height:500px){ :root{ --slide-padding:clamp(.5rem,2vw,1rem); --title-size:clamp(1rem,3vw,1.5rem); --h2-size:clamp(.85rem,2vw,1.1rem); --body-size:clamp(.58rem,.9vw,.78rem);} }
+@media (max-width:600px){ :root{ --title-size:clamp(1.2rem,6vw,2.2rem);} .grid{grid-template-columns:1fr;} }
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{ animation-duration:.01ms!important; transition-duration:.15s!important;} html{scroll-behavior:auto;} }
+
+/* ============================================================
+   AMBIENT BACKGROUND — glow blobs + faint hex-line wash
+   ============================================================ */
+.glow{ position:absolute; border-radius:50%; filter:blur(6px); pointer-events:none; z-index:0; }
+.glow-gold{ background:radial-gradient(circle, rgba(232,169,58,.24), transparent 70%); }
+.glow-gold2{ background:radial-gradient(circle, rgba(242,193,75,.14), transparent 70%); }
+.glow-danger{ background:radial-gradient(circle, rgba(255,106,77,.16), transparent 70%); }
+.slide::after{ /* subtle top-edge hairline */
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(232,169,58,.35), transparent); z-index:1;
+}
+
+/* Hive fabric — tiled hexagon-outline wash behind every slide, low opacity, ties the whole deck to one honeycomb surface */
+.slide::before{
+  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='69.28' height='120'%3E%3Cg fill='none' stroke='%23E8A93A' stroke-width='1'%3E%3Cpath d='M34.64 0 69.28 20 69.28 60 34.64 80 0 60 0 20Z'/%3E%3Cpath d='M34.64 80 69.28 100 69.28 140 34.64 160 0 140 0 100Z'/%3E%3Cpath d='M0 60 34.64 80 34.64 120 0 140 -34.64 120 -34.64 80Z'/%3E%3Cpath d='M69.28 60 103.92 80 103.92 120 69.28 140 34.64 120 34.64 80Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat:repeat; background-size:69.28px 120px;
+  opacity:.05;
+}
+.slide.bookend::before{ opacity:.07; mix-blend-mode:screen; }
+
+/* ============================================================
+   TYPOGRAPHY & SHARED TEXT COMPONENTS
+   ============================================================ */
+.kicker{ font-family:var(--f-body); font-weight:700; font-size:var(--small-size); letter-spacing:.24em; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:.6em; z-index:2; }
+.kicker::before{ content:''; width:.55em; height:.63em; background:var(--gold); clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); flex:none; }
+.headline{ font-family:var(--f-display); font-weight:400; font-size:var(--title-size); line-height:1.05; letter-spacing:-.01em; color:#fff; max-width:20ch; z-index:2; }
+.headline .accent{ color:var(--gold); }
+.subhead{ font-family:var(--f-body); font-weight:400; font-size:var(--body-size); line-height:1.55; color:var(--text-dim); max-width:58ch; z-index:2; }
+.eyebrow-lock{ position:absolute; top:clamp(1.1rem,3.2vh,2.2rem); right:clamp(1.2rem,3.6vw,3rem); font-size:var(--micro-size); letter-spacing:.18em; color:var(--text-faint); text-transform:uppercase; z-index:3; }
+
+/* Reveal stagger (triggered by .slide.active) */
+.reveal{ opacity:0; transform:translateY(22px); transition:opacity .65s var(--ease), transform .65s var(--ease); }
+.slide.active .reveal{ opacity:1; transform:translateY(0); }
+.slide-content > .reveal:nth-child(1){ transition-delay:.05s; }
+.slide-content > .reveal:nth-child(2){ transition-delay:.15s; }
+.slide-content > .reveal:nth-child(3){ transition-delay:.25s; }
+.slide-content > .reveal:nth-child(4){ transition-delay:.35s; }
+.slide-content > .reveal:nth-child(5){ transition-delay:.45s; }
+.slide-content > .reveal:nth-child(6){ transition-delay:.55s; }
+
+/* ============================================================
+   HEX PRIMITIVES
+   ============================================================ */
+.hexclip{ clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); }
+.hex-dot{ width:.62em; height:.72em; background:var(--gold); flex:none; }
+.hex-dot.hexclip{}
+.hex-stat{ position:relative; width:clamp(96px,11.6vw,164px); aspect-ratio:.866; background:var(--gold); clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; flex:none; }
+.hex-stat-inner{ position:absolute; inset:3px; background:var(--bg1); clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:.15em; padding:0 12%; }
+.hex-stat .num{ font-family:var(--f-display); font-size:clamp(1.05rem,2.6vw,2.1rem); color:var(--gold-2); line-height:1; }
+.hex-stat .lbl{ font-size:var(--micro-size); color:var(--text-dim); line-height:1.25; font-weight:600; }
+.hex-stat.danger{ background:var(--danger); }
+.hex-stat.danger .num{ color:var(--danger); }
+
+/* honeycomb cluster (decorative bee illustration) */
+.honeycomb{ --hs:clamp(40px,5.4vw,68px); --hh:calc(var(--hs) / .866); position:relative; width:calc(var(--hs)*3.6); height:calc(var(--hh)*3.1); flex:none; z-index:2; }
+.hcell{ position:absolute; width:var(--hs); aspect-ratio:.866; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); background:var(--gold); display:flex; align-items:center; justify-content:center; font-size:calc(var(--hs)*.42); opacity:.94; transition:transform .3s var(--ease); }
+.hcell.dim{ background:rgba(232,169,58,.28); }
+.hcell.big{ width:calc(var(--hs)*1.16); z-index:3; box-shadow:0 0 0 0 transparent; }
+.hcell.danger{ background:var(--danger); }
+.hcell.small{ width:calc(var(--hs)*.6); opacity:.7; }
+
+/* single large hex cell holding a crowded swarm — used on Problem slides (everything jammed into one silo) */
+.hive-cell{ position:relative; flex:none; width:clamp(240px,27vw,380px); aspect-ratio:.866; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); background:linear-gradient(160deg, rgba(232,169,58,.24), rgba(232,169,58,.06)); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; z-index:2; }
+.hive-cell.danger{ background:linear-gradient(160deg, rgba(255,106,77,.30), rgba(255,106,77,.07)); border-color:rgba(255,106,77,.4); }
+.hive-cell .swarm{ display:flex; flex-wrap:wrap; gap:.25em; justify-content:center; align-items:center; max-width:58%; font-size:clamp(1.15rem,2.4vw,2rem); line-height:1; }
+.hive-cell .wasp-in{ position:absolute; z-index:3; }
+
+/* ============================================================
+   CARDS, PILLS, BADGES
+   ============================================================ */
+.panel{ background:var(--card); border:1px solid var(--card-border); border-radius:18px; padding:clamp(1rem,2.4vh,1.6rem) clamp(1.1rem,2.6vw,1.8rem); z-index:2; }
+.badge{ display:inline-flex; align-items:center; gap:.5em; font-size:var(--micro-size); font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:.42em .9em; border-radius:99px; border:1px solid var(--card-border); color:var(--text-dim); width:fit-content; }
+.badge.gold{ color:var(--ink); background:var(--gold); border-color:var(--gold); }
+.badge.outline-gold{ color:var(--gold-2); border-color:var(--line); }
+.badge.dash{ border-style:dashed; border-color:var(--gold); color:var(--gold-2); }
+.divider{ height:1px; background:linear-gradient(90deg, var(--card-border), transparent); }
+
+/* ============================================================
+   LAYOUT HELPERS
+   ============================================================ */
+.row{ display:flex; align-items:center; gap:clamp(1rem,2.6vw,2.2rem); z-index:2; }
+.row.top{ align-items:flex-start; }
+.col{ display:flex; flex-direction:column; gap:clamp(.4rem,1vh,.7rem); }
+.spread{ display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.fill{ flex:1; min-width:0; }
+
+/* ============================================================
+   NAV CHROME
+   ============================================================ */
+.progress-bar{ position:fixed; top:0; left:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-2)); z-index:50; transition:width .4s var(--ease); }
+.slide-counter{ position:fixed; bottom:clamp(.8rem,2.4vh,1.4rem); right:clamp(1rem,2.8vw,2rem); font-size:var(--micro-size); letter-spacing:.14em; color:var(--text-faint); z-index:50; font-variant-numeric:tabular-nums; }
+.slide-nav{ position:fixed; bottom:clamp(.8rem,2.4vh,1.4rem); left:50%; transform:translateX(-50%); display:flex; gap:.4rem; z-index:50; }
+.slide-nav-dot{ width:6px; height:6px; border-radius:99px; background:rgba(255,255,255,.16); cursor:pointer; transition:all .3s var(--ease); }
+.slide-nav-dot.active{ background:var(--gold); width:18px; }
+.keyboard-hint{ position:fixed; bottom:clamp(.8rem,2.4vh,1.4rem); left:clamp(1rem,2.8vw,2rem); font-size:var(--micro-size); color:var(--text-faint); letter-spacing:.06em; z-index:50; }
+@media (max-width:760px){ .keyboard-hint{ display:none; } }
+
+/* ============================================================
+   COVER / CLOSE — bookend treatment
+   ============================================================ */
+.bookend{ background:
+    radial-gradient(circle at 78% 12%, rgba(242,193,75,.30), transparent 42%),
+    radial-gradient(circle at 15% 88%, rgba(232,169,58,.20), transparent 45%),
+    linear-gradient(150deg,#151319 0%,#1d1a22 45%,#151319 100%); }
+.wordmark{ font-family:var(--f-display); font-size:clamp(2.4rem,7.2vw,6rem); line-height:1; color:#fff; display:flex; align-items:baseline; z-index:2; }
+.wordmark .bolt{ color:var(--gold); }
+.wordmark .dim{ color:var(--text-faint); font-size:.42em; margin-left:.15em; }
+.footer-bar{ position:absolute; left:0; right:0; bottom:0; height:19%; background:#0d0c10; display:flex; align-items:center; justify-content:flex-end; padding:0 clamp(1.4rem,4vw,4rem); z-index:3; border-top:1px solid rgba(232,169,58,.18); }
+.footer-bar .ftext{ text-align:right; font-size:var(--body-size); color:var(--text-dim); line-height:1.5; }
+.footer-bar .ftext b{ color:#fff; font-weight:700; }
+
+/* ============================================================
+   PERSONA / USE-CASE / CARD GRIDS
+   ============================================================ */
+.persona-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(.6rem,1.4vw,1.1rem); z-index:2; width:100%; }
+.persona-card{ background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:clamp(.7rem,1.6vh,1.1rem) clamp(.8rem,1.6vw,1.2rem); display:flex; flex-direction:column; gap:.4rem; transition:border-color .25s, background .25s; }
+.persona-card:hover{ border-color:var(--line); background:var(--card-hover); }
+.persona-num{ font-family:var(--f-display); font-size:var(--h3-size); color:var(--gold); }
+.persona-name{ font-weight:700; font-size:var(--body-size); color:#fff; }
+.persona-pain{ font-size:var(--micro-size); color:var(--text-faint); line-height:1.35; }
+.persona-give{ font-size:var(--micro-size); color:var(--gold-2); line-height:1.35; font-weight:500; }
+@media (max-width:760px){ .persona-grid{ grid-template-columns:repeat(2,1fr);} }
+
+/* ============================================================
+   COMPARE COLUMNS (architecture before/after)
+   ============================================================ */
+.compare{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1rem,3vw,2.4rem); width:100%; z-index:2; }
+.compare-col{ display:flex; flex-direction:column; gap:.55rem; }
+.compare-col.before .node{ opacity:.62; filter:grayscale(.4); }
+.compare-head{ font-weight:700; font-size:var(--small-size); letter-spacing:.08em; text-transform:uppercase; padding-bottom:.5rem; border-bottom:1px solid var(--card-border); }
+.compare-col.after .compare-head{ color:var(--gold-2); border-color:var(--line); }
+.node{ background:var(--card); border:1px solid var(--card-border); border-radius:10px; padding:.5em .9em; font-size:var(--small-size); font-weight:600; text-align:center; }
+.compare-col.after .node.hub{ background:var(--gold); color:var(--ink); border-color:var(--gold); }
+.node-row{ display:flex; gap:.4rem; flex-wrap:wrap; justify-content:center; }
+.node-row .node{ flex:1; min-width:0; font-size:var(--micro-size); }
+.connector{ width:1px; height:.7rem; background:var(--card-border); margin:0 auto; }
+.compare-col.after .connector{ background:var(--line); }
+.caption{ font-size:var(--micro-size); color:var(--text-faint); text-align:center; margin-top:.3rem; }
+.compare-col.after .caption{ color:var(--text-dim); }
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline{ display:flex; align-items:stretch; gap:0; width:100%; z-index:2; position:relative; }
+.tl-node{ flex:1; padding:0 clamp(.6rem,1.6vw,1.2rem); position:relative; }
+.tl-node::before{ content:''; position:absolute; top:9px; left:0; right:0; height:2px; background:var(--card-border); }
+.tl-node:first-child::before{ left:50%; }
+.tl-node:last-child::before{ right:50%; }
+.tl-dot{ width:16px; height:16px; border-radius:50%; background:var(--bg0); border:2px solid var(--gold); margin:0 auto 1rem; position:relative; z-index:2; }
+.tl-node.mid .tl-dot{ background:var(--gold); }
+.tl-date{ text-align:center; font-weight:700; font-size:var(--small-size); color:var(--gold-2); letter-spacing:.05em; margin-bottom:.6rem; }
+.tl-body{ background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:clamp(.7rem,1.8vh,1.1rem); font-size:var(--micro-size); color:var(--text-dim); line-height:1.5; }
+.tl-body ul{ list-style:none; display:flex; flex-direction:column; gap:.35em; }
+.tl-body li{ padding-left:1em; position:relative; }
+.tl-body li::before{ content:'—'; position:absolute; left:0; color:var(--gold); }
+
+/* ============================================================
+   BAR COMPARISON (unit economics)
+   ============================================================ */
+.bars{ display:flex; flex-direction:column; gap:clamp(.6rem,1.6vh,1rem); width:100%; z-index:2; }
+.bar-row{ display:grid; grid-template-columns:clamp(90px,14vw,170px) 1fr clamp(60px,8vw,110px); align-items:center; gap:.8rem; }
+.bar-label{ font-size:var(--small-size); color:var(--text-dim); font-weight:600; }
+.bar-track{ height:clamp(14px,2.6vh,22px); background:rgba(255,255,255,.05); border-radius:99px; overflow:hidden; }
+.bar-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg,var(--gold-deep),var(--gold-2)); transition:width 1s var(--ease); }
+.bar-fill.small{ background:linear-gradient(90deg,#4a4a52,#6b6a70); }
+.bar-value{ font-family:var(--f-display); font-size:var(--h3-size); color:var(--gold-2); text-align:right; }
+
+/* Donut / radial progress chart */
+.donut-wrap{ position:relative; width:clamp(96px,11.6vw,150px); aspect-ratio:1; flex:none; display:flex; align-items:center; justify-content:center; }
+.donut-wrap svg{ width:100%; height:100%; }
+.donut-label{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:.15em; padding:0 14%; }
+.donut-label .num{ font-family:var(--f-display); font-size:clamp(1.05rem,2.6vw,2.1rem); color:var(--gold-2); line-height:1; }
+.donut-label .lbl{ font-size:var(--micro-size); color:var(--text-dim); line-height:1.2; font-weight:600; }
+
+/* Small inline sparkline (illustrative trend, two/three anchor points) */
+.spark{ width:100%; height:clamp(22px,3.4vh,34px); display:block; }
+
+/* Wasp icon */
+.wasp{ width:clamp(44px,5.2vw,64px); height:auto; filter:drop-shadow(0 0 10px rgba(255,106,77,.65)); }
+
+/* Gateway device diagram */
+.device{ width:clamp(90px,10vw,140px); height:clamp(58px,6.4vw,88px); background:linear-gradient(160deg,#2c2833,#1b1820); border:1px solid rgba(255,255,255,.12); border-radius:14px; position:relative; flex:none; box-shadow:0 14px 30px rgba(0,0,0,.45); }
+.device::after{ content:''; position:absolute; top:10%; left:10%; width:7px; height:7px; border-radius:50%; background:#59d98c; box-shadow:0 0 8px #59d98c; }
+.port{ position:absolute; bottom:-10px; width:22px; height:14px; background:var(--gold); border-radius:3px; }
+.port.can{ left:16%; }
+.port.modbus{ right:16%; }
+.port-label{ position:absolute; bottom:-30px; font-size:var(--micro-size); font-weight:700; letter-spacing:.06em; color:var(--text-faint); }
+.port-label.can{ left:8%; }
+.port-label.modbus{ right:10%; }
+
+/* Editable text affordance */
+.editable{ outline:1px dashed transparent; outline-offset:3px; border-radius:3px; transition:outline-color .2s; cursor:default; }
+body.edit-mode .editable{ cursor:text; }
+body.edit-mode .editable:hover{ outline-color:rgba(232,169,58,.5); }
+body.edit-mode .editable:focus{ outline-color:var(--gold); background:rgba(232,169,58,.06); }
+
+.edit-hotzone{ position:fixed; top:0; left:0; width:80px; height:80px; z-index:10000; cursor:pointer; }
+.edit-toggle{ position:fixed; top:14px; left:14px; z-index:10001; opacity:0; pointer-events:none; transition:opacity .3s ease; width:34px; height:34px; border-radius:50%; border:1px solid var(--card-border); background:var(--bg1); color:var(--gold); font-size:15px; display:flex; align-items:center; justify-content:center; }
+.edit-toggle.show, .edit-toggle.active{ opacity:1; pointer-events:auto; }
+.edit-toggle.active{ background:var(--gold); color:var(--ink); }
+.save-hint{ position:fixed; top:56px; left:14px; z-index:10001; font-size:11px; color:var(--text-faint); opacity:0; transition:opacity .3s; pointer-events:none; }
+.save-hint.show{ opacity:1; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<div class="slide-counter" id="counter"></div>
+<div class="slide-nav" id="slideNav"></div>
+<div class="keyboard-hint">← → to navigate · F12 for speaker notes</div>
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)">✎</button>
+<div class="save-hint" id="saveHint">Ctrl/Cmd+S to export edits</div>
+
+<div class="deck" id="deck">
+
+<!-- ============================================================ SLIDE 0 — COVER ============================================================ -->
+<div class="slide active bookend" data-slide="0">
+  <div class="glow glow-gold2" style="width:52vw;height:52vw;top:-18%;right:-14%;"></div>
+  <div class="glow glow-gold" style="width:30vw;height:30vw;bottom:8%;left:-8%;"></div>
+  <div class="slide-content" style="justify-content:space-between;">
+    <div class="reveal editable subhead" style="max-width:44ch;color:var(--text-dim);font-weight:500;">
+      The AI-native, Secure, Interoperable Communication<br>Infrastructure for Distributed Energy Resources
+    </div>
+    <div class="reveal wordmark">k<span class="bolt">W</span>h<span style="font-weight:400;">Electric</span><span class="dim editable">.io</span></div>
+  </div>
+  <div class="footer-bar reveal">
+    <div class="ftext editable">A Gateway enabling<br><b>Dispatch + Telemetry</b><br>for a smarter, self-reliant grid</div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Cover","script":"kWh Electric is the AI-native, secure, interoperable communication infrastructure for distributed energy resources — a gateway enabling dispatch and telemetry for a smarter, self-reliant grid.","notes":["kWhElectric.io","Gateway enables dispatch + telemetry","Positioning: AI-native, secure, interoperable, infrastructure"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 1 — VISION ============================================================ -->
+<div class="slide" data-slide="1">
+  <div class="glow glow-gold" style="width:34vw;height:34vw;top:-10%;right:6%;"></div>
+  <div class="eyebrow-lock editable">01 — kWh Electric</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">The Vision</div>
+    <div class="headline reveal editable">Every energy asset,<br>visible and <span class="accent">dispatchable.</span></div>
+    <div class="subhead reveal editable">A world where 100M+ distributed energy resources — inverters, batteries, EV chargers, meters — speak one common, secure language instead of a thousand proprietary ones.</div>
+    <div class="row reveal" style="margin-top:clamp(.4rem,1.2vh,.8rem);">
+      <div class="hex-stat"><div class="hex-stat-inner"><div class="num editable">4+ TW</div><div class="lbl editable">of distributed energy devices, globally</div></div></div>
+      <div class="panel fill editable" style="font-size:var(--body-size);color:var(--text-dim);line-height:1.55;font-style:italic;">
+        "Every OEM built its own hive. Nobody built the meadow. We're building the meadow — the shared infrastructure every hive can safely connect to."
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"The Vision","script":"Our vision is simple: every energy asset, visible and dispatchable. There are over 100 million distributed energy resources deployed worldwide, and none of them speak a common language. We're building the meadow every hive can safely connect to.","notes":["4+ TW of distributed devices globally is the north-star scale","100M+ DERs deployed with no common dispatch layer","Bee/hive/meadow analogy: every OEM built its own hive, nobody built the shared meadow"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 2 — MISSION ============================================================ -->
+<div class="slide" data-slide="2">
+  <div class="glow glow-gold2" style="width:30vw;height:30vw;bottom:-12%;left:-6%;"></div>
+  <div class="eyebrow-lock editable">02 — kWh Electric</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">The Mission</div>
+    <div class="headline reveal editable">One gateway.<br><span class="accent">Zero integration tax.</span></div>
+    <div class="subhead reveal editable">Ship a sub-$50, pay-once edge gateway that connects, normalizes, dispatches, and verifies every DER — any OEM, open standards, agent-ready — so utilities, aggregators, and asset owners can harvest stranded flexibility instead of paying to unlock it.</div>
+    <div class="row reveal" style="margin-top:clamp(.3rem,1vh,.6rem);">
+      <div class="panel col" style="flex:1;"><div class="hex-dot hexclip"></div><div class="editable" style="font-weight:700;font-size:var(--body-size);">Connect</div><div class="editable" style="font-size:var(--micro-size);color:var(--text-faint);line-height:1.4;">On-site gateway speaks to every asset locally over open standards. No vendor lock-in.</div></div>
+      <div class="panel col" style="flex:1;"><div class="hex-dot hexclip"></div><div class="editable" style="font-weight:700;font-size:var(--body-size);">Normalize</div><div class="editable" style="font-size:var(--micro-size);color:var(--text-faint);line-height:1.4;">Translates every device language into one clean API. No per-OEM work.</div></div>
+      <div class="panel col" style="flex:1;"><div class="hex-dot hexclip"></div><div class="editable" style="font-weight:700;font-size:var(--body-size);">Dispatch</div><div class="editable" style="font-size:var(--micro-size);color:var(--text-faint);line-height:1.4;">Charge, discharge, curtail, shift — from any platform, in real time.</div></div>
+      <div class="panel col" style="flex:1;"><div class="hex-dot hexclip"></div><div class="editable" style="font-weight:700;font-size:var(--body-size);">Verify</div><div class="editable" style="font-size:var(--micro-size);color:var(--text-faint);line-height:1.4;">Every dispatch event logged before/during/after. Provable, claimable.</div></div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"The Mission","script":"Our mission is one gateway, zero integration tax. We ship a sub-fifty-dollar, pay-once edge gateway that connects, normalizes, dispatches, and verifies every DER, so operators can harvest stranded flexibility instead of paying to unlock it.","notes":["Four-step model: Connect, Normalize, Dispatch, Verify","Connect = open standards, no OEM cloud dependency","Verify = every dispatch event logged, provable and claimable revenue"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 3 — PROBLEM: FRAGMENTED HIVE ============================================================ -->
+<div class="slide" data-slide="3">
+  <div class="eyebrow-lock editable">03 — The Problem</div>
+  <div class="slide-content">
+    <div class="row top" style="align-items:center;">
+      <div class="col fill">
+        <div class="kicker reveal editable">The Problem</div>
+        <div class="headline reveal editable">Today, the hive<br>is <span class="accent">fragmented.</span></div>
+        <div class="subhead reveal editable" style="font-weight:600;color:var(--text);">Every OEM locks its devices in a separate silo.</div>
+        <div class="row reveal" style="align-items:flex-start;margin-top:clamp(.4rem,1.4vh,.9rem);">
+          <div style="font-family:var(--f-display);font-size:clamp(2.2rem,5vw,4rem);color:var(--gold);line-height:1;">80%</div>
+          <div class="editable" style="font-size:var(--small-size);color:var(--text-dim);line-height:1.5;max-width:32ch;">of DER fleets still lack dispatchability, existing APIs are too expensive, and lack interoperability and security.</div>
+        </div>
+        <div class="badge outline-gold reveal editable">100M+ DERs deployed · no common dispatch layer · $50K+/mo integration tax per OEM</div>
+      </div>
+      <div class="hive-cell reveal" style="margin-left:auto;">
+        <div class="swarm"><span>🐝</span><span>🐝</span><span>🐝</span><span>🐝</span><span>🐝</span><span>🐝</span><span>🐝</span></div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"The Problem — Fragmented Hive","script":"Today, the hive is fragmented. Every OEM locks its devices into a separate silo. Eighty percent of DER fleets still lack dispatchability, existing APIs are too expensive, and interoperability and security are afterthoughts.","notes":["80% of DER fleets lack dispatchability / interoperability / security","100M+ DERs deployed globally, no common dispatch layer","Integration tax estimated at $50K+/month per utility per OEM"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 4 — PROBLEM: INSECURE HIVE ============================================================ -->
+<div class="slide" data-slide="4">
+  <div class="glow glow-danger" style="width:26vw;height:26vw;top:10%;right:8%;"></div>
+  <div class="eyebrow-lock editable">04 — The Problem</div>
+  <div class="slide-content">
+    <div class="row top" style="align-items:center;">
+      <div class="col fill">
+        <div class="kicker reveal editable" style="color:var(--danger);"><span style="display:inline-block;width:.55em;height:.63em;background:var(--danger);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);"></span>The Problem — Security</div>
+        <div class="headline reveal editable">One weak cell,<br>and the <span class="accent" style="color:var(--danger);">wasp gets in.</span></div>
+        <div class="subhead reveal editable" style="font-weight:600;color:var(--text);">A single compromised device shouldn't be able to threaten an entire fleet — but today, it can.</div>
+        <div class="row reveal" style="align-items:flex-start;margin-top:clamp(.4rem,1.4vh,.9rem);">
+          <div style="font-family:var(--f-display);font-size:clamp(2.2rem,5vw,4rem);color:var(--danger);line-height:1;">80%</div>
+          <div class="editable" style="font-size:var(--small-size);color:var(--text-dim);line-height:1.5;max-width:32ch;">of DER fleets still lack dispatchability, existing APIs are too expensive, and lack interoperability and security.</div>
+        </div>
+      </div>
+      <div class="hive-wrap reveal" style="position:relative;margin-left:auto;flex:none;">
+      <div class="hive-cell danger">
+        <div class="swarm"><span>🐝</span><span>🐝</span><span>🐝</span><span>🐝</span><span>🐝</span><span>🐝</span><span>🐝</span></div>
+      </div>
+        <svg class="wasp" viewBox="0 0 40 40" style="position:absolute;right:-8%;top:32%;">
+          <ellipse cx="21" cy="14" rx="7.5" ry="4.5" fill="rgba(255,255,255,.55)" transform="rotate(-24 21 14)"/>
+          <ellipse cx="19" cy="14" rx="7.5" ry="4.5" fill="rgba(255,255,255,.4)" transform="rotate(24 19 14)"/>
+          <ellipse cx="20" cy="20" rx="6.6" ry="11.5" fill="#2b2320" stroke="#ffb020" stroke-width="1"/>
+          <ellipse cx="20" cy="13.5" rx="6.6" ry="3.2" fill="#ffb020"/>
+          <ellipse cx="20" cy="21" rx="6" ry="2.8" fill="#ffb020"/>
+          <ellipse cx="20" cy="28" rx="5" ry="2.4" fill="#ffb020"/>
+          <path d="M20 31 L20 39" stroke="#2b2320" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="17.4" cy="8.5" r="1.6" fill="#0e0c0a"/>
+          <circle cx="22.6" cy="8.5" r="1.6" fill="#0e0c0a"/>
+          <path d="M17 6 L14.5 3" stroke="#2b2320" stroke-width="1" stroke-linecap="round"/>
+          <path d="M23 6 L25.5 3" stroke="#2b2320" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"The Problem — Insecure Hive","script":"It's not just fragmentation — it's exposure. One weak cell and the wasp gets in. Without per-device security, a single compromised asset can threaten the entire connected fleet.","notes":["Security is the second half of the fragmentation problem","One compromised device today can reach the whole fleet","Sets up the Solution: every asset guards itself"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 5 — SOLUTION: EVERY ASSET GUARDS ITSELF ============================================================ -->
+<div class="slide" data-slide="5">
+  <div class="glow glow-gold" style="width:30vw;height:30vw;top:-8%;right:-4%;"></div>
+  <div class="eyebrow-lock editable">05 — The Solution</div>
+  <div class="slide-content">
+    <div class="row top" style="align-items:center;">
+      <div class="col fill">
+        <div class="kicker reveal editable">The Solution</div>
+        <div class="headline reveal editable">Every asset<br><span class="accent">guards itself.</span></div>
+        <div class="subhead reveal editable" style="font-weight:600;color:var(--text);">Each DER sits in its own sealed cell. One compromised device never reaches the fleet.</div>
+        <div class="col reveal" style="gap:clamp(.5rem,1.4vh,.9rem);margin-top:clamp(.3rem,1vh,.6rem);">
+          <div class="row" style="gap:.7rem;"><div class="hex-dot hexclip"></div><div class="editable"><b style="color:#fff;">Trusted Execution Environment</b> <span style="color:var(--text-faint);font-size:var(--micro-size);">— policy enforced on the edge device</span></div></div>
+          <div class="row" style="gap:.7rem;"><div class="hex-dot hexclip"></div><div class="editable"><b style="color:#fff;">Zero-trust device identity</b> <span style="color:var(--text-faint);font-size:var(--micro-size);">— each DER enrolled and authenticated alone</span></div></div>
+          <div class="row" style="gap:.7rem;"><div class="hex-dot hexclip"></div><div class="editable"><b style="color:#fff;">Data sovereignty</b> <span style="color:var(--text-faint);font-size:var(--micro-size);">— telemetry stays in-jurisdiction, never offshore</span></div></div>
+        </div>
+      </div>
+      <div class="honeycomb reveal" style="margin-left:auto;">
+        <div class="hcell" style="left:calc(var(--hs)*1);top:0;">🐝</div>
+        <div class="hcell" style="left:calc(var(--hs)*2);top:0;">🐝</div>
+        <div class="hcell" style="left:calc(var(--hs)*.5);top:calc(var(--hh)*.75);">🐝</div>
+        <div class="hcell big" style="left:calc(var(--hs)*1.42);top:calc(var(--hh)*.68);">🐝</div>
+        <div class="hcell" style="left:calc(var(--hs)*2.5);top:calc(var(--hh)*.75);">🐝</div>
+        <div class="hcell" style="left:calc(var(--hs)*1);top:calc(var(--hh)*1.5);">🐝</div>
+        <div class="hcell" style="left:calc(var(--hs)*2);top:calc(var(--hh)*1.5);">🐝</div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Solution — Every Asset Guards Itself","script":"Every asset guards itself. Each DER sits in its own sealed cell, so one compromised device never reaches the fleet — enforced by a trusted execution environment, zero-trust device identity, and in-jurisdiction data sovereignty.","notes":["TEE: policy enforced on the edge device itself","Zero-trust: each DER enrolled and authenticated independently","Data sovereignty: telemetry stays in-jurisdiction — GDPR/DPDP compatible"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 6 — SOLUTION: GATEWAY DIAGRAM ============================================================ -->
+<div class="slide" data-slide="6">
+  <div class="eyebrow-lock editable">06 — The Solution</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">The Solution</div>
+    <div class="headline reveal editable" style="font-size:clamp(1.3rem,3.2vw,2.4rem);">One gateway speaks every grid language.</div>
+    <div class="row reveal" style="align-items:stretch;margin-top:clamp(.4rem,1.4vh,.8rem);">
+      <div class="panel col fill" style="gap:.5rem;">
+        <div class="editable" style="font-size:var(--small-size);font-weight:700;color:var(--gold-2);letter-spacing:.06em;text-transform:uppercase;">Southbound — devices</div>
+        <div class="editable" style="font-size:var(--body-size);">IEEE 2030.5</div>
+        <div class="editable" style="font-size:var(--body-size);">SunSpec Modbus</div>
+        <div class="editable" style="font-size:var(--body-size);">MQTT</div>
+        <div class="editable" style="font-size:var(--body-size);">Zigbee</div>
+        <div class="editable" style="font-size:var(--body-size);">Custom integrations</div>
+      </div>
+      <div class="col" style="align-items:center;flex:none;padding:0 clamp(1rem,2.4vw,2rem);position:relative;">
+        <div class="device"><div class="port can"></div><div class="port-label can editable">CAN</div><div class="port modbus"></div><div class="port-label modbus editable">MODBUS</div></div>
+        <div class="editable" style="margin-top:clamp(1.6rem,3.4vh,2.4rem);font-size:var(--micro-size);color:var(--text-faint);text-align:center;">OR</div>
+        <div class="badge outline-gold editable" style="margin-top:.3rem;">Software License</div>
+      </div>
+      <div class="col" style="flex:none;align-items:center;justify-content:center;">
+        <div class="editable" style="writing-mode:vertical-rl;font-family:var(--f-display);color:var(--gold);font-size:var(--h3-size);letter-spacing:.05em;">IEEE 2030.5</div>
+      </div>
+      <div class="panel col fill" style="gap:.5rem;">
+        <div class="editable" style="font-size:var(--small-size);font-weight:700;color:var(--gold-2);letter-spacing:.06em;text-transform:uppercase;">Northbound — recipients</div>
+        <div class="editable" style="font-size:var(--body-size);">Utility</div>
+        <div class="editable" style="font-size:var(--body-size);">Aggregators</div>
+        <div class="editable" style="font-size:var(--body-size);">Integrators</div>
+        <div class="editable" style="font-size:var(--body-size);">OEMs</div>
+        <div class="editable" style="font-size:var(--body-size);">Financiers</div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Solution — Gateway Diagram","script":"On one side, the gateway speaks every device protocol — IEEE 2030.5, SunSpec Modbus, MQTT, Zigbee, and custom integrations. On the other, it speaks one language north — IEEE 2030.5 — to utilities, aggregators, integrators, OEMs, and financiers.","notes":["Hardware gateway or software-only license, same protocol coverage","Southbound: device-level protocols","Northbound: IEEE 2030.5 to five stakeholder types"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 7 — ARCHITECTURE: BEFORE / AFTER ============================================================ -->
+<div class="slide" data-slide="7">
+  <div class="eyebrow-lock editable">07 — Architecture</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">Architecture</div>
+    <div class="headline reveal editable" style="font-size:clamp(1.3rem,3.4vw,2.6rem);">One path is closed.<br>One path is <span class="accent">open.</span></div>
+    <div class="compare reveal">
+      <div class="compare-col before">
+        <div class="compare-head editable">Today — OEM-locked path</div>
+        <div class="node editable">Grid DERMS</div>
+        <div class="connector"></div>
+        <div class="node editable">DERMS</div>
+        <div class="connector"></div>
+        <div class="node editable">OEM Integration Platform</div>
+        <div class="connector"></div>
+        <div class="node hub editable">OEM API <span style="opacity:.6;font-weight:400;">(one per vendor)</span></div>
+        <div class="connector"></div>
+        <div class="node-row"><div class="node editable">Thermostat</div><div class="node editable">EV</div><div class="node editable">EVSE</div><div class="node editable">BESS</div><div class="node editable">PV</div></div>
+        <div class="caption editable">One proprietary chokepoint per OEM.</div>
+      </div>
+      <div class="compare-col after">
+        <div class="compare-head editable">With kWh — open gateway path</div>
+        <div class="node-row"><div class="node editable">Weather API</div><div class="node editable">Price API</div><div class="node editable">Grid DERMS</div></div>
+        <div class="connector"></div>
+        <div class="node-row"><div class="node editable">Forecasting</div><div class="node editable">Optimisation</div></div>
+        <div class="connector"></div>
+        <div class="node-row"><div class="node editable">Asset Dispatch</div><div class="node editable">Asset Telemetry</div><div class="node editable">Device / OTA</div></div>
+        <div class="connector"></div>
+        <div class="node hub editable">kWh Gateway (2030.5 Server)</div>
+        <div class="connector"></div>
+        <div class="node-row"><div class="node editable">Inverter</div><div class="node editable">BESS</div><div class="node editable">+ any DER</div></div>
+        <div class="caption editable">One open, secured gateway for every OEM.</div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Architecture — Before vs After","script":"Today, every OEM is a separate, closed chokepoint feeding up through its own integration platform. With kWh, one open gateway on IEEE 2030.5 replaces all of it — feeding forecasting, optimization, and dispatch straight up to weather, price, and grid DERMS APIs.","notes":["Left: one proprietary OEM API per vendor, closed path","Right: one open kWh gateway, same north-star connections","This is the connectivity layer that feeds DERMS, not a DERMS replacement"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 8 — PRODUCT: PALM-SIZED & UNDER $50 BOM ============================================================ -->
+<div class="slide" data-slide="8">
+  <div class="glow glow-gold" style="width:28vw;height:28vw;bottom:-10%;right:-6%;"></div>
+  <div class="eyebrow-lock editable">08 — DER Gateway</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">DER Gateway</div>
+    <div class="headline reveal editable" style="font-size:clamp(1.5rem,3.8vw,3rem);">Palm-sized. <span class="accent">Under $50 BOM.</span></div>
+    <div class="row reveal" style="align-items:stretch;margin-top:clamp(.3rem,1vh,.6rem);">
+      <div class="panel col fill" style="gap:.6rem;">
+        <div><div class="editable" style="font-size:var(--small-size);font-weight:700;color:var(--gold-2);text-transform:uppercase;letter-spacing:.06em;">Protocol Stack</div><div class="editable" style="font-size:var(--body-size);color:var(--text-dim);">IEEE 2030.5 · SunSpec/Modbus · MQTT · Zigbee</div></div>
+        <div class="divider"></div>
+        <div><div class="editable" style="font-size:var(--small-size);font-weight:700;color:var(--gold-2);text-transform:uppercase;letter-spacing:.06em;">Devices Under Management</div><div class="editable" style="font-size:var(--body-size);color:var(--text-dim);">Solar inverters · batteries · EV chargers · smart meters · flexible loads</div></div>
+        <div class="divider"></div>
+        <div><div class="editable" style="font-size:var(--small-size);font-weight:700;color:var(--gold-2);text-transform:uppercase;letter-spacing:.06em;">Business Model</div><div class="editable" style="font-size:var(--body-size);color:var(--text-dim);">$150 one-time gateway license + SaaS</div></div>
+      </div>
+      <div class="panel col fill" style="border-color:var(--line);gap:.7rem;">
+        <div class="persona-grid" style="grid-template-columns:repeat(5,1fr);">
+          <div class="col" style="align-items:center;gap:.3rem;"><div class="hex-dot hexclip" style="width:1.3em;height:1.5em;"></div><div class="editable" style="font-size:var(--micro-size);text-align:center;font-weight:600;">Forecasting</div></div>
+          <div class="col" style="align-items:center;gap:.3rem;"><div class="hex-dot hexclip" style="width:1.3em;height:1.5em;"></div><div class="editable" style="font-size:var(--micro-size);text-align:center;font-weight:600;">P2P Trading</div></div>
+          <div class="col" style="align-items:center;gap:.3rem;"><div class="hex-dot hexclip" style="width:1.3em;height:1.5em;"></div><div class="editable" style="font-size:var(--micro-size);text-align:center;font-weight:600;">Demand Flex</div></div>
+          <div class="col" style="align-items:center;gap:.3rem;"><div class="hex-dot hexclip" style="width:1.3em;height:1.5em;"></div><div class="editable" style="font-size:var(--micro-size);text-align:center;font-weight:600;">Securitisation</div></div>
+          <div class="col" style="align-items:center;gap:.3rem;"><div class="hex-dot hexclip" style="width:1.3em;height:1.5em;"></div><div class="editable" style="font-size:var(--micro-size);text-align:center;font-weight:600;">Asset Health</div></div>
+        </div>
+        <div class="badge outline-gold editable" style="align-self:center;">Interoperability + Security + MCP</div>
+        <div class="badge gold editable" style="align-self:center;">Communication Infrastructure</div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Product — Palm-sized & Under $50 BOM","script":"The gateway itself is palm-sized and comes in under a fifty-dollar bill of materials. It manages solar inverters, batteries, EV chargers, meters, and flexible loads — and on top of that single communication infrastructure, we sell five SaaS applications.","notes":["Sub-$50 BOM is the cost moat","$150 one-time license + recurring SaaS, no per-dispatch fees","Five revenue lines on one data stream: forecasting, P2P trading, demand flex, securitization, asset health"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 9 — APPLICATION STACK ============================================================ -->
+<div class="slide" data-slide="9">
+  <div class="eyebrow-lock editable">09 — Application Stack</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">Application Stack</div>
+    <div class="headline reveal editable">Three layers,<br>one <span class="accent">stack.</span></div>
+    <div class="col reveal" style="gap:0;margin-top:clamp(.3rem,1vh,.6rem);">
+      <div class="row" style="padding:clamp(.6rem,1.6vh,.9rem) 0;border-bottom:1px solid var(--card-border);">
+        <div class="hex-stat" style="width:clamp(52px,5.6vw,72px);"><div class="hex-stat-inner"><span style="font-size:1.1em;">⚡</span></div></div>
+        <div class="col" style="gap:.15rem;"><div class="editable" style="font-weight:700;color:var(--gold-2);">SaaS App Store</div><div class="editable" style="font-size:var(--small-size);color:var(--text-dim);">Applications sold on top of the gateway, and gateway sold on top of applications.</div></div>
+      </div>
+      <div class="row" style="padding:clamp(.6rem,1.6vh,.9rem) 0;border-bottom:1px solid var(--card-border);">
+        <div class="hex-stat" style="width:clamp(52px,5.6vw,72px);"><div class="hex-stat-inner"><span style="font-family:var(--f-display);font-size:.9em;">01</span></div></div>
+        <div class="col" style="gap:.15rem;"><div class="editable" style="font-weight:700;color:#fff;">Edge Gateway</div><div class="editable" style="font-size:var(--small-size);color:var(--text-dim);">Discovers, monitors, and dispatches DERs locally.</div></div>
+      </div>
+      <div class="row" style="padding:clamp(.6rem,1.6vh,.9rem) 0;border-bottom:1px solid var(--card-border);">
+        <div class="hex-stat" style="width:clamp(52px,5.6vw,72px);"><div class="hex-stat-inner"><span style="font-family:var(--f-display);font-size:.9em;">02</span></div></div>
+        <div class="col" style="gap:.15rem;"><div class="editable" style="font-weight:700;color:#fff;">Protocol Translation</div><div class="editable" style="font-size:var(--small-size);color:var(--text-dim);">Speaks IEEE 2030.5 to utilities and aggregators.</div></div>
+      </div>
+      <div class="row" style="padding:clamp(.6rem,1.6vh,.9rem) 0;">
+        <div class="hex-stat" style="width:clamp(52px,5.6vw,72px);"><div class="hex-stat-inner"><span style="font-family:var(--f-display);font-size:.9em;">03</span></div></div>
+        <div class="col" style="gap:.15rem;"><div class="editable" style="font-weight:700;color:#fff;">Cloud Platform</div><div class="editable" style="font-size:var(--small-size);color:var(--text-dim);">Fleet management, provisioning, telemetry, analytics.</div></div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Application Stack","script":"Three layers, one stack: the edge gateway discovers and dispatches locally, the protocol translation layer speaks IEEE 2030.5 north, and the cloud platform handles fleet management and analytics — with a SaaS app store sold on top.","notes":["Edge Gateway: local discovery, monitoring, dispatch","Protocol Translation: IEEE 2030.5 northbound","Cloud Platform: fleet management, provisioning, telemetry, analytics"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 10 — TRANSITION ============================================================ -->
+<div class="slide" data-slide="10">
+  <div class="glow glow-gold" style="width:40vw;height:40vw;top:30%;left:50%;transform:translate(-50%,-50%);opacity:.5;"></div>
+  <div class="eyebrow-lock editable">10</div>
+  <div class="slide-content" style="align-items:center;text-align:center;">
+    <div class="row reveal" style="gap:clamp(1rem,3vw,2.2rem);align-items:flex-end;justify-content:center;">
+      <div style="width:2px;height:clamp(28px,6vh,54px);background:linear-gradient(0deg,transparent,var(--gold));"></div>
+      <div style="width:2px;height:clamp(44px,8vh,74px);background:linear-gradient(0deg,transparent,var(--gold));"></div>
+      <div style="font-size:clamp(1.4rem,3vw,2.2rem);">🐝</div>
+      <div style="width:2px;height:clamp(50px,9vh,84px);background:linear-gradient(0deg,transparent,var(--gold));"></div>
+      <div style="width:2px;height:clamp(32px,6.5vh,58px);background:linear-gradient(0deg,transparent,var(--gold));"></div>
+      <div style="width:2px;height:clamp(44px,8vh,74px);background:linear-gradient(0deg,transparent,var(--gold));"></div>
+    </div>
+    <div class="kicker reveal editable" style="justify-content:center;margin-top:clamp(1rem,3vh,2rem);">The hive is interoperable, cryptographic &amp; agentic-ready</div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Transition — Interoperable, Cryptographic, Agentic-Ready","script":"The hive is interoperable, cryptographic, and agentic-ready.","notes":["Breathing-room transition between product and go-to-market sections"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 11 — CUSTOMER PERSONAS ============================================================ -->
+<div class="slide" data-slide="11">
+  <div class="eyebrow-lock editable">11 — Who It's For</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">Who It's For</div>
+    <div class="headline reveal editable" style="font-size:clamp(1.4rem,3.4vw,2.6rem);">Six ways into the <span class="accent">hive.</span></div>
+    <div class="persona-grid reveal">
+      <div class="persona-card"><div class="persona-num">01</div><div class="persona-name editable">Utilities / DISCOMs</div><div class="persona-pain editable">Can't see or dispatch behind-the-meter assets.</div><div class="persona-give editable">→ Full visibility + dispatch, no new integrations.</div></div>
+      <div class="persona-card"><div class="persona-num">02</div><div class="persona-name editable">Aggregators / VPP Operators</div><div class="persona-pain editable">Every asset type needs its own integration.</div><div class="persona-give editable">→ One API dispatches the whole fleet.</div></div>
+      <div class="persona-card"><div class="persona-num">03</div><div class="persona-name editable">OEMs</div><div class="persona-pain editable">Building a software platform is slow and expensive.</div><div class="persona-give editable">→ Instant interoperability, no cloud to build.</div></div>
+      <div class="persona-card"><div class="persona-num">04</div><div class="persona-name editable">Energy AI Platforms</div><div class="persona-pain editable">DER data is messy, proprietary, inconsistent.</div><div class="persona-give editable">→ Clean, agent-ready data + dispatch APIs.</div></div>
+      <div class="persona-card"><div class="persona-num">05</div><div class="persona-name editable">BESS Financiers / Asset Owners</div><div class="persona-pain editable">No verifiable telemetry to underwrite against.</div><div class="persona-give editable">→ Cryptographically verified telemetry.</div></div>
+      <div class="persona-card"><div class="persona-num">06</div><div class="persona-name editable">Commercial Asset Owners</div><div class="persona-pain editable">Assets sit idle, invisible to grid revenue.</div><div class="persona-give editable">→ Lower bills, new revenue, full visibility.</div></div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Customer Personas","script":"There are six ways into the hive: utilities and DISCOMs, aggregators and VPP operators, OEMs, energy AI platforms, BESS financiers and asset owners, and commercial asset owners — each with a distinct pain we solve.","notes":["Utilities/DISCOMs: visibility + dispatch without new integrations","Aggregators/VPPs: one API for the whole mixed fleet","OEMs: instant interoperability without building a platform","Energy AI platforms: clean, agent-ready data","BESS financiers: verifiable telemetry for underwriting","Commercial owners: new revenue, full visibility"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 12 — USE CASE 01 ============================================================ -->
+<div class="slide" data-slide="12">
+  <div class="glow glow-gold" style="width:26vw;height:26vw;top:-10%;right:0;"></div>
+  <div class="eyebrow-lock editable">12 — Use Case 01</div>
+  <div class="slide-content">
+    <div class="row top" style="align-items:center;">
+      <div class="col fill">
+        <div class="kicker reveal editable">Use Case 01 — Utility / DISCOM</div>
+        <div class="headline reveal editable" style="font-size:clamp(1.3rem,3vw,2.3rem);">A DISCOM sees its rooftop fleet for the first time.</div>
+        <div class="subhead reveal editable">2,500+ distributed rooftop solar sites, 30+ MW — previously invisible behind the meter. The kWh gateway makes every site visible in real time and dispatchable for curtailment and flexibility during grid stress, without touching tariffs or settlement.</div>
+        <div class="badge outline-gold reveal editable" style="margin-top:.4rem;">Zodiac Energy pilot · 2,500+ sites · 30+ MW</div>
+      </div>
+      <div class="col reveal" style="flex:none;gap:.5rem;width:clamp(180px,22vw,260px);">
+        <div class="panel editable" style="border-color:rgba(255,255,255,.06);opacity:.65;"><div style="font-size:var(--micro-size);color:var(--text-faint);font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Before</div><div style="font-size:var(--small-size);">No visibility. Manual estimates.</div></div>
+        <div class="panel editable" style="border-color:var(--line);"><div style="font-size:var(--micro-size);color:var(--gold-2);font-weight:700;text-transform:uppercase;letter-spacing:.08em;">After</div><div style="font-size:var(--small-size);">Real-time telemetry + dispatch across the fleet.</div></div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Use Case 1 — Utility Visibility & Dispatch","script":"A DISCOM sees its rooftop fleet for the first time. Zodiac Energy's 2,500-plus sites and 30-plus megawatts were invisible behind the meter — now they're visible in real time and dispatchable for grid stress, without touching tariffs or settlement.","notes":["Zodiac Energy: 2,500+ sites, 30+ MW rooftop solar","Before: no visibility, manual estimates","After: real-time telemetry + dispatch, no tariff/settlement changes needed"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 13 — USE CASE 02 ============================================================ -->
+<div class="slide" data-slide="13">
+  <div class="glow glow-gold2" style="width:26vw;height:26vw;bottom:-10%;left:0;"></div>
+  <div class="eyebrow-lock editable">13 — Use Case 02</div>
+  <div class="slide-content">
+    <div class="row top" style="align-items:center;">
+      <div class="col fill">
+        <div class="kicker reveal editable">Use Case 02 — Aggregator / VPP</div>
+        <div class="headline reveal editable" style="font-size:clamp(1.3rem,3vw,2.3rem);">One virtual power plant, five different manufacturers.</div>
+        <div class="subhead reveal editable">A VPP operator managing batteries, inverters, EV chargers, and meters from different OEMs once needed a separate integration per vendor — at $50K+/month tax each. With kWh, the whole mixed fleet dispatches through one gateway and one API.</div>
+        <div class="badge outline-gold reveal editable" style="margin-top:.4rem;">Kintech Synergy · live BESS assets · telemetry + SoC + dispatch validation</div>
+      </div>
+      <div class="col reveal" style="flex:none;gap:.5rem;width:clamp(180px,22vw,260px);">
+        <div class="panel editable" style="border-color:rgba(255,255,255,.06);opacity:.65;"><div style="font-size:var(--micro-size);color:var(--text-faint);font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Before</div><div style="font-size:var(--small-size);">N integrations, N months of engineering.</div></div>
+        <div class="panel editable" style="border-color:var(--line);"><div style="font-size:var(--micro-size);color:var(--gold-2);font-weight:700;text-transform:uppercase;letter-spacing:.08em;">After</div><div style="font-size:var(--small-size);">One gateway, live in days.</div></div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Use Case 2 — Aggregator Unified Dispatch","script":"One virtual power plant, five different manufacturers. What used to mean a separate integration per OEM at fifty-thousand-plus dollars a month now dispatches through a single gateway and API — validated live on Kintech Synergy's BESS assets.","notes":["Kintech Synergy: live BESS assets for telemetry, state-of-charge, dispatch validation","Before: N integrations, N months of engineering, ~$50K/mo per OEM","After: one gateway, live in days"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 14 — USE CASE 03 ============================================================ -->
+<div class="slide" data-slide="14">
+  <div class="glow glow-gold" style="width:26vw;height:26vw;top:-8%;right:4%;"></div>
+  <div class="eyebrow-lock editable">14 — Use Case 03</div>
+  <div class="slide-content">
+    <div class="row top" style="align-items:center;">
+      <div class="col fill">
+        <div class="kicker reveal editable">Use Case 03 — Financier</div>
+        <div class="headline reveal editable" style="font-size:clamp(1.3rem,3vw,2.3rem);">Provable telemetry, financeable assets.</div>
+        <div class="subhead reveal editable">BESS and DER financiers need independent, tamper-evident proof of asset performance to underwrite and securitize loans against distributed assets. kWh's Verify step logs every dispatch event before, during, and after — turning raw telemetry into claimable, auditable revenue and lower-risk collateral.</div>
+        <div class="badge outline-gold reveal editable" style="margin-top:.4rem;">Active engagement with Fannie Mae on verified telemetry for microgrid/datacenter loan securitization</div>
+      </div>
+      <div class="col reveal" style="flex:none;gap:.5rem;width:clamp(180px,22vw,260px);">
+        <div class="panel editable" style="border-color:rgba(255,255,255,.06);opacity:.65;"><div style="font-size:var(--micro-size);color:var(--text-faint);font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Before</div><div style="font-size:var(--small-size);">Unverifiable, OEM-reported numbers.</div></div>
+        <div class="panel editable" style="border-color:var(--line);"><div style="font-size:var(--micro-size);color:var(--gold-2);font-weight:700;text-transform:uppercase;letter-spacing:.08em;">After</div><div style="font-size:var(--small-size);">Cryptographically verified, in-jurisdiction telemetry trail.</div></div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Use Case 3 — Verified Telemetry & Securitization","script":"Provable telemetry, financeable assets. Financiers need independent proof of performance to underwrite distributed assets — kWh's Verify step logs every dispatch event, turning raw telemetry into claimable, auditable revenue.","notes":["Active Fannie Mae engagement on verified telemetry for microgrid/datacenter loan securitization","Before: unverifiable, OEM-reported numbers","After: cryptographically verified, in-jurisdiction telemetry trail"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 15 — THE OPPORTUNITY ============================================================ -->
+<div class="slide" data-slide="15">
+  <div class="eyebrow-lock editable">15 — The Opportunity</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">The Opportunity</div>
+    <div class="headline reveal editable">A $30B+ market,<br><span class="accent">inflecting now.</span></div>
+    <div class="subhead reveal editable">4 TWh of devices require security.</div>
+    <div class="row reveal" style="gap:clamp(.8rem,2.4vw,1.6rem);margin-top:clamp(.4rem,1.4vh,1rem);justify-content:space-between;align-items:center;">
+      <div class="hex-stat"><div class="hex-stat-inner"><div class="num editable">$20B</div><div class="lbl editable">Global VPP value by 2033</div></div></div>
+      <div class="col" style="align-items:center;gap:.4rem;">
+        <div style="font-family:var(--f-display);font-size:clamp(1.05rem,2.6vw,2.1rem);color:var(--gold-2);">42%</div>
+        <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+          <defs><linearGradient id="sparkFillOpp" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F2C14B" stop-opacity=".7"/><stop offset="100%" stop-color="#F2C14B" stop-opacity="0"/></linearGradient></defs>
+          <polygon points="0,27 25,23 50,15 75,7 100,2 100,30 0,30" fill="url(#sparkFillOpp)"/>
+          <polyline points="0,27 25,23 50,15 75,7 100,2" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="editable" style="font-size:var(--micro-size);color:var(--text-dim);text-align:center;">CAGR in DER connections, 4 TWh today</div>
+      </div>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+          <circle cx="60" cy="60" r="52" fill="none" stroke="var(--gold)" stroke-width="10" stroke-linecap="round" stroke-dasharray="261.4 326.7" transform="rotate(-90 60 60)"/>
+        </svg>
+        <div class="donut-label"><div class="num editable">80%</div><div class="lbl editable">of fleets lack unified dispatch</div></div>
+      </div>
+      <div class="hex-stat"><div class="hex-stat-inner"><div class="num editable">$50</div><div class="lbl editable">BOM — far below comparable platforms</div></div></div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"The Opportunity","script":"This is a thirty-billion-dollar-plus market, inflecting right now. The global VPP market reaches twenty billion dollars by 2033, DER connections are growing 42% CAGR off four terawatt-hours today, eighty percent of fleets still lack unified dispatch, and our BOM sits at fifty dollars — a fraction of comparable platforms.","notes":["$20B global VPP value by 2033","42% CAGR in DER connections, 4 TWh of DER today","80% of fleets lack unified dispatch","$50 BOM vs comparable platforms"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 16 — GLOBAL MARKETS ============================================================ -->
+<div class="slide" data-slide="16">
+  <div class="eyebrow-lock editable">16 — Where We're Going</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">Where We're Going</div>
+    <div class="headline reveal editable" style="font-size:clamp(1.4rem,3.4vw,2.6rem);">Global infrastructure.<br><span class="accent">Local proof points.</span></div>
+    <div class="subhead reveal editable">kWh is global infrastructure — India is our beachhead channel for proving velocity, not our market cap. Primary targets: US, Canada, Australia, India. Secondary: UK, Germany, Netherlands.</div>
+    <div class="row reveal" style="align-items:stretch;margin-top:clamp(.3rem,1vh,.7rem);">
+      <div class="panel col fill" style="gap:.4rem;"><div class="badge gold editable" style="align-self:flex-start;">Sourced</div><div class="editable" style="font-weight:700;color:#fff;">United States</div><div class="editable" style="font-size:var(--small-size);color:var(--text-dim);line-height:1.5;">IEEE 2030.5 mandated under California Rule 21. FERC Order 2222 opens wholesale markets to aggregated DERs. Commercial center of gravity — HQ Palo Alto.</div></div>
+      <div class="panel col fill" style="gap:.4rem;"><div class="badge dash editable" style="align-self:flex-start;">Market context</div><div class="editable" style="font-weight:700;color:#fff;">Australia</div><div class="editable" style="font-size:var(--small-size);color:var(--text-dim);line-height:1.5;">One of the world's highest rooftop solar penetration rates per capita — creating acute grid-visibility and orchestration pressure on distribution networks.</div></div>
+      <div class="panel col fill" style="gap:.4rem;"><div class="badge gold editable" style="align-self:flex-start;">Sourced</div><div class="editable" style="font-weight:700;color:#fff;">India</div><div class="editable" style="font-size:var(--small-size);color:var(--text-dim);line-height:1.5;">2.6M rooftops / 9.6 GW added in ~2 years under PM Surya Ghar. Gujarat leads at 6.67 GW. Live channel into 5 DISCOMs via Beckn DEG — also reachable in Oman, Qatar, Brazil.</div></div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Global Markets — US / Australia / India","script":"kWh is global infrastructure — India is our beachhead channel for proving velocity, not our market cap. The US gives us regulatory tailwind through Rule 21 and FERC 2222. Australia has some of the highest rooftop solar penetration in the world. India is our proof of velocity, with a live channel into five DISCOMs.","notes":["US: IEEE 2030.5 mandated under Rule 21, FERC 2222 opens wholesale markets, HQ Palo Alto","Australia: high rooftop solar penetration — directional market color, not a company-verified stat","India: 2.6M rooftops / 9.6GW in ~2 years, Gujarat 6.67GW, live channel into 5 DISCOMs via Beckn DEG"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 17 — UNIT ECONOMICS ============================================================ -->
+<div class="slide" data-slide="17">
+  <div class="eyebrow-lock editable">17 — Unit Economics</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">Unit Economics</div>
+    <div class="headline reveal editable" style="font-size:clamp(1.4rem,3.4vw,2.6rem);">The fix costs less<br>than a day of the <span class="accent">problem.</span></div>
+    <div class="bars reveal">
+      <div class="bar-row"><div class="bar-label editable">Gateway BOM</div><div class="bar-track"><div class="bar-fill small" style="width:6%;"></div></div><div class="bar-value editable">$50</div></div>
+      <div class="bar-row"><div class="bar-label editable">Integration tax replaced</div><div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div><div class="bar-value editable">$50K+/mo</div></div>
+    </div>
+    <div class="row reveal" style="margin-top:clamp(.4rem,1.2vh,.8rem);align-items:stretch;">
+      <div class="panel fill editable"><b style="color:#fff;">$150</b> one-time gateway license + recurring SaaS. No per-dispatch fees. No lock-in.</div>
+      <div class="panel fill editable" style="border-color:var(--line);">One avoided month of integration tax ≈ <b style="color:var(--gold-2);">300+ gateways</b> deployed ($50,000 ÷ $150).</div>
+      <div class="panel fill editable">One foundation, many revenues — the same telemetry stream monetizes Demand Response, VPP, P2P Trading, Asset Health, Securitization.</div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Unit Economics","script":"The fix costs less than a day of the problem. A fifty-dollar gateway replaces a fifty-thousand-dollar-a-month integration tax. We charge a one-hundred-fifty-dollar one-time license plus recurring SaaS — no per-dispatch fees, no lock-in — and monetize the same telemetry stream across five revenue lines.","notes":["$50 BOM vs $50K+/month integration tax it replaces","$150 one-time license + SaaS, no per-dispatch fees, no lock-in","One avoided month of tax ≈ 300+ gateways (illustrative arithmetic)","One foundation, many revenues"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 18 — PILOT PARTNERS ============================================================ -->
+<div class="slide" data-slide="18">
+  <div class="eyebrow-lock editable">18 — Pilot Partners</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">Pilot Partners</div>
+    <div class="headline reveal editable" style="font-size:clamp(1.4rem,3.4vw,2.6rem);">A live channel<br>into <span class="accent">DISCOMs.</span></div>
+    <div class="row reveal" style="align-items:stretch;margin-top:clamp(.2rem,.8vh,.5rem);">
+      <div class="panel col fill" style="gap:.35rem;"><div class="editable" style="font-weight:700;color:#fff;">Zodiac Energy</div><div class="editable" style="font-size:var(--small-size);color:var(--text-dim);">2,500+ sites, 30+ MW rooftop solar (Gujarat). Data sharing live; gateway telemetry pilot in setup.</div></div>
+      <div class="panel col fill" style="gap:.35rem;"><div class="editable" style="font-weight:700;color:#fff;">Kintech Synergy</div><div class="editable" style="font-size:var(--small-size);color:var(--text-dim);">₹800Cr+ EPC, 30+ years solar/wind/storage (Gujarat). Live BESS assets for telemetry, state-of-charge, dispatch validation.</div></div>
+    </div>
+    <div class="row reveal" style="margin-top:clamp(.3rem,1vh,.6rem);">
+      <div class="col fill"><div class="editable" style="font-size:var(--small-size);font-weight:700;color:var(--gold-2);text-transform:uppercase;letter-spacing:.06em;">Hardware</div><div class="editable" style="font-size:var(--body-size);">PCB Power India — custom PCB for production</div></div>
+      <div class="col fill"><div class="editable" style="font-size:var(--small-size);font-weight:700;color:var(--gold-2);text-transform:uppercase;letter-spacing:.06em;">Channel</div><div class="editable" style="font-size:var(--body-size);">Beckn DEG — 5 DISCOMs across India</div></div>
+      <div class="col fill"><div class="editable" style="font-size:var(--small-size);font-weight:700;color:var(--gold-2);text-transform:uppercase;letter-spacing:.06em;">Deploying</div><div class="editable" style="font-size:var(--body-size);">Piloting — 2 plants, live since Dec 2025</div></div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Pilot Partners","script":"We have a live channel into DISCOMs. Zodiac Energy brings 2,500-plus sites and 30-plus megawatts, Kintech Synergy brings live BESS assets for telemetry and dispatch validation, and we're piloting on two operating plants since December 2025.","notes":["Zodiac Energy: 2,500+ sites, 30+ MW, Gujarat","Kintech Synergy: live BESS assets, telemetry/SoC/dispatch validation","Hardware: PCB Power India; Channel: Beckn DEG, 5 DISCOMs; Deploying: 2 plants live"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 19 — TIMELINE ============================================================ -->
+<div class="slide" data-slide="19">
+  <div class="eyebrow-lock editable">19 — Timeline</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">Timeline</div>
+    <div class="headline reveal editable" style="font-size:clamp(1.4rem,3.4vw,2.6rem);">From live pilots to<br>global <span class="accent">infrastructure.</span></div>
+    <div class="timeline reveal">
+      <div class="tl-node">
+        <div class="tl-dot"></div>
+        <div class="tl-date editable">Dec 2025</div>
+        <div class="tl-body"><ul><li class="editable">MVP live — IEEE 2030.5 on production hardware</li><li class="editable">2 operating plants</li></ul></div>
+      </div>
+      <div class="tl-node mid" style="flex:1.6;">
+        <div class="tl-dot"></div>
+        <div class="tl-date editable">Next 6 months (from Jul 2026)</div>
+        <div class="tl-body"><ul>
+          <li class="editable">Ship $50-BOM production gateway (custom PCB)</li>
+          <li class="editable">Full protocol coverage — EV, batteries, inverters, appliances</li>
+          <li class="editable">Fleet-scale discovery &amp; enrollment via Beckn ONIX + TEE</li>
+          <li class="editable">Scale to 1 utility + 1–2 aggregators; convert Fannie Mae engagement</li>
+          <li class="editable">Begin AI-assisted edge optimization, policy-as-code</li>
+        </ul></div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-dot"></div>
+        <div class="tl-date editable">2030 Target</div>
+        <div class="tl-body"><ul><li class="editable">100,000 gateways deployed</li><li class="editable">≈ 2.5 GW under management</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Timeline","script":"From live pilots to global infrastructure. We went live in December 2025 on two plants. Over the next six months we ship the fifty-dollar production gateway, full protocol coverage, fleet-scale enrollment, and scale pilots. By 2030, our target is one hundred thousand gateways — about two and a half gigawatts under management.","notes":["Dec 2025: MVP live, 2 plants","Next 6 months: production PCB, full protocol coverage, Beckn ONIX + TEE enrollment, scale to 1 utility + 1-2 aggregators, convert Fannie Mae, begin AI edge optimization","2030 target: 100,000 gateways ≈ 2.5 GW"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 20 — FINANCIAL PROJECTIONS ============================================================ -->
+<div class="slide" data-slide="20">
+  <div class="eyebrow-lock editable">20 — Financial Projections</div>
+  <div class="slide-content">
+    <div class="row" style="align-items:center;justify-content:space-between;">
+      <div class="kicker reveal editable">Financial Projections</div>
+      <div class="badge dash reveal editable">Illustrative model — directional, not a formal forecast</div>
+    </div>
+    <div class="headline reveal editable" style="font-size:clamp(1.4rem,3.4vw,2.6rem);">What 100,000 gateways<br>looks <span class="accent">like.</span></div>
+    <div class="row reveal" style="justify-content:space-between;">
+      <div class="editable" style="font-size:var(--small-size);"><b style="color:var(--gold-2);">Today</b> <span style="color:var(--text-dim);">— pre-revenue, 2 pilot plants, $0 MRR, ~$2,000/mo burn</span></div>
+      <div class="editable" style="font-size:var(--small-size);text-align:right;"><b style="color:var(--gold-2);">2030 target</b> <span style="color:var(--text-dim);">— 100,000 gateways, ≈2.5 GW under management</span></div>
+    </div>
+    <svg class="reveal" viewBox="0 0 600 190" preserveAspectRatio="none" style="width:100%;height:clamp(90px,20vh,180px);overflow:visible;">
+      <defs><linearGradient id="projFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8A93A" stop-opacity=".38"/><stop offset="100%" stop-color="#E8A93A" stop-opacity="0"/></linearGradient></defs>
+      <line x1="40" y1="170" x2="560" y2="170" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+      <path d="M40,165 C 220,160 360,120 480,55 C 515,34 540,20 558,12 L558,170 L40,170 Z" fill="url(#projFill)"/>
+      <path d="M40,165 C 220,160 360,120 480,55 C 515,34 540,20 558,12" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="40" cy="165" r="5" fill="var(--bg1)" stroke="var(--gold)" stroke-width="2.5"/>
+      <circle cx="558" cy="12" r="6" fill="var(--gold-2)"/>
+      <text x="40" y="188" fill="var(--text-faint)" font-family="Space Grotesk" font-size="13" text-anchor="start">Today</text>
+      <text x="558" y="188" fill="var(--text-faint)" font-family="Space Grotesk" font-size="13" text-anchor="end">2030</text>
+      <text x="558" y="2" fill="var(--gold-2)" font-family="Archivo Black" font-size="15" text-anchor="end">100,000 gateways</text>
+    </svg>
+    <div class="panel reveal editable" style="font-size:var(--small-size);color:var(--text-dim);line-height:1.55;">
+      100,000 gateways × $150 one-time license ≈ <b style="color:var(--gold-2);">$15M</b> cumulative hardware/license value at full scale — illustrative arithmetic, not a revenue forecast — plus recurring SaaS layered on top. Capital-efficiency story: real pilots, ~$2K/month burn, no fabricated growth curve.
+    </div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Financial Projections","script":"This is illustrative, not a formal forecast. Today we're pre-revenue on two live pilot plants at about two thousand dollars a month burn. Our 2030 target is one hundred thousand gateways — about two and a half gigawatts under management. At a hundred-fifty-dollar one-time license, that's roughly fifteen million dollars of cumulative hardware value alone, before recurring SaaS.","notes":["Explicitly labeled illustrative / directional, not a formal forecast","Today: pre-revenue, 2 pilots, $0 MRR, ~$2K/mo burn","2030: 100,000 gateways, ~$15M cumulative one-time license value (illustrative), plus SaaS layered on top","Capital-efficiency story, not a hockey-stick claim"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 21 — THE INVESTMENT / ASK ============================================================ -->
+<div class="slide" data-slide="21">
+  <div class="eyebrow-lock editable">21 — The Ask</div>
+  <div class="slide-content">
+    <div class="kicker reveal editable">The Ask</div>
+    <div class="headline reveal editable" style="font-size:clamp(1.4rem,3.4vw,2.6rem);">Pre-seed.<br>Building toward <span class="accent">Seed.</span></div>
+    <div class="row reveal">
+      <div class="panel col fill" style="gap:.15rem;"><div class="editable" style="font-family:var(--f-display);color:var(--gold-2);font-size:var(--h3-size);">Pre-seed</div><div class="editable" style="font-size:var(--micro-size);color:var(--text-faint);">Current stage</div></div>
+      <div class="panel col fill" style="gap:.15rem;"><div class="editable" style="font-family:var(--f-display);color:var(--gold-2);font-size:var(--h3-size);">~$2K/mo</div><div class="editable" style="font-size:var(--micro-size);color:var(--text-faint);">Current burn</div></div>
+      <div class="panel col fill" style="gap:.15rem;"><div class="editable" style="font-family:var(--f-display);color:var(--gold-2);font-size:var(--h3-size);">Dec 2025</div><div class="editable" style="font-size:var(--micro-size);color:var(--text-faint);">MVP live since</div></div>
+      <div class="panel col fill" style="gap:.15rem;"><div class="editable" style="font-family:var(--f-display);color:var(--gold-2);font-size:var(--h3-size);">2 + 5</div><div class="editable" style="font-size:var(--micro-size);color:var(--text-faint);">Pilot partners + DISCOM channel</div></div>
+    </div>
+    <div class="panel reveal" style="border-style:dashed;border-color:var(--gold);gap:.5rem;">
+      <div class="badge dash editable" style="align-self:flex-start;">To be finalized</div>
+      <div class="editable" style="font-size:var(--body-size);color:#fff;">Raising <b style="color:var(--gold-2);">[$X]</b> to <b style="color:var(--gold-2);">[reach Y milestone]</b> over <b style="color:var(--gold-2);">[Z months]</b>.</div>
+      <div class="row" style="gap:.6rem;flex-wrap:wrap;">
+        <div class="badge outline-gold editable">[Hardware / production]</div>
+        <div class="badge outline-gold editable">[Team]</div>
+        <div class="badge outline-gold editable">[Pilot scaling]</div>
+      </div>
+    </div>
+    <div class="subhead reveal editable" style="font-size:var(--small-size);">What this round unlocks: production PCB at scale, full protocol coverage, scaled pilots (1 utility + 1–2 aggregators), and converting the active Fannie Mae engagement.</div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"The Investment / The Ask","script":"We're pre-seed, burning about two thousand dollars a month, MVP live since December 2025, with two pilot partners and a channel into five DISCOMs. Raise amount and use of funds to be finalized — what this round unlocks is production PCB at scale, full protocol coverage, scaled pilots, and converting the Fannie Mae engagement.","notes":["Current state: pre-seed, ~$2K/mo burn, MVP live Dec 2025, 2 pilots + 5-DISCOM channel","Raise amount and use-of-funds are explicit placeholders — TO BE FINALIZED","Unlocks: production PCB at scale, full protocol coverage, scaled pilots, Fannie Mae conversion"]}
+  </script>
+</div>
+
+<!-- ============================================================ SLIDE 22 — DEMO / CLOSE ============================================================ -->
+<div class="slide bookend" data-slide="22">
+  <div class="glow glow-gold2" style="width:48vw;height:48vw;top:-16%;left:-10%;"></div>
+  <div class="glow glow-gold" style="width:30vw;height:30vw;bottom:6%;right:-6%;"></div>
+  <div class="slide-content" style="align-items:center;text-align:center;justify-content:center;">
+    <div class="kicker reveal editable" style="justify-content:center;">See It Live</div>
+    <div class="headline reveal editable" style="max-width:16ch;">Every energy asset, visible and <span class="accent">dispatchable.</span></div>
+    <div class="row reveal" style="justify-content:center;margin-top:clamp(.4rem,1.4vh,1rem);">
+      <div class="badge gold editable" style="font-size:var(--body-size);padding:.7em 1.4em;">kwhelectric.io</div>
+    </div>
+    <div class="subhead reveal editable" style="text-align:center;margin:0 auto;">arham@kwhelectric.io</div>
+    <div class="subhead reveal editable" style="text-align:center;margin:clamp(.6rem,1.6vh,1rem) auto 0;color:var(--gold-2);font-weight:600;">One gateway. Zero integration tax.</div>
+  </div>
+  <script type="application/json" class="slide-notes">
+  {"title":"Demo / Close","script":"See it live at kwhelectric.io. Every energy asset, visible and dispatchable. One gateway, zero integration tax — thank you.","notes":["CTA: kwhelectric.io, arham@kwhelectric.io","Bookends the cover with the same gold/dark treatment","Closing tagline: One gateway. Zero integration tax."]}
+  </script>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+/* ============================================================
+   NAVIGATION (required global functions)
+   ============================================================ */
+var slides = document.querySelectorAll('.slide');
+var current = 0;
+var total = slides.length;
+
+function goTo(index){
+  if (index < 0 || index >= total || index === current) return;
+  current = index;
+  slides.forEach(function(s,i){ s.classList.toggle('active', i === current); });
+  slides[current].scrollIntoView({ behavior:'smooth' });
+  updateUI();
+  showSpeakerNotes(current);
+}
+function next(){ goTo(current+1); }
+function prev(){ goTo(current-1); }
+
+function updateUI(){
+  var progress = document.getElementById('progress');
+  if (progress) progress.style.width = ((current+1)/total*100) + '%';
+  var counter = document.getElementById('counter');
+  if (counter) counter.textContent = (current+1) + ' / ' + total;
+  document.querySelectorAll('.slide-nav-dot').forEach(function(d,i){ d.classList.toggle('active', i === current); });
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.target.getAttribute && e.target.getAttribute('contenteditable') === 'true') return;
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown'){ e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); prev(); }
+  if (e.key === 'Home'){ e.preventDefault(); goTo(0); }
+  if (e.key === 'End'){ e.preventDefault(); goTo(total-1); }
+});
+
+var touchStart = 0;
+document.addEventListener('touchstart', function(e){ touchStart = e.touches[0].clientX; });
+document.addEventListener('touchend', function(e){
+  var diff = touchStart - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50){ diff > 0 ? next() : prev(); }
+});
+
+var wheelCD = false;
+document.addEventListener('wheel', function(e){
+  if (wheelCD) return; wheelCD = true;
+  setTimeout(function(){ wheelCD = false; }, 600);
+  if (e.deltaY > 0 || e.deltaX > 0) next(); else prev();
+}, { passive:true });
+
+var slideNav = document.getElementById('slideNav');
+if (slideNav){
+  slides.forEach(function(_, i){
+    var dot = document.createElement('div');
+    dot.className = 'slide-nav-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', function(){ goTo(i); });
+    slideNav.appendChild(dot);
+  });
+}
+updateUI();
+
+/* ============================================================
+   SPEAKER NOTES (console)
+   ============================================================ */
+function showSpeakerNotes(index){
+  var slide = slides[index];
+  var notesEl = slide.querySelector('script.slide-notes');
+  console.clear();
+  if (notesEl){
+    try{
+      var n = JSON.parse(notesEl.textContent);
+      var title = n.title || 'Slide ' + (index+1);
+      console.group('%c📋 Slide ' + (index+1) + '/' + total + ': ' + title, 'font-size:16px;font-weight:bold;color:#E8A93A;');
+      if (n.script) console.log('%c' + n.script, 'font-size:14px;color:#f5f1e8;line-height:1.6;padding:4px 0;');
+      if (n.notes && n.notes.length){
+        console.log('%cKey points:', 'font-size:11px;color:#6d675e;margin-top:4px;');
+        n.notes.forEach(function(note){ console.log('%c  • ' + note, 'font-size:12px;color:#aca497;'); });
+      }
+      console.groupEnd();
+    } catch(e){}
+  }
+  console.log('%c💡 htmlslides.com — presenter app for a richer experience', 'font-size:10px;color:#59d98c;');
+}
+setTimeout(function(){ showSpeakerNotes(0); }, 500);
+
+/* ============================================================
+   INLINE EDITING (opt-in, enabled) — hover hotzone + E key + Ctrl/Cmd+S export
+   ============================================================ */
+var editMode = false;
+var hotzone = document.getElementById('editHotzone');
+var editToggle = document.getElementById('editToggle');
+var saveHint = document.getElementById('saveHint');
+var hideTimeout = null;
+
+function setEditMode(on){
+  editMode = on;
+  document.body.classList.toggle('edit-mode', editMode);
+  editToggle.classList.toggle('active', editMode);
+  saveHint.classList.toggle('show', editMode);
+  document.querySelectorAll('.editable').forEach(function(el){
+    el.setAttribute('contenteditable', editMode ? 'true' : 'false');
+  });
+}
+function toggleEditMode(){ setEditMode(!editMode); }
+
+hotzone.addEventListener('mouseenter', function(){ clearTimeout(hideTimeout); editToggle.classList.add('show'); });
+hotzone.addEventListener('mouseleave', function(){
+  hideTimeout = setTimeout(function(){ if (!editMode) editToggle.classList.remove('show'); }, 400);
+});
+editToggle.addEventListener('mouseenter', function(){ clearTimeout(hideTimeout); });
+editToggle.addEventListener('mouseleave', function(){
+  hideTimeout = setTimeout(function(){ if (!editMode) editToggle.classList.remove('show'); }, 400);
+});
+editToggle.addEventListener('click', toggleEditMode);
+hotzone.addEventListener('click', toggleEditMode);
+
+document.addEventListener('keydown', function(e){
+  if ((e.key === 'e' || e.key === 'E') && !(e.target && e.target.getAttribute && e.target.getAttribute('contenteditable') === 'true')){
+    toggleEditMode();
+  }
+});
+
+/* Auto-assign stable IDs per slide position, restore + autosave via localStorage */
+var STORAGE_PREFIX = 'kwh-deck-edit-';
+slides.forEach(function(slide, si){
+  var editables = slide.querySelectorAll('.editable');
+  editables.forEach(function(el, ei){
+    var eid = 's' + si + '-e' + ei;
+    el.setAttribute('data-eid', eid);
+    var saved = localStorage.getItem(STORAGE_PREFIX + eid);
+    if (saved !== null) el.innerHTML = saved;
+    el.addEventListener('input', function(){
+      localStorage.setItem(STORAGE_PREFIX + el.getAttribute('data-eid'), el.innerHTML);
+    });
+  });
+});
+
+function exportHTML(){
+  var clone = document.documentElement.cloneNode(true);
+  clone.querySelectorAll('[contenteditable]').forEach(function(el){ el.removeAttribute('contenteditable'); });
+  var bodyEl = clone.querySelector('body');
+  if (bodyEl) bodyEl.classList.remove('edit-mode');
+  var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+  var blob = new Blob([html], { type:'text/html' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'kwh-pitch-deck-edited.html';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+document.addEventListener('keydown', function(e){
+  if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'S')){
+    e.preventDefault();
+    exportHTML();
+  }
+});
+</script>
+</body>
+</html>

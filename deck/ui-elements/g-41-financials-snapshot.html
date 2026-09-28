@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>4-year financial snapshot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-70:rgba(11,15,12,.7); --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5;
+          --ai:#0D9488; --ai-bg:#F0FDFA; --ent:#2563EB; --ent-bg:#EFF6FF; --lic:#7C3AED; --lic-bg:#F5F3FF; --neg:#DC2626; --neg-bg:#FEF2F2; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .slide{ width:1600px; background:#fff; color:var(--ink); padding:56px 64px 64px; }
+  .eyebrow{ font-size:13px; font-weight:700; color:var(--g); letter-spacing:.02em; }
+  .title{ font-size:44px; font-weight:800; line-height:1.15; margin-top:8px; }
+  .underline{ width:120px; height:3px; background:var(--g); margin-top:18px; }
+  .sub{ font-size:15px; font-weight:600; color:var(--ink-70); margin-top:14px; max-width:1020px; line-height:1.5; }
+
+  .kpi-row{ display:flex; gap:20px; margin-top:44px; }
+  .kpi{ flex:1; border:1.5px solid var(--ol); border-radius:16px; padding:26px 24px; }
+  .kpi-label{ font-size:13px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-60); }
+  .kpi-value{ font-size:38px; font-weight:800; margin-top:10px; line-height:1.1; }
+  .kpi-value.pos{ color:var(--g); }
+  .kpi-sub{ font-size:14px; font-weight:600; color:var(--ink-60); margin-top:8px; }
+
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="eyebrow">kWh Electric &middot; 4-year financial model, base case</div>
+  <div class="title">4-year financial snapshot</div>
+  <div class="underline"></div>
+  <div class="sub">Base-case model: fleet growth, product-line revenue mix, and cost structure converge to profitability in Year 4.</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Year 4 revenue</div><div class="kpi-value">$8.4M</div><div class="kpi-sub">10.8&times; growth since Year 1</div></div>
+    <div class="kpi"><div class="kpi-label">Year 4 fleet</div><div class="kpi-value">135,000</div><div class="kpi-sub">DERs &middot; 1.08 GW managed</div></div>
+    <div class="kpi"><div class="kpi-label">Year 4 gross margin</div><div class="kpi-value pos">91%</div><div class="kpi-sub">Up from 84% in Year 1</div></div>
+    <div class="kpi"><div class="kpi-label">Breakeven</div><div class="kpi-value pos">Year 4</div><div class="kpi-sub">114,513 DERs needed &middot; 135,000 reached</div></div>
+    <div class="kpi"><div class="kpi-label">Year 4 EBITDA</div><div class="kpi-value pos">+$838K</div><div class="kpi-sub">10.0% margin &middot; first profitable year</div></div>
+  </div>
+
+</div>
+</body>
+</html>

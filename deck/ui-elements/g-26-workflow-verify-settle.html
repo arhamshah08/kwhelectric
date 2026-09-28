@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Workflow — Verify & Settle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .win{ width:360px; height:640px; background:#fff; border:1px solid var(--ol); border-radius:22px; overflow:hidden; display:flex; flex-direction:column; color:var(--ink); }
+  .head{ padding:18px 18px 12px; border-bottom:1px solid var(--ol); }
+  .h-t{ font-size:19px; font-weight:800; }
+  .body{ flex:1; padding:16px 18px; overflow:hidden; display:flex; flex-direction:column; gap:14px; }
+
+  .chart-t{ font-size:13px; font-weight:800; }
+  .chart{ margin-top:6px; height:80px; }
+  .chart svg{ width:100%; height:100%; display:block; }
+
+  .section-t{ font-size:13px; font-weight:800; border-top:1px solid var(--ol); padding-top:12px; }
+  .fields{ display:flex; flex-direction:column; gap:6px; margin-top:6px; }
+  .field{ display:flex; justify-content:space-between; font-size:13px; }
+  .field .l{ color:var(--ink-60); }
+  .field .v{ font-weight:700; }
+  .field .v.g{ color:var(--g); }
+
+  .foot{ display:flex; padding:14px 18px; border-top:1px solid var(--ol); margin-top:auto; }
+  .btn{ flex:1; text-align:center; font-size:15px; font-weight:700; padding:10px; border-radius:8px; background:var(--g); color:#fff; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="head"><div class="h-t">Telemetry</div></div>
+  <div class="body">
+    <div>
+      <div class="chart-t">Fleet aggregate (15-min)</div>
+      <div class="chart">
+        <svg viewBox="0 0 260 80" preserveAspectRatio="none">
+          <path d="M4,66 C30,60 50,50 70,38 C90,26 110,16 130,14 C150,16 170,26 190,40 C210,54 230,64 256,68" fill="none" stroke="#16A34A" stroke-width="2.4"/>
+        </svg>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-t">Event evidence</div>
+      <div class="fields">
+        <div class="field"><span class="l">Event ID</span><span class="v">EVT-25-0612-001</span></div>
+        <div class="field"><span class="l">Status</span><span class="v g">Completed</span></div>
+        <div class="field"><span class="l">Start</span><span class="v">2:00 PM CT</span></div>
+        <div class="field"><span class="l">End</span><span class="v">3:00 PM CT</span></div>
+        <div class="field"><span class="l">Target</span><span class="v">25.0 MW</span></div>
+        <div class="field"><span class="l">Actual avg</span><span class="v">24.6 MW</span></div>
+        <div class="field"><span class="l">Performance</span><span class="v g">98%</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-t">Settlement</div>
+      <div class="fields">
+        <div class="field"><span class="l">Status</span><span class="v g">Ready</span></div>
+        <div class="field"><span class="l">Amount</span><span class="v">$12,460.00</span></div>
+        <div class="field"><span class="l">Type</span><span class="v">Capacity payment</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="btn">Export</div></div>
+</div>
+</body>
+</html>

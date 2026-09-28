@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>kWh Deck — Background Theme Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#EDEFED; }
+  body{ font-family:'DM Sans',sans-serif; padding:48px 24px 100px; color:#0B0F0C; }
+  .wrap{ max-width:1660px; margin:0 auto; }
+
+  .intro{ background:#fff; border:1px solid #E4EAE5; padding:24px 28px; margin-bottom:36px; max-width:1100px; }
+  .intro h1{ font-size:20px; font-weight:700; }
+  .intro p{ font-size:13.5px; color:rgba(11,15,12,.7); line-height:1.6; margin-top:10px; max-width:900px; }
+  .intro p + p{ margin-top:8px; }
+
+  .grid{ display:flex; flex-direction:column; gap:44px; }
+  .row{ display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap; }
+
+  .slide-card{ width:800px; }
+  .slide-label{ font-size:13px; font-weight:700; margin-bottom:6px; }
+  .slide-hex{ font-size:11px; color:rgba(11,15,12,.5); margin-bottom:10px; }
+
+  .slide{ width:800px; height:450px; position:relative; overflow:hidden; padding:36px 40px; }
+
+  .headline{ font-size:34px; font-weight:800; line-height:1.05; max-width:520px; }
+  .underline{ width:70px; height:2px; margin-top:14px; }
+  .tagline{ font-size:12px; font-weight:700; letter-spacing:.03em; margin-top:14px; text-transform:uppercase; }
+
+  .panel{ position:absolute; right:36px; top:64px; width:400px; height:260px; background:#fff; border:1px solid #E4EAE5; display:flex; flex-direction:column; overflow:hidden; }
+  .p-top{ height:24px; display:flex; align-items:center; gap:6px; padding:0 10px; border-bottom:1px solid #E4EAE5; font-size:9px; font-weight:700; color:#0B0F0C; }
+  .p-top .g{ color:#16A34A; }
+  .p-body{ padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
+  .p-title{ font-size:10px; font-weight:700; color:#0B0F0C; }
+  .p-kpis{ display:flex; gap:6px; }
+  .p-kpi{ flex:1; border:1px solid #E4EAE5; border-radius:5px; padding:6px 8px; }
+  .p-kpi .v{ font-size:12px; font-weight:700; color:#0B0F0C; }
+  .p-kpi .l{ font-size:6px; font-weight:700; color:rgba(11,15,12,.4); margin-top:2px; }
+  .p-chart{ border:1px solid #E4EAE5; border-radius:5px; padding:8px; flex:1; }
+  .p-chart svg{ width:100%; height:100%; display:block; }
+
+  .notes{ margin-top:14px; font-size:12px; color:rgba(11,15,12,.6); line-height:1.55; max-width:760px; }
+
+  /* ===== THEME 1 — warm white (current baseline) ===== */
+  .t1{ background:#FCFBF8; color:#0B0F0C; }
+  .t1 .underline{ background:#16A34A; }
+  .t1 .tagline{ color:#16A34A; }
+
+  /* ===== THEME 2 — soft mint tint ===== */
+  .t2{ background:#F3FAF5; color:#0B0F0C; }
+  .t2 .underline{ background:#16A34A; }
+  .t2 .tagline{ color:#0F7A3D; }
+
+  /* ===== THEME 3 — ink navy dark ===== */
+  .t3{ background:#0A0F0C; color:#F5F7F5; }
+  .t3 .underline{ background:#34D399; }
+  .t3 .tagline{ color:#34D399; }
+  .t3 .panel{ background:#121713; border-color:#233028; }
+  .t3 .p-top{ color:#F5F7F5; border-color:#233028; }
+  .t3 .p-top .g{ color:#34D399; }
+  .t3 .p-title{ color:#F5F7F5; }
+  .t3 .p-kpi{ border-color:#233028; }
+  .t3 .p-kpi .v{ color:#F5F7F5; }
+  .t3 .p-kpi .l{ color:rgba(245,247,245,.45); }
+  .t3 .p-chart{ border-color:#233028; }
+
+  /* ===== THEME 4 — deep charcoal radial glow ===== */
+  .t4{
+    background:
+      radial-gradient(680px 460px at 82% 18%, rgba(52,211,153,.22), transparent 62%),
+      radial-gradient(520px 420px at 8% 92%, rgba(52,211,153,.10), transparent 60%),
+      #0B0D0C;
+    color:#F5F7F5;
+  }
+  .t4 .underline{ background:#34D399; }
+  .t4 .tagline{ color:#34D399; }
+  .t4 .panel{ background:rgba(18,23,19,.86); border-color:rgba(52,211,153,.22); backdrop-filter:blur(6px); }
+  .t4 .p-top{ color:#F5F7F5; border-color:rgba(52,211,153,.18); }
+  .t4 .p-top .g{ color:#34D399; }
+  .t4 .p-title{ color:#F5F7F5; }
+  .t4 .p-kpi{ border-color:rgba(52,211,153,.18); }
+  .t4 .p-kpi .v{ color:#F5F7F5; }
+  .t4 .p-kpi .l{ color:rgba(245,247,245,.45); }
+  .t4 .p-chart{ border-color:rgba(52,211,153,.18); }
+
+  /* ===== THEME 5 — midnight dot-grid ===== */
+  .t5{
+    background-color:#090B0A;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,.08) 1px, transparent 1.4px),
+      radial-gradient(520px 360px at 88% 10%, rgba(52,211,153,.16), transparent 65%);
+    background-size: 22px 22px, 100% 100%;
+    color:#F5F7F5;
+  }
+  .t5 .underline{ background:#34D399; }
+  .t5 .tagline{ color:#34D399; }
+  .t5 .panel{ background:#101512; border-color:#233028; }
+  .t5 .p-top{ color:#F5F7F5; border-color:#233028; }
+  .t5 .p-top .g{ color:#34D399; }
+  .t5 .p-title{ color:#F5F7F5; }
+  .t5 .p-kpi{ border-color:#233028; }
+  .t5 .p-kpi .v{ color:#F5F7F5; }
+  .t5 .p-kpi .l{ color:rgba(245,247,245,.45); }
+  .t5 .p-chart{ border-color:#233028; }
+
+  code{ background:rgba(11,15,12,.06); padding:1px 5px; border-radius:3px; font-family:ui-monospace,monospace; font-size:11px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="intro">
+    <h1>Background / theme options — same layout, colors only</h1>
+    <p>Five candidate backgrounds applied to the exact same composition (title, tagline, product window) so you can compare the full-slide feel before picking a direction. Nothing about the layout, copy, or component structure changes between them — only background and font color, per your instruction.</p>
+    <p>Themes 3–5 push toward the darker mood you pointed at in the Artisan reference. They keep kWh's single green accent rather than introducing purple — see the note below the grid on why, and how to get the purple/violet look instead if you want to try it anyway.</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="row">
+      <div class="slide-card">
+        <div class="slide-label">1 — Warm white (current baseline)</div>
+        <div class="slide-hex">bg <code>#FCFBF8</code> · text <code>#0B0F0C</code> / <code>#16A34A</code></div>
+        <div class="slide t1">
+          <div class="headline">The universal communications layer for distributed energy</div>
+          <div class="underline"></div>
+          <div class="tagline">Connect once. Use forever.</div>
+          <div class="panel">
+            <div class="p-top"><span class="g">kWh</span>&nbsp;Electric &nbsp;|&nbsp; Grid Intelligence</div>
+            <div class="p-body">
+              <div class="p-title">Telemetry Dashboard</div>
+              <div class="p-kpis">
+                <div class="p-kpi"><div class="v">512</div><div class="l">ASSETS</div></div>
+                <div class="p-kpi"><div class="v">98%</div><div class="l">REPORTING</div></div>
+                <div class="p-kpi"><div class="v">16/16</div><div class="l">GATEWAYS</div></div>
+              </div>
+              <div class="p-chart"><svg viewBox="0 0 360 90" preserveAspectRatio="none"><path d="M4,70 C60,66 90,50 130,40 C170,30 200,14 240,12 C270,11 300,30 340,50" fill="none" stroke="#16A34A" stroke-width="2"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-card">
+        <div class="slide-label">2 — Soft mint tint</div>
+        <div class="slide-hex">bg <code>#F3FAF5</code> · text <code>#0B0F0C</code> / <code>#0F7A3D</code></div>
+        <div class="slide t2">
+          <div class="headline">The universal communications layer for distributed energy</div>
+          <div class="underline"></div>
+          <div class="tagline">Connect once. Use forever.</div>
+          <div class="panel">
+            <div class="p-top"><span class="g">kWh</span>&nbsp;Electric &nbsp;|&nbsp; Grid Intelligence</div>
+            <div class="p-body">
+              <div class="p-title">Telemetry Dashboard</div>
+              <div class="p-kpis">
+                <div class="p-kpi"><div class="v">512</div><div class="l">ASSETS</div></div>
+                <div class="p-kpi"><div class="v">98%</div><div class="l">REPORTING</div></div>
+                <div class="p-kpi"><div class="v">16/16</div><div class="l">GATEWAYS</div></div>
+              </div>
+              <div class="p-chart"><svg viewBox="0 0 360 90" preserveAspectRatio="none"><path d="M4,70 C60,66 90,50 130,40 C170,30 200,14 240,12 C270,11 300,30 340,50" fill="none" stroke="#16A34A" stroke-width="2"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="slide-card">
+        <div class="slide-label">3 — Ink navy dark (flat)</div>
+        <div class="slide-hex">bg <code>#0A0F0C</code> · text <code>#F5F7F5</code> / <code>#34D399</code></div>
+        <div class="slide t3">
+          <div class="headline">The universal communications layer for distributed energy</div>
+          <div class="underline"></div>
+          <div class="tagline">Connect once. Use forever.</div>
+          <div class="panel">
+            <div class="p-top"><span class="g">kWh</span>&nbsp;Electric &nbsp;|&nbsp; Grid Intelligence</div>
+            <div class="p-body">
+              <div class="p-title">Telemetry Dashboard</div>
+              <div class="p-kpis">
+                <div class="p-kpi"><div class="v">512</div><div class="l">ASSETS</div></div>
+                <div class="p-kpi"><div class="v">98%</div><div class="l">REPORTING</div></div>
+                <div class="p-kpi"><div class="v">16/16</div><div class="l">GATEWAYS</div></div>
+              </div>
+              <div class="p-chart"><svg viewBox="0 0 360 90" preserveAspectRatio="none"><path d="M4,70 C60,66 90,50 130,40 C170,30 200,14 240,12 C270,11 300,30 340,50" fill="none" stroke="#34D399" stroke-width="2"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-card">
+        <div class="slide-label">4 — Deep charcoal, radial glow (Artisan-mood, green accent)</div>
+        <div class="slide-hex">bg <code>#0B0D0C</code> + radial-gradient glow · text <code>#F5F7F5</code> / <code>#34D399</code></div>
+        <div class="slide t4">
+          <div class="headline">The universal communications layer for distributed energy</div>
+          <div class="underline"></div>
+          <div class="tagline">Connect once. Use forever.</div>
+          <div class="panel">
+            <div class="p-top"><span class="g">kWh</span>&nbsp;Electric &nbsp;|&nbsp; Grid Intelligence</div>
+            <div class="p-body">
+              <div class="p-title">Telemetry Dashboard</div>
+              <div class="p-kpis">
+                <div class="p-kpi"><div class="v">512</div><div class="l">ASSETS</div></div>
+                <div class="p-kpi"><div class="v">98%</div><div class="l">REPORTING</div></div>
+                <div class="p-kpi"><div class="v">16/16</div><div class="l">GATEWAYS</div></div>
+              </div>
+              <div class="p-chart"><svg viewBox="0 0 360 90" preserveAspectRatio="none"><path d="M4,70 C60,66 90,50 130,40 C170,30 200,14 240,12 C270,11 300,30 340,50" fill="none" stroke="#34D399" stroke-width="2"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="slide-card">
+        <div class="slide-label">5 — Midnight dot-grid (Artisan slide-2 mood)</div>
+        <div class="slide-hex">bg <code>#090B0A</code> + dot-grid + corner glow · text <code>#F5F7F5</code> / <code>#34D399</code></div>
+        <div class="slide t5">
+          <div class="headline">The universal communications layer for distributed energy</div>
+          <div class="underline"></div>
+          <div class="tagline">Connect once. Use forever.</div>
+          <div class="panel">
+            <div class="p-top"><span class="g">kWh</span>&nbsp;Electric &nbsp;|&nbsp; Grid Intelligence</div>
+            <div class="p-body">
+              <div class="p-title">Telemetry Dashboard</div>
+              <div class="p-kpis">
+                <div class="p-kpi"><div class="v">512</div><div class="l">ASSETS</div></div>
+                <div class="p-kpi"><div class="v">98%</div><div class="l">REPORTING</div></div>
+                <div class="p-kpi"><div class="v">16/16</div><div class="l">GATEWAYS</div></div>
+              </div>
+              <div class="p-chart"><svg viewBox="0 0 360 90" preserveAspectRatio="none"><path d="M4,70 C60,66 90,50 130,40 C170,30 200,14 240,12 C270,11 300,30 340,50" fill="none" stroke="#34D399" stroke-width="2"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-card">
+        <div class="slide-label">Notes — how effects like the Artisan reference get made</div>
+        <div class="notes">
+          <p><b>What's pure CSS (I can build this directly, no external tool needed):</b></p>
+          <p>• The dark radial "glow" behind the headline (theme 4) — <code>radial-gradient()</code> layered on a flat dark background.<br>
+          • The dotted grid texture (theme 5) — a repeating <code>radial-gradient</code> dot pattern used as a background-image tile.<br>
+          • Soft grain/noise overlay — an inline SVG <code>&lt;feTurbulence&gt;</code> filter at low opacity, no image file needed.<br>
+          • The glassy blurred card in theme 4 — <code>backdrop-filter: blur()</code> + a translucent panel background.</p>
+          <p><b>What needs an external tool:</b></p>
+          <p>• The 3-person hero render in the Artisan cover — that's AI image generation (Midjourney / ChatGPT / Nano Banana), same pipeline you're already using for the deck PNGs, not something CSS can produce.<br>
+          • If you want a hand-tuned mesh/blob gradient background as a raster asset instead of live CSS: <b>Haikei.app</b> (free blob/gradient/mesh generator, exports SVG or PNG) or <b>meshgradient.com</b> are the fastest no-design-skill options. Figma's "Mesh Gradient" community plugin is the equivalent if you're already in Figma.</p>
+          <p><b>On the purple:</b> Artisan's violet/purple accent conflicts with kWh's locked one-accent-color rule (green only, no purple) from your design-system memory. Themes 3–5 above keep that rule. If you want to see a purple variant anyway to compare, say so and I'll add it as an explicit sixth option rather than silently changing the rule.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

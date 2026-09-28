@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>kWh Electric — Bee Narrative + Customer Journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   kWh Electric — 18 slides · 1920×1080
+   Built to the "BEE NARRATIVE + CUSTOMER JOURNEY" specification.
+   Narrative order is mandatory: security (03) precedes
+   interoperability (04); AI (12) follows both; monetization (11)
+   follows applications (10).
+   ══════════════════════════════════════════════════════════════ */
+
+:root{
+  --cream:#FBF8F1;
+  --gold:#D9A404;
+  --gold-d:#B78500;
+  --black:#111111;
+  --gray:#5F5F5F;
+  --maroon:#6D1818;
+  --red:#A70F0F;
+  --green:#2C8E5A;
+  --line:#E6DFCD;
+  --card:#FFFFFF;
+  --f:'Figtree',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#141310;overflow:hidden}
+body{font-family:var(--f);-webkit-font-smoothing:antialiased}
+
+#stage{position:absolute;top:50%;left:50%;width:1920px;height:1080px;transform-origin:center center}
+
+.slide{
+  position:absolute;inset:0;width:1920px;height:1080px;
+  background:var(--cream);color:var(--black);
+  padding:56px 72px 48px;
+  display:none;overflow:hidden;
+}
+.slide.on{display:block}
+
+/* honeycomb texture — one grid, 5%, always behind content, never over it */
+.comb-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+/* lift content above the texture without disturbing the absolutely-placed chrome */
+.slide > div,.slide > p,.slide > h1{position:relative;z-index:1}
+.slide > .foot,.slide > .pageno{position:absolute;z-index:2}
+
+/* ── hierarchy ────────────────────────────────────────────── */
+.label{font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--maroon)}
+.title{font-size:68px;font-weight:900;line-height:1.04;letter-spacing:-.022em;color:var(--black);margin-top:24px}
+.title.sm{font-size:60px}
+.sub{font-size:28px;font-weight:500;line-height:1.36;color:var(--gray);margin-top:22px}
+.sub.sm{font-size:26px}
+.body{font-size:22px;font-weight:400;line-height:1.5;color:var(--gray)}
+.metric{font-size:60px;font-weight:900;line-height:1;letter-spacing:-.02em;color:var(--black)}
+.metric.gold{color:var(--gold-d)}
+.metric.red{color:var(--red)}
+.cap{font-size:17px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray)}
+.ph{color:#9A948A;font-weight:700}
+
+/* ── structure ────────────────────────────────────────────── */
+.split{display:grid;gap:64px;height:976px;align-items:center}
+.s55{grid-template-columns:55% auto}
+.s50{grid-template-columns:1fr 1fr}
+.s42{grid-template-columns:42% auto}
+.s48{grid-template-columns:48% auto}
+.colfill{height:100%;display:flex;flex-direction:column;justify-content:center}
+.head{max-width:1500px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:30px 32px;
+  box-shadow:0 1px 2px rgba(17,17,17,.04)}
+.row{display:flex;gap:20px}
+.stack{display:flex;flex-direction:column}
+
+ul.bul{list-style:none;margin-top:34px}
+ul.bul li{font-size:22px;line-height:1.45;color:var(--gray);padding-left:26px;position:relative;margin-bottom:16px}
+ul.bul li::before{content:"";position:absolute;left:0;top:11px;width:9px;height:10px;background:var(--gold);
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+
+.pillar{border-left:3px solid var(--gold);padding-left:20px}
+.pillar b{display:block;font-size:24px;font-weight:800;color:var(--black);margin-bottom:5px}
+.pillar span{font-size:19px;color:var(--gray)}
+
+.chip{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:16px 22px;
+  font-size:20px;font-weight:600;color:var(--black)}
+.chip.g{background:#FDF6E2;border-color:#EBD9A4;color:#7A5A05}
+
+.foot{position:absolute;left:72px;bottom:48px;font-size:17px;font-weight:800;color:#B7B0A3;letter-spacing:.02em}
+.pageno{position:absolute;right:72px;bottom:48px;font-size:17px;font-weight:700;color:#B7B0A3}
+
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:20px 22px;font-size:21px;border-bottom:1px solid var(--line)}
+th{font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray)}
+tr:last-child td{border-bottom:0}
+
+/* ── print ────────────────────────────────────────────────── */
+html.print,body.print{height:auto;overflow:visible}
+body.print{background:#2B2823}
+body.print #stage{position:static;transform:none;width:auto;height:auto}
+body.print .slide{display:block;position:relative;margin:0 auto 24px}
+body.print #nav{display:none}
+@media print{
+  body.print{background:#fff}
+  body.print .slide{margin:0;break-after:page;page-break-after:always}
+  @page{size:1920px 1080px;margin:0}
+}
+
+/* ── nav ──────────────────────────────────────────────────── */
+#nav{position:fixed;right:20px;bottom:18px;display:flex;gap:8px;z-index:60;
+  opacity:0;transition:opacity .25s;pointer-events:none}
+#nav.show,#nav:hover,#nav:focus-within{opacity:1;pointer-events:auto}
+#nav button{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);color:#D8D2C4;font-size:15px;cursor:pointer;font-family:var(--f)}
+#nav button:hover{background:rgba(255,255,255,.18)}
+#nav button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#count{color:#8A8478;font-size:13px;line-height:36px;margin-right:6px;font-weight:600}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ══ shared defs ══════════════════════════════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="combPat" width="86.6" height="150" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="#B78500" stroke-width="1.4">
+        <path d="M43.3 0 0 25v50l43.3 25L86.6 75V25z"/>
+        <path d="M0 75l-43.3 25v50L0 175l43.3-25v-50z"/>
+        <path d="M86.6 75L43.3 100v50l43.3 25 43.3-25v-50z"/>
+      </g>
+    </pattern>
+    <clipPath id="beeCut"><ellipse cx="24" cy="19" rx="13" ry="8"/></clipPath>
+  </defs>
+
+  <!-- flat bee, no gradients -->
+  <symbol id="bee" viewBox="0 0 44 30">
+    <ellipse cx="21" cy="8.5" rx="9" ry="5.4" fill="#fff" fill-opacity=".9" stroke="#B78500" stroke-width="1" transform="rotate(-18 21 8.5)"/>
+    <ellipse cx="30" cy="10" rx="7.4" ry="4.4" fill="#fff" fill-opacity=".85" stroke="#B78500" stroke-width="1" transform="rotate(14 30 10)"/>
+    <ellipse cx="24" cy="19" rx="13" ry="8" fill="#D9A404"/>
+    <g clip-path="url(#beeCut)" fill="#111"><rect x="16" y="9" width="4" height="22"/><rect x="24" y="9" width="4" height="22"/><rect x="32" y="9" width="4.5" height="22"/></g>
+    <ellipse cx="24" cy="19" rx="13" ry="8" fill="none" stroke="#111" stroke-width="1"/>
+    <circle cx="9" cy="17.5" r="5.9" fill="#111"/>
+    <path d="M6.2 12.4Q3.8 7 6.8 4.6M11.2 11.8Q11.4 6.2 14.4 4.6" stroke="#111" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- red attacker, faces left -->
+  <symbol id="attacker" viewBox="0 0 100 56">
+    <ellipse cx="58" cy="14" rx="20" ry="8" fill="#fff" fill-opacity=".62" stroke="#A70F0F" stroke-width="1.2" transform="rotate(-13 58 14)"/>
+    <ellipse cx="70" cy="17" rx="14" ry="6" fill="#fff" fill-opacity=".54" stroke="#A70F0F" stroke-width="1.2" transform="rotate(9 70 17)"/>
+    <path d="M0 30 17 23.5v13z" fill="#A70F0F"/>
+    <ellipse cx="33" cy="30" rx="18" ry="12.5" fill="#A70F0F"/>
+    <rect x="47" y="26" width="7" height="8" fill="#A70F0F"/>
+    <ellipse cx="64" cy="29" rx="13" ry="11" fill="#A70F0F"/>
+    <circle cx="84" cy="28" r="10.5" fill="#A70F0F"/>
+    <circle cx="88" cy="24.5" r="2.8" fill="#fff"/>
+    <path d="M89 18Q93 8 98 5M82 17.5Q84 7 89 3" stroke="#A70F0F" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <g stroke="#A70F0F" stroke-width="2.2" stroke-linecap="round"><path d="M30 42l-6 11M42 42l4 11M58 40l-4 12"/></g>
+  </symbol>
+
+  <symbol id="queen" viewBox="0 0 60 46">
+    <path d="M30 2l5 7h-10z" fill="#D9A404" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+    <path d="M22 11h16v3H22z" fill="#D9A404" stroke="#111" stroke-width="1.2"/>
+    <ellipse cx="26" cy="22" rx="12" ry="7" fill="#fff" fill-opacity=".9" stroke="#B78500" stroke-width="1.2" transform="rotate(-20 26 22)"/>
+    <ellipse cx="38" cy="24" rx="10" ry="6" fill="#fff" fill-opacity=".85" stroke="#B78500" stroke-width="1.2" transform="rotate(16 38 24)"/>
+    <ellipse cx="32" cy="33" rx="17" ry="10" fill="#D9A404" stroke="#111" stroke-width="1.3"/>
+    <g fill="#111"><rect x="23" y="24" width="5" height="20"/><rect x="33" y="24" width="5" height="20"/><rect x="42" y="26" width="5" height="16"/></g>
+    <ellipse cx="32" cy="33" rx="17" ry="10" fill="none" stroke="#111" stroke-width="1.3"/>
+    <circle cx="13" cy="31" r="7.4" fill="#111"/>
+  </symbol>
+</svg>
+
+<div id="stage">
+
+<!-- ══════════ 01 · INTRO ═════════════════════════════════ -->
+<section class="slide on">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="split s55">
+    <div class="colfill">
+      <div class="label">kWh Electric</div>
+      <h1 class="title" style="font-size:86px;margin-top:30px">The communication<br>layer for every<br>distributed asset.</h1>
+      <p class="sub" style="font-size:32px;max-width:860px">One controller. Unlimited applications.<br>Open energy infrastructure.</p>
+    </div>
+    <div style="display:grid;place-items:center;height:100%">
+      <svg width="720" height="640" viewBox="0 0 720 640">
+        <g fill="#D9A404" stroke="#B78500" stroke-width="2">
+          <path d="M360 60l86 50v100l-86 50-86-50V110z"/>
+          <path d="M188 160l86 50v100l-86 50-86-50V210z"/>
+          <path d="M532 160l86 50v100l-86 50-86-50V210z"/>
+          <path d="M188 360l86 50v100l-86 50-86-50V410z"/>
+          <path d="M532 360l86 50v100l-86 50-86-50V410z"/>
+          <path d="M360 460l86 50v100l-86 50-86-50V510z"/>
+        </g>
+        <g><use href="#bee" x="332" y="145" width="56" height="38"/><use href="#bee" x="160" y="245" width="56" height="38"/>
+           <use href="#bee" x="504" y="245" width="56" height="38"/><use href="#bee" x="160" y="445" width="56" height="38"/>
+           <use href="#bee" x="504" y="445" width="56" height="38"/><use href="#bee" x="332" y="545" width="56" height="38"/></g>
+      </svg>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">01</div>
+</section>
+
+<!-- ══════════ 02 · PROBLEM ═══════════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="split s55">
+    <div class="colfill">
+      <div class="label">The problem</div>
+      <h1 class="title">Today,<br>the hive is<br>fragmented.</h1>
+      <p class="sub">Every OEM ships a closed ecosystem.</p>
+
+      <div style="display:flex;align-items:baseline;gap:28px;margin-top:44px">
+        <div class="metric red" style="font-size:96px">80%</div>
+        <p class="body" style="max-width:430px">of distributed assets cannot participate outside their vendor ecosystem.</p>
+      </div>
+
+      <ul class="bul">
+        <li>Assets behave like Toyotas despite Ferrari hardware</li>
+        <li>APIs are expensive and proprietary</li>
+        <li>Owners cannot discover higher-value applications</li>
+      </ul>
+    </div>
+
+    <!-- eight sealed vendor hives. none touch. no bridges, no trails, no labels. -->
+    <div style="display:grid;place-items:center;height:100%">
+      <svg width="820" height="900" viewBox="0 0 820 900">
+        <g fill="#D9A404" stroke="#B78500" stroke-width="2">
+          <path d="M118 86l62 36v72l-62 36-62-36v-72z"/>
+          <path d="M330 44l46 26.5v53l-46 26.5-46-26.5v-53z"/>
+          <path d="M556 100l70 40.4v80.8L556 262l-70-40.4v-80.8z"/>
+          <path d="M736 262l52 30v60l-52 30-52-30v-60z"/>
+          <path d="M92 330l58 33.5v67L92 464l-58-33.5v-67z"/>
+          <path d="M368 336l78 45v90l-78 45-78-45v-90z"/>
+          <path d="M614 470l56 32.3v64.6L614 599l-56-32.3v-64.6z"/>
+          <path d="M186 600l68 39.2v78.4L186 757l-68-39.2v-78.4z"/>
+          <path d="M448 664l50 28.9v57.8L448 780l-50-28.9v-57.8z"/>
+        </g>
+        <g>
+          <use href="#bee" x="92" y="112" width="44" height="30"/><use href="#bee" x="118" y="146" width="38" height="26"/>
+          <use href="#bee" x="312" y="58" width="36" height="25"/>
+          <use href="#bee" x="524" y="130" width="46" height="31"/><use href="#bee" x="556" y="168" width="40" height="27"/>
+          <use href="#bee" x="714" y="278" width="40" height="27"/>
+          <use href="#bee" x="68" y="352" width="42" height="29"/><use href="#bee" x="96" y="390" width="36" height="25"/>
+          <use href="#bee" x="332" y="356" width="48" height="33"/><use href="#bee" x="378" y="398" width="44" height="30"/><use href="#bee" x="326" y="440" width="40" height="27"/>
+          <use href="#bee" x="590" y="492" width="42" height="29"/>
+          <use href="#bee" x="158" y="622" width="46" height="31"/><use href="#bee" x="192" y="664" width="40" height="27"/>
+          <use href="#bee" x="426" y="686" width="38" height="26"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">02</div>
+</section>
+
+<!-- ══════════ 03 · SECURITY ══════════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="split s42">
+    <div style="height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:30px 0 96px">
+      <div>
+        <div class="label">Security</div>
+        <h1 class="title">Every asset<br>protects itself.</h1>
+        <p class="sub">Compromise never spreads beyond one device.</p>
+      </div>
+      <div class="stack" style="gap:32px">
+        <div class="pillar"><b>Trusted execution</b><span>Policy runs inside the device.</span></div>
+        <div class="pillar"><b>Zero-trust identity</b><span>Each asset authenticates alone.</span></div>
+        <div class="pillar"><b>Data sovereignty</b><span>Telemetry stays in jurisdiction.</span></div>
+      </div>
+    </div>
+
+    <!-- eight independent cells. one bee each. one breached. nothing connects. -->
+    <div style="display:grid;place-items:center;height:100%">
+      <svg width="1010" height="866" viewBox="0 0 1010 866">
+        <g stroke="#B78500" stroke-width="2.4" fill="#D9A404">
+          <path d="M130 130l68 39.2v78.4L130 287l-68-39.2v-78.4z"/>
+          <path d="M370 100l68 39.2v78.4L370 257l-68-39.2v-78.4z"/>
+          <path d="M610 130l68 39.2v78.4L610 287l-68-39.2v-78.4z"/>
+          <path d="M250 390l68 39.2v78.4L250 547l-68-39.2v-78.4z"/>
+          <path d="M490 390l68 39.2v78.4L490 547l-68-39.2v-78.4z"/>
+          <path d="M130 650l68 39.2v78.4L130 807l-68-39.2v-78.4z"/>
+          <path d="M370 680l68 39.2v78.4L370 837l-68-39.2v-78.4z"/>
+        </g>
+        <!-- the one that was hit -->
+        <path d="M730 390l68 39.2v78.4L730 547l-68-39.2v-78.4z" fill="#A70F0F" stroke="#7C0A0A" stroke-width="3"/>
+        <use href="#bee" x="706" y="446" width="48" height="33"/>
+        <path d="M812 300l-32 62h26l-22 56 58-78h-29l24-40z" fill="#D9A404" stroke="#B78500" stroke-width="2" stroke-linejoin="round"/>
+        <use href="#attacker" x="828" y="236" width="150" height="84"/>
+        <text x="730" y="596" text-anchor="middle" font-family="Figtree" font-size="19" font-weight="800" fill="#A70F0F">Contained</text>
+
+        <g>
+          <use href="#bee" x="106" y="192" width="48" height="33"/>
+          <use href="#bee" x="346" y="162" width="48" height="33"/>
+          <use href="#bee" x="586" y="192" width="48" height="33"/>
+          <use href="#bee" x="226" y="452" width="48" height="33"/>
+          <use href="#bee" x="466" y="452" width="48" height="33"/>
+          <use href="#bee" x="106" y="712" width="48" height="33"/>
+          <use href="#bee" x="346" y="742" width="48" height="33"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">03</div>
+</section>
+
+<!-- ══════════ 04 · INTEROPERABILITY ══════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="split s42">
+    <div class="colfill">
+      <div class="label">Interoperability</div>
+      <h1 class="title">Every secure asset<br>can work together.</h1>
+      <p class="sub">Identity first.<br>Discovery second.<br>Coordination third.</p>
+    </div>
+
+    <!-- no hub, no server, no queen. cells below, floating nodes above, bees weaving between. -->
+    <div style="display:grid;place-items:center;height:100%">
+      <svg width="1020" height="920" viewBox="0 0 1020 920">
+        <!-- flight trails, drawn first so cells sit on top of their endpoints -->
+        <g stroke="#B78500" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="0.5 11" opacity=".82">
+          <path d="M120 630C120 400 140 240 170 180C220 120 300 110 350 130C400 200 350 450 320 630"/>
+          <path d="M520 630C510 420 505 260 530 200C570 130 660 120 700 140C740 250 730 460 720 630"/>
+          <path d="M220 760C230 540 240 400 260 330C300 250 470 240 530 200"/>
+          <path d="M820 760C810 520 800 380 800 320C810 240 850 200 880 190C910 320 920 480 920 630"/>
+          <path d="M620 760C615 540 610 400 620 330C640 220 670 160 700 140"/>
+        </g>
+
+        <!-- floating discovery nodes: never joined to each other -->
+        <g fill="#D9A404" stroke="#B78500" stroke-width="2">
+          <path d="M170 154l26 15v30l-26 15-26-15v-30z"/>
+          <path d="M350 104l26 15v30l-26 15-26-15v-30z"/>
+          <path d="M530 174l26 15v30l-26 15-26-15v-30z"/>
+          <path d="M700 114l26 15v30l-26 15-26-15v-30z"/>
+          <path d="M880 164l26 15v30l-26 15-26-15v-30z"/>
+          <path d="M260 304l24 13.9v27.8L260 360l-24-13.9v-27.8z"/>
+          <path d="M620 304l24 13.9v27.8L620 360l-24-13.9v-27.8z"/>
+          <path d="M800 294l24 13.9v27.8L800 350l-24-13.9v-27.8z"/>
+        </g>
+
+        <!-- eight independent cells, one bee each, none touching -->
+        <g fill="#D9A404" stroke="#B78500" stroke-width="2.4">
+          <path d="M120 630l52 30v60l-52 30-52-30v-60z"/>
+          <path d="M320 630l52 30v60l-52 30-52-30v-60z"/>
+          <path d="M520 630l52 30v60l-52 30-52-30v-60z"/>
+          <path d="M720 630l52 30v60l-52 30-52-30v-60z"/>
+          <path d="M920 630l52 30v60l-52 30-52-30v-60z"/>
+          <path d="M220 760l52 30v60l-52 30-52-30v-60z"/>
+          <path d="M620 760l52 30v60l-52 30-52-30v-60z"/>
+          <path d="M820 760l52 30v60l-52 30-52-30v-60z"/>
+        </g>
+        <g>
+          <use href="#bee" x="96" y="674" width="48" height="33"/><use href="#bee" x="296" y="674" width="48" height="33"/>
+          <use href="#bee" x="496" y="674" width="48" height="33"/><use href="#bee" x="696" y="674" width="48" height="33"/>
+          <use href="#bee" x="896" y="674" width="48" height="33"/><use href="#bee" x="196" y="804" width="48" height="33"/>
+          <use href="#bee" x="596" y="804" width="48" height="33"/><use href="#bee" x="796" y="804" width="48" height="33"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">04</div>
+</section>
+
+<!-- ══════════ 05 · WHY NOW ═══════════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head"><div class="label">Why now</div><h1 class="title">Three curves crossed<br>at the same time.</h1></div>
+
+  <div class="split s50" style="height:700px;margin-top:20px">
+    <div>
+      <div class="cap" style="margin-bottom:8px">Distributed assets deployed</div>
+      <div class="body" style="font-size:18px;margin-bottom:30px">Illustrative shape</div>
+      <svg width="100%" height="470" viewBox="0 0 800 470">
+        <line x1="0" y1="410" x2="780" y2="410" stroke="#E6DFCD" stroke-width="2"/>
+        <g fill="#D9A404">
+          <rect x="60" y="322" width="150" height="88"/>
+          <rect x="320" y="196" width="150" height="214"/>
+          <rect x="580" y="52" width="150" height="358"/>
+        </g>
+        <g font-family="Figtree" font-size="46" font-weight="900" fill="#111" text-anchor="middle">
+          <text x="135" y="300">4T</text><text x="395" y="174">11T</text><text x="655" y="30">23T</text>
+        </g>
+        <g font-family="Figtree" font-size="21" font-weight="600" fill="#5F5F5F" text-anchor="middle">
+          <text x="135" y="448">Today</text><text x="395" y="448">3 years</text><text x="655" y="448">5 years</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="stack" style="gap:26px;justify-content:center;height:100%">
+      <div class="card">
+        <div class="metric gold" style="font-size:42px">IEEE 2030.5</div>
+        <p class="body" style="margin-top:12px">Open standards now exist.</p>
+      </div>
+      <div class="card">
+        <div class="metric gold" style="font-size:42px">&lt;$50 edge compute</div>
+        <p class="body" style="margin-top:12px">Hardware is no longer expensive.</p>
+      </div>
+      <div class="card">
+        <div class="metric gold" style="font-size:42px">AI agents</div>
+        <p class="body" style="margin-top:12px">Machines can now coordinate assets.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">05</div>
+</section>
+
+<!-- ══════════ 06 · UNIVERSAL CONTROLLER ══════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head">
+    <div class="label">Universal controller</div>
+    <h1 class="title">One device.<br>One license.</h1>
+    <p class="sub">Every battery. Every inverter. Every EV. Every pump.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:70px;align-items:center;margin-top:56px">
+    <div class="stack" style="gap:14px;align-items:flex-end">
+      <div class="cap" style="margin-bottom:8px">Protocols in</div>
+      <div class="chip">IEEE 2030.5</div><div class="chip">SunSpec</div><div class="chip">Modbus</div>
+      <div class="chip">MQTT</div><div class="chip">OCPP</div><div class="chip">Custom APIs</div>
+    </div>
+
+    <div style="text-align:center">
+      <svg width="330" height="300" viewBox="0 0 330 300">
+        <g stroke="#B78500" stroke-width="3" fill="none" stroke-dasharray="0.5 10" stroke-linecap="round">
+          <path d="M0 150h58"/><path d="M272 150h58"/>
+        </g>
+        <path d="M165 26l106 61.2v122.4L165 271 59 209.6V87.2z" fill="#D9A404" stroke="#B78500" stroke-width="3"/>
+        <rect x="112" y="120" width="106" height="66" rx="7" fill="#111"/>
+        <circle cx="200" cy="134" r="4.5" fill="#2C8E5A"/>
+      </svg>
+      <div style="font-size:26px;font-weight:900;margin-top:12px">DER Gateway</div>
+    </div>
+
+    <div class="stack" style="gap:14px;align-items:flex-start">
+      <div class="cap" style="margin-bottom:8px">Consumers out</div>
+      <div class="chip g">Utilities</div><div class="chip g">Aggregators</div><div class="chip g">OEMs</div>
+      <div class="chip g">Financiers</div><div class="chip g">Apps</div>
+    </div>
+  </div>
+
+  <p style="text-align:center;font-size:28px;font-weight:800;margin-top:52px">Translate once. Deploy everywhere.</p>
+  <div class="foot">kWh Electric</div><div class="pageno">06</div>
+</section>
+
+<!-- ══════════ 07 · DEVICE ENROLLMENT ═════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head">
+    <div class="label">Device enrollment</div>
+    <h1 class="title">Enroll once.</h1>
+    <p class="sub">Every asset receives a secure digital identity.</p>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:96px">
+    <div style="text-align:center;width:250px">
+      <svg width="150" height="168" viewBox="0 0 150 168"><path d="M75 4l71 41v82l-71 41-71-41V45z" fill="#fff" stroke="#B78500" stroke-width="3"/>
+        <rect x="49" y="56" width="52" height="60" rx="5" fill="#D9A404"/><rect x="63" y="48" width="24" height="10" rx="3" fill="#111"/></svg>
+      <div style="font-size:26px;font-weight:800;margin-top:16px">Battery</div>
+    </div>
+    <svg width="80" height="24"><path d="M0 12h60m0 0l-11-8m11 8l-11 8" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+
+    <div style="text-align:center;width:250px">
+      <svg width="150" height="168" viewBox="0 0 150 168"><path d="M75 4l71 41v82l-71 41-71-41V45z" fill="#D9A404" stroke="#B78500" stroke-width="3"/>
+        <rect x="46" y="66" width="58" height="38" rx="5" fill="#111"/><circle cx="92" cy="76" r="3.5" fill="#2C8E5A"/></svg>
+      <div style="font-size:26px;font-weight:800;margin-top:16px">Gateway</div>
+    </div>
+    <svg width="80" height="24"><path d="M0 12h60m0 0l-11-8m11 8l-11 8" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+
+    <div style="text-align:center;width:250px">
+      <svg width="150" height="168" viewBox="0 0 150 168"><path d="M75 4l71 41v82l-71 41-71-41V45z" fill="#fff" stroke="#B78500" stroke-width="3"/>
+        <rect x="52" y="80" width="46" height="34" rx="5" fill="none" stroke="#111" stroke-width="4"/>
+        <path d="M62 80V66a13 13 0 0126 0v14" fill="none" stroke="#111" stroke-width="4"/></svg>
+      <div style="font-size:26px;font-weight:800;margin-top:16px">Enrollment</div>
+    </div>
+    <svg width="80" height="24"><path d="M0 12h60m0 0l-11-8m11 8l-11 8" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+
+    <div style="text-align:center;width:250px">
+      <svg width="150" height="168" viewBox="0 0 150 168"><path d="M75 4l71 41v82l-71 41-71-41V45z" fill="#fff" stroke="#B78500" stroke-width="3"/>
+        <rect x="46" y="60" width="58" height="46" rx="4" fill="#fff" stroke="#111" stroke-width="3.5"/>
+        <path d="M56 74h30M56 84h38M56 94h22" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="98" cy="110" r="13" fill="#2C8E5A"/><path d="M92 110l4 4 8-8" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg>
+      <div style="font-size:26px;font-weight:800;margin-top:16px">Certificate</div>
+    </div>
+    <svg width="80" height="24"><path d="M0 12h60m0 0l-11-8m11 8l-11 8" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+
+    <div style="text-align:center;width:250px">
+      <svg width="180" height="168" viewBox="0 0 180 168">
+        <g fill="#D9A404" stroke="#B78500" stroke-width="2.4">
+          <path d="M62 14l34 19.6v39.2L62 92 28 72.8V33.6z"/><path d="M124 14l34 19.6v39.2L124 92l-34-19.2V33.6z"/>
+          <path d="M31 78l34 19.6v39.2L31 156 -3 136.8V97.6z"/><path d="M93 78l34 19.6v39.2L93 156l-34-19.2V97.6z"/>
+          <path d="M155 78l34 19.6v39.2L155 156l-34-19.2V97.6z"/></g>
+      </svg>
+      <div style="font-size:26px;font-weight:800;margin-top:16px">Fleet</div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:110px;gap:26px">
+    <div class="card" style="flex:1"><div class="metric" style="font-size:52px">5 minutes</div><p class="body" style="margin-top:10px">Per asset, start to dispatchable</p></div>
+    <div class="card" style="flex:1"><div class="metric" style="font-size:52px">QR onboarding</div><p class="body" style="margin-top:10px">No laptop, no site engineer</p></div>
+    <div class="card" style="flex:1"><div class="metric" style="font-size:52px">Remote provisioning</div><p class="body" style="margin-top:10px">Certificates issued over the air</p></div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">07</div>
+</section>
+
+<!-- ══════════ 08 · CUSTOMER APP ══════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="split s48">
+    <div class="colfill">
+      <div class="label">Customer app</div>
+      <h1 class="title">One app.<br>Every energy device.</h1>
+      <div class="stack" style="gap:34px;margin-top:64px">
+        <div class="pillar"><b>Monitor</b><span>Every asset, one live view.</span></div>
+        <div class="pillar"><b>Control</b><span>Set it once, it runs itself.</span></div>
+        <div class="pillar"><b>Authorize</b><span>You decide who may dispatch.</span></div>
+      </div>
+    </div>
+
+    <div style="display:grid;place-items:center;height:100%">
+      <div style="width:462px;height:900px;background:#111;border-radius:52px;padding:16px">
+        <div style="background:var(--cream);border-radius:38px;height:100%;padding:34px 26px;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:23px;font-weight:900">My home</div>
+            <div style="display:flex;align-items:center;gap:8px;background:#E7F3EC;border-radius:999px;padding:7px 15px">
+              <span style="width:9px;height:9px;border-radius:50%;background:#2C8E5A"></span>
+              <span style="font-size:16px;font-weight:700;color:#2C8E5A">Healthy</span>
+            </div>
+          </div>
+
+          <div style="display:grid;gap:12px;margin-top:26px">
+            <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 19px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:20px;font-weight:700">Battery</span><span style="font-size:20px;font-weight:800;color:#2C8E5A">78%</span></div>
+            <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 19px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:20px;font-weight:700">EV</span><span style="font-size:20px;font-weight:800;color:var(--gray)">Charging</span></div>
+            <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 19px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:20px;font-weight:700">Solar</span><span style="font-size:20px;font-weight:800;color:var(--gold-d)">4.2 kW</span></div>
+            <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 19px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:20px;font-weight:700">Pump</span><span style="font-size:20px;font-weight:800;color:var(--gray)">Idle</span></div>
+            <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 19px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:20px;font-weight:700">HVAC</span><span style="font-size:20px;font-weight:800;color:var(--gray)">22°C</span></div>
+          </div>
+
+          <div style="margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="background:var(--gold);border-radius:14px;padding:22px;text-align:center;font-size:20px;font-weight:800;color:#3A2B02">Optimize</div>
+            <div style="background:var(--gold);border-radius:14px;padding:22px;text-align:center;font-size:20px;font-weight:800;color:#3A2B02">Earn</div>
+            <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;text-align:center;font-size:20px;font-weight:800">Automate</div>
+            <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;text-align:center;font-size:20px;font-weight:800">Settings</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">08</div>
+</section>
+
+<!-- ══════════ 09 · FLEET DASHBOARD ═══════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head">
+    <div class="label">Fleet dashboard</div>
+    <h1 class="title sm">One fleet.<br>Thousands of assets.</h1>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px;margin-top:44px">
+    <div class="card" style="padding:22px">
+      <div class="cap" style="margin-bottom:16px">Live fleet map</div>
+      <svg width="100%" height="470" viewBox="0 0 900 470">
+        <rect width="900" height="470" rx="8" fill="#F6F1E4"/>
+        <g stroke="#E2D9C2" stroke-width="2" fill="none">
+          <path d="M0 150h900M0 310h900M280 0v470M600 0v470"/>
+          <path d="M40 80Q250 190 460 110T880 250"/><path d="M20 400Q240 330 470 380T880 300"/>
+        </g>
+        <g><circle cx="150" cy="110" r="13" fill="#2C8E5A"/><circle cx="360" cy="200" r="13" fill="#2C8E5A"/>
+           <circle cx="520" cy="118" r="13" fill="#D9A404"/><circle cx="290" cy="360" r="13" fill="#2C8E5A"/>
+           <circle cx="680" cy="290" r="13" fill="#2C8E5A"/><circle cx="770" cy="160" r="13" fill="#D9A404"/>
+           <circle cx="470" cy="410" r="13" fill="#2C8E5A"/><circle cx="820" cy="390" r="13" fill="#A70F0F"/>
+           <circle cx="200" cy="260" r="13" fill="#2C8E5A"/><circle cx="620" cy="420" r="13" fill="#2C8E5A"/></g>
+      </svg>
+    </div>
+
+    <div class="stack" style="gap:20px">
+      <div class="card"><div class="cap">Fleet health</div><div class="metric" style="font-size:56px;color:#2C8E5A;margin-top:10px">98<span style="font-size:32px">%</span></div><p class="body" style="font-size:19px">assets online and reporting</p></div>
+      <div class="card"><div class="cap">Revenue this month</div><div class="metric ph" style="font-size:56px;margin-top:10px">[    ]</div><p class="body" style="font-size:19px">across all grid programs</p></div>
+      <div class="row" style="gap:20px">
+        <div class="card" style="flex:1"><div class="cap">Online devices</div><div class="metric ph" style="font-size:46px;margin-top:10px">[    ]</div></div>
+        <div class="card" style="flex:1"><div class="cap">Capacity</div><div class="metric ph" style="font-size:46px;margin-top:10px">[  ] MW</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:24px;display:flex;align-items:center;justify-content:space-between;padding:24px 32px">
+    <div style="font-size:22px;font-weight:800">Dispatch window active</div>
+    <div style="display:flex;gap:60px;font-size:20px;color:var(--gray)">
+      <span>Requested <b style="color:var(--black)">4.0 MW</b></span>
+      <span>Delivered <b style="color:#2C8E5A">3.9 MW</b></span>
+      <span>Response <b style="color:var(--gold-d)">340 ms</b></span>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">09</div>
+</section>
+
+<!-- ══════════ 10 · MARKETPLACE ═══════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head">
+    <div class="label">Application marketplace</div>
+    <h1 class="title">One controller.<br>Unlimited applications.</h1>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:center;gap:34px;margin-top:48px">
+    <div style="text-align:center">
+      <svg width="150" height="170" viewBox="0 0 150 170"><path d="M75 5l70 40.4v80.8L75 166 5 126.2V45.4z" fill="#D9A404" stroke="#B78500" stroke-width="3"/>
+        <rect x="48" y="68" width="54" height="36" rx="5" fill="#111"/><circle cx="90" cy="78" r="3.5" fill="#2C8E5A"/></svg>
+      <div style="font-size:22px;font-weight:800;margin-top:10px">Gateway</div>
+    </div>
+    <svg width="70" height="20"><path d="M0 10h52m0 0l-10-7m10 7l-10 7" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+    <div style="text-align:center">
+      <div style="background:#111;color:var(--cream);border-radius:12px;padding:26px 44px;font-size:26px;font-weight:900">Marketplace</div>
+      <div class="body" style="font-size:18px;margin-top:10px">Install, meter, revoke</div>
+    </div>
+    <svg width="70" height="20"><path d="M0 10h52m0 0l-10-7m10 7l-10 7" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+    <div style="font-size:22px;font-weight:800;color:var(--gray);max-width:180px">Ten applications, one install</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:56px">
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">Demand Response</div>
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">Virtual Power Plant</div>
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">Backup Power</div>
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">TOU Optimization</div>
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">Carbon</div>
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">Microgrid</div>
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">Wholesale Markets</div>
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">Energy Trading</div>
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">Demand Flex</div>
+    <div class="card" style="padding:24px;font-size:21px;font-weight:700">Frequency Response</div>
+  </div>
+
+  <p style="font-size:28px;font-weight:800;margin-top:52px">Hardware installed once. Software expands forever.</p>
+  <div class="foot">kWh Electric</div><div class="pageno">10</div>
+</section>
+
+<!-- ══════════ 11 · MONETIZATION ══════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head">
+    <div class="label">Monetization</div>
+    <h1 class="title">Every application<br>creates new revenue.</h1>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:110px">
+    <div class="card" style="width:290px;text-align:center;padding:40px 24px">
+      <div class="cap">Step one</div><div style="font-size:34px;font-weight:900;margin-top:12px">Asset</div></div>
+    <svg width="70" height="20"><path d="M0 10h52m0 0l-10-7m10 7l-10 7" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+    <div class="card" style="width:290px;text-align:center;padding:40px 24px;background:#FDF6E2;border-color:#EBD9A4">
+      <div class="cap">Step two</div><div style="font-size:34px;font-weight:900;margin-top:12px">Gateway</div></div>
+    <svg width="70" height="20"><path d="M0 10h52m0 0l-10-7m10 7l-10 7" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+    <div class="card" style="width:290px;text-align:center;padding:40px 24px">
+      <div class="cap">Step three</div><div style="font-size:34px;font-weight:900;margin-top:12px">Application</div></div>
+    <svg width="70" height="20"><path d="M0 10h52m0 0l-10-7m10 7l-10 7" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+    <div class="card" style="width:290px;text-align:center;padding:40px 24px">
+      <div class="cap">Step four</div><div style="font-size:34px;font-weight:900;margin-top:12px">Grid program</div></div>
+    <svg width="70" height="20"><path d="M0 10h52m0 0l-10-7m10 7l-10 7" stroke="#B78500" stroke-width="3" fill="none"/></svg>
+    <div class="card" style="width:290px;text-align:center;padding:40px 24px;background:#111;border-color:#111">
+      <div class="cap" style="color:#A8A292">Outcome</div><div style="font-size:34px;font-weight:900;margin-top:12px;color:var(--gold)">Revenue</div></div>
+  </div>
+
+  <div class="row" style="margin-top:120px;gap:26px">
+    <div class="card" style="flex:1"><div class="cap">Owner keeps</div><div class="metric ph" style="font-size:54px;margin-top:12px">[    ]</div><p class="body" style="margin-top:8px">Bill savings from TOU and self-consumption</p></div>
+    <div class="card" style="flex:1"><div class="cap">Utility pays</div><div class="metric ph" style="font-size:54px;margin-top:12px">[    ]</div><p class="body" style="margin-top:8px">Grid incentives for verified response</p></div>
+    <div class="card" style="flex:1"><div class="cap">Market pays</div><div class="metric ph" style="font-size:54px;margin-top:12px">[    ]</div><p class="body" style="margin-top:8px">Wholesale and capacity participation</p></div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">11</div>
+</section>
+
+<!-- ══════════ 12 · AI AGENTS ═════════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="split s42">
+    <div class="colfill">
+      <div class="label">AI agents</div>
+      <h1 class="title">Every device<br>can negotiate.</h1>
+      <p class="sub">Shared intelligence, not a central owner. Each asset acts for itself, inside limits its owner set.</p>
+    </div>
+
+    <!-- queen = shared intelligence. no arrows point INTO her. exchange only. -->
+    <div style="display:grid;place-items:center;height:100%">
+      <svg width="1000" height="860" viewBox="0 0 1000 860">
+        <g stroke="#B78500" stroke-width="2.6" fill="none" stroke-dasharray="0.5 10" stroke-linecap="round" opacity=".75">
+          <path d="M210 640Q300 470 430 400"/><path d="M420 700Q450 520 470 420"/>
+          <path d="M640 690Q600 520 540 420"/><path d="M840 620Q720 470 580 400"/>
+          <path d="M210 640Q400 600 420 700"/><path d="M640 690Q760 660 840 620"/>
+        </g>
+
+        <use href="#queen" x="428" y="316" width="150" height="115"/>
+        <text x="503" y="470" text-anchor="middle" font-family="Figtree" font-size="21" font-weight="800" fill="#111">Shared intelligence</text>
+        <text x="503" y="500" text-anchor="middle" font-family="Figtree" font-size="18" font-weight="500" fill="#5F5F5F">no central owner</text>
+
+        <g fill="#D9A404" stroke="#B78500" stroke-width="2.4">
+          <path d="M180 640l58 33.5v67L180 774l-58-33.5v-67z"/>
+          <path d="M390 700l58 33.5v67L390 834l-58-33.5v-67z"/>
+          <path d="M610 690l58 33.5v67L610 824l-58-33.5v-67z"/>
+          <path d="M820 620l58 33.5v67L820 754l-58-33.5v-67z"/>
+        </g>
+        <g>
+          <use href="#bee" x="156" y="690" width="48" height="33"/><use href="#bee" x="366" y="750" width="48" height="33"/>
+          <use href="#bee" x="586" y="740" width="48" height="33"/><use href="#bee" x="796" y="670" width="48" height="33"/>
+        </g>
+
+        <g font-family="Figtree" font-size="19" font-weight="700" fill="#7A5A05">
+          <rect x="96" y="118" width="126" height="46" rx="23" fill="#FDF6E2" stroke="#EBD9A4"/><text x="159" y="147" text-anchor="middle">Forecast</text>
+          <rect x="284" y="66" width="146" height="46" rx="23" fill="#FDF6E2" stroke="#EBD9A4"/><text x="357" y="95" text-anchor="middle">Negotiate</text>
+          <rect x="500" y="96" width="130" height="46" rx="23" fill="#FDF6E2" stroke="#EBD9A4"/><text x="565" y="125" text-anchor="middle">Dispatch</text>
+          <rect x="690" y="58" width="112" height="46" rx="23" fill="#FDF6E2" stroke="#EBD9A4"/><text x="746" y="87" text-anchor="middle">Verify</text>
+          <rect x="838" y="150" width="132" height="46" rx="23" fill="#FDF6E2" stroke="#EBD9A4"/><text x="904" y="179" text-anchor="middle">Optimize</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">12</div>
+</section>
+
+<!-- ══════════ 13 · BUSINESS MODEL ════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head"><div class="label">Business model</div><h1 class="title">Three revenue lines,<br>one installed base.</h1></div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:96px">
+    <div class="card" style="padding:52px 44px">
+      <div class="cap">Hardware</div>
+      <div class="metric" style="font-size:64px;margin-top:24px">~₹6,000</div>
+      <p class="body" style="margin-top:12px">DER Gateway, indoor</p>
+      <div class="metric" style="font-size:64px;margin-top:32px">~₹24,000</div>
+      <p class="body" style="margin-top:12px">Transformer Gateway, outdoor</p>
+      <p class="body" style="font-size:18px;margin-top:34px;color:#9A948A">Target prices at volume. Sold once.</p>
+    </div>
+    <div class="card" style="padding:52px 44px">
+      <div class="cap">License</div>
+      <div class="metric ph" style="font-size:64px;margin-top:24px">[    ]</div>
+      <p class="body" style="margin-top:12px">Per asset, per month</p>
+      <div class="metric ph" style="font-size:64px;margin-top:32px">[  %]</div>
+      <p class="body" style="margin-top:12px">Gross margin</p>
+      <p class="body" style="font-size:18px;margin-top:34px;color:#9A948A">Recurring. No per-dispatch fee.</p>
+    </div>
+    <div class="card" style="padding:52px 44px;background:#FDF6E2;border-color:#EBD9A4">
+      <div class="cap">Marketplace</div>
+      <div class="metric ph" style="font-size:64px;margin-top:24px">[  %]</div>
+      <p class="body" style="margin-top:12px">Revenue share per application</p>
+      <div class="metric ph" style="font-size:64px;margin-top:32px">[    ]</div>
+      <p class="body" style="margin-top:12px">Applications per gateway</p>
+      <p class="body" style="font-size:18px;margin-top:34px;color:#9A948A">Compounds without new hardware.</p>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">13</div>
+</section>
+
+<!-- ══════════ 14 · MARKET ════════════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head"><div class="label">Market</div><h1 class="title">Every installed asset<br>is addressable.</h1></div>
+
+  <div class="split s50" style="height:720px;margin-top:12px">
+    <div style="display:grid;place-items:center;height:100%">
+      <svg width="640" height="620" viewBox="0 0 640 620">
+        <path d="M320 20l260 150v300L320 620 60 470V170z" fill="#FDF6E2" stroke="#EBD9A4" stroke-width="2.5"/>
+        <path d="M320 150l170 98v196l-170 98-170-98V248z" fill="#F2DFA8" stroke="#D9A404" stroke-width="2.5"/>
+        <path d="M320 280l84 48.5v97L320 474l-84-48.5v-97z" fill="#D9A404" stroke="#B78500" stroke-width="2.5"/>
+        <g font-family="Figtree" font-weight="900" text-anchor="middle">
+          <text x="320" y="98" font-size="26" fill="#7A5A05">TAM</text>
+          <text x="320" y="222" font-size="26" fill="#7A5A05">SAM</text>
+          <text x="320" y="386" font-size="26" fill="#3A2B02">SOM</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="stack" style="gap:22px;justify-content:center;height:100%">
+      <div class="card">
+        <div class="cap">TAM — global flexibility platforms</div>
+        <div class="metric" style="font-size:58px;margin-top:12px">$23B</div>
+        <p class="body" style="margin-top:8px">by 2033, ~25.8% CAGR. 122+ GW already on VPP platforms across 48 countries.</p>
+      </div>
+      <div class="card">
+        <div class="cap">SAM — assets reachable by retrofit</div>
+        <div class="metric ph" style="font-size:58px;margin-top:12px">[    ]</div>
+        <p class="body" style="margin-top:8px">Behind-the-meter assets in target markets, gateway or OEM-cloud reachable.</p>
+      </div>
+      <div class="card">
+        <div class="cap">SOM — five-year beachhead</div>
+        <div class="metric ph" style="font-size:58px;margin-top:12px">[    ]</div>
+        <p class="body" style="margin-top:8px">India DISCOMs via Beckn DEG, then US utilities and aggregators on IEEE 2030.5.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">14</div>
+</section>
+
+<!-- ══════════ 15 · COMPETITION ═══════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head"><div class="label">Competition</div><h1 class="title">Nobody else holds<br>all five.</h1></div>
+
+  <div class="card" style="margin-top:64px;padding:0;overflow:hidden">
+    <table>
+      <tr>
+        <th style="width:400px">Category</th>
+        <th style="text-align:center">Security</th><th style="text-align:center">Open</th>
+        <th style="text-align:center">Marketplace</th><th style="text-align:center">AI</th><th style="text-align:center">Interoperability</th>
+      </tr>
+      <tr>
+        <td><b style="font-size:23px">OEMs</b><div class="body" style="font-size:18px">Enphase, Tesla, Sungrow</div></td>
+        <td style="text-align:center">●</td><td style="text-align:center">○</td><td style="text-align:center">○</td><td style="text-align:center">◐</td><td style="text-align:center">○</td>
+      </tr>
+      <tr>
+        <td><b style="font-size:23px">Aggregators</b><div class="body" style="font-size:18px">VPP operators</div></td>
+        <td style="text-align:center">◐</td><td style="text-align:center">◐</td><td style="text-align:center">○</td><td style="text-align:center">◐</td><td style="text-align:center">◐</td>
+      </tr>
+      <tr>
+        <td><b style="font-size:23px">DERMS</b><div class="body" style="font-size:18px">AutoGrid, Uplight</div></td>
+        <td style="text-align:center">◐</td><td style="text-align:center">◐</td><td style="text-align:center">○</td><td style="text-align:center">●</td><td style="text-align:center">◐</td>
+      </tr>
+      <tr>
+        <td><b style="font-size:23px">Hardware gateways</b><div class="body" style="font-size:18px">Kalkitech and peers</div></td>
+        <td style="text-align:center">◐</td><td style="text-align:center">●</td><td style="text-align:center">○</td><td style="text-align:center">○</td><td style="text-align:center">●</td>
+      </tr>
+      <tr style="background:#FDF6E2">
+        <td><b style="font-size:26px;color:#7A5A05">kWh Electric</b><div class="body" style="font-size:18px;color:#7A5A05">Edge-up, standards-native</div></td>
+        <td style="text-align:center;font-size:26px;color:var(--gold-d)">●</td><td style="text-align:center;font-size:26px;color:var(--gold-d)">●</td>
+        <td style="text-align:center;font-size:26px;color:var(--gold-d)">●</td><td style="text-align:center;font-size:26px;color:var(--gold-d)">●</td>
+        <td style="text-align:center;font-size:26px;color:var(--gold-d)">●</td>
+      </tr>
+    </table>
+  </div>
+  <p class="body" style="margin-top:30px;font-size:19px">● full &nbsp;·&nbsp; ◐ partial &nbsp;·&nbsp; ○ none. Assessment is ours, from public product documentation.</p>
+  <div class="foot">kWh Electric</div><div class="pageno">15</div>
+</section>
+
+<!-- ══════════ 16 · GO TO MARKET ══════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head"><div class="label">Go to market</div><h1 class="title">Land on the asset.<br>Expand to the network.</h1></div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:80px">
+    <div class="card" style="padding:44px 40px">
+      <div style="display:flex;align-items:center;gap:16px">
+        <svg width="42" height="48" viewBox="0 0 44 50"><path d="M22 1l18.2 10.5v21L22 43 3.8 32.5v-21z" fill="#D9A404"/></svg>
+        <div class="cap">Stage one</div>
+      </div>
+      <div style="font-size:40px;font-weight:900;margin-top:22px">OEM</div>
+      <p class="body" style="margin-top:14px">Embed at manufacture. The gateway ships inside the asset, so the install cost is zero.</p>
+      <p class="body" style="font-size:19px;margin-top:22px;color:var(--black)"><b>Monarch Transformers</b> — contracted, telemetry embedded at manufacture.</p>
+    </div>
+    <div class="card" style="padding:44px 40px">
+      <div style="display:flex;align-items:center;gap:16px">
+        <svg width="42" height="48" viewBox="0 0 44 50"><path d="M22 1l18.2 10.5v21L22 43 3.8 32.5v-21z" fill="#D9A404"/></svg>
+        <div class="cap">Stage two</div>
+      </div>
+      <div style="font-size:40px;font-weight:900;margin-top:22px">Utilities</div>
+      <p class="body" style="margin-top:14px">Utility-sponsored deployment across a network, sold on visibility below the feeder.</p>
+      <p class="body" style="font-size:19px;margin-top:22px;color:var(--black)"><b>5 DISCOMs</b> via the Beckn DEG channel, across three continents.</p>
+    </div>
+    <div class="card" style="padding:44px 40px;background:#FDF6E2;border-color:#EBD9A4">
+      <div style="display:flex;align-items:center;gap:16px">
+        <svg width="42" height="48" viewBox="0 0 44 50"><path d="M22 1l18.2 10.5v21L22 43 3.8 32.5v-21z" fill="#B78500"/></svg>
+        <div class="cap">Stage three</div>
+      </div>
+      <div style="font-size:40px;font-weight:900;margin-top:22px">Marketplace</div>
+      <p class="body" style="margin-top:14px">Third parties build on the installed base. Every new application monetises hardware already in the field.</p>
+      <p class="body" style="font-size:19px;margin-top:22px;color:#7A5A05"><b>No new hardware</b> required to open a new revenue line.</p>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:64px;gap:26px">
+    <div class="card" style="flex:1"><div class="cap">Devices under management</div><div class="metric ph" style="font-size:56px;margin-top:12px">[    ]</div></div>
+    <div class="card" style="flex:1"><div class="cap">Recurring revenue</div><div class="metric ph" style="font-size:56px;margin-top:12px">[    ]</div></div>
+    <div class="card" style="flex:1"><div class="cap">Channel partners</div><div class="metric ph" style="font-size:56px;margin-top:12px">[    ]</div></div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">16</div>
+</section>
+
+<!-- ══════════ 17 · TEAM ══════════════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head"><div class="label">Team</div><h1 class="title">Built by people who<br>shipped this before.</h1></div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:44px;margin-top:80px">
+    <div style="text-align:center">
+      <svg width="230" height="262" viewBox="0 0 44 50"><path d="M22 1l18.2 10.5v21L22 43 3.8 32.5v-21z" fill="#FDF6E2" stroke="#D9A404" stroke-width="1.1"/>
+        <text x="22" y="27" text-anchor="middle" font-family="Figtree" font-size="9" font-weight="900" fill="#B78500">AS</text></svg>
+      <div style="font-size:34px;font-weight:900;margin-top:22px">Arham Shah</div>
+      <div class="cap" style="margin-top:8px">Founder &amp; CEO</div>
+      <p class="body" style="margin-top:16px">Ex-Tesla, Rivian and Beckn; launched the first open energy networks in India and Brazil.</p>
+    </div>
+    <div style="text-align:center">
+      <svg width="230" height="262" viewBox="0 0 44 50"><path d="M22 1l18.2 10.5v21L22 43 3.8 32.5v-21z" fill="#FDF6E2" stroke="#D9A404" stroke-width="1.1"/>
+        <text x="22" y="27" text-anchor="middle" font-family="Figtree" font-size="9" font-weight="900" fill="#B78500">SK</text></svg>
+      <div style="font-size:34px;font-weight:900;margin-top:22px">Sudheer Kumar</div>
+      <div class="cap" style="margin-top:8px">Forward deployment</div>
+      <p class="body" style="margin-top:16px">Built utility-scale DER management at Uplight and AutoGrid before joining as founding engineer.</p>
+    </div>
+    <div style="text-align:center">
+      <svg width="230" height="262" viewBox="0 0 44 50"><path d="M22 1l18.2 10.5v21L22 43 3.8 32.5v-21z" fill="#FDF6E2" stroke="#D9A404" stroke-width="1.1"/>
+        <text x="22" y="27" text-anchor="middle" font-family="Figtree" font-size="9" font-weight="900" fill="#B78500">YM</text></svg>
+      <div style="font-size:34px;font-weight:900;margin-top:22px">Yuvaraju Meenuga</div>
+      <div class="cap" style="margin-top:8px">Backend &amp; integrations</div>
+      <p class="body" style="margin-top:16px">Writes the protocol drivers and the cloud that every gateway reports into.</p>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:76px;gap:26px;justify-content:center">
+    <div class="chip">Advisor — Sujith Nair, co-founder of Beckn</div>
+    <div class="chip">Advisor — Dr. Pramod Varma, chief architect of UPI and Aadhaar</div>
+    <div class="chip g">15+ years combined at Uplight and AutoGrid</div>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">17</div>
+</section>
+
+<!-- ══════════ 18 · FUNDRAISE ═════════════════════════════ -->
+<section class="slide">
+  <svg class="comb-bg" opacity=".05"><rect width="100%" height="100%" fill="url(#combPat)"/></svg>
+  <div class="head">
+    <div class="label">The raise</div>
+    <h1 class="title" style="font-size:76px">Building<br>the communication layer<br>for every DER.</h1>
+  </div>
+
+  <div class="row" style="margin-top:76px;gap:30px">
+    <div class="card" style="flex:1;padding:48px 44px">
+      <div class="cap">Raising</div>
+      <div class="metric" style="font-size:88px;margin-top:18px">$1.5M</div>
+      <p class="body" style="margin-top:14px">On a SAFE, <span class="ph">[$ cap]</span> cap. <span class="ph">[$65K]</span> raised to date.</p>
+    </div>
+    <div class="card" style="flex:1;padding:48px 44px">
+      <div class="cap">Runway</div>
+      <div class="metric ph" style="font-size:88px;margin-top:18px">[X] mo</div>
+      <p class="body" style="margin-top:14px">At the current ~$2,000 monthly burn, extended for the production run.</p>
+    </div>
+    <div class="card" style="flex:1;padding:48px 44px">
+      <div class="cap">Milestones</div>
+      <div class="stack" style="gap:12px;margin-top:20px;font-size:21px;font-weight:700">
+        <div><span class="ph">[X]</span> MW under management</div>
+        <div><span class="ph">[X]</span> device profiles shipped</div>
+        <div><span class="ph">[X]</span> transformer sites certified</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:96px;border-top:3px solid var(--gold);padding-top:46px">
+    <p style="font-size:44px;font-weight:900;line-height:1.22">One controller. Unlimited applications.<br><span style="color:var(--gold-d)">Open energy infrastructure.</span></p>
+  </div>
+  <div class="foot">kWh Electric</div><div class="pageno">18</div>
+</section>
+
+</div><!-- /#stage -->
+
+<div id="nav">
+  <span id="count"></span>
+  <button id="prev" aria-label="Previous slide">‹</button>
+  <button id="next" aria-label="Next slide">›</button>
+</div>
+
+<script>
+(function(){
+  var stage  = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var count  = document.getElementById('count');
+  var i = 0;
+  var isPrint = /(\?|&)print/.test(location.search);
+
+  if(isPrint){
+    document.documentElement.classList.add('print');
+    document.body.classList.add('print');
+    slides.forEach(function(s){ s.classList.add('on'); });
+    return;
+  }
+
+  function show(n){
+    i = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach(function(s,k){ s.classList.toggle('on', k===i); });
+    count.textContent = (i+1)+' / '+slides.length;
+    try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
+  }
+  function fit(){
+    var s = Math.min(innerWidth/1920, innerHeight/1080);
+    stage.style.transform = 'translate(-50%,-50%) scale('+s+')';
+  }
+
+  addEventListener('resize', fit);
+  addEventListener('keydown', function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); show(i+1); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); show(i-1); }
+    else if(e.key==='Home'){ show(0); }
+    else if(e.key==='End'){ show(slides.length-1); }
+  });
+  document.getElementById('next').onclick = function(){ show(i+1); };
+  document.getElementById('prev').onclick = function(){ show(i-1); };
+  addEventListener('click', function(e){
+    if(e.target.closest('#nav')) return;
+    show(e.clientX < innerWidth*0.32 ? i-1 : i+1);
+  });
+
+  var nav = document.getElementById('nav'), hideT;
+  function wake(){
+    nav.classList.add('show');
+    clearTimeout(hideT);
+    hideT = setTimeout(function(){ nav.classList.remove('show'); }, 2200);
+  }
+  ['mousemove','keydown','click'].forEach(function(ev){ addEventListener(ev, wake); });
+
+  var start = parseInt((location.hash||'').slice(1),10);
+  fit(); show(isNaN(start) ? 0 : start-1);
+})();
+</script>
+</body>
+</html>

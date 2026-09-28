@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Every Bee Has a Cell — kWh Electric</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800;9..40,900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+<style>
+html,body{margin:0;padding:0;background:#FFFBF0;color:#241f18;font-family:'DM Sans',sans-serif;overflow:hidden;height:100%}
+a{color:#C2932A;text-decoration:none}a:hover{color:#241f18}
+.wing{transform-origin:0 0;animation:flap .13s ease-in-out infinite alternate}
+.wingB{animation-delay:.06s}
+.wingSlow{animation-duration:.4s}
+@keyframes flap{from{transform:rotate(-12deg)}to{transform:rotate(21deg)}}
+#grain{position:absolute;inset:0;pointer-events:none;z-index:40;opacity:.06;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='260' height='260' filter='url(%23n)'/></svg>")}
+.btnNext{display:inline-flex;align-items:center;gap:10px;border:none;cursor:pointer;background:#241f18;color:#FBF7EA;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800;letter-spacing:.04em;padding:15px 30px;border-radius:999px;box-shadow:0 12px 26px rgba(122,89,38,.28);transition:background .2s,transform .2s}
+.btnNext:hover{background:#C2932A;transform:translateY(-1px)}
+.btnBack{width:44px;height:44px;border:1.5px solid rgba(36,31,24,.22);background:rgba(255,251,240,.85);color:#8a7c58;font-size:20px;font-weight:800;cursor:pointer;border-radius:999px;display:flex;align-items:center;justify-content:center;transition:opacity .25s,color .2s,border-color .2s;font-family:'DM Sans',sans-serif}
+.btnBack:hover{color:#241f18;border-color:#C2932A}
+.btnBack[disabled]{opacity:0;pointer-events:none}
+.dispatchBtn{border:1.5px solid #CD7F32;border-radius:999px;background:rgba(228,179,60,.22);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:800;letter-spacing:.16em;color:#8a5a1e;padding:10px 18px;cursor:pointer;transition:background .2s,transform .15s;pointer-events:auto}
+.dispatchBtn:hover{background:rgba(228,179,60,.4);transform:translateY(-1px)}
+.copyCard{position:absolute;z-index:50;right:3vw;top:64px;max-width:360px;pointer-events:none;background:rgba(255,251,240,.96);border:1px solid rgba(36,31,24,.1);border-radius:12px;padding:20px 22px 22px;box-shadow:0 14px 32px rgba(122,89,38,.16);backdrop-filter:blur(6px);clip-path:inset(0% 0% 100% 0%);opacity:0;visibility:hidden}
+.copyCard h2{font-size:clamp(24px,2.8vw,34px)!important}
+.copyCard p{font-size:16px!important;line-height:1.55!important}
+.copyCard > div:nth-child(2){font-size:11px!important}
+#card0{position:absolute;z-index:50;top:36px;left:50%;transform:translateX(-50%);text-align:center;max-width:620px;width:84%;pointer-events:none;clip-path:inset(0% 0% 100% 0%);opacity:0;visibility:hidden;background:none;border:none;box-shadow:none;padding:0}
+#card7{right:3vw;top:64px;max-width:380px;pointer-events:auto}
+@media (max-width:760px){
+  .copyCard,#card7{left:4vw;right:4vw;top:auto;bottom:112px;max-width:none}
+  #card0{top:48px}
+}
+@media (prefers-reduced-motion: reduce){.wing{animation:none !important}}
+</style>
+</head>
+<body>
+<div id="stage" style="position:relative;height:100vh;overflow:hidden;background:#FFFBF0">
+  <svg id="world" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;display:block"></svg>
+  <div id="grain"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;z-index:41;background:radial-gradient(ellipse at center,transparent 52%,rgba(120,90,40,.14))"></div>
+
+  <div style="position:absolute;top:16px;left:18px;z-index:60;display:flex;align-items:center;gap:10px">
+    <img src="./kwh-logo-mark.png" alt="kWh Electric" width="32" height="32" style="display:block">
+    <div style="font-size:11px;font-weight:800;letter-spacing:.22em;color:#8a7c58">kWh ELECTRIC</div>
+  </div>
+
+  <div id="card0">
+    <div style="font-size:11px;font-weight:800;letter-spacing:.28em;color:#C2932A;margin:0 0 10px;text-shadow:0 1px 0 rgba(255,251,240,.9)">A kWh ELECTRIC FABLE · IEEE 2030.5</div>
+    <h1 style="font-size:clamp(24px,3.8vw,44px);font-weight:900;letter-spacing:-.03em;line-height:1.02;margin:0;text-shadow:0 2px 18px rgba(255,251,240,.95)">Every energy asset<br>has a cell.</h1>
+    <p style="margin:12px auto 0;font-size:clamp(14px,1.6vw,18px);font-weight:500;line-height:1.5;color:#4b4433;max-width:520px;text-shadow:0 1px 10px rgba(255,251,240,.95)">Open standard. Shared language. Many hives — one hex.</p>
+  </div>
+
+  <div class="copyCard" id="card1">
+    <div style="width:40px;height:3px;background:linear-gradient(90deg,#CD7F32,#E4B33C);margin:0 0 10px"></div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.24em;color:#8a7c58;margin:0 0 6px">01 · THE COMMAND</div>
+    <h2 style="font-size:clamp(24px,2.8vw,34px);font-weight:900;line-height:1.08;margin:0 0 6px">The queen speaks once.</h2>
+    <p style="font-size:16px;line-height:1.55;color:#4b4433;font-weight:500;margin:0 0 12px">One command. Many cells answer.</p>
+    <button type="button" class="dispatchBtn" id="dispatchBtn">DISPATCH →</button>
+  </div>
+
+  <div class="copyCard" id="card2">
+    <div style="width:40px;height:3px;background:linear-gradient(90deg,#CD7F32,#E4B33C);margin:0 0 10px"></div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.24em;color:#8a7c58;margin:0 0 6px">02 · THE EXIT</div>
+    <h2 style="font-size:clamp(24px,2.8vw,34px);font-weight:900;line-height:1.08;margin:0 0 6px">Every bee leaves through its own cell.</h2>
+    <p style="font-size:16px;line-height:1.55;color:#4b4433;font-weight:500;margin:0">Dispatch rides the open hex — out into the world.</p>
+  </div>
+
+  <div class="copyCard" id="card3">
+    <div style="width:40px;height:3px;background:linear-gradient(90deg,#CD7F32,#E4B33C);margin:0 0 10px"></div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.24em;color:#8a7c58;margin:0 0 6px">03 · THE NECTAR</div>
+    <h2 style="font-size:clamp(24px,2.8vw,34px);font-weight:900;line-height:1.08;margin:0 0 6px">Nectar waits at the source.</h2>
+    <p style="font-size:16px;line-height:1.55;color:#4b4433;font-weight:500;margin:0">Orange. Lavender. Clover — each garden grows its own flavor.</p>
+  </div>
+
+  <div class="copyCard" id="card4">
+    <div style="width:40px;height:3px;background:linear-gradient(90deg,#CD7F32,#E4B33C);margin:0 0 10px"></div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.24em;color:#8a7c58;margin:0 0 6px">04 · THE RULE</div>
+    <h2 style="font-size:clamp(24px,2.8vw,34px);font-weight:900;line-height:1.08;margin:0 0 6px">One hive. One flavor.</h2>
+    <p style="font-size:16px;line-height:1.55;color:#4b4433;font-weight:500;margin:0">This hive takes orange. The other takes its own.</p>
+  </div>
+
+  <div class="copyCard" id="card5">
+    <div style="width:40px;height:3px;background:linear-gradient(90deg,#CD7F32,#E4B33C);margin:0 0 10px"></div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.24em;color:#8a7c58;margin:0 0 6px">05 · THE ROUND TRIP</div>
+    <h2 style="font-size:clamp(24px,2.8vw,34px);font-weight:900;line-height:1.08;margin:0 0 6px">Out is control. Back is truth.</h2>
+    <p style="font-size:16px;line-height:1.55;color:#4b4433;font-weight:500;margin:0 0 10px">Dispatch goes out. Telemetry comes home.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <span style="padding:7px 12px;border:1.5px solid #CD7F32;border-radius:999px;background:rgba(205,127,50,.12);font-size:11px;font-weight:800;letter-spacing:.14em;color:#8a5a1e">DISPATCH →</span>
+      <span style="padding:7px 12px;border:1.5px solid #C2932A;border-radius:999px;background:rgba(228,179,60,.16);font-size:11px;font-weight:800;letter-spacing:.14em;color:#7a6420">← TELEMETRY</span>
+    </div>
+  </div>
+
+  <div class="copyCard" id="card6">
+    <div style="width:40px;height:3px;background:linear-gradient(90deg,#CD7F32,#E4B33C);margin:0 0 10px"></div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.24em;color:#8a7c58;margin:0 0 6px">06 · THE ATTACK</div>
+    <h2 style="font-size:clamp(24px,2.8vw,34px);font-weight:900;line-height:1.08;margin:0 0 6px">Trouble comes. The cell holds.</h2>
+    <p style="font-size:16px;line-height:1.55;color:#4b4433;font-weight:500;margin:0">Every hex is a barrier. Unauthorized control stops at the edge.</p>
+  </div>
+
+  <div class="copyCard" id="card7">
+    <div style="width:40px;height:3px;background:linear-gradient(90deg,#CD7F32,#E4B33C);margin:0 0 10px"></div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.24em;color:#8a7c58;margin:0 0 6px">07 · THE HARVEST</div>
+    <h2 style="font-size:clamp(24px,2.8vw,34px);font-weight:900;line-height:1.08;margin:0 0 6px">Honey is the product layer.</h2>
+    <p style="font-size:16px;line-height:1.55;color:#4b4433;font-weight:500;margin:0 0 14px">From nectar at the edge to applications above the comb.</p>
+    <a href="https://kwhelectric.io" style="display:inline-block;font-weight:900;font-size:14px;letter-spacing:.04em;color:#FBF7EA;background:#241f18;padding:12px 22px;border-radius:999px">We're building this hive →</a>
+  </div>
+
+  <div id="ctrl" style="position:absolute;left:0;right:0;bottom:0;z-index:60;display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 20px 18px;pointer-events:none">
+    <button id="navBack" class="btnBack" type="button" aria-label="Previous" disabled style="pointer-events:auto">‹</button>
+    <button id="navNext" class="btnNext" type="button" aria-label="Next" style="pointer-events:auto"><span id="navLbl">Begin</span> <span style="font-size:17px">→</span></button>
+    <div id="stepCount" style="position:absolute;right:22px;bottom:22px;font-size:12px;font-weight:800;letter-spacing:.14em;color:#8a7c58">01 / 08</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  function boot(){
+    if(!window.gsap || !window.MotionPathPlugin){ setTimeout(boot, 40); return; }
+    gsap.registerPlugin(MotionPathPlugin);
+    const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const q = s => document.querySelector(s);
+    const qa = s => Array.from(document.querySelectorAll(s));
+    const stage = q('#stage'), svg = q('#world');
+    if(!stage || !svg) return;
+
+    const INK='#241f18', GOLD='#E4B33C', DGOLD='#C2932A', BRONZE='#CD7F32', HONEY='#F4C452',
+          WASH='#EFDCA6', FILL_EMPTY='#FCF3D6', FILL_LIGHT='#F7E2A0', FILL_MID='#F0C85A', CELL_FULL='#E9B94A',
+          HEAD='#332A1D', BODY='#F4C452', WING='#FFFCF0', CHEEK='#E8998D',
+          G1='#8D9C66', G2='#6F8049', G3='#5E6F3D', RED='#9E2B25',
+          ORA='#E58A2A', ORAL='#F6B15A', LAV='#8E79C9', LAVD='#6E58AD', CLO='#E8D9A8', CLOD='#C9B56E',
+          MK_MAIN=BRONZE, MK_OTHER='#B5651D';
+    let uid=0;
+    const P=n=>(+n).toFixed(1);
+    const hexPts=(cx,cy,r)=>{let s='';for(let i=0;i<6;i++){const a=Math.PI/6+i*Math.PI/3;s+=P(cx+r*Math.cos(a))+','+P(cy+r*Math.sin(a))+' ';}return s.trim();};
+    const hexPoly=(cx,cy,r,fill,stroke,sw)=>'<polygon points="'+hexPts(cx,cy,r)+'" fill="'+fill+'"'+(stroke?' stroke="'+stroke+'" stroke-width="'+sw+'"':'')+'/>';
+    const pathStr=(a,b,bow)=>{const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L,k=(bow==null?0.16:bow)*L;return 'M'+P(a[0])+','+P(a[1])+' Q'+P(mx+nx*k)+','+P(my+ny*k)+' '+P(b[0])+','+P(b[1]);};
+
+    function bee(s,o){ o=o||{}; const id=++uid; const w=o.still?'':'wing ';
+      const droplet=o.droplet?`<g class="droplet" opacity="0"><path d="M-2 40 C -13 56 -13 70 -2 76 C 9 70 9 56 -2 40 Z" fill="${HONEY}" stroke="${DGOLD}" stroke-width="2.5"/><circle cx="-6" cy="60" r="3.4" fill="#FFF3CE"/></g>`:'';
+      const crown=o.master?`<g transform="translate(30,-36)"><path d="M-15 6 L15 6 L12 -3 L-12 -3 Z" fill="${DGOLD}"/><polygon points="${hexPts(-9,-9,5.5)}" fill="${GOLD}" stroke="${DGOLD}" stroke-width="1.5"/><polygon points="${hexPts(9,-9,5.5)}" fill="${GOLD}" stroke="${DGOLD}" stroke-width="1.5"/><polygon points="${hexPts(0,-13,7)}" fill="${GOLD}" stroke="${DGOLD}" stroke-width="1.5"/></g>`:'';
+      const mark=o.mark?`<polygon points="${hexPts(-13,-7,7)}" fill="${o.mark}" stroke="#FFFDF4" stroke-width="1.8"/>`:'';
+      return `<g transform="scale(${s})">
+        <g class="${w}wingB" transform="translate(-10,-20)"><ellipse cx="9" cy="-19" rx="12" ry="21" fill="${WING}" stroke="${DGOLD}" stroke-width="1.8" opacity=".55"/></g>
+        <ellipse cx="-31" cy="1" rx="16" ry="14" fill="${INK}"/>
+        <ellipse cx="0" cy="0" rx="33" ry="26" fill="${BODY}"/>
+        <clipPath id="bc${id}"><ellipse cx="0" cy="0" rx="33" ry="26"/></clipPath>
+        <g clip-path="url(#bc${id})"><rect x="-25" y="-30" width="12" height="60" rx="6" fill="${INK}"/><rect x="-3" y="-30" width="12" height="60" rx="6" fill="${INK}"/><ellipse cx="2" cy="18" rx="27" ry="10" fill="rgba(36,31,24,.07)"/></g>
+        ${mark}
+        <circle cx="32" cy="-8" r="23" fill="${HEAD}"/>
+        <path d="M24 -28 q-3 -11 -11 -15" stroke="${HEAD}" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="12" cy="-44" r="4.5" fill="${o.master?GOLD:DGOLD}"/>
+        <path d="M37 -29 q3 -11 11 -13" stroke="${HEAD}" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="49" cy="-43" r="4.5" fill="${o.master?GOLD:DGOLD}"/>
+        <circle cx="39" cy="-11" r="9.5" fill="#FFFDF4"/><circle cx="41.5" cy="-10" r="5.6" fill="${INK}"/><circle cx="43.5" cy="-12.5" r="2.3" fill="#fff"/>
+        <ellipse cx="34" cy="2" rx="5" ry="3.4" fill="${CHEEK}" opacity=".9"/>
+        <path d="M40 1 q4 4 9 .5" stroke="#FBF7EA" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        ${crown}
+        <g class="${w}wingF" transform="translate(2,-21)"><ellipse cx="14" cy="-20" rx="15" ry="25" fill="${WING}" stroke="${DGOLD}" stroke-width="2" opacity=".92"/><path d="M8 -34 q7 9 9 24" stroke="${DGOLD}" stroke-width="1.4" fill="none" opacity=".5"/></g>
+        ${droplet}
+      </g>`;
+    }
+    function bumble(){ const id=++uid; let fur='';
+      for(let i=0;i<16;i++){const a=(i/16)*Math.PI*2,bx=Math.cos(a)*46,by=Math.sin(a)*36,ex=Math.cos(a)*53,ey=Math.sin(a)*43;fur+='<path d="M'+P(bx)+' '+P(by)+' L'+P(ex)+' '+P(ey)+'"/>';}
+      return `<g transform="scale(-0.82,0.82)">
+        <g class="wing wingSlow" transform="translate(-16,-30)"><ellipse cx="12" cy="-18" rx="15" ry="24" fill="rgba(210,204,190,.4)" stroke="#5d574b" stroke-width="2"/></g>
+        <path d="M-84 -2 L-108 6 L-84 14 Z" fill="#0e0a06"/>
+        <ellipse cx="-46" cy="3" rx="27" ry="23" fill="#15100b"/>
+        <g stroke="#15100b" stroke-width="2.6" stroke-linecap="round" opacity=".85">${fur}</g>
+        <ellipse cx="0" cy="0" rx="46" ry="36" fill="#1d1710"/>
+        <clipPath id="bb${id}"><ellipse cx="0" cy="0" rx="46" ry="36"/></clipPath>
+        <g clip-path="url(#bb${id})"><rect x="-30" y="-40" width="14" height="80" rx="7" fill="#0b0805"/><rect x="-2" y="-40" width="14" height="80" rx="7" fill="#0b0805"/><ellipse cx="0" cy="24" rx="44" ry="12" fill="rgba(0,0,0,.35)"/></g>
+        <circle cx="44" cy="-8" r="25" fill="#15100b"/>
+        <circle cx="52" cy="-10" r="8.5" fill="#F5EFE0"/><circle cx="54.5" cy="-9" r="4.6" fill="#0b0805"/><circle cx="56" cy="-11" r="1.6" fill="#fff"/>
+        <path d="M40 -26 l22 6" stroke="#0b0805" stroke-width="6" stroke-linecap="round"/>
+        <path d="M34 -30 q-2 -11 -10 -16" stroke="#15100b" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="23" cy="-48" r="5" fill="${RED}"/>
+        <path d="M50 -28 q4 -11 12 -13" stroke="#15100b" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="63" cy="-43" r="5" fill="${RED}"/>
+        <g class="wing wingSlow" transform="translate(-2,-28)"><ellipse cx="12" cy="-20" rx="18" ry="27" fill="rgba(222,216,202,.5)" stroke="#5d574b" stroke-width="2.4"/></g>
+      </g>`;
+    }
+
+    /* ONE shared hex lattice — emboss, fills, seats, shields */
+    const HEX_R=52, HEX_W=Math.sqrt(3)*HEX_R;
+    const HIVE_CX=520, HIVE_CY=300;
+    const cellCenter=(col,row)=>{ const rowOdd=((row%2)+2)%2; return [HIVE_CX+col*HEX_W+(rowOdd?HEX_W/2:0), HIVE_CY+row*HEX_R*1.5]; };
+    const nearestCell=(px,py)=>{
+      let best=[0,0], bd=1e12;
+      for(let r=-6;r<=8;r++) for(let c=-6;c<=8;c++){
+        const [x,y]=cellCenter(c,r); const d=(x-px)*(x-px)+(y-py)*(y-py);
+        if(d<bd){ bd=d; best=[x,y]; }
+      }
+      return best;
+    };
+    const LAYOUT=['..hwh..','.hw1wh.','hw2d3wh','.hwdwh.','..hwh..'];
+    const WCELL={};
+    const DEPOSIT_CELLS=[]; // empty 'd' and worker homes for fill animation
+    function blobPath(cx,cy,r){
+      return `M ${P(cx-6.0*r)} ${P(cy-0.6*r)} C ${P(cx-6.4*r)} ${P(cy-2.8*r)} ${P(cx-3.9*r)} ${P(cy-4.3*r)} ${P(cx-1.8*r)} ${P(cy-4.5*r)} C ${P(cx-0.2*r)} ${P(cy-5.0*r)} ${P(cx+2.0*r)} ${P(cy-4.8*r)} ${P(cx+3.5*r)} ${P(cy-4.2*r)} C ${P(cx+5.9*r)} ${P(cy-3.4*r)} ${P(cx+6.5*r)} ${P(cy-1.5*r)} ${P(cx+6.2*r)} ${P(cy+0.4*r)} C ${P(cx+6.4*r)} ${P(cy+2.4*r)} ${P(cx+4.6*r)} ${P(cy+4.1*r)} ${P(cx+2.4*r)} ${P(cy+4.6*r)} C ${P(cx+0.6*r)} ${P(cy+5.1*r)} ${P(cx-2.1*r)} ${P(cy+5.0*r)} ${P(cx-3.9*r)} ${P(cy+4.2*r)} C ${P(cx-5.9*r)} ${P(cy+3.4*r)} ${P(cx-6.3*r)} ${P(cy+1.4*r)} ${P(cx-6.0*r)} ${P(cy-0.6*r)} Z`;
+    }
+    function combArt(){
+      let cells='', di=0;
+      LAYOUT.forEach((row,ri)=>{
+        row.split('').forEach((ch,ci)=>{ if(ch==='.')return;
+          const [x,y]=cellCenter(ci-3,ri-2);
+          let fill=FILL_LIGHT; if(ch==='h')fill=CELL_FULL; if(ch==='d')fill=FILL_EMPTY;
+          const isW=(ch==='1'||ch==='2'||ch==='3');
+          if(isW){ fill=FILL_EMPTY; WCELL[ch]=[x,y]; }
+          const glow=ch==='h'?`<ellipse cx="${P(x-8)}" cy="${P(y+8)}" rx="12" ry="8" fill="#FFE9A8" opacity=".85"/>`:'';
+          const fillId=(isW||ch==='d')?` id="cellFill${isW?ch:('d'+(di++))}"`:'';
+          if(isW||ch==='d') DEPOSIT_CELLS.push([x,y]);
+          cells+=`<g class="cell">${hexPoly(x,y,HEX_R,fill,DGOLD,2.8).replace('<polygon ', '<polygon class="cellPoly"'+fillId+' ')}${glow}`;
+          if(isW) cells+=`<polygon class="wglow" id="wg${ch}" points="${hexPts(x,y,HEX_R)}" fill="rgba(244,196,66,0)" stroke="url(#foil)" stroke-width="5" opacity="0"/>`;
+          cells+=`</g>`;
+        });
+      });
+      return `<g id="combPaper">
+        <g filter="url(#ps2)">
+          <path d="${blobPath(HIVE_CX,HIVE_CY+12,HEX_R)}" fill="#E0C685" opacity=".45"/>
+          <path d="${blobPath(HIVE_CX,HIVE_CY,HEX_R)}" fill="${WASH}" opacity=".7"/>
+        </g>
+        <g id="combCells">${cells}</g>
+      </g>`;
+    }
+
+    function otherHive(){
+      const r=18, w=Math.sqrt(3)*r;
+      const cells=[[0,0],[w,0],[-w,0],[w/2,-r*1.5],[-w/2,-r*1.5],[w/2,r*1.5],[-w/2,r*1.5]];
+      let s=`<path d="${blobPath(0,0,r)}" fill="${ORAL}" opacity=".55"/>`;
+      cells.forEach((c,i)=>{ const fill=(i===0)?FILL_EMPTY:(i%2?ORA:ORAL);
+        s+=`<polygon points="${hexPts(c[0],c[1],r*.92)}" fill="${fill}" stroke="${DGOLD}" stroke-width="2"/>`;
+      });
+      return s;
+    }
+    /* one distant hive only — upper right, amber */
+    const DH_OTHER=[980,130];
+
+    function oraFlower(){ let p='';
+      for(let i=0;i<6;i++) p+=`<ellipse cx="0" cy="-19" rx="12" ry="16" fill="${i%2?ORA:ORAL}" stroke="${DGOLD}" stroke-width="1.4" transform="rotate(${i*60})"/>`;
+      return `<g><path d="M0 8 L0 92" stroke="${G2}" stroke-width="6" stroke-linecap="round"/><ellipse cx="18" cy="52" rx="14" ry="7" fill="${G1}" transform="rotate(-28 18 52)"/><ellipse cx="-16" cy="68" rx="12" ry="6" fill="${G3}" transform="rotate(30 -16 68)"/><g class="head">${p}<circle r="12" fill="#FFF3CE" stroke="${DGOLD}" stroke-width="2.5"/><g class="nectar"><path d="M0 -6 C -6 3 -6 10 0 14 C 6 10 6 3 0 -6 Z" fill="${ORA}" stroke="${DGOLD}" stroke-width="1.6"/></g></g>
+        <text x="0" y="108" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" font-weight="800" letter-spacing="1.5" fill="#8a5a1e">ORANGE</text></g>`;
+    }
+    function lavFlower(){ let florets='';
+      for(let i=0;i<7;i++){const y=-8-i*11,sc=1-i*0.07;florets+=`<g transform="translate(${i%2?5:-5},${y}) scale(${sc})"><ellipse cx="0" cy="0" rx="8" ry="11" fill="${i%2?LAV:LAVD}" stroke="${LAVD}" stroke-width="1.2"/></g>`;}
+      return `<g><path d="M0 6 C 3 -20 -2 -50 1 -84" stroke="${G2}" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="-14" cy="-6" rx="11" ry="6" fill="${G1}" transform="rotate(28 -14 -6)"/><g class="head">${florets}<g class="nectar"><ellipse cx="0" cy="-84" rx="6" ry="8" fill="${LAV}" stroke="${LAVD}" stroke-width="1.4"/></g></g>
+        <text x="0" y="28" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" font-weight="800" letter-spacing="1.5" fill="#6E58AD">LAVENDER</text></g>`;
+    }
+    function cloFlower(){
+      let p=''; for(let i=0;i<8;i++) p+=`<ellipse cx="0" cy="-14" rx="7" ry="12" fill="${i%2?CLO:CLOD}" stroke="${DGOLD}" stroke-width="1.1" transform="rotate(${i*45})"/>`;
+      return `<g><path d="M0 6 L0 70" stroke="${G2}" stroke-width="5" stroke-linecap="round"/><ellipse cx="14" cy="40" rx="11" ry="6" fill="${G1}" transform="rotate(-24 14 40)"/><g class="head">${p}<circle r="8" fill="#FFF8E0" stroke="${DGOLD}" stroke-width="2"/><g class="nectar"><circle r="5" fill="${CLOD}" stroke="${DGOLD}" stroke-width="1.2"/></g></g>
+        <text x="0" y="88" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" font-weight="800" letter-spacing="1.5" fill="#8a7c58">CLOVER</text></g>`;
+    }
+
+    /* Snap attack / forage hex to shared lattice OUTSIDE main hive — meadow right */
+    const ATTACK = nearestCell(760, 470);
+    const ORA_BASE = ATTACK;
+    const LAV_HEX = nearestCell(980, 455);
+    const CLO_HEX = nearestCell(880, 520);
+
+    const FL=[
+      {fn:oraFlower, x:ORA_BASE[0], y:ORA_BASE[1]+78, s:1.55, np:ORA_BASE},
+      {fn:lavFlower, x:LAV_HEX[0], y:LAV_HEX[1]+78, s:1.35, np:LAV_HEX},
+      {fn:cloFlower, x:CLO_HEX[0], y:CLO_HEX[1]+62, s:1.4, np:CLO_HEX}
+    ];
+
+    function grass(x,y,s){
+      return `<g transform="translate(${x},${y}) scale(${s||1})" stroke="${G1}" stroke-width="4" fill="none" stroke-linecap="round"><path d="M0 0 q-4 -18 -12 -24"/><path d="M4 0 q0 -20 -2 -28"/><path d="M8 0 q6 -16 14 -22"/></g>`;
+    }
+    function jar(id,x,gy,label,sub){
+      const w=118,h=132;
+      return `<g transform="translate(${x},${gy})"><g class="jAnim" id="${id}">
+        <clipPath id="clip${id}"><rect x="${-w/2+7}" y="${-h+10}" width="${w-14}" height="${h-16}" rx="10"/></clipPath>
+        <rect x="${-w/2}" y="${-h}" width="${w}" height="${h}" rx="14" fill="rgba(255,251,240,.66)" stroke="rgba(36,31,24,.42)" stroke-width="2.5"/>
+        <g clip-path="url(#clip${id})"><rect class="jFill" x="${-w/2}" y="${-h+6}" width="${w}" height="${h}" fill="${HONEY}" opacity=".92"/></g>
+        <rect x="${-w/2+10}" y="${-h+16}" width="9" height="${h-44}" rx="4.5" fill="rgba(255,255,255,.55)"/>
+        <rect x="${-w/2-6}" y="${-h-14}" width="${w+12}" height="18" rx="6" fill="url(#foil)" stroke="${DGOLD}" stroke-width="1.5"/>
+        <g class="jLabel"><rect x="${-w/2+9}" y="-90" width="${w-18}" height="52" rx="4" fill="#FFFBF0" stroke="${DGOLD}" stroke-width="1.8"/>
+          <text x="0" y="-66" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="13" font-weight="800" letter-spacing="1" fill="${INK}">${label}</text>
+          <text x="0" y="-50" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="9" font-weight="600" fill="#4b4433">${sub}</text></g>
+      </g></g>`;
+    }
+
+    const CLD=[[120,70,1],[560,48,.7],[1040,100,.55]];
+    const cloudPath='M12 62 Q-6 58 2 42 Q-2 24 18 24 Q24 4 46 10 Q58 -4 74 6 Q94 0 100 18 Q118 20 114 38 Q126 50 110 60 Q100 70 84 64 Q60 74 40 66 Q24 72 12 62 Z';
+    const embHex=(cx,cy,st,op,dy)=>'<polygon points="'+hexPts(cx,cy+(dy||0),HEX_R)+'" fill="none" stroke="'+st+'" stroke-width="1.5" opacity="'+op+'"/>';
+    let embC='';
+    [[0,0],[HEX_W,0],[HEX_W/2,HEX_R*1.5],[0,HEX_R*3],[HEX_W,HEX_R*3]].forEach(pt=>{
+      embC+=embHex(pt[0],pt[1],'rgba(255,255,255,.75)',1,-1.4)+embHex(pt[0],pt[1],'rgba(36,31,24,.08)',1,0);
+    });
+
+    svg.innerHTML=`<defs>
+      <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#CD7F32"/><stop offset=".45" stop-color="#E4B33C"/><stop offset=".7" stop-color="#F1D489"/><stop offset="1" stop-color="#C2932A"/></linearGradient>
+      <filter id="ps" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#8a6a33" flood-opacity="0.28"/></filter>
+      <filter id="ps2" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="11" stdDeviation="14" flood-color="#8a6a33" flood-opacity="0.3"/></filter>
+      <pattern id="emb" x="${P(HIVE_CX)}" y="${P(HIVE_CY)}" width="${P(HEX_W)}" height="${P(HEX_R*3)}" patternUnits="userSpaceOnUse">${embC}</pattern>
+    </defs>
+    <g id="cam">
+      <rect x="-400" y="-400" width="2000" height="1560" fill="#FFFBF0"/>
+      <rect id="emboss" x="-400" y="-400" width="2000" height="1560" fill="url(#emb)" opacity=".55"/>
+      ${CLD.map((c)=>`<g transform="translate(${c[0]},${c[1]})"><g class="cloudA"><g transform="scale(${c[2]})" filter="url(#ps)"><path d="${cloudPath}" fill="#FFFDF6"/></g></g></g>`).join('')}
+      <g id="otherHiveG" transform="translate(${DH_OTHER[0]},${DH_OTHER[1]}) scale(.7)" filter="url(#ps)">${otherHive()}</g>
+      <g id="meadow">
+        <path filter="url(#ps)" d="M-400 600 Q 80 560 340 598 T 860 590 T 1600 586 L1600 1160 L-400 1160 Z" fill="${G1}"/>
+        <path filter="url(#ps)" d="M-400 640 Q 140 604 480 638 T 1000 630 T 1600 632 L1600 1160 L-400 1160 Z" fill="${G2}"/>
+        ${grass(500,628,1.1)}${grass(690,622,1.2)}${grass(860,626,1)}${grass(1040,624,1.15)}
+        <path filter="url(#ps)" d="M-400 690 Q 200 658 580 686 T 1140 680 T 1600 682 L1600 1160 L-400 1160 Z" fill="${G3}"/>
+      </g>
+      <g id="flowers">
+        ${FL.map((f)=>`<g transform="translate(${f.x},${f.y}) scale(${f.s})" filter="url(#ps)"><g class="fAnim">${f.fn()}</g></g>`).join('')}
+      </g>
+      <g id="trails" fill="none" stroke-linecap="round">
+        ${[0,1,2,3].map(i=>`<path class="trail" id="t${i}" d="" stroke="${BRONZE}" stroke-width="4.5" opacity="0"/>`).join('')}
+      </g>
+      ${combArt()}
+      <g id="gQueen">${bee(.62,{master:true})}</g>
+      <g id="ring">${hexPoly(0,0,30,'none','url(#foil)',4)}${hexPoly(0,0,17,'none','url(#foil)',2.8)}</g>
+      <g id="w0">${bee(.44,{droplet:true,mark:MK_MAIN})}</g>
+      <g id="w1">${bee(.44,{droplet:true,mark:MK_MAIN})}</g>
+      <g id="w2">${bee(.44,{droplet:true,mark:MK_MAIN})}</g>
+      <g id="dbee">${bee(.38,{droplet:true,mark:MK_OTHER})}</g>
+      <g id="jars" filter="url(#ps)">
+        ${jar('jarA',420,720,'FORECASTING','edge → SaaS')}
+        ${jar('jarB',600,720,'PEER-TO-PEER','trade → SaaS')}
+      </g>
+      <g id="finLabel" opacity="0"><text x="${DH_OTHER[0]}" y="${DH_OTHER[1]+70}" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="800" letter-spacing="1.6" fill="#B5651D">FINANCING</text></g>
+      <g id="dropA" opacity="0"><path d="M0 -8 C -8 4 -8 14 0 19 C 8 14 8 4 0 -8 Z" fill="${HONEY}" stroke="${DGOLD}" stroke-width="2"/></g>
+      <g id="dropB" opacity="0"><path d="M0 -8 C -8 4 -8 14 0 19 C 8 14 8 4 0 -8 Z" fill="${HONEY}" stroke="${DGOLD}" stroke-width="2"/></g>
+      <path id="streamA" d="" fill="none" stroke="${HONEY}" stroke-width="10" stroke-linecap="round" opacity="0"/>
+      <path id="streamB" d="" fill="none" stroke="${HONEY}" stroke-width="10" stroke-linecap="round" opacity="0"/>
+      <g id="shield">${hexPoly(0,0,HEX_R,'rgba(228,179,60,.28)')}${hexPoly(0,0,HEX_R,'none','url(#foil)',7)}</g>
+      <g id="impact">${hexPoly(0,0,22,'none','url(#foil)',4.5)}<circle r="8" fill="#FFF3CE"/></g>
+      <g id="stamp"><rect x="-86" y="-20" width="172" height="40" rx="4" fill="#FFFBF0" stroke="${RED}" stroke-width="2.5"/><text x="0" y="6" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="15" font-weight="800" letter-spacing="2.2" fill="${RED}">NOT AUTHORIZED</text></g>
+      <g id="bumbleG">${bumble()}</g>
+    </g>`;
+
+    const camG=q('#cam'), emboss=q('#emboss'), combPaper=q('#combPaper'),
+      cells=qa('#combPaper .cell'), wglows=[q('#wg1'),q('#wg2'),q('#wg3')],
+      cellFills=[q('#cellFill1'),q('#cellFill2'),q('#cellFill3')],
+      gQueen=q('#gQueen'), ring=q('#ring'),
+      workers=[q('#w0'),q('#w1'),q('#w2')], dbee=q('#dbee'),
+      fAnims=qa('.fAnim'), nectars=qa('.nectar'),
+      trails=[q('#t0'),q('#t1'),q('#t2'),q('#t3')],
+      bumbleG=q('#bumbleG'), shield=q('#shield'), impact=q('#impact'), stamp=q('#stamp'),
+      jAnims=qa('#jars .jAnim'), jLabels=qa('#jars .jLabel'), jFills=qa('#jars .jFill'),
+      drops=[q('#dropA'),q('#dropB')], streams=[q('#streamA'),q('#streamB')], cloudAnims=qa('.cloudA'), otherHiveG=q('#otherHiveG'),
+      finLabel=q('#finLabel'),
+      cards=[q('#card0'),q('#card1'),q('#card2'),q('#card3'),q('#card4'),q('#card5'),q('#card6'),q('#card7')],
+      stepCount=q('#stepCount'), navBack=q('#navBack'), navNext=q('#navNext'), navLbl=q('#navLbl'),
+      dispatchBtn=q('#dispatchBtn');
+
+    const CELLS=[WCELL['1'],WCELL['2'],WCELL['3']];
+    /* Exit CLEAR of the comb — arc UP into open sky, then settle outside (not comb-edge hover) */
+    const EXIT=[
+      [HIVE_CX-40,  HIVE_CY-210],
+      [HIVE_CX+90,  HIVE_CY-230],
+      [HIVE_CX+200, HIVE_CY-190]
+    ];
+    const ORA_SPOTS=[ATTACK, nearestCell(ATTACK[0]-55, ATTACK[1]+35), nearestCell(ATTACK[0]+50, ATTACK[1]+30)];
+    /* Jars lower in the meadow */
+    const jarPos=[[420,720],[600,720]];
+
+    /* STATIC frame for every beat — no zooming in/out between slides */
+    let PZ=1;
+    const FRAME=[1.02, 640, 400]; // scale, focusX, focusY — one composition
+    const camSet=()=>{const s=FRAME[0]*PZ;gsap.set(camG,{scale:s,x:600-FRAME[1]*s,y:380-FRAME[2]*s,transformOrigin:'0 0'});};
+    const camTo=(tl,i,d)=>{ /* locked frame */ camSet(); };
+    const fit=()=>{
+      svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+      const portrait=stage.clientHeight>stage.clientWidth*1.05;
+      PZ=portrait?0.92:1;
+      camSet();
+    };
+    fit();
+    window.addEventListener('resize',fit);
+
+    let cur=0, curTl=null, alive=true;
+    const idles=[];
+    const killIdles=()=>{idles.splice(0).forEach(t=>t.kill());};
+    function resetDash(p){const L=p.getTotalLength?p.getTotalLength():0;gsap.set(p,{strokeDasharray:L||1,strokeDashoffset:L||1,autoAlpha:0});}
+    const beeIdle=(els,amp,dur)=>gsap.to(els,{y:'+='+(amp||8),duration:dur||1.3,yoyo:true,repeat:-1,ease:'sine.inOut',stagger:.25});
+    function setTrail(el,a,b,bow,color){el.setAttribute('d',pathStr(a,b,bow));el.setAttribute('stroke',color);const L=el.getTotalLength();gsap.set(el,{strokeDasharray:L,strokeDashoffset:L,autoAlpha:0});return L;}
+
+    function baseline(n){
+      camSet();
+      cloudAnims.forEach((c,i)=>gsap.set(c,{x:n===0?(i%2?-60:60):0,autoAlpha:n===0?0:1}));
+      gsap.set(otherHiveG,{autoAlpha:n===0?0:.95, y:0});
+      gsap.set(emboss,{opacity:.55});
+      gsap.set(combPaper,{x:0,y:n===0?40:0,autoAlpha:1});
+      gsap.set(cells,{scale:n===0?0:1,transformOrigin:'50% 50%'});
+      wglows.forEach(g=>gsap.set(g,{autoAlpha:0,scale:1,transformOrigin:'50% 50%'}));
+      cellFills.forEach(c=>{ if(c) gsap.set(c,{fill:FILL_EMPTY}); });
+      gsap.set(gQueen,{x:HIVE_CX,y:HIVE_CY,autoAlpha:n===0?0:1,rotation:0,scale:1});
+      gsap.set(ring,{x:HIVE_CX,y:HIVE_CY,autoAlpha:0,scale:.3,transformOrigin:'50% 50%'});
+      FL.forEach((f,i)=>gsap.set(fAnims[i],{scale:n>=3?1:0,rotation:n>=3?0:-50,transformOrigin:'0px 40px'}));
+      gsap.set(nectars,{scale:n>=3?1:0,autoAlpha:n>=3?1:0,transformOrigin:'50% 50%'});
+      /* Continuity: never teleport bees back into the hive mid-story */
+      let wp;
+      if(n<=1) wp=CELLS;                 // title/command — in cells
+      else if(n===2) wp=CELLS;            // exit starts in cells
+      else if(n===3) wp=EXIT;             // after exit — already outside above hive
+      else if(n===4) wp=EXIT;             // rule starts outside, flies to flowers
+      else if(n===5) wp=ORA_SPOTS;        // round trip STARTS at flowers (no hive reset)
+      else if(n===6) wp=[ORA_SPOTS[0], CELLS[1], CELLS[2]]; // one forager still out
+      else wp=[ORA_SPOTS[0], CELLS[1], CELLS[2]];
+      workers.forEach((w,i)=>{ gsap.set(w,{x:wp[i][0],y:wp[i][1],scaleX:1,scaleY:1,rotation:0,autoAlpha:n===0?0:1});
+        const d=w.querySelector('.droplet'); if(d) gsap.set(d,{opacity:(n===5||n===6)&&i===0?1:0}); });
+      gsap.set(dbee,{x:n>=4?LAV_HEX[0]:DH_OTHER[0],y:n>=4?LAV_HEX[1]:DH_OTHER[1],scaleX:1,autoAlpha:n>=3?1:0});
+      const dd=dbee.querySelector('.droplet'); if(dd) gsap.set(dd,{opacity:0});
+      trails.forEach(resetDash);
+      gsap.set(bumbleG,{x:1420,y:-80,rotation:14,autoAlpha:n>=6?1:0});
+      gsap.set(shield,{x:ATTACK[0],y:ATTACK[1],autoAlpha:0,scale:.86,transformOrigin:'50% 50%'});
+      gsap.set(impact,{x:ATTACK[0],y:ATTACK[1],autoAlpha:0,scale:.3,transformOrigin:'50% 50%'});
+      gsap.set(stamp,{x:ATTACK[0]+120,y:ATTACK[1]-70,rotation:-8,autoAlpha:0,scale:.6,transformOrigin:'50% 50%'});
+      jAnims.forEach(j=>gsap.set(j,{y:80,autoAlpha:0}));
+      jLabels.forEach(l=>gsap.set(l,{scale:0,transformOrigin:'50% 50%'}));
+      jFills.forEach(f=>gsap.set(f,{scaleY:0,transformOrigin:'50% 100%'}));
+      drops.forEach(d=>gsap.set(d,{autoAlpha:0}));
+      streams.forEach(s=>{ if(s) gsap.set(s,{autoAlpha:0, strokeDashoffset:0}); });
+      gsap.set(finLabel,{autoAlpha:n===7?1:0});
+      gsap.set(jAnims,{autoAlpha:n===7?0:0}); // jars revealed in beat7
+    }
+
+    function showCard(n){
+      cards.forEach((c,i)=>{ if(!c)return;
+        gsap.killTweensOf(c);
+        if(i===n){
+          gsap.set(c,{visibility:'visible', clipPath:'inset(0% 0% 100% 0%)', autoAlpha:0});
+          gsap.to(c,{clipPath:'inset(0% 0% 0% 0%)',autoAlpha:1,duration:.5,delay:.25,ease:'power3.out'});
+        } else {
+          gsap.set(c,{clipPath:'inset(0% 0% 100% 0%)', autoAlpha:0, visibility:'hidden'});
+        }
+      });
+    }
+
+    function beat0(){
+      const tl=gsap.timeline();
+      camTo(tl,0,1);
+      tl.to(cloudAnims,{x:0,autoAlpha:1,duration:1.2,stagger:.1,ease:'power2.out'},0)
+        .to(otherHiveG,{autoAlpha:.95,duration:1},.2)
+        .to(combPaper,{y:0,duration:1,ease:'back.out(1.05)'},.35)
+        .to(cells,{scale:1,duration:.5,ease:'back.out(2)',stagger:{each:.025,from:'center'}},.7)
+        .to(gQueen,{autoAlpha:1,duration:.7,ease:'back.out(1.5)'},1.5)
+        .to(workers,{autoAlpha:1,duration:.5,stagger:.1,ease:'power2.out'},1.6);
+      tl.call(()=>{ idles.push(gsap.to(otherHiveG,{y:'-=5',duration:2.6,yoyo:true,repeat:-1,ease:'sine.inOut'})); idles.push(beeIdle(workers,5)); });
+      return tl;
+    }
+
+    function beat1(){
+      const tl=gsap.timeline();
+      camTo(tl,1);
+      // Queen flies OUT of the hive, signals, workers receive
+      tl.to(gQueen,{x:HIVE_CX+55,y:HIVE_CY-55,duration:.7,ease:'power2.out'},0)
+        .to(gQueen,{rotation:-12,duration:.35},.35)
+        .set(ring,{x:HIVE_CX+55,y:HIVE_CY-55,scale:.4},.55)
+        .to(ring,{autoAlpha:1,scale:1,duration:.12},.55)
+        .to(ring,{scale:4.2,autoAlpha:0,duration:1.05,ease:'power1.out'},.7)
+        .to(gQueen,{rotation:0,duration:.5,ease:'elastic.out(1,.55)'},.9);
+      wglows.forEach((g,i)=>{
+        const t=1.0+i*.28;
+        tl.set(g,{autoAlpha:1,scale:.55},t)
+          .to(g,{scale:1.35,duration:.28,ease:'back.out(2.2)'},t)
+          .to(g,{scale:1,duration:.3},t+.28)
+          .to(g,{autoAlpha:0,duration:.45},t+.65);
+        tl.to(workers[i],{y:'-=10',duration:.2,yoyo:true,repeat:1,ease:'sine.inOut'},t)
+          .fromTo(workers[i],{scale:1},{scale:1.15,duration:.22,yoyo:true,repeat:1,transformOrigin:'50% 50%'},t);
+      });
+      tl.to(gQueen,{x:HIVE_CX,y:HIVE_CY,duration:.7,ease:'power2.inOut'},2.4);
+      tl.call(()=>{ idles.push(beeIdle(workers,6)); idles.push(beeIdle([gQueen],4,1.6)); });
+      return tl;
+    }
+
+    function beat2(){
+      const tl=gsap.timeline();
+      camTo(tl,2);
+      workers.forEach((w,i)=>{
+        const t=.35+i*.36;
+        const from=CELLS[i], to=EXIT[i];
+        // Arc UP out of the cell into open sky (top-down departure), not along the comb edge
+        const lift=[from[0]+(i-1)*18, from[1]-70];
+        const crest=[(from[0]+to[0])/2 + (i-1)*30, Math.min(from[1],to[1])-110];
+        tl.set(wglows[i],{autoAlpha:1,scale:1},t).to(wglows[i],{autoAlpha:0,scale:1.3,duration:.55},t);
+        tl.to(w,{scale:1.12,duration:.14,transformOrigin:'50% 50%'},t)
+          .to(w,{motionPath:{path:[{x:lift[0],y:lift[1]},{x:crest[0],y:crest[1]},{x:to[0],y:to[1]}],curviness:1.6,autoRotate:false},duration:1.35,ease:'power1.inOut'},t+.1)
+          .to(w,{scale:1,duration:.4},t+.1);
+      });
+      tl.call(()=>{ idles.push(beeIdle(workers,6)); });
+      return tl;
+    }
+
+    function beat3(){
+      const tl=gsap.timeline();
+      camTo(tl,3);
+      tl.to(fAnims,{scale:1,rotation:0,duration:1,ease:'back.out(1.4)',stagger:.2},.3)
+        .fromTo(nectars,{scale:0,autoAlpha:0},{scale:1,autoAlpha:1,duration:.45,ease:'back.out(2)',stagger:.2},1.1)
+        .to(nectars,{scale:1.25,duration:.3,yoyo:true,repeat:1,stagger:.2},1.6);
+      tl.call(()=>{ idles.push(gsap.to(fAnims,{rotation:'+=2',duration:2.4,yoyo:true,repeat:-1,ease:'sine.inOut',stagger:.25,transformOrigin:'0px 40px'})); idles.push(beeIdle(workers,5)); });
+      return tl;
+    }
+
+    function beat4(){
+      const tl=gsap.timeline();
+      camTo(tl,4);
+      workers.forEach((w,i)=>{
+        // From sky perch DOWN to orange flower (top→bottom arc), not sideways along comb
+        const from=EXIT[i], to=ORA_SPOTS[i];
+        const bow=.22;
+        const L=setTrail(trails[i],from,to,bow,BRONZE);
+        const dur=Math.max(L/240,.75), t=.35+i*.26;
+        tl.set(w,{scaleX:1,x:from[0],y:from[1]},t)
+          .to(trails[i],{autoAlpha:.75,duration:.1},t)
+          .to(trails[i],{strokeDashoffset:0,duration:dur,ease:'power1.inOut'},t)
+          .to(w,{motionPath:{path:trails[i].getAttribute('d')},duration:dur,ease:'power1.inOut'},t);
+      });
+      {
+        const L=setTrail(trails[3],DH_OTHER,LAV_HEX,.12,'#B6A6D8');
+        const dur=Math.max(L/260,.7), t=.55;
+        tl.set(dbee,{scaleX:1,autoAlpha:1},t)
+          .to(trails[3],{autoAlpha:.55,duration:.1},t)
+          .to(trails[3],{strokeDashoffset:0,duration:dur,ease:'none'},t)
+          .to(dbee,{motionPath:{path:trails[3].getAttribute('d')},duration:dur,ease:'none'},t);
+      }
+      tl.to(nectars[0],{scale:1.3,duration:.35,yoyo:true,repeat:1},2.2);
+      tl.to(trails,{autoAlpha:0,duration:.6},2.8);
+      tl.call(()=>{ idles.push(beeIdle(workers,5)); idles.push(beeIdle([dbee],5,1.4)); });
+      return tl;
+    }
+
+    function beat5(){
+      const tl=gsap.timeline();
+      camTo(tl,5);
+      let lastEnd=0;
+      const fills=[FILL_LIGHT, FILL_MID, CELL_FULL];
+      // Continuity: bees are ALREADY at the flowers from beat 4. Collect, then fly HOME (telemetry).
+      // Worker 0 stays out at the flower (sets up the attack beat). Workers 1–2 return to their cells.
+      workers.forEach((w,i)=>{
+        const t0=.3+i*.4;
+        tl.set(w,{scaleX:1,x:ORA_SPOTS[i][0],y:ORA_SPOTS[i][1]},0);
+        tl.to(nectars[0],{scale:.55,duration:.22,yoyo:true,repeat:1},t0);
+        const drop=w.querySelector('.droplet');
+        if(drop) tl.to(drop,{opacity:1,duration:.2},t0+.15);
+        if(i===0){
+          // stays foraging outside — telemetry chip still reads via the others returning
+          lastEnd=Math.max(lastEnd,t0+.6);
+          return;
+        }
+        const tb=t0+.55;
+        tl.set(w,{scaleX:-1},tb);
+        const bL=setTrail(trails[i],ORA_SPOTS[i],CELLS[i],-.18,'#EBD292');
+        const bD=Math.max(bL/220,.65);
+        // gentle top-arc home (sky path), not a hard edge slide
+        tl.to(trails[i],{autoAlpha:.9,duration:.1},tb);
+        tl.to(trails[i],{strokeDashoffset:0,duration:bD,ease:'power1.inOut'},tb);
+        tl.to(w,{motionPath:{path:trails[i].getAttribute('d')},duration:bD,ease:'power1.inOut'},tb);
+        tl.set(w,{scaleX:1},tb+bD+.02);
+        if(drop) tl.to(drop,{opacity:0,duration:.18},tb+bD);
+        tl.set(wglows[i],{autoAlpha:1,scale:.9},tb+bD).to(wglows[i],{autoAlpha:0,scale:1.15,duration:.45},tb+bD);
+        if(cellFills[i]) tl.to(cellFills[i],{fill:fills[i],duration:.55,ease:'power1.out'},tb+bD);
+        lastEnd=Math.max(lastEnd,tb+bD);
+      });
+      // Worker 0 also sends a telemetry pulse home without leaving the flower? Optional trail ping:
+      {
+        const ping=setTrail(trails[0],ORA_SPOTS[0],CELLS[0],-.2,'#EBD292');
+        const pd=Math.max(ping/280,.5);
+        tl.to(trails[0],{autoAlpha:.55,duration:.1},.8);
+        tl.to(trails[0],{strokeDashoffset:0,duration:pd,ease:'power1.out'},.8);
+        tl.to(trails[0],{autoAlpha:0,duration:.4},.8+pd);
+        if(cellFills[0]) tl.to(cellFills[0],{fill:fills[0],duration:.55},.8+pd*.5);
+      }
+      tl.to(trails,{autoAlpha:0,duration:.45},lastEnd+.2);
+      tl.call(()=>{ idles.push(beeIdle([workers[0]],5)); idles.push(beeIdle([workers[1],workers[2]],6)); });
+      return tl;
+    }
+
+    function beat6(){
+      const tl=gsap.timeline();
+      camTo(tl,6);
+      const ax=ATTACK[0], ay=ATTACK[1];
+      tl.to(workers[0],{y:'-=5',duration:.55,yoyo:true,repeat:4,ease:'sine.inOut'},0);
+      tl.to(bumbleG,{motionPath:{path:pathStr([1420,-80],[ax+160,ay-30],.1)},duration:1.15,ease:'power1.inOut'},.25)
+        .to(bumbleG,{x:ax+58,y:ay-2,duration:.3,ease:'power3.in'},1.55);
+      // EVERY hex is a barrier — the occupied shared-lattice hex activates
+      tl.set(shield,{autoAlpha:1,scale:.82},1.15)
+        .fromTo(shield,{scale:.82},{scale:1.18,duration:.22,ease:'power2.out'},1.15)
+        .to(shield,{scale:1,duration:.4},1.4)
+        .fromTo(impact,{scale:.2,autoAlpha:1},{scale:2.4,autoAlpha:0,duration:.5,ease:'power1.out'},1.78)
+        .to(bumbleG,{x:ax+190,y:ay-75,rotation:48,duration:.5,ease:'power2.out'},1.8)
+        .to(stamp,{autoAlpha:1,scale:1,duration:.32,ease:'back.out(2.2)'},2.05)
+        .to(bumbleG,{rotation:28,duration:.28},2.4)
+        .to(bumbleG,{motionPath:{path:pathStr([ax+190,ay-75],[1520,500],.08)},rotation:400,duration:1.4,ease:'power1.in'},2.75)
+        .to(stamp,{autoAlpha:0,duration:.45},4.0)
+        .to(shield,{autoAlpha:0,duration:.85},4.1);
+      return tl;
+    }
+
+    function beat7(){
+      const tl=gsap.timeline();
+      camTo(tl,7);
+      // Continuous laminar honey streams from comb into jars; fill height rises with the flow
+      const srcA=[HIVE_CX-30, HIVE_CY+110], srcB=[HIVE_CX+50, HIVE_CY+110];
+      const mouthA=[jarPos[0][0], jarPos[0][1]-132], mouthB=[jarPos[1][0], jarPos[1][1]-132];
+      const streamPath=(a,b)=>`M${P(a[0])},${P(a[1])} C ${P(a[0]+10)},${P((a[1]+b[1])/2)} ${P(b[0]-6)},${P((a[1]+b[1])/2+20)} ${P(b[0])},${P(b[1])}`;
+      if(streams[0]){ streams[0].setAttribute('d', streamPath(srcA, mouthA)); }
+      if(streams[1]){ streams[1].setAttribute('d', streamPath(srcB, mouthB)); }
+      streams.forEach(s=>{
+        if(!s) return;
+        const L=s.getTotalLength();
+        gsap.set(s,{strokeDasharray:`${L*0.35} ${L}`, strokeDashoffset:L, autoAlpha:0, strokeWidth:11});
+      });
+      tl.to(jAnims,{y:0,autoAlpha:1,duration:.8,ease:'back.out(1.3)',stagger:.14},.3)
+        .fromTo(jLabels,{scale:0},{scale:1,duration:.4,ease:'back.out(2)',stagger:.14},.95)
+        .to(finLabel,{autoAlpha:1,duration:.55},1.1);
+      // Streams appear and flow continuously (dash offset = laminar ribbon)
+      streams.forEach((s,i)=>{
+        if(!s) return;
+        const L=s.getTotalLength();
+        tl.to(s,{autoAlpha:.92,duration:.25},1.15+i*.15);
+        tl.to(s,{strokeDashoffset:-L*2.2, duration:3.4, ease:'none'},1.2+i*.15);
+      });
+      // Jar honey level rises with the stream
+      tl.to(jFills[0],{scaleY:.85,duration:3.2,ease:'power1.inOut'},1.25)
+        .to(jFills[1],{scaleY:.72,duration:3.2,ease:'power1.inOut'},1.4);
+      tl.call(()=>{
+        streams.forEach((s,i)=>{
+          if(!s) return;
+          const L=s.getTotalLength();
+          const loop=gsap.to(s,{strokeDashoffset:`-=${L}`,duration:1.6,ease:'none',repeat:-1});
+          idles.push(loop);
+        });
+        idles.push(gsap.to(gQueen,{y:'-=5',duration:1.8,yoyo:true,repeat:-1,ease:'sine.inOut'}));
+      });
+      return tl;
+    }
+
+    const BEATS=[beat0,beat1,beat2,beat3,beat4,beat5,beat6,beat7];
+
+    const updateUI=()=>{
+      if(stepCount) stepCount.textContent=String(cur+1).padStart(2,'0')+' / 08';
+      if(navBack) navBack.disabled=cur===0;
+      if(navLbl) navLbl.textContent=cur>=7?'Restart':(cur===0?'Begin':'Next');
+    };
+    function go(n){
+      if(!alive) return;
+      if(n>7) n=0;
+      if(n<0) n=0;
+      if(curTl) curTl.kill();
+      killIdles();
+      cur=n;
+      baseline(n);
+      showCard(n);
+      updateUI();
+      curTl=BEATS[n]();
+      curTl.timeScale(RM?30:1);
+    }
+    function replayDispatch(){
+      if(cur!==1) return;
+      if(curTl) curTl.kill();
+      killIdles();
+      baseline(1);
+      showCard(1);
+      curTl=beat1();
+      curTl.timeScale(RM?30:1);
+    }
+
+    document.addEventListener('keydown', e=>{
+      if(e.key==='ArrowRight'||e.key===' '){ e.preventDefault(); go(cur>=7?0:cur+1); }
+      else if(e.key==='ArrowLeft'){ e.preventDefault(); go(Math.max(0,cur-1)); }
+    });
+    navNext.addEventListener('click', ()=>go(cur>=7?0:cur+1));
+    navBack.addEventListener('click', ()=>go(Math.max(0,cur-1)));
+    if(dispatchBtn) dispatchBtn.addEventListener('click', e=>{ e.stopPropagation(); replayDispatch(); });
+
+    baseline(0); updateUI();
+    setTimeout(()=>go(0), 60);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+</body>
+</html>

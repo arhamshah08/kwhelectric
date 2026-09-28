@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Each product&rsquo;s trajectory, Year 1 &rarr; Year 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-70:rgba(11,15,12,.7); --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5;
+          --ai:#0D9488; --ai-bg:#F0FDFA; --ent:#2563EB; --ent-bg:#EFF6FF; --lic:#7C3AED; --lic-bg:#F5F3FF; --neg:#DC2626; --neg-bg:#FEF2F2; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .slide{ width:1600px; background:#fff; color:var(--ink); padding:56px 64px 64px; }
+  .eyebrow{ font-size:13px; font-weight:700; color:var(--g); letter-spacing:.02em; }
+  .title{ font-size:44px; font-weight:800; line-height:1.15; margin-top:8px; }
+  .underline{ width:120px; height:3px; background:var(--g); margin-top:18px; }
+  .sub{ font-size:15px; font-weight:600; color:var(--ink-70); margin-top:14px; max-width:1020px; line-height:1.5; }
+
+  .p4-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:36px; }
+  .p4-card{ border:1.5px solid var(--ol); border-radius:18px; padding:24px 28px 16px; }
+  .p4-head{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .p4-dot{ width:14px; height:14px; border-radius:4px; }
+  .p4-name{ font-size:17px; font-weight:800; flex:1; }
+  .p4-mult{ font-size:13px; font-weight:800; color:var(--ink-60); background:var(--g-bg); padding:4px 10px; border-radius:99px; }
+
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="eyebrow">kWh Electric &middot; 4-year financial model, base case</div>
+  <div class="title">Each product&rsquo;s trajectory, Year 1 &rarr; Year 4</div>
+  <div class="underline"></div>
+  <div class="sub">Platform SaaS and AI both compound with fleet size; Enterprise and Source License grow on a slower, deal-driven curve.</div>
+  <div class="p4-grid">
+    <div class="p4-card">
+      <div class="p4-head"><div class="p4-dot" style="background:#16A34A"></div><div class="p4-name">Platform SaaS</div><div class="p4-mult">27.0&times; growth</div></div>
+      <svg viewBox="0 0 600 224" width="600" height="224">
+        <rect x="43.5" y="183.9" width="63.0" height="6.1" fill="#16A34A" rx="4"/>
+        <text x="75.0" y="173.9" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$180K</text>
+        <text x="75.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y1</text>
+        <rect x="193.5" y="171.6" width="63.0" height="18.4" fill="#16A34A" rx="4"/>
+        <text x="225.0" y="161.6" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$540K</text>
+        <text x="225.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y2</text>
+        <rect x="343.5" y="134.9" width="63.0" height="55.1" fill="#16A34A" rx="4"/>
+        <text x="375.0" y="124.9" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$1.62M</text>
+        <text x="375.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y3</text>
+        <rect x="493.5" y="24.8" width="63.0" height="165.2" fill="#16A34A" rx="4"/>
+        <text x="525.0" y="14.8" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$4.86M</text>
+        <text x="525.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y4</text>
+      </svg>
+    </div>
+    <div class="p4-card">
+      <div class="p4-head"><div class="p4-dot" style="background:#0D9488"></div><div class="p4-name">AI / Intelligence</div><div class="p4-mult">148.5&times; growth</div></div>
+      <svg viewBox="0 0 600 224" width="600" height="224">
+        <rect x="43.5" y="188.9" width="63.0" height="1.1" fill="#0D9488" rx="4"/>
+        <text x="75.0" y="178.9" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$9K</text>
+        <text x="75.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y1</text>
+        <rect x="193.5" y="181.7" width="63.0" height="8.3" fill="#0D9488" rx="4"/>
+        <text x="225.0" y="171.7" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$68K</text>
+        <text x="225.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y2</text>
+        <rect x="343.5" y="149.9" width="63.0" height="40.1" fill="#0D9488" rx="4"/>
+        <text x="375.0" y="139.9" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$324K</text>
+        <text x="375.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y3</text>
+        <rect x="493.5" y="24.8" width="63.0" height="165.2" fill="#0D9488" rx="4"/>
+        <text x="525.0" y="14.8" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$1.34M</text>
+        <text x="525.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y4</text>
+      </svg>
+    </div>
+    <div class="p4-card">
+      <div class="p4-head"><div class="p4-dot" style="background:#2563EB"></div><div class="p4-name">Enterprise subscriptions</div><div class="p4-mult">6.0&times; growth</div></div>
+      <svg viewBox="0 0 600 224" width="600" height="224">
+        <rect x="43.5" y="162.5" width="63.0" height="27.5" fill="#2563EB" rx="4"/>
+        <text x="75.0" y="152.5" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$288K</text>
+        <text x="75.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y1</text>
+        <rect x="193.5" y="116.6" width="63.0" height="73.4" fill="#2563EB" rx="4"/>
+        <text x="225.0" y="106.6" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$768K</text>
+        <text x="225.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y2</text>
+        <rect x="343.5" y="70.7" width="63.0" height="119.3" fill="#2563EB" rx="4"/>
+        <text x="375.0" y="60.7" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$1.25M</text>
+        <text x="375.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y3</text>
+        <rect x="493.5" y="24.8" width="63.0" height="165.2" fill="#2563EB" rx="4"/>
+        <text x="525.0" y="14.8" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$1.73M</text>
+        <text x="525.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y4</text>
+      </svg>
+    </div>
+    <div class="p4-card">
+      <div class="p4-head"><div class="p4-dot" style="background:#7C3AED"></div><div class="p4-name">Source licensing</div><div class="p4-mult">1.6&times; growth</div></div>
+      <svg viewBox="0 0 600 224" width="600" height="224">
+        <rect x="43.5" y="86.7" width="63.0" height="103.3" fill="#7C3AED" rx="4"/>
+        <text x="75.0" y="76.7" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$300K</text>
+        <text x="75.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y1</text>
+        <rect x="193.5" y="66.1" width="63.0" height="123.9" fill="#7C3AED" rx="4"/>
+        <text x="225.0" y="56.1" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$360K</text>
+        <text x="225.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y2</text>
+        <rect x="343.5" y="45.4" width="63.0" height="144.6" fill="#7C3AED" rx="4"/>
+        <text x="375.0" y="35.4" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$420K</text>
+        <text x="375.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y3</text>
+        <rect x="493.5" y="24.8" width="63.0" height="165.2" fill="#7C3AED" rx="4"/>
+        <text x="525.0" y="14.8" font-size="14" font-weight="800" fill="#0B0F0C" text-anchor="middle">$480K</text>
+        <text x="525.0" y="212.0" font-size="12" font-weight="700" fill="rgba(11,15,12,.5)" text-anchor="middle">Y4</text>
+      </svg>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

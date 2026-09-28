@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>kWh Electric — Deck E</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+:root{
+  --ink:      #12181A;
+  --ink2:     #55645B;
+  --ink3:     #8E9C93;
+  --accent:   #15803D;
+  --accent-dk:#0F5C2C;
+  --accent-bg:#EAF6EE;
+  --red:      #DC2626;
+  --red-bg:   #FEECEC;
+  --line:     #E3E9E5;
+  --wh:       #FFFFFF;
+  --paper:    #FAFAF7;
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  /* exactly three sizes, deck-wide */
+  --h: 38px;
+  --b: 16.5px;
+  --s: 12.5px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html,body{ background:#EEF1EE; color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+body{ padding:48px 24px 120px; }
+
+.masthead{ max-width:1280px; margin:0 auto 48px; }
+.masthead .who{ font-size:var(--b); font-weight:600; color:var(--accent); }
+.masthead h1{ font-weight:600; font-size:26px; margin-top:8px; }
+.masthead p{ font-size:15px; color:var(--ink2); margin-top:8px; max-width:700px; line-height:1.55; }
+
+.deck-wrap{ max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:36px; }
+.slide-tag{ font-size:13px; color:#7C8B81; }
+
+.crop-scroll{ overflow-x:auto; padding:4px 2px 4px; }
+.slide{ width:1280px; height:720px; position:relative; overflow:hidden; flex-shrink:0; background:var(--wh); border:1px solid var(--line); }
+
+.section{ font-size:var(--s); font-weight:600; color:var(--accent-dk); }
+.headline{ font-size:var(--h); font-weight:600; line-height:1.16; color:var(--ink); margin-top:12px; letter-spacing:-.01em; }
+.body-copy{ font-size:var(--b); color:var(--ink2); line-height:1.6; margin-top:18px; max-width:460px; }
+
+.icon{ width:20px; height:20px; stroke:var(--ink); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block; }
+.icon.accent{ stroke:var(--accent); }
+.icon.sm{ width:15px; height:15px; stroke-width:2.2; }
+.icon.lg{ width:26px; height:26px; stroke-width:1.8; }
+
+.node{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+.node .lbl{ font-size:var(--b); color:var(--ink); text-align:center; }
+
+.tag{ font-size:var(--s); font-weight:600; padding:4px 10px; border-radius:2px; border:1px solid var(--line); color:var(--ink2); background:var(--wh); display:inline-block; }
+.tag.g{ background:var(--accent-bg); border-color:transparent; color:var(--accent-dk); }
+
+/* ---- steps (left column, "what's happening") ---- */
+.steps{ display:flex; flex-direction:column; margin-top:20px; max-width:440px; }
+.step{ display:flex; gap:14px; padding:13px 0; border-top:1px solid var(--line); }
+.step:first-child{ border-top:none; padding-top:0; }
+.step .num{ font-weight:700; color:var(--accent); font-size:var(--b); width:18px; flex-shrink:0; }
+.step .txt{ font-size:var(--b); color:var(--ink2); line-height:1.4; }
+.step .txt b{ color:var(--ink); font-weight:600; }
+
+/* ---- MacBook frame: the primary product-visual device ---- */
+.mac{ display:flex; flex-direction:column; align-items:center; }
+.mac-lid{ background:#17181A; border-radius:14px 14px 3px 3px; padding:12px 12px 7px; box-shadow:0 26px 54px -18px rgba(18,24,26,.28); }
+.mac-cam{ width:5px; height:5px; border-radius:50%; background:#3A3B3D; margin:0 auto 8px; }
+.mac-screen{ background:var(--wh); border-radius:3px; overflow:hidden; }
+.mac-base{ width:104%; height:13px; background:linear-gradient(#DADDD9,#B9BFB9); border-radius:0 0 8px 8px; position:relative; }
+.mac-base::after{ content:''; position:absolute; left:50%; top:0; transform:translateX(-50%); width:70px; height:5px; background:#A6ACA6; border-radius:0 0 5px 5px; }
+
+.mfine{ font-size:var(--s); color:var(--ink2); }
+.mfine.dim{ color:var(--ink3); }
+
+/* ---- phone: for genuine phone-in-hand moments only ---- */
+.phone{ width:220px; height:452px; border-radius:32px; background:#17181A; padding:9px; box-shadow:0 20px 40px -16px rgba(18,24,26,.24); }
+.phone-screen{ width:100%; height:100%; background:var(--wh); border-radius:24px; overflow:hidden; position:relative; display:flex; flex-direction:column; }
+.island{ position:absolute; top:9px; left:50%; transform:translateX(-50%); width:68px; height:18px; background:#17181A; border-radius:10px; z-index:6; }
+
+.dot{ width:7px; height:7px; border-radius:50%; background:#D3DBD6; }
+
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+<defs>
+<symbol id="i-battery" viewBox="0 0 24 24"><rect x="2" y="7" width="17" height="10" rx="2.2"/><rect x="20" y="10" width="2" height="4" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24"><rect x="5" y="9" width="14" height="11" rx="2.4"/><line x1="9" y1="9" x2="9" y2="4"/><line x1="15" y1="9" x2="15" y2="4"/></symbol>
+<symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 13h3.2l2-8 4.6 16 2-8h3l1.6 3.4H22"/></symbol>
+<symbol id="i-meter" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.2"/><line x1="12" y1="13" x2="16" y2="8.6"/><circle cx="12" cy="13" r="1.1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><path d="M4.5 21V9.2L12 4l7.5 5.2V21"/><line x1="3" y1="21" x2="21" y2="21"/><line x1="9.2" y1="21" x2="9.2" y2="13.5"/><line x1="14.8" y1="21" x2="14.8" y2="13.5"/></symbol>
+<symbol id="i-agg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.1"/><circle cx="4.2" cy="5.5" r="1.5"/><circle cx="19.8" cy="5.5" r="1.5"/><circle cx="4.2" cy="18.5" r="1.5"/><circle cx="19.8" cy="18.5" r="1.5"/><line x1="12" y1="12" x2="4.2" y2="5.5"/><line x1="12" y1="12" x2="19.8" y2="5.5"/><line x1="12" y1="12" x2="4.2" y2="18.5"/><line x1="12" y1="12" x2="19.8" y2="18.5"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.4 5.4l2.1 2.1M16.5 16.5l2.1 2.1M5.4 18.6l2.1-2.1M16.5 7.5l2.1-2.1"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 11.6L11.6 3 21 12.4 12.4 21z"/><circle cx="7.6" cy="7.6" r="1.5" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-gw" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.6 8.6h6.8v6.8H8.6z"/></symbol>
+<symbol id="i-bt" viewBox="0 0 24 24"><path d="M7 7.2L17 17l-5 4.3V2.7l5 4.3L7 16.8"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5.2 5L20 6"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4.4 14h6l-1 8L21 10h-6z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.5-3 7.5-7 9.5-4-2-7-5-7-9.5V6z"/><path d="M9 12l2.2 2.2L15.5 9.5"/></symbol>
+<symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M4.6 20c1-3.6 4-5.6 7.4-5.6s6.4 2 7.4 5.6"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3.4 21 8l-9 4.6L3 8z"/><path d="M3 12.4l9 4.6 9-4.6"/><path d="M3 16.6l9 4.6 9-4.6"/></symbol>
+<symbol id="i-signal" viewBox="0 0 24 24"><path d="M4 18v-3M9 18v-6M14 18v-9M19 18V4" stroke-width="2.2"/></symbol>
+<symbol id="i-cert" viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-2.6 5 2.6-2-7"/><path d="M9.5 9l1.6 1.6L14.5 7"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h11l-3 4 3 4H5"/></symbol>
+</defs>
+</svg>
+
+<div class="masthead">
+  <div class="who">kWh Electric — deck, version E</div>
+  <h1>The complete deck, rebuilt</h1>
+  <p>Version D's argument and product screens, plus the value chain, protocol architecture, onboarding, competition, certification, timeline, unit economics, market size and financial projections &mdash; pure white, one accent color, a MacBook screen as the one recurring device for every product moment, and never more than three type sizes on a slide.</p>
+</div>
+
+<div class="deck-wrap">
+
+<!-- 1. COVER -->
+<div>
+  <div class="slide-tag">1 &middot; Cover</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:100px; max-width:520px;">
+      <div class="section">kWh Electric</div>
+      <div class="headline" style="font-size:40px;">Every energy asset should be visible and dispatchable. Today, almost none of them are.</div>
+      <div class="body-copy" style="font-size:var(--b);">Rooftop solar, batteries, EV chargers and smart appliances now number over 100 million, deployed globally with no common way to see them, let alone control them.</div>
+      <div style="margin-top:28px; display:flex; align-items:center; gap:10px;">
+        <svg class="icon accent"><use href="#i-gw"/></svg>
+        <span style="color:var(--ink2); font-size:var(--b);">One gateway, every asset</span>
+      </div>
+    </div>
+
+    <!-- staggered product-panel pair, cover hero -->
+    <div style="position:absolute; left:668px; top:96px; width:520px; border:1px solid var(--line); border-radius:12px; box-shadow:0 24px 48px -20px rgba(18,24,26,.18); background:var(--wh); padding:22px; z-index:1;">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div style="font-weight:600; font-size:var(--b);">Fleet overview</div>
+        <span class="tag g">Live</span>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <div style="flex:1; border:1px solid var(--line); border-radius:8px; padding:12px;"><div class="mfine">Assets online</div><div style="font-weight:700; font-size:22px; margin-top:2px;">1,842</div></div>
+        <div style="flex:1; border:1px solid var(--line); border-radius:8px; padding:12px;"><div class="mfine">Uptime</div><div style="font-weight:700; font-size:22px; margin-top:2px; color:var(--accent-dk);">99.6%</div></div>
+        <div style="flex:1; border:1px solid var(--line); border-radius:8px; padding:12px;"><div class="mfine">Dispatch events</div><div style="font-weight:700; font-size:22px; margin-top:2px;">312</div></div>
+      </div>
+      <svg viewBox="0 0 470 100" style="width:100%; height:100px; margin-top:16px;">
+        <path d="M0 76 L46 68 L92 52 L138 58 L184 38 L230 44 L276 22 L322 32 L368 16 L414 24 L460 8" stroke="#15803D" stroke-width="2.5" fill="none"/>
+      </svg>
+    </div>
+
+    <div style="position:absolute; left:744px; top:400px; width:400px; border:1px solid var(--line); border-radius:12px; box-shadow:0 24px 48px -20px rgba(18,24,26,.18); background:var(--wh); padding:20px; z-index:2;">
+      <div style="font-weight:600; font-size:14px;">Asset management</div>
+      <div style="margin-top:10px;">
+        <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:6px 0; border-bottom:1px solid var(--line);"><span class="mfine" style="font-weight:600;">Asset</span><span class="mfine" style="font-weight:600;">Protocol</span><span class="mfine" style="font-weight:600;">Path</span></div>
+        <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:7px 0; border-bottom:1px solid var(--line); align-items:center;"><span style="font-size:12.5px;">Site01-bess</span><span class="mfine">sunspec</span><span class="tag g">Gateway</span></div>
+        <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:7px 0; align-items:center;"><span style="font-size:12.5px;">Site01-solaredge</span><span class="mfine">oem_api</span><span class="tag">Integration</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 2. PROBLEM: THE CHAIN -->
+<div>
+  <div class="slide-tag">2 &middot; Problem</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:120px; max-width:460px;">
+      <div class="section">The problem</div>
+      <div class="headline">One battery. Four tolls.</div>
+      <div class="body-copy">To dispatch a single customer's battery, a utility routes through an aggregator, an integrator, and the OEM's own cloud &mdash; each one taking a fee and adding delay. Then it repeats, for the next customer. And the next.</div>
+    </div>
+    <div style="position:absolute; left:680px; top:220px; width:520px;">
+      <div style="display:flex; flex-direction:column;">
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--line);"><svg class="icon"><use href="#i-building"/></svg><span style="font-size:var(--b); font-weight:600;">Utility</span></div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--line); padding-left:26px;"><svg class="icon"><use href="#i-agg"/></svg><span style="font-size:var(--b);">Aggregator</span><span style="margin-left:auto; font-size:var(--s); color:var(--ink3);">fee</span></div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--line); padding-left:52px;"><svg class="icon"><use href="#i-gear"/></svg><span style="font-size:var(--b);">Integrator</span><span style="margin-left:auto; font-size:var(--s); color:var(--ink3);">fee</span></div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--line); padding-left:78px;"><svg class="icon"><use href="#i-tag"/></svg><span style="font-size:var(--b);">OEM</span><span style="margin-left:auto; font-size:var(--s); color:var(--ink3);">fee</span></div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 0; padding-left:104px;"><svg class="icon"><use href="#i-battery"/></svg><span style="font-size:var(--b); font-weight:600;">Customer's battery</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 3. PROBLEM: SCALE -->
+<div>
+  <div class="slide-tag">3 &middot; Problem, at scale</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:120px; max-width:480px;">
+      <div class="section">The problem, at scale</div>
+      <div class="headline">The tax doesn't shrink. It repeats.</div>
+      <div class="body-copy">Eighty percent of distributed energy fleets never make it past a pilot. Utilities pay an estimated fifty thousand dollars or more per month, per OEM, just to keep one integration alive.</div>
+    </div>
+    <div style="position:absolute; left:700px; top:190px; display:flex; flex-direction:column; gap:52px;">
+      <div><div class="headline" style="font-size:56px; margin-top:0;">80%</div><div class="body-copy" style="margin-top:8px;">of DER fleets stall before production dispatch</div></div>
+      <div><div class="headline" style="font-size:56px; margin-top:0; color:var(--accent);">$50K+</div><div class="body-copy" style="margin-top:8px;">per month, per utility, per OEM &mdash; to keep one integration alive</div></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 4. VALUE REDISTRIBUTION -->
+<div>
+  <div class="slide-tag">4 &middot; Value redistribution</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:80px; max-width:1088px;">
+      <div class="section">Value redistribution</div>
+      <div class="headline">Five parties splitting one fee. Now two.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:210px; width:1088px;">
+      <div class="mfine dim" style="margin-bottom:10px;">Before</div>
+      <div style="display:flex; border:1px solid var(--line);">
+        <div style="flex:1; padding:16px; border-right:1px solid var(--line); text-align:center; font-size:var(--b); font-weight:600;">Device owner</div>
+        <div style="flex:1; padding:16px; border-right:1px solid var(--line); text-align:center; font-size:var(--b);">OEM</div>
+        <div style="flex:1; padding:16px; border-right:1px solid var(--line); text-align:center; font-size:var(--b);">Integrator</div>
+        <div style="flex:1; padding:16px; border-right:1px solid var(--line); text-align:center; font-size:var(--b);">Aggregator</div>
+        <div style="flex:1; padding:16px; text-align:center; font-size:var(--b); font-weight:600;">Utility</div>
+      </div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:340px; width:1088px;">
+      <div class="mfine dim" style="margin-bottom:10px;">After</div>
+      <div style="display:flex; border:1px solid var(--accent);">
+        <div style="flex:1.4; padding:16px; border-right:1px solid var(--accent); text-align:center; font-size:var(--b); font-weight:600;">Device owner</div>
+        <div style="flex:1; padding:16px; border-right:1px solid var(--accent); text-align:center; font-size:var(--b); font-weight:600; background:var(--accent-bg); color:var(--accent-dk);">kWh</div>
+        <div style="flex:1.4; padding:16px; text-align:center; font-size:var(--b); font-weight:600;">Utility</div>
+      </div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:470px; display:flex; gap:56px;">
+      <div><div class="headline" style="font-size:52px; margin-top:0; color:var(--accent);">15%</div><div class="body-copy" style="margin-top:6px; max-width:280px;">kWh's program fee, on the value it helps create</div></div>
+      <div><div class="headline" style="font-size:52px; margin-top:0;">85%</div><div class="body-copy" style="margin-top:6px; max-width:280px;">retained by the utility and the customer, not spent on the chain in between</div></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 5. SOLUTION THESIS -->
+<div>
+  <div class="slide-tag">5 &middot; Solution</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:110px; max-width:420px;">
+      <div class="section">The solution</div>
+      <div class="headline">One gateway. Four jobs.</div>
+      <div class="steps">
+        <div class="step"><span class="num">1</span><span class="txt"><b>Connect</b> &mdash; speaks the asset's own protocol, on-site.</span></div>
+        <div class="step"><span class="num">2</span><span class="txt"><b>Normalize</b> &mdash; turns every dialect into one clean model.</span></div>
+        <div class="step"><span class="num">3</span><span class="txt"><b>Dispatch</b> &mdash; sends setpoints from any platform, live.</span></div>
+        <div class="step"><span class="num">4</span><span class="txt"><b>Verify</b> &mdash; logs the event, before, during, after.</span></div>
+      </div>
+    </div>
+
+    <div style="position:absolute; left:620px; top:96px;" class="mac">
+      <div class="mac-lid" style="width:560px;">
+        <div class="mac-cam"></div>
+        <div class="mac-screen" style="height:340px; padding:22px;">
+          <div style="font-weight:600; font-size:var(--b);">Gateway overview</div>
+          <div class="mfine" style="margin-top:2px;">Site01-gateway &middot; edge device</div>
+          <div style="display:flex; gap:10px; margin-top:18px;">
+            <div style="flex:1; border:1px solid var(--line); padding:10px;"><div class="mfine">Connect</div><div style="font-weight:700; font-size:15px; margin-top:2px;">4 protocols</div></div>
+            <div style="flex:1; border:1px solid var(--line); padding:10px;"><div class="mfine">Normalize</div><div style="font-weight:700; font-size:15px; margin-top:2px;">1 model</div></div>
+            <div style="flex:1; border:1px solid var(--line); padding:10px;"><div class="mfine">Dispatch</div><div style="font-weight:700; font-size:15px; margin-top:2px; color:var(--accent-dk);">Live</div></div>
+            <div style="flex:1; border:1px solid var(--line); padding:10px;"><div class="mfine">Verify</div><div style="font-weight:700; font-size:15px; margin-top:2px;">312 events</div></div>
+          </div>
+          <svg viewBox="0 0 520 130" style="width:100%; height:130px; margin-top:18px;">
+            <path d="M0 100 L60 90 L120 70 L180 76 L240 50 L300 58 L360 30 L420 40 L480 22 L520 30" stroke="#15803D" stroke-width="2.5" fill="none"/>
+          </svg>
+        </div>
+      </div>
+      <div class="mac-base" style="width:585px;"></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 6. ANY ASSET, ANY PROTOCOL -->
+<div>
+  <div class="slide-tag">6 &middot; Solution, underneath</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:110px; max-width:420px;">
+      <div class="section">The solution, underneath</div>
+      <div class="headline">Any asset. Any protocol. One translator.</div>
+      <div class="body-copy">Whether an asset arrives through a kWh gateway or an OEM's own cloud, it lands in the same canonical model &mdash; the only thing a utility or aggregator ever has to integrate against.</div>
+    </div>
+
+    <div style="position:absolute; left:620px; top:96px;" class="mac">
+      <div class="mac-lid" style="width:560px;">
+        <div class="mac-cam"></div>
+        <div class="mac-screen" style="height:340px; padding:24px;">
+          <div style="display:flex; gap:0; text-align:center;">
+            <div style="flex:1;"><svg class="icon lg" style="margin:0 auto;"><use href="#i-plug"/></svg><div style="font-weight:600; font-size:13px; margin-top:8px;">kWh gateway</div></div>
+            <div style="flex:1;"><svg class="icon lg" style="margin:0 auto;"><use href="#i-agg"/></svg><div style="font-weight:600; font-size:13px; margin-top:8px;">OEM integration</div></div>
+            <div style="flex:1;"><svg class="icon lg" style="margin:0 auto;"><use href="#i-person"/></svg><div style="font-weight:600; font-size:13px; margin-top:8px;">Asset seeker</div></div>
+          </div>
+          <div style="display:flex; justify-content:center; margin-top:14px;">
+            <svg width="420" height="60" viewBox="0 0 420 60"><path d="M70 0v30M210 0v30M350 0v30M70 30h280M210 30v30" stroke="var(--line)" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div style="border:1.5px solid var(--accent); padding:14px; text-align:center; margin-top:-6px;">
+            <div style="font-weight:700; font-size:15px; color:var(--accent-dk);">kWh universal translator</div>
+            <div class="mfine" style="margin-top:2px;">One canonical model, every counterparty</div>
+          </div>
+        </div>
+      </div>
+      <div class="mac-base" style="width:585px;"></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 7. ONBOARDING -->
+<div>
+  <div class="slide-tag">7 &middot; Solution, onboarding</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:110px; max-width:420px;">
+      <div class="section">The solution, onboarding</div>
+      <div class="headline">Four steps. No installer visit.</div>
+      <div class="steps">
+        <div class="step"><span class="num">1</span><span class="txt">Scan a QR code or pair over Bluetooth, straight into the kWh or utility app.</span></div>
+        <div class="step"><span class="num">2</span><span class="txt">The gateway discovers every device already wired to it.</span></div>
+        <div class="step"><span class="num">3</span><span class="txt">The customer selects their utility and OEM.</span></div>
+        <div class="step"><span class="num">4</span><span class="txt">They select and join the programs available to them.</span></div>
+      </div>
+    </div>
+
+    <div style="position:absolute; left:620px; top:96px;" class="mac">
+      <div class="mac-lid" style="width:560px;">
+        <div class="mac-cam"></div>
+        <div class="mac-screen" style="height:340px; padding:24px;">
+          <div style="font-weight:600; font-size:var(--b);">Discover devices</div>
+          <div class="mfine" style="margin-top:2px;">4 of 4 found on Site01-gateway</div>
+          <div style="margin-top:16px; display:flex; flex-direction:column;">
+            <div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-top:1px solid var(--line);"><svg class="icon sm"><use href="#i-battery"/></svg><span style="font-size:14px; flex:1;">Battery</span><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+            <div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-top:1px solid var(--line);"><svg class="icon sm"><use href="#i-plug"/></svg><span style="font-size:14px; flex:1;">EV charger</span><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+            <div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-top:1px solid var(--line);"><svg class="icon sm"><use href="#i-wave"/></svg><span style="font-size:14px; flex:1;">Inverter</span><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+            <div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);"><svg class="icon sm"><use href="#i-meter"/></svg><span style="font-size:14px; flex:1;">Meter</span><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+          </div>
+        </div>
+      </div>
+      <div class="mac-base" style="width:585px;"></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 8. VISIBILITY & DISPATCH (one larger panel) -->
+<div>
+  <div class="slide-tag">8 &middot; Solution, in the browser</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:100px; max-width:420px;">
+      <div class="section">The solution, in the browser</div>
+      <div class="headline">See it. Dispatch it. Get paid.</div>
+      <div class="steps">
+        <div class="step"><span class="num">1</span><span class="txt">The gateway feeds one live dashboard, fleet-wide.</span></div>
+        <div class="step"><span class="num">2</span><span class="txt">Every asset shows its protocol and connection path in one table.</span></div>
+        <div class="step"><span class="num">3</span><span class="txt">The utility deploys a flex event in one click.</span></div>
+        <div class="step"><span class="num">4</span><span class="txt">The gateway confirms the response and logs it.</span></div>
+      </div>
+    </div>
+
+    <div style="position:absolute; left:600px; top:70px;" class="mac">
+      <div class="mac-lid" style="width:600px;">
+        <div class="mac-cam"></div>
+        <div class="mac-screen" style="height:400px; padding:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:baseline;">
+            <div style="font-weight:600; font-size:var(--b);">Grid services</div>
+            <span class="tag g">1,842 eligible</span>
+          </div>
+          <div style="border:1px solid var(--line); padding:16px; margin-top:14px;">
+            <div class="mfine">Feeder 07</div>
+            <div style="font-weight:600; font-size:17px; margin-top:2px;">Deploy flexibility event &mdash; 40 kW, 30 min</div>
+            <div style="margin-top:12px; background:var(--accent); color:#fff; font-weight:600; font-size:14px; padding:11px 0; text-align:center; width:220px;">Dispatch event</div>
+          </div>
+          <div style="margin-top:16px;">
+            <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr; padding:7px 0; border-bottom:1px solid var(--line);"><span class="mfine" style="font-weight:600;">Asset</span><span class="mfine" style="font-weight:600;">Protocol</span><span class="mfine" style="font-weight:600;">Path</span></div>
+            <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr; padding:8px 0; border-bottom:1px solid var(--line); align-items:center;"><span style="font-size:13px;">Site01-bess</span><span class="mfine">sunspec</span><span class="tag g">Gateway</span></div>
+            <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr; padding:8px 0; align-items:center;"><span style="font-size:13px;">Site01-solaredge</span><span class="mfine">oem_api</span><span class="tag">Integration</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mac-base" style="width:625px;"></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 9. CUSTOMER PAYOUT (phone is the right device here) -->
+<div>
+  <div class="slide-tag">9 &middot; Solution, for the customer</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:140px; max-width:420px;">
+      <div class="section">The solution, for the customer</div>
+      <div class="headline">The utility sees flexibility. The customer sees dollars.</div>
+      <div class="body-copy">A utility requests capacity from a feeder. The gateway carries the setpoint to the asset and confirms the response. The customer sees a payout, not a protocol.</div>
+    </div>
+
+    <div style="position:absolute; left:760px; top:130px;">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="island"></div>
+          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:24px; text-align:center;">
+            <svg class="icon accent" style="margin:0 auto;"><use href="#i-check"/></svg>
+            <div class="mfine" style="margin-top:12px; font-weight:600;">You just earned</div>
+            <div class="headline" style="font-size:36px; margin-top:2px;">$4.20</div>
+            <div class="mfine" style="margin-top:10px;">Your battery helped balance the grid.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 10. SECURITY / PROTOCOL EXPERIENCE -->
+<div>
+  <div class="slide-tag">10 &middot; Solution, secured</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:120px; max-width:420px;">
+      <div class="section">The solution, secured</div>
+      <div class="headline">Every device carries its own identity.</div>
+      <div class="body-copy">Modbus, SunSpec, CAN, MQTT, OCPP &mdash; the gateway speaks all of it on-site, then presents one IEEE 2030.5 interface upstream. One compromised device never reaches the fleet.</div>
+    </div>
+
+    <div style="position:absolute; left:620px; top:96px;" class="mac">
+      <div class="mac-lid" style="width:560px;">
+        <div class="mac-cam"></div>
+        <div class="mac-screen" style="height:340px; padding:24px;">
+          <div style="display:flex; align-items:center; gap:10px;"><svg class="icon accent"><use href="#i-shield"/></svg><div style="font-weight:600; font-size:var(--b);">Device security</div></div>
+          <div style="margin-top:16px; display:flex; flex-direction:column;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-top:1px solid var(--line);"><span style="font-size:14px;">mTLS device certificate</span><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-top:1px solid var(--line);"><span style="font-size:14px;">IEEE 2030.5 identity</span><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);"><span style="font-size:14px;">Zero-trust isolation</span><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;">
+            <span class="tag">Modbus</span><span class="tag">SunSpec</span><span class="tag">CAN</span><span class="tag">MQTT</span><span class="tag">OCPP</span>
+          </div>
+        </div>
+      </div>
+      <div class="mac-base" style="width:585px;"></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 11. GRID SERVICES ECOSYSTEM -->
+<div>
+  <div class="slide-tag">11 &middot; One foundation, many apps</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:80px; max-width:1088px;">
+      <div class="section">One foundation, many apps</div>
+      <div class="headline">Utilities, OEMs, aggregators and financiers all build on the same layer.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:220px; width:1088px;">
+      <div style="display:flex; gap:16px;">
+        <div style="flex:1; border:1px solid var(--line); border-radius:12px; box-shadow:0 14px 28px -18px rgba(18,24,26,.18); padding:18px;"><svg class="icon accent lg"><use href="#i-bolt"/></svg><div style="font-weight:600; font-size:15px; margin-top:12px;">Demand flexibility</div></div>
+        <div style="flex:1; border:1px solid var(--line); border-radius:12px; box-shadow:0 14px 28px -18px rgba(18,24,26,.18); padding:18px;"><svg class="icon accent lg"><use href="#i-layers"/></svg><div style="font-weight:600; font-size:15px; margin-top:12px;">Digital twin</div></div>
+        <div style="flex:1; border:1px solid var(--line); border-radius:12px; box-shadow:0 14px 28px -18px rgba(18,24,26,.18); padding:18px;"><svg class="icon accent lg"><use href="#i-wave"/></svg><div style="font-weight:600; font-size:15px; margin-top:12px;">Demand &amp; supply forecasting</div></div>
+        <div style="flex:1; border:1px solid var(--line); border-radius:12px; box-shadow:0 14px 28px -18px rgba(18,24,26,.18); padding:18px;"><svg class="icon accent lg"><use href="#i-agg"/></svg><div style="font-weight:600; font-size:15px; margin-top:12px;">Peer-to-peer trading</div></div>
+        <div style="flex:1; border:1px solid var(--line); border-radius:12px; box-shadow:0 14px 28px -18px rgba(18,24,26,.18); padding:18px;"><svg class="icon accent lg"><use href="#i-signal"/></svg><div style="font-weight:600; font-size:15px; margin-top:12px;">Asset health &amp; securitization</div></div>
+      </div>
+      <div style="border:1.5px solid var(--accent); border-radius:12px; padding:16px; text-align:center; margin-top:24px;">
+        <span style="font-weight:700; font-size:var(--b); color:var(--accent-dk);">kWh universal translator &mdash; one gateway, one canonical model</span>
+      </div>
+      <div style="text-align:center; margin-top:16px; color:var(--ink2); font-size:var(--b);">Utility &middot; OEMs &middot; service providers &middot; aggregators &middot; financiers</div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 12. CERTIFICATIONS -->
+<div>
+  <div class="slide-tag">12 &middot; Certifications</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:80px; max-width:1088px;">
+      <div class="section">Certifications</div>
+      <div class="headline">The two gates between a pilot and a rollout.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:220px; width:1088px; display:flex; gap:24px;">
+      <div style="flex:1; border:1px solid var(--line); border-radius:12px; box-shadow:0 16px 32px -18px rgba(18,24,26,.18); padding:24px;">
+        <svg class="icon lg accent"><use href="#i-cert"/></svg>
+        <div style="font-weight:600; font-size:20px; margin-top:14px;">SunSpec &mdash; interoperability</div>
+        <div class="steps" style="margin-top:14px;">
+          <div class="step"><span class="num">&middot;</span><span class="txt">SunSpec Modbus compliance</span></div>
+          <div class="step"><span class="num">&middot;</span><span class="txt">IEEE 2030.5 / CSIP readiness</span></div>
+          <div class="step"><span class="num">&middot;</span><span class="txt">Utility program compatibility</span></div>
+        </div>
+      </div>
+      <div style="flex:1; border:1px solid var(--line); border-radius:12px; box-shadow:0 16px 32px -18px rgba(18,24,26,.18); padding:24px;">
+        <svg class="icon lg accent"><use href="#i-shield"/></svg>
+        <div style="font-weight:600; font-size:20px; margin-top:14px;">UL &amp; quality logic</div>
+        <div class="steps" style="margin-top:14px;">
+          <div class="step"><span class="num">&middot;</span><span class="txt">UL certification readiness</span></div>
+          <div class="step"><span class="num">&middot;</span><span class="txt">Hardware QA and test logic</span></div>
+          <div class="step"><span class="num">&middot;</span><span class="txt">Field reliability and manufacturing quality</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:560px; width:1088px; border:1px solid var(--accent); border-radius:12px; padding:16px; text-align:center; color:var(--accent-dk); font-weight:600; font-size:var(--b);">
+      Required to move from pilot deployments to utility-scale rollout
+    </div>
+  </div></div>
+</div>
+
+<!-- 13. COMPETITION -->
+<div>
+  <div class="slide-tag">13 &middot; Competition</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:64px; max-width:1088px;">
+      <div class="section">Competition</div>
+      <div class="headline" style="font-size:32px;">The only one with all six.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:180px; width:1088px;">
+      <div style="display:grid; grid-template-columns:1.4fr repeat(6,1fr); border-top:1px solid var(--ink); border-bottom:1px solid var(--line);">
+        <div style="padding:12px 8px;"></div>
+        <div style="padding:12px 8px; font-size:13px; font-weight:600;">OEM integrations</div>
+        <div style="padding:12px 8px; font-size:13px; font-weight:600;">Interoperability</div>
+        <div style="padding:12px 8px; font-size:13px; font-weight:600;">Gateway</div>
+        <div style="padding:12px 8px; font-size:13px; font-weight:600;">One-time fee</div>
+        <div style="padding:12px 8px; font-size:13px; font-weight:600;">DERMS</div>
+        <div style="padding:12px 8px; font-size:13px; font-weight:600;">Offline controls</div>
+      </div>
+
+      <!-- helper: rows built with inline yes/no icons -->
+      <div style="display:grid; grid-template-columns:1.4fr repeat(6,1fr); border-bottom:1px solid var(--line); background:var(--accent-bg);">
+        <div style="padding:13px 8px; font-weight:700; font-size:14px; color:var(--accent-dk);">kWh Electric</div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.4fr repeat(6,1fr); border-bottom:1px solid var(--line);">
+        <div style="padding:13px 8px; font-size:14px;">Uplight</div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.4fr repeat(6,1fr); border-bottom:1px solid var(--line);">
+        <div style="padding:13px 8px; font-size:14px;">Kalki Tech</div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.4fr repeat(6,1fr); border-bottom:1px solid var(--line);">
+        <div style="padding:13px 8px; font-size:14px;">Texture HQ &amp; Enode</div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.4fr repeat(6,1fr);">
+        <div style="padding:13px 8px; font-size:14px;">Molecule Systems</div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm" style="stroke:var(--red);"><use href="#i-x"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+        <div style="padding:13px 8px;"><svg class="icon sm accent"><use href="#i-check"/></svg></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 14. TIMELINE -->
+<div>
+  <div class="slide-tag">14 &middot; Timeline</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:64px; max-width:1088px;">
+      <div class="section">Timeline</div>
+      <div class="headline" style="font-size:32px;">Five stages to fifty thousand gateways.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:190px; width:1088px; display:flex;">
+      <div style="flex:1; padding-right:18px; border-right:1px solid var(--line);">
+        <svg class="icon accent"><use href="#i-flag"/></svg>
+        <div style="font-weight:600; font-size:15px; margin-top:12px;">Today</div>
+        <div class="body-copy" style="margin-top:8px; font-size:13.5px;">Sample telemetry, integration platform and gateway MVP all live.</div>
+      </div>
+      <div style="flex:1; padding:0 18px; border-right:1px solid var(--line);">
+        <svg class="icon"><use href="#i-flag"/></svg>
+        <div style="font-weight:600; font-size:15px; margin-top:12px;">October</div>
+        <div class="body-copy" style="margin-top:8px; font-size:13.5px;">3 OEM integrations, gateway orders open, SunSpec certificate readiness.</div>
+      </div>
+      <div style="flex:1; padding:0 18px; border-right:1px solid var(--line);">
+        <svg class="icon"><use href="#i-flag"/></svg>
+        <div style="font-weight:600; font-size:15px; margin-top:12px;">January</div>
+        <div class="body-copy" style="margin-top:8px; font-size:13.5px;">15 OEM integrations, 1,000 gateways processed, UL readiness.</div>
+      </div>
+      <div style="flex:1; padding:0 18px; border-right:1px solid var(--line);">
+        <svg class="icon"><use href="#i-flag"/></svg>
+        <div style="font-weight:600; font-size:15px; margin-top:12px;">April</div>
+        <div class="body-copy" style="margin-top:8px; font-size:13.5px;">30 OEM integrations, 10,000 processed, 1,000 delivered.</div>
+      </div>
+      <div style="flex:1; padding-left:18px;">
+        <svg class="icon"><use href="#i-flag"/></svg>
+        <div style="font-weight:600; font-size:15px; margin-top:12px;">June</div>
+        <div class="body-copy" style="margin-top:8px; font-size:13.5px;">50,000 processed, 10,000 delivered, edge intelligence launches.</div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 15. UNIT ECONOMICS -->
+<div>
+  <div class="slide-tag">15 &middot; Unit economics</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:64px; max-width:1088px;">
+      <div class="section">Unit economics</div>
+      <div class="headline" style="font-size:32px;">Every device pays once. Then keeps paying, small.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:190px; width:1088px;">
+      <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; border-top:1px solid var(--ink); border-bottom:1px solid var(--line); padding:10px 0;">
+        <div style="font-weight:600; font-size:13px;">Line</div><div style="font-weight:600; font-size:13px;">Price</div><div style="font-weight:600; font-size:13px;">Type</div><div style="font-weight:600; font-size:13px;">Gross margin</div>
+      </div>
+      <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; border-bottom:1px solid var(--line); padding:12px 0; align-items:center;"><div style="font-size:var(--b);">Device software &amp; certificate</div><div style="font-size:var(--b);">$30</div><div class="mfine">Fixed</div><div class="mfine">&ge;90%</div></div>
+      <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; border-bottom:1px solid var(--line); padding:12px 0; align-items:center;"><div style="font-size:var(--b);">OEM integration fee</div><div style="font-size:var(--b);">$1,500 / OEM</div><div class="mfine">Fixed</div><div class="mfine">~88%</div></div>
+      <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; border-bottom:1px solid var(--line); padding:12px 0; align-items:center;"><div style="font-size:var(--b);">Utility platform subscription</div><div style="font-size:var(--b);">$25K&ndash;$300K/yr</div><div class="mfine">Recurring</div><div class="mfine">75&ndash;85%</div></div>
+      <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; border-bottom:1px solid var(--line); padding:12px 0; align-items:center;"><div style="font-size:var(--b);">Device lifecycle</div><div style="font-size:var(--b);">$4&ndash;$8/device/yr</div><div class="mfine">Recurring</div><div class="mfine">75&ndash;85%</div></div>
+      <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; padding:12px 0; align-items:center;"><div style="font-size:var(--b);">Program management fee</div><div style="font-size:var(--b);">15% base</div><div class="mfine">Recurring</div><div class="mfine">~90%</div></div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:520px; width:1088px; display:flex; gap:56px;">
+      <div><div class="headline" style="font-size:44px; margin-top:0; color:var(--accent);">$177</div><div class="body-copy" style="margin-top:6px; max-width:260px;">lifetime revenue per connected asset, 83% recurring</div></div>
+      <div><div class="headline" style="font-size:44px; margin-top:0;">7 yrs</div><div class="body-copy" style="margin-top:6px; max-width:260px;">modeled asset life the revenue is earned over</div></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 16. MARKET SIZE -->
+<div>
+  <div class="slide-tag">16 &middot; Market size</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:64px; max-width:1088px;">
+      <div class="section">Market size</div>
+      <div class="headline" style="font-size:32px;">$43M is 6.4% of the first market alone.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:220px; width:1088px; display:flex; align-items:center; gap:0;">
+      <div style="width:340px; height:340px; border-radius:50%; background:var(--accent-bg); display:flex; align-items:center; justify-content:center; position:relative;">
+        <div style="width:230px; height:230px; border-radius:50%; background:#C9EBD5; display:flex; align-items:center; justify-content:center; position:relative;">
+          <div style="width:130px; height:130px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:20px; text-align:center;">$43M</div>
+        </div>
+        <div style="position:absolute; left:-30px; top:-10px; background:var(--wh); border:1px solid var(--line); border-radius:10px; box-shadow:0 16px 32px -16px rgba(18,24,26,.22); padding:12px 16px;">
+          <div class="mfine">Global endpoints</div>
+          <div style="font-weight:700; font-size:20px; margin-top:2px;">122.6M</div>
+        </div>
+        <div style="position:absolute; right:-40px; bottom:20px; background:var(--wh); border:1px solid var(--line); border-radius:10px; box-shadow:0 16px 32px -16px rgba(18,24,26,.22); padding:12px 16px;">
+          <div class="mfine">India endpoints</div>
+          <div style="font-weight:700; font-size:20px; margin-top:2px;">15.5M</div>
+        </div>
+      </div>
+      <div style="flex:1; padding-left:80px; display:flex; flex-direction:column; gap:36px;">
+        <div><div style="font-weight:700; font-size:20px;">Global TAM</div><div class="body-copy" style="margin-top:4px;">$4.90B upfront, plus $1.10B recurring every year &mdash; 122.6M addressable endpoints worldwide.</div></div>
+        <div><div style="font-weight:700; font-size:20px;">India SAM</div><div class="body-copy" style="margin-top:4px;">$671M upfront, plus $119M recurring every year &mdash; 15.5M serviceable endpoints in the first market.</div></div>
+        <div><div style="font-weight:700; font-size:20px; color:var(--accent-dk);">Year-5 SOM</div><div class="body-copy" style="margin-top:4px;">$43.0M revenue &mdash; 1.07M certified devices, 30 utilities under contract, 450K assets active in programs.</div></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 17. FINANCIAL PROJECTIONS -->
+<div>
+  <div class="slide-tag">17 &middot; Financial projections</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; left:96px; top:64px; max-width:1088px;">
+      <div class="section">Financial projections</div>
+      <div class="headline" style="font-size:32px;">$0.96M to $43.0M in five years, break-even in year three.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:190px; width:800px; border:1px solid var(--line); border-radius:12px; overflow:hidden;">
+      <div style="height:30px; background:#FAFAF7; display:flex; align-items:center; gap:6px; padding:0 12px; border-bottom:1px solid var(--line);"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <svg viewBox="0 0 800 340" style="width:100%; height:340px; display:block;">
+        <g>
+          <rect x="60"  y="300" width="90" height="10" fill="#12181A"/>
+          <rect x="60"  y="293" width="90" height="7"  fill="#15803D"/>
+          <rect x="230" y="255" width="90" height="55" fill="#12181A"/>
+          <rect x="230" y="218" width="90" height="37" fill="#15803D"/>
+          <rect x="400" y="180" width="90" height="130" fill="#12181A"/>
+          <rect x="400" y="110" width="90" height="70"  fill="#15803D"/>
+          <rect x="570" y="90"  width="90" height="220" fill="#12181A"/>
+          <rect x="570" y="10"  width="90" height="80"  fill="#15803D"/>
+        </g>
+        <line x1="40" y1="310" x2="700" y2="310" stroke="#E3E9E5" stroke-width="1.5"/>
+        <text x="105" y="330" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" fill="#55645B">Y1</text>
+        <text x="275" y="330" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" fill="#55645B">Y2</text>
+        <text x="445" y="330" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" fill="#55645B">Y3</text>
+        <text x="615" y="330" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" fill="#55645B">Y5</text>
+      </svg>
+    </div>
+
+    <!-- floating stat cards, artisan-style -->
+    <div style="position:absolute; left:530px; top:150px; width:340px; background:var(--wh); border:1px solid var(--line); border-radius:12px; box-shadow:0 20px 40px -18px rgba(18,24,26,.2); padding:16px 20px;">
+      <div class="mfine">Year-5 revenue</div>
+      <div style="font-weight:700; font-size:30px; margin-top:2px;">$43.0M</div>
+    </div>
+    <div style="position:absolute; left:96px; top:558px; width:300px; background:var(--wh); border:1px solid var(--line); border-radius:12px; box-shadow:0 20px 40px -18px rgba(18,24,26,.2); padding:16px 20px;">
+      <div class="mfine">Five-year cumulative</div>
+      <div style="font-weight:700; font-size:26px; margin-top:2px; color:var(--accent-dk);">$79.2M</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:400px; display:flex; align-items:center; gap:10px;">
+      <span style="width:14px;height:14px;background:#12181A; border-radius:3px; display:block;"></span><span style="font-size:var(--b);">Fixed, once per connection</span>
+      <span style="width:14px;height:14px;background:var(--accent); border-radius:3px; display:block; margin-left:18px;"></span><span style="font-size:var(--b);">Recurring, while connected</span>
+    </div>
+
+    <div style="position:absolute; left:940px; top:190px; display:flex; flex-direction:column; gap:24px;">
+      <div><div class="mfine">Year-5 recurring share</div><div style="font-weight:700; font-size:26px; margin-top:2px;">65%</div></div>
+      <div><div class="mfine">Year-5 gross margin</div><div style="font-weight:700; font-size:26px; margin-top:2px;">84%</div></div>
+      <div><div class="mfine">EBITDA break-even</div><div style="font-weight:700; font-size:26px; margin-top:2px; color:var(--accent-dk);">Year 3</div></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 18. CLOSE -->
+<div>
+  <div class="slide-tag">18 &middot; Close</div>
+  <div class="crop-scroll"><div class="slide">
+    <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 160px;">
+      <svg class="icon accent" style="width:30px; height:30px; margin-bottom:24px;"><use href="#i-gw"/></svg>
+      <div class="headline" style="font-size:36px; max-width:820px;">One gateway makes every energy asset visible and dispatchable.</div>
+      <div class="body-copy" style="text-align:center; margin:20px auto 0; max-width:480px;">Not a platform to adopt. A layer underneath the ones you already run.</div>
+    </div>
+  </div></div>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Owner Access</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#EDEFED; }
+  body{ display:flex; align-items:center; justify-content:center; padding:40px; font-family:'DM Sans',sans-serif; }
+  .win{ width:1084px; height:520px; background:#fff; border:1px solid var(--ol); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; color:var(--ink); }
+  .chrome{ height:34px; flex-shrink:0; display:flex; align-items:center; gap:7px; padding:0 14px; border-bottom:1px solid var(--ol); }
+  .dot{ width:11px; height:11px; border-radius:50%; } .dot.r{ background:#EF4444; } .dot.y{ background:#F59E0B; }
+  .brand{ padding:20px 28px 0; font-size:24px; font-weight:800; color:var(--g); }
+  .cols{ flex:1; display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; padding:20px 28px 28px; }
+  .col{ border:1px solid var(--ol); border-radius:10px; padding:18px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; }
+  .col.on{ border-color:var(--g); background:var(--g-bg); }
+  .step{ display:flex; align-items:center; gap:8px; align-self:flex-start; }
+  .n{ width:24px; height:24px; border-radius:50%; background:var(--g); color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .t{ font-size:15px; font-weight:800; }
+  .ic{ width:64px; height:64px; border-radius:50%; background:#fff; border:1px solid var(--ol); display:flex; align-items:center; justify-content:center; margin-top:6px; }
+  .ic svg{ width:30px; height:30px; color:var(--g); }
+  .big{ font-size:16px; font-weight:800; margin-top:4px; }
+  .ok{ font-size:12px; font-weight:700; color:var(--g); display:flex; align-items:center; gap:4px; }
+  .ok svg{ width:12px; height:12px; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="chrome"><div class="dot r"></div><div class="dot y"></div></div>
+  <div class="brand">kWh</div>
+  <div class="cols">
+    <div class="col"><div class="step"><span class="n">1</span><span class="t">Discover device</span></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="3" width="10" height="18" rx="2"/></svg></div>
+      <div class="big">Home Battery 2</div>
+      <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Found</div>
+    </div>
+    <div class="col on"><div class="step"><span class="n">2</span><span class="t">Review program</span></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M11 20V4M18 20v-7"/></svg></div>
+      <div class="big">Telemetry &amp; dispatch</div>
+      <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Terms reviewed</div>
+    </div>
+    <div class="col"><div class="step"><span class="n">3</span><span class="t">Access granted</span></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg></div>
+      <div class="big">Identity verified</div>
+      <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Utility connected</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

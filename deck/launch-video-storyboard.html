@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kWh Launch Video — Sequence Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF; --ink:#0B0F0C; --ink-muted:rgba(11,15,12,.62); --ink-faint:rgba(11,15,12,.42);
+    --line:#E4EAE5; --accent:#16A34A; --accent-bg:#EAF7EE; --chip-bg:#F5F6F5;
+  }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  body{
+    background:var(--bg); color:var(--ink); font-family:'DM Sans',-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.5;
+  }
+
+  /* ── Header ─────────────────────────────────────────────────── */
+  .topbar{ border-bottom:1px solid var(--line); padding:26px 40px 22px; }
+  .topbar-inner{ max-width:1180px; margin:0 auto; }
+  .eyebrow{ font-size:12px; font-weight:700; color:var(--accent); letter-spacing:.03em; text-transform:uppercase; }
+  h1{ font-size:30px; font-weight:800; letter-spacing:-.015em; margin-top:4px; }
+  .sub{ font-size:14.5px; color:var(--ink-muted); max-width:680px; margin-top:8px; }
+  .source-line{ font-size:12.5px; color:var(--ink-faint); margin-top:14px; }
+  .source-line code{ background:var(--chip-bg); padding:1px 6px; border-radius:5px; font-size:11.5px; }
+
+  main{ max-width:1180px; margin:0 auto; padding:36px 40px 100px; }
+
+  /* ── Act divider ────────────────────────────────────────────── */
+  .act{ margin-top:56px; }
+  .act:first-child{ margin-top:0; }
+  .act-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:22px; padding-bottom:12px; border-bottom:2px solid var(--ink); }
+  .act-n{ font-size:12px; font-weight:700; color:var(--accent); background:var(--accent-bg); border-radius:999px; padding:4px 11px; }
+  .act h2{ font-size:20px; font-weight:800; letter-spacing:-.01em; }
+  .act-time{ margin-left:auto; font-size:12.5px; font-weight:600; color:var(--ink-faint); font-variant-numeric:tabular-nums; }
+  .act-note{ font-size:13px; color:var(--ink-muted); max-width:720px; margin:-10px 0 24px; }
+
+  /* ── Shot ───────────────────────────────────────────────────── */
+  .shot{
+    display:grid; grid-template-columns:1fr 1.35fr; gap:30px; align-items:start;
+    padding:26px 0; border-bottom:1px solid var(--line);
+  }
+  .shot:last-child{ border-bottom:none; }
+  .shot.reverse{ direction:rtl; }
+  .shot.reverse > *{ direction:ltr; }
+  .shot.mobile{ grid-template-columns:0.6fr 1fr; }
+  .shot.mobile.reverse{ grid-template-columns:1fr 0.6fr; }
+
+  .shot-visual{ display:flex; justify-content:center; }
+
+  /* Window chrome — same treatment as the kWh UI library snippets:
+     rounded window, thin dot bar, quiet border, minimal shadow. */
+  .win{
+    width:100%; max-width:560px; background:#fff; border:1px solid var(--line); border-radius:16px;
+    overflow:hidden; box-shadow:0 1px 3px rgba(11,15,12,.04);
+  }
+  .win.win-mobile{ max-width:220px; }
+  .win-chrome{
+    height:28px; display:flex; align-items:center; gap:6px; padding:0 12px;
+    border-bottom:1px solid var(--line); background:#FAFBFA;
+  }
+  .dot{ width:9px; height:9px; border-radius:50%; }
+  .dot.r{ background:#EF4444; } .dot.y{ background:#F59E0B; } .dot.g{ background:#22C55E; }
+  .win-chrome .win-label{ margin-left:6px; font-size:10.5px; color:var(--ink-faint); font-weight:600; }
+  .win img{ display:block; width:100%; height:auto; }
+
+  .shot-meta{ padding-top:2px; }
+  .shot-time{
+    display:inline-block; font-size:11.5px; font-weight:700; color:var(--accent);
+    background:var(--accent-bg); border-radius:6px; padding:3px 8px; font-variant-numeric:tabular-nums;
+    margin-bottom:10px;
+  }
+  .shot-title{ font-size:16.5px; font-weight:700; letter-spacing:-.005em; margin-bottom:6px; }
+  .shot-direction{ font-size:12.5px; color:var(--ink-faint); font-style:italic; margin-bottom:12px; }
+  .shot-line{
+    font-size:14.5px; line-height:1.6; color:var(--ink); padding-left:14px; border-left:2px solid var(--line);
+  }
+  .shot-line .voice{ font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); display:block; margin-bottom:4px; }
+
+  /* ── Close ──────────────────────────────────────────────────── */
+  .close{ margin-top:56px; padding:32px; background:var(--accent-bg); border-radius:16px; }
+  .close .shot-time{ background:#fff; }
+  .close p{ font-size:15.5px; line-height:1.65; margin-top:12px; max-width:760px; }
+  .close p:first-of-type{ margin-top:14px; }
+
+  @media (max-width: 760px){
+    .topbar, main{ padding-left:20px; padding-right:20px; }
+    .shot, .shot.reverse, .shot.mobile, .shot.mobile.reverse{ grid-template-columns:1fr; direction:ltr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="eyebrow">Prep document · not the final video</div>
+    <h1>Launch video — full sequence</h1>
+    <p class="sub">Every beat of the recorded demo, in order: what's on screen, the timestamp in
+       the source recording, and the actual narration spoken over it. Built for storyboarding
+       a shorter, edited launch cut — screenshots are cropped from the real product, nothing
+       recreated.</p>
+    <p class="source-line">Source: <code>kWh Demo Recording.mp4</code>, 6:37, transcribed locally.
+       Screens shown: <b>gateway portal</b> (edge device), <b>consumer app</b> (customer mobile
+       onboarding), <b>utility portal</b> (Grid Intelligence).</p>
+  </div>
+</div>
+
+<main>
+
+  <!-- ACT 1 — Cold open + the pitch -->
+  <div class="act">
+    <div class="act-head">
+      <span class="act-n">Act 1</span>
+      <h2>The pitch</h2>
+      <span class="act-time">0:00 – 1:10</span>
+    </div>
+    <p class="act-note">No product on screen yet. This is the founder framing the problem and
+       the three ways a device gets connected — worth keeping close to verbatim, it's the
+       clearest statement of the offer anywhere in the recording.</p>
+
+    <div class="shot">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">kwhelectric.io</span></div>
+          <img src="launch-video-assets/00-landing-page.png" alt="kWh Electric homepage">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">0:01</span>
+        <div class="shot-title">Cold open — the product site</div>
+        <div class="shot-direction">Hold on this a beat before cutting to the founder. Good title-card candidate as-is.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "Hello, this is Arham Shah, I'm the founder of kWh Electric, and this is a
+          demonstration of our communication infrastructure — where you can talk to any legacy
+          energy asset, any charger, inverter, battery, transformer, using standard protocols.
+          You can take any legacy protocol and integrate it to the open standard requirements
+          that are growing in California, Texas, India, Australia and many more."
+        </div>
+      </div>
+    </div>
+
+    <div class="shot">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">the offer, stated</span></div>
+          <img src="launch-video-assets/01-gateway-offline.png" alt="DER Gateway portal, no devices connected">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">0:28 – 1:10</span>
+        <div class="shot-title">The three ways to connect</div>
+        <div class="shot-direction">No new visual here in the source — reuses the gateway portal
+          about to be shown live. In an edit this is a strong place for on-screen text: three
+          labelled beats, "gateway," "licence," "OEM API."</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "We will start by showcasing a gateway product where you can connect any asset to a
+          physical product, or you can issue a licence on your existing physical device, and
+          then there's a third product where we do OEM integrations, a standard API access. The
+          idea is we can throw out the API access today, help them bring it to the open
+          standards tomorrow — or if they're ready for open standards, we can throw that out
+          immediately."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACT 2 — Gateway portal, first look -->
+  <div class="act">
+    <div class="act-head">
+      <span class="act-n">Act 2</span>
+      <h2>Gateway portal — before</h2>
+      <span class="act-time">1:10 – 1:41</span>
+    </div>
+    <p class="act-note">The empty state. Establishes what "not connected yet" looks like, so the
+       payoff later (device online, telemetry flowing) actually reads as a payoff.</p>
+
+    <div class="shot">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">DER Gateway</span></div>
+          <img src="launch-video-assets/01-gateway-offline.png" alt="DER Gateway portal showing no southbound devices registered, northbound disconnected">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">1:10</span>
+        <div class="shot-title">The gateway, before anything is connected</div>
+        <div class="shot-direction">"No southbound devices registered" and "Northbound
+          Disconnected" are both legible in the frame — good captions or callout targets.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "Let's showcase the edge portal. As you can see, this is running on the edge and we
+          have no northbound connection, which means you have a lot of potential southbound
+          devices, a lot of different protocols. We can convert any of them into a standard
+          northbound protocol — that's called IEEE 2030.5. We'll connect our southbound device,
+          and once it's connected to a northbound we can see telemetry and control the device.
+          That's the infrastructure we want to enable, and this infrastructure can enable a lot
+          of other services."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACT 3 — Consumer app -->
+  <div class="act">
+    <div class="act-head">
+      <span class="act-n">Act 3</span>
+      <h2>Consumer app — onboarding a device</h2>
+      <span class="act-time">1:41 – 2:39</span>
+    </div>
+    <p class="act-note">The only portal a homeowner ever touches. Five short beats, sign-in to
+       certificate issuance — this whole sequence is under a minute in the source and should
+       stay tight in the edit, it's the "no truck roll" proof point.</p>
+
+    <div class="shot mobile">
+      <div class="shot-visual">
+        <div class="win win-mobile">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+          <img src="launch-video-assets/02-consumer-signin.png" alt="Customer sign-in screen on mobile">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">1:42</span>
+        <div class="shot-title">Customer sign-in</div>
+        <div class="shot-direction">The mobile app the utility or OEM white-labels to their customer.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "Right now the northbound is not connected, so let's fix that. This is our mobile
+          application that our utility or OEM will provide to the customers to log in. So let's
+          do a customer login here."
+        </div>
+      </div>
+    </div>
+
+    <div class="shot mobile reverse">
+      <div class="shot-visual">
+        <div class="win win-mobile">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+          <img src="launch-video-assets/04-consumer-ble-scan.png" alt="Find gateway over Bluetooth, scanning for nearby devices">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">2:02</span>
+        <div class="shot-title">Bluetooth discovery, no truck roll</div>
+        <div class="shot-direction">The nearby gateways ("KWH-GW-8ed7…", "KWH-GW-7eco…") are
+          real device IDs, not placeholder text — worth a close crop.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "We can log into the device. You can look for devices that you can enroll — through
+          Bluetooth you can discover devices, or you can physically look for devices that you
+          want to connect to. You can select the device that you want to connect to."
+        </div>
+      </div>
+    </div>
+
+    <div class="shot mobile">
+      <div class="shot-visual">
+        <div class="win win-mobile">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+          <img src="launch-video-assets/05-consumer-name-device.png" alt="Name gateway and devices screen">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">2:22</span>
+        <div class="shot-title">Naming the asset</div>
+        <div class="shot-direction">"Battery asset demo" is the name typed on screen — this
+          exact label reappears in both the gateway and utility portals later, a good visual
+          through-line to point out in the edit.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "Let's call this battery asset demo, and now our certificate is being issued to the
+          client that's sitting on the edge — so your gateway itself is being connected. Now
+          this gateway can enable you to connect to more devices."
+        </div>
+      </div>
+    </div>
+
+    <div class="shot mobile reverse">
+      <div class="shot-visual">
+        <div class="win win-mobile">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+          <img src="launch-video-assets/07-consumer-cert-issue.png" alt="Enroll with cloud, certificate transfer in progress">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">2:39</span>
+        <div class="shot-title">Certificate issuance</div>
+        <div class="shot-direction">The device serial and gateway hash are visible — real
+          numbers, not mocked. This is the last consumer-side beat before the founder switches
+          to the utility portal while it finishes in the background.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "While the certificate is being issued, let me show you what the utility portal looks
+          like. We just saw the customer side of it, on the phone."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACT 4 — Utility / Grid Intelligence portal -->
+  <div class="act">
+    <div class="act-head">
+      <span class="act-n">Act 4</span>
+      <h2>Utility portal — Grid Intelligence</h2>
+      <span class="act-time">2:39 – 5:23</span>
+    </div>
+    <p class="act-note">The longest act, and the one with the actual grid-services language:
+       forecasting, procurement, trading. Anchor for the "add grid services" ask — the left nav
+       in the asset-detail and event shots already shows Forecasting, Disaggregation,
+       Procurement Trigger and Flexibility under a "Grid Services" section.</p>
+
+    <div class="shot">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">portal.kwhelectric.io</span></div>
+          <img src="launch-video-assets/08-utility-signin.png" alt="Sign in to your utility control room, Utility/Customer toggle">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">2:39</span>
+        <div class="shot-title">Utility sign-in</div>
+        <div class="shot-direction">Same login shell, Utility/Customer toggle — worth calling
+          out that both personas share one product.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "For a utility, they want to be able to control these assets, and that's where our
+          product is crucial. Today they want to control and manage their customers, manage
+          assets, and using that, provide various grid services. These grid services are your
+          forecasting, procurement, records, your trading, many more. The infrastructure that
+          you want to provide lies right here — but how can you connect to any asset that's on
+          the grid? That's where our product comes into play."
+        </div>
+      </div>
+    </div>
+
+    <div class="shot reverse">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">Grid Intelligence</span></div>
+          <img src="launch-video-assets/10-gateway-southbound-discovery.png" alt="Southbound Devices, discovery candidates: SunSpec inverter, SunSpec BESS, Modbus meter">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">3:25 – 3:52</span>
+        <div class="shot-title">Commissioned, then adding a real protocol</div>
+        <div class="shot-direction">Whisper mis-heard "SunSpec" as "suspect" throughout this
+          section — corrected here. The discovery list (SunSpec inverter, SunSpec BESS, Modbus
+          meter) is a genuinely good visual, shows the protocol translation directly.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "So here you can see battery asset demo — the commissioning has been completed. At
+          the same time we can see that the northbound is now connected. Towards southbound,
+          now let's add a device — let's call it SunSpec. SunSpec is one of the early
+          standards, and it's been approved. You can see it in our DER management portal."
+        </div>
+      </div>
+    </div>
+
+    <div class="shot">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">DER Gateway</span></div>
+          <img src="launch-video-assets/11-gateway-der-65pct.png" alt="Generic SunSpec BESS device, state of charge 65 percent">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">3:52 – 4:14</span>
+        <div class="shot-title">First live telemetry — 65% state of charge</div>
+        <div class="shot-direction">The exact moment simulated data starts flowing. Good candidate for a quick zoom-in on the "65%" figure.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "We are currently bringing a device onboard, so we're running a simulated telemetry.
+          You'll see that now — currently the battery is at 65% state of charge. You can see we
+          just got a fresh data point from the battery. So now let's go into the grid portal and
+          look for the same."
+        </div>
+      </div>
+    </div>
+
+    <div class="shot reverse">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">Device Management</span></div>
+          <img src="launch-video-assets/12-utility-asset-registry.png" alt="Asset registry table showing every gateway and BESS device under management">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">4:19 – 4:42</span>
+        <div class="shot-title">The same asset, seen from the utility side</div>
+        <div class="shot-direction">The registry table is a strong "this scales" shot — dozens
+          of gateway and BESS rows, not just the one demo device. Worth holding a second longer
+          than the others.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "And there we have it — we can see that the device we just onboarded is visible here.
+          So first the gateway, and then the battery asset. You can also add other assets like
+          your inverter, like your meter, to the same gateway. Here we can see the first data
+          point, at 65% charge. That's your telemetry — that's one half of what you really would
+          want to do."
+        </div>
+      </div>
+    </div>
+
+    <div class="shot">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">Create DER event</span></div>
+          <img src="launch-video-assets/15-utility-create-event-filled.png" alt="Create DER event modal, discharge event, target power -5000W, duration 5 minutes">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">4:48 – 5:10</span>
+        <div class="shot-title">The other half — control</div>
+        <div class="shot-direction">The single clearest "dispatch" shot in the whole recording:
+          named event, target asset, target power, duration, all in one modal.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "The second half is you want to control the asset. So here we are providing universal
+          control for any asset — for your battery, let's say you want to discharge it. You'll
+          create an event: discharge the battery for a duration of five minutes. So you've
+          created the event, and the event will get registered here."
+        </div>
+      </div>
+    </div>
+
+    <div class="shot reverse">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">Grid Intelligence</span></div>
+          <img src="launch-video-assets/16-utility-event-saved.png" alt="Asset detail after the event is created">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">5:10 – 5:23</span>
+        <div class="shot-title">One asset today, a fleet tomorrow</div>
+        <div class="shot-direction">This is the line to keep in any cut, however short — it's
+          the entire pitch for why the demo matters at all.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "This entire demo is from the perspective of one asset. However, we can do this at
+          population scale — once you can do this for millions of assets, that's when you can
+          create grid services. And we are ready to do that today."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACT 5 — Back to the gateway, the payoff -->
+  <div class="act">
+    <div class="act-head">
+      <span class="act-n">Act 5</span>
+      <h2>Back to the gateway — the response</h2>
+      <span class="act-time">5:23 – 6:00</span>
+    </div>
+    <p class="act-note">The loop closes exactly where Act 2 opened. This is the payoff shot —
+       pair it directly against the "no southbound devices" frame from Act 2 for a strong
+       before/after cut.</p>
+
+    <div class="shot">
+      <div class="shot-visual">
+        <div class="win">
+          <div class="win-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="win-label">DER Gateway · Telemetry</span></div>
+          <img src="launch-video-assets/18-gateway-discharge-live.png" alt="Live Power and SOC chart, the line bending downward as the battery begins to discharge">
+        </div>
+      </div>
+      <div class="shot-meta">
+        <span class="shot-time">5:29 – 6:00</span>
+        <div class="shot-title">Seconds, not minutes</div>
+        <div class="shot-direction">The chart line visibly bending is the single best motion
+          moment to capture on video rather than a still — worth pulling the actual clip, not
+          just this frame, for the edit.</div>
+        <div class="shot-line">
+          <span class="voice">Voiceover</span>
+          "Let's go back to our edge portal, the device where we are reading telemetry, and the
+          response should show you... And there we have a response — the battery, as of a few
+          seconds ago, has started discharging. It took seconds for the battery to respond,
+          which is extremely crucial for a battery to be able to participate in various
+          auxiliary and frequency markets."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSE — grid services roadmap -->
+  <div class="close">
+    <span class="shot-time">6:06 – 6:35</span>
+    <div class="shot-title" style="font-size:18px;margin-top:10px">The close — where grid services goes next</div>
+    <p>"This is our demonstration for the kWh communications infrastructure. And as we move
+       forward, we want to enable intelligence on the edge — work with our own models, use the
+       data to train models that sit both on the edge and on the utility side."</p>
+    <p>"We're also working on grid services, where our expertise lies in flexibility and
+       forecasting, which we have already demonstrated through our previous work. And we can
+       provide a lot of other grid services. Thank you so much for your time, and we look
+       forward to talking to you."</p>
+  </div>
+
+</main>
+
+</body>
+</html>

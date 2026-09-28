@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Market opportunity — TAM / SAM / SOM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-2:#3DB86A; --g-3:#8ED4A6; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .slide{ width:1600px; height:900px; background:#fff; color:var(--ink); padding:48px 56px 40px; display:flex; flex-direction:column; }
+  .eyebrow{ font-size:13px; font-weight:700; color:var(--ink-60); letter-spacing:.04em; text-transform:uppercase; }
+  .title{ font-size:44px; font-weight:800; line-height:1.1; margin-top:8px; }
+  .underline{ width:120px; height:3px; background:var(--g); margin-top:16px; }
+  .sub{ font-size:15px; font-weight:600; color:var(--ink-60); margin-top:12px; }
+  .body{ flex:1; display:grid; grid-template-columns:1fr 560px; gap:48px; align-items:center; margin-top:28px; min-height:0; }
+  table{ width:100%; border-collapse:collapse; }
+  th{ text-align:left; font-size:13px; font-weight:700; color:var(--ink-60); padding:0 16px 12px; border-bottom:1.5px solid var(--ink); }
+  td{ padding:20px 16px; border-bottom:1px solid var(--ol); vertical-align:top; }
+  tr:last-child td{ border-bottom:none; }
+  .tier{ font-size:20px; font-weight:800; letter-spacing:.02em; }
+  .tier-sub{ font-size:13px; font-weight:600; color:var(--ink-60); margin-top:4px; line-height:1.4; }
+  .calc{ font-size:14px; font-weight:600; color:var(--ink-60); line-height:1.55; }
+  .num{ font-size:28px; font-weight:800; color:var(--g); line-height:1; }
+  .num-sub{ font-size:13px; font-weight:600; color:var(--ink-60); margin-top:6px; }
+  .viz{ display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .viz svg{ width:520px; height:520px; display:block; }
+  .foot{ font-size:13px; font-weight:600; color:var(--ink-60); margin-top:8px; line-height:1.45; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="eyebrow">kWh Electric &middot; Market opportunity</div>
+  <div class="title">TAM, SAM, SOM</div>
+  <div class="underline"></div>
+  <div class="sub">Primary markets: United States and Australia. Annual market size, not kWh take.</div>
+
+  <div class="body">
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Build</th>
+          <th>Annual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="tier">TAM</div>
+            <div class="tier-sub">All grid services + all communication infrastructure</div>
+          </td>
+          <td>
+            <div class="calc">Global VPP $23.0B by 2033<br>+ global smart-grid comm $16.3B</div>
+          </td>
+          <td>
+            <div class="num">$39.3B</div>
+            <div class="num-sub">per year</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="tier">SAM</div>
+            <div class="tier-sub">All comm infrastructure + all flexibility networks, US + Australia</div>
+          </td>
+          <td>
+            <div class="calc">US+AU comm $5.5B<br>+ US+AU flexibility $4.0B</div>
+          </td>
+          <td>
+            <div class="num">$9.5B</div>
+            <div class="num-sub">per year</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="tier">SOM</div>
+            <div class="tier-sub">5% of US + AU comm + 1% of US + AU flexibility</div>
+          </td>
+          <td>
+            <div class="calc">5% &times; $5.5B = $275M<br>+ 1% &times; $4.0B = $40M</div>
+          </td>
+          <td>
+            <div class="num">$315M</div>
+            <div class="num-sub">per year</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="viz">
+      <svg viewBox="0 0 520 520" aria-label="TAM SAM SOM concentric circles">
+        <circle cx="260" cy="260" r="248" fill="var(--g-bg)" stroke="var(--g)" stroke-width="2"/>
+        <circle cx="260" cy="260" r="168" fill="var(--g-3)" stroke="var(--g)" stroke-width="2"/>
+        <circle cx="260" cy="260" r="86" fill="var(--g)"/>
+
+        <text x="260" y="54" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="15" font-weight="800" fill="#0B0F0C">TAM</text>
+        <text x="260" y="80" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="28" font-weight="800" fill="#16A34A">$39.3B</text>
+
+        <text x="260" y="140" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="15" font-weight="800" fill="#0B0F0C">SAM</text>
+        <text x="260" y="166" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="26" font-weight="800" fill="#0B0F0C">$9.5B</text>
+
+        <text x="260" y="250" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="14" font-weight="800" fill="#FFFFFF">SOM</text>
+        <text x="260" y="280" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="26" font-weight="800" fill="#FFFFFF">$315M</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="foot">Comm is the published smart-grid communications market (TBRC $16.3B global, 2026): US $4.9B + Australia $0.6B = $5.5B. Flexibility is US+AU demand-response / VPP programs: US $3.6B + Australia $0.4B = $4.0B. Grid services in TAM is the $23B global VPP figure already on the materials. These are industry markets, not kWh&rsquo;s $9/endpoint take. Circles are nested for reading, not area-scaled.</div>
+</div>
+</body>
+</html>

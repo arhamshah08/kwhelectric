@@ -1,0 +1,1348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>kWh Electric — Seed Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   kWh Electric — seed deck
+   20 slides · 1920×1080 · self-contained
+   ───────────────────────────────────────────────────────────── */
+
+:root{
+  --paper:#FAF6EC;
+  --card:#FFFDF7;
+  --ink:#17160F;
+  --slate:#5A574C;
+  --slate2:#948F7E;
+  --rule:#E7E0CE;
+  --rule-2:#D6CDB4;
+  --gold:#AD8324;
+  --gold-2:#D4A945;
+  --comb:#DDAF4A;
+  --comb-lt:#F1E2B4;
+  --comb-dk:#B98A22;
+  --alarm:#9E2A22;
+  --mint:#E4EFE6;      --mint-br:#C6DCCC;  --mint-d:#33654A;
+  --lilac:#E8E6F5;     --lilac-br:#CFCAE8; --lilac-d:#474091;
+  --panel:#15140E;
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;
+  --sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'DM Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0E0D08;overflow:hidden}
+body{font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+#stage{position:absolute;top:50%;left:50%;width:1920px;height:1080px;transform-origin:center center}
+
+.slide{
+  position:absolute;inset:0;width:1920px;height:1080px;
+  background:var(--paper);color:var(--ink);
+  padding:84px 112px 76px;
+  display:none;overflow:hidden;
+}
+.slide.on{display:block}
+
+/* ── chrome ──────────────────────────────────────────────── */
+.badge{position:absolute;top:44px;left:52px;width:44px;height:50px;display:grid;place-items:center}
+.badge svg{position:absolute;inset:0;width:100%;height:100%}
+.badge span{position:relative;font:500 15px/1 var(--mono);color:var(--slate2)}
+.foot-l{position:absolute;left:112px;bottom:40px;font:400 17px/1 var(--serif);color:var(--slate2);letter-spacing:.01em}
+.foot-l b{font-weight:600;color:var(--slate);font-style:normal}
+.foot-l i{font-style:italic}
+.foot-r{position:absolute;right:112px;bottom:41px;font:400 14px/1 var(--mono);color:var(--slate2)}
+
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--gold);margin-bottom:34px}
+.eyebrow.dim{color:var(--slate2)}
+
+h1{font-family:var(--serif);font-weight:400;font-size:62px;line-height:1.05;letter-spacing:-.012em;color:var(--ink)}
+h1.big{font-size:82px}
+h1 em{font-style:normal;color:var(--gold)}
+.lead{font:400 22px/1.5 var(--sans);color:var(--slate);max-width:820px;margin-top:22px}
+.lead.sm{font-size:19px}
+
+.body{font:400 17px/1.62 var(--sans);color:var(--slate)}
+.small{font:400 15px/1.55 var(--sans);color:var(--slate)}
+.micro{font:400 13px/1.5 var(--mono);color:var(--slate2)}
+.note{font:400 14px/1.55 var(--sans);color:var(--slate2);font-style:italic}
+.ph{color:var(--slate2);font-family:var(--mono);font-size:.94em}
+
+.card{background:var(--card);border:1px solid var(--rule);border-radius:9px;padding:26px 28px}
+.k{font:500 12px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--slate2)}
+.rule{height:1px;background:var(--rule);border:0}
+
+/* ── layout helpers ──────────────────────────────────────── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:76px;align-items:start}
+.split.l{grid-template-columns:0.92fr 1.08fr}
+.split.r{grid-template-columns:1.12fr 0.88fr}
+/* fills the usable 920px so a two-column slide never leaves a dead lower half */
+.split.tall{min-height:844px;align-items:center}
+.row{display:flex;gap:20px}
+.stack{display:flex;flex-direction:column;gap:18px}
+.hexmark{width:26px;height:29px;flex:none}
+
+/* ── slide 01 cover ──────────────────────────────────────── */
+#s1{padding:0}
+.cover-panel{position:absolute;left:0;top:0;width:640px;height:100%;background:var(--panel);
+  clip-path:polygon(0 0,100% 0,72% 100%,0 100%)}
+.cover-body{position:absolute;left:700px;top:0;height:100%;display:flex;flex-direction:column;justify-content:center;width:1050px}
+.cover-body h1{font-size:88px;line-height:1.04}
+.cover-rule{width:78px;height:2px;background:var(--gold-2);margin:38px 0 26px}
+.cover-sub{font:400 24px/1.5 var(--sans);color:var(--slate)}
+.cover-note{position:absolute;left:700px;bottom:82px;font:400 13px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--slate2)}
+#s1 .foot-l{left:700px}
+
+/* ── stat ────────────────────────────────────────────────── */
+.stat{font-family:var(--serif);font-weight:500;font-size:104px;line-height:.9;letter-spacing:-.02em}
+.stat.alarm{color:var(--alarm)}
+.stat.gold{color:var(--gold)}
+.stat.sm{font-size:64px}
+
+/* ── model tint ──────────────────────────────────────────── */
+.tint-a{background:var(--mint);border-color:var(--mint-br)}
+.tint-b{background:var(--lilac);border-color:var(--lilac-br)}
+.ma{color:var(--mint-d)} .mb{color:var(--lilac-d)}
+
+/* ── table ───────────────────────────────────────────────── */
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:15px 22px;font:400 17px/1.35 var(--sans);color:var(--ink);border-bottom:1px solid var(--rule)}
+th{font:500 12px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--slate2);padding-bottom:13px}
+td.lbl{font:500 12px/1.3 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--slate2);width:210px}
+tr:last-child td{border-bottom:0}
+.col-a{background:var(--mint)} .col-b{background:var(--lilac)}
+th.col-a{color:var(--mint-d)} th.col-b{color:var(--lilac-d)}
+
+/* ── chips ───────────────────────────────────────────────── */
+.chips{display:flex;gap:12px;flex-wrap:wrap}
+.chip{border:1px solid var(--rule-2);background:var(--card);border-radius:999px;padding:11px 20px;
+  font:400 15px/1 var(--sans);color:var(--slate);display:flex;align-items:center;gap:9px}
+.chip.gold{background:rgba(212,169,69,.14);border-color:rgba(173,131,36,.34);color:var(--gold)}
+.pill{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:4px;
+  font:500 11px/1 var(--mono)}
+.pill.a{background:var(--mint);color:var(--mint-d);border:1px solid var(--mint-br)}
+.pill.b{background:var(--lilac);color:var(--lilac-d);border:1px solid var(--lilac-br)}
+
+/* ── banner ──────────────────────────────────────────────── */
+.banner{background:linear-gradient(90deg,var(--comb-dk),var(--comb));border-radius:7px;padding:19px 30px;
+  font:500 20px/1 var(--sans);color:#231C06;text-align:center}
+
+/* ── dark ui panels (slide 10) ───────────────────────────── */
+.ui{background:var(--panel);border-radius:9px;padding:16px;color:#EDE7D6}
+.ui .k{color:#8C8672}
+.console{background:var(--panel);border-radius:9px;padding:20px 28px;display:flex;align-items:center;
+  justify-content:space-between;color:#EDE7D6}
+.dot{width:8px;height:8px;border-radius:50%;background:#4FBF7F;display:inline-block;margin-right:8px}
+
+/* ── bars ────────────────────────────────────────────────── */
+.fundbar{display:flex;height:56px;border-radius:6px;overflow:hidden}
+.fundbar div{display:grid;place-items:center;font:500 15px/1.35 var(--sans);color:#241D07;text-align:center}
+
+/* ── print ───────────────────────────────────────────────── */
+/* the root must release its height/overflow too, or print collapses to one page */
+html.print,body.print{height:auto;overflow:visible}
+body.print{background:#3A362C}
+body.print #stage{position:static;transform:none;width:auto;height:auto}
+body.print .slide{display:block;position:relative;margin:0 auto 26px;box-shadow:0 3px 20px rgba(0,0,0,.3)}
+body.print #nav{display:none}
+@media print{
+  body.print{background:#fff}
+  body.print .slide{margin:0;box-shadow:none;break-after:page;page-break-after:always}
+  @page{size:1920px 1080px;margin:0}
+}
+
+/* ── nav ─────────────────────────────────────────────────── */
+/* nav sits over the slide, so it fades out rather than parking on the page number */
+#nav{position:fixed;right:22px;bottom:20px;display:flex;gap:8px;z-index:50;
+  opacity:0;transition:opacity .28s ease;pointer-events:none}
+#nav.show{opacity:1;pointer-events:auto}
+#nav:hover,#nav:focus-within{opacity:1;pointer-events:auto}
+#nav button{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.07);color:#CFC8B4;font:400 15px/1 var(--sans);cursor:pointer}
+#nav button:hover{background:rgba(255,255,255,.16)}
+#nav button:focus-visible{outline:2px solid var(--comb);outline-offset:2px}
+#count{color:#89836F;font:400 13px/36px var(--mono);margin-right:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ══ shared svg defs ══════════════════════════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="beeClip"><ellipse cx="26" cy="20" rx="15" ry="9"/></clipPath>
+    <!-- gradients live here, not inside a slide: a def inside a display:none
+         slide will not resolve when referenced from the slide that is showing -->
+    <radialGradient id="glow" cx="50%" cy="50%" r="52%">
+      <stop offset="0%" stop-color="#FDF3D2"/><stop offset="62%" stop-color="#F4DC97"/><stop offset="100%" stop-color="#E5C263"/>
+    </radialGradient>
+    <radialGradient id="lit" cx="50%" cy="42%" r="58%">
+      <stop offset="0%" stop-color="#FCEFC0"/><stop offset="100%" stop-color="#E3B851"/>
+    </radialGradient>
+  </defs>
+
+  <symbol id="bee" viewBox="0 0 48 34">
+    <ellipse cx="23" cy="8" rx="10.5" ry="6" fill="#fff" fill-opacity=".66" stroke="#CFC2A0" stroke-width=".9" transform="rotate(-17 23 8)"/>
+    <ellipse cx="33" cy="9.5" rx="8.5" ry="5" fill="#fff" fill-opacity=".58" stroke="#CFC2A0" stroke-width=".9" transform="rotate(12 33 9.5)"/>
+    <ellipse cx="26" cy="20" rx="15" ry="9" fill="#E3B851"/>
+    <g clip-path="url(#beeClip)" fill="#1A180F">
+      <rect x="17.5" y="9" width="4.4" height="24"/>
+      <rect x="26.5" y="9" width="4.4" height="24"/>
+      <rect x="35.5" y="9" width="5.2" height="24"/>
+    </g>
+    <ellipse cx="26" cy="20" rx="15" ry="9" fill="none" stroke="#1A180F" stroke-width="1.1"/>
+    <circle cx="10.5" cy="18.5" r="6.6" fill="#1A180F"/>
+    <path d="M7.4 12.6Q4.6 6.4 8.2 3.8" stroke="#1A180F" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    <path d="M12.6 12Q12.8 5.4 16.4 3.8" stroke="#1A180F" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- wasp faces LEFT: stinger leads. flip horizontally to reverse. -->
+  <symbol id="wasp" viewBox="0 0 100 56">
+    <ellipse cx="58" cy="14" rx="21" ry="8.5" fill="#fff" fill-opacity=".52" stroke="#A9A08A" stroke-width="1.1" transform="rotate(-13 58 14)"/>
+    <ellipse cx="70" cy="17" rx="15" ry="6.5" fill="#fff" fill-opacity=".44" stroke="#A9A08A" stroke-width="1.1" transform="rotate(9 70 17)"/>
+    <path d="M0 30 17 23.5v13z" fill="#131208"/>
+    <ellipse cx="33" cy="30" rx="18" ry="12.5" fill="#131208"/>
+    <rect x="47" y="26" width="7" height="8" fill="#131208"/>
+    <ellipse cx="64" cy="29" rx="13" ry="11" fill="#131208"/>
+    <circle cx="84" cy="28" r="10.5" fill="#131208"/>
+    <circle cx="88" cy="24.5" r="2.8" fill="#fff" fill-opacity=".9"/>
+    <path d="M89 18Q93 8 98 5M82 17.5Q84 7 89 3" stroke="#131208" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <g stroke="#131208" stroke-width="2" stroke-linecap="round">
+      <path d="M30 42l-6 11M42 42l4 11M58 40l-4 12"/>
+    </g>
+  </symbol>
+
+  <symbol id="hexOut" viewBox="0 0 44 50"><path d="M22 1l18.2 10.5v21L22 43 3.8 32.5v-21z" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+  <symbol id="hexFill" viewBox="0 0 44 50"><path d="M22 1l18.2 10.5v21L22 43 3.8 32.5v-21z" fill="currentColor"/></symbol>
+</svg>
+
+<div id="stage">
+
+<!-- ══════════ 01 · COVER ══════════════════════════════════ -->
+<section class="slide on">
+  <div class="cover-panel">
+    <svg width="640" height="1080" viewBox="0 0 640 1080" fill="none" stroke="#8A6A1E" stroke-width="1.1" opacity=".62">
+      <path d="M60 120l52 30v60l-52 30-52-30v-60z"/><path d="M164 180l52 30v60l-52 30-52-30v-60z"/>
+      <path d="M60 300l52 30v60l-52 30-52-30v-60z"/><path d="M164 360l52 30v60l-52 30-52-30v-60z"/>
+      <path d="M268 300l52 30v60l-52 30-52-30v-60z"/><path d="M60 480l52 30v60l-52 30-52-30v-60z"/>
+      <path d="M164 540l52 30v60l-52 30-52-30v-60z"/><path d="M268 480l52 30v60l-52 30-52-30v-60z"/>
+      <path d="M60 660l52 30v60l-52 30-52-30v-60z"/><path d="M164 720l52 30v60l-52 30-52-30v-60z"/>
+      <path d="M60 840l52 30v60l-52 30-52-30v-60z"/>
+      <g fill="#C9992F" stroke="none"><circle cx="112" cy="180" r="3.6"/><circle cx="216" cy="390" r="3.6"/><circle cx="112" cy="690" r="3.6"/><circle cx="320" cy="510" r="3.6"/></g>
+    </svg>
+  </div>
+
+  <svg class="flight" width="620" height="560" viewBox="0 0 620 560" style="position:absolute;right:96px;top:36px" fill="none">
+    <path d="M560 34C470 96 512 178 430 214c-92 40-176-6-232 62-52 62-8 148 66 176" stroke="#CDA53F" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="0.5 11" opacity=".72"/>
+  </svg>
+  <svg width="52" height="37" viewBox="0 0 48 34" style="position:absolute;right:78px;top:46px"><use href="#bee"/></svg>
+
+  <div class="cover-body">
+    <div class="eyebrow">Distributed energy platform</div>
+    <h1>The universal<br>translator for the<br><em>distributed grid.</em></h1>
+    <div class="cover-rule"></div>
+    <p class="cover-sub">One gateway. Any asset. Any application.</p>
+  </div>
+  <div class="cover-note">North star — megawatts under management</div>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">01</div>
+</section>
+
+<!-- ══════════ 02 · PROBLEM ═══════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>2</span></div>
+  <div class="split l tall" style="margin-top:12px">
+    <div>
+      <div class="eyebrow">The problem</div>
+      <h1>Today, the hive<br>is fragmented.</h1>
+      <p class="lead">Every OEM locks its devices in a separate silo. Over 100 million DERs are deployed worldwide with no common dispatch layer beneath them.</p>
+
+      <hr class="rule" style="margin:56px 0 44px">
+
+      <div style="display:flex;align-items:flex-start;gap:34px">
+        <div class="stat alarm">80%</div>
+        <p class="body" style="max-width:400px;padding-top:10px">of DER fleets still lack dispatchability. Existing APIs are too expensive, and lack interoperability and security.</p>
+      </div>
+      <p class="note" style="margin-top:44px">Each silo was built correctly. None of them was built to be read by anyone else.</p>
+    </div>
+
+    <div style="position:relative">
+      <svg width="940" height="820" viewBox="0 0 940 820" style="margin-left:-52px">
+        <!-- scattered silos: no two cells touch, sizes deliberately unequal -->
+        <g fill="#DDAF4A">
+          <path d="M148 74l52 30v60l-52 30-52-30v-60z"/>
+          <path d="M300 32l36 20.8v41.6L300 115l-36-20.8V52.8z"/>
+          <path d="M446 78l44 25.4v50.8L446 180l-44-25.4v-50.8z"/>
+          <path d="M96 268l42 24.2v48.5L96 365l-42-24.2v-48.5z"/>
+          <path d="M700 190l40 23v46l-40 23-40-23v-46z"/>
+          <path d="M766 366l46 26.6v53.2L766 472l-46-26.6v-53.2z"/>
+          <path d="M660 552l40 23v46l-40 23-40-23v-46z"/>
+          <path d="M452 664l48 27.7v55.4L452 775l-48-27.7v-55.4z"/>
+          <path d="M212 620l36 20.8v41.6L212 703l-36-20.8v-41.6z"/>
+          <path d="M132 460l32 18.5v37L132 534l-32-18.5v-37z"/>
+        </g>
+        <g opacity=".92">
+          <use href="#bee" x="128" y="108" width="34" height="24"/><use href="#bee" x="156" y="140" width="28" height="20"/>
+          <use href="#bee" x="288" y="58" width="24" height="17"/>
+          <use href="#bee" x="428" y="108" width="28" height="20"/><use href="#bee" x="450" y="136" width="24" height="17"/>
+          <use href="#bee" x="80" y="296" width="26" height="18"/><use href="#bee" x="106" y="322" width="23" height="16"/>
+          <use href="#bee" x="684" y="216" width="26" height="18"/>
+          <use href="#bee" x="748" y="394" width="28" height="20"/><use href="#bee" x="772" y="422" width="24" height="17"/>
+          <use href="#bee" x="644" y="578" width="26" height="18"/>
+          <use href="#bee" x="432" y="694" width="30" height="21"/><use href="#bee" x="458" y="724" width="25" height="18"/>
+          <use href="#bee" x="200" y="646" width="23" height="16"/>
+          <use href="#bee" x="118" y="486" width="22" height="15"/>
+        </g>
+
+        <!-- the breached silo -->
+        <path d="M392 274l112 64.7v129.4L392 533l-112-64.7V338.7z" fill="#9E2A22"/>
+        <g>
+          <use href="#bee" x="322" y="336" width="38" height="27"/><use href="#bee" x="400" y="324" width="38" height="27"/>
+          <use href="#bee" x="306" y="418" width="38" height="27"/><use href="#bee" x="376" y="404" width="38" height="27"/>
+          <use href="#bee" x="442" y="418" width="38" height="27"/><use href="#bee" x="350" y="478" width="38" height="27"/>
+        </g>
+
+        <!-- strike lands on the wall of the breached cell -->
+        <path d="M528 196l-30 62h25l-21 56 56-74h-28l23-44z" fill="#F0C232" stroke="#B98A22" stroke-width="1.6" stroke-linejoin="round"/>
+        <use href="#wasp" x="500" y="288" width="150" height="84"/>
+      </svg>
+    </div>
+  </div>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">02</div>
+</section>
+
+<!-- ══════════ 03 · WHY NOW ═══════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>3</span></div>
+  <div class="split r" style="margin-top:26px">
+    <div>
+      <div class="eyebrow">Why now</div>
+      <h1>Two curves<br>just crossed.</h1>
+      <p class="lead">DER growth has outrun the infrastructure built to carry it, and interconnection rules just made dispatchability mandatory.</p>
+
+      <div class="stack" style="margin-top:60px;max-width:640px">
+        <div class="card" style="display:flex;gap:20px;align-items:flex-start">
+          <svg class="hexmark" viewBox="0 0 44 50" style="color:var(--comb);margin-top:2px"><use href="#hexFill"/></svg>
+          <div>
+            <div style="font:500 19px/1.3 var(--sans);color:var(--ink);margin-bottom:6px">IEEE 1547 and IEEE 2030.5 are day one</div>
+            <p class="small">They are the interconnection requirement for distribution-connected assets, and there is no cheap way to speak them at the edge.</p>
+          </div>
+        </div>
+        <div class="card" style="display:flex;gap:20px;align-items:flex-start">
+          <svg class="hexmark" viewBox="0 0 44 50" style="color:var(--comb);margin-top:2px"><use href="#hexFill"/></svg>
+          <div>
+            <div style="font:500 19px/1.3 var(--sans);color:var(--ink);margin-bottom:6px">Edge compute got cheap enough to be everywhere</div>
+            <p class="small">A gateway can now sit on every asset in the fleet, not only on the largest ones that justified an engineer's visit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding-top:96px">
+      <div class="k" style="margin-bottom:8px">Installed DER capacity</div>
+      <div class="micro" style="margin-bottom:44px">Illustrative shape, not a forecast</div>
+      <svg width="660" height="440" viewBox="0 0 660 440">
+        <line x1="0" y1="392" x2="620" y2="392" stroke="#D6CDB4" stroke-width="1.2"/>
+        <g fill="#DDAF4A">
+          <rect x="52" y="300" width="112" height="92"/>
+          <rect x="240" y="204" width="112" height="188"/>
+          <rect x="428" y="52" width="112" height="340"/>
+        </g>
+        <g font-family="Newsreader,serif" font-size="34" font-weight="500" fill="#17160F" text-anchor="middle">
+          <text x="108" y="284">4<tspan font-family="DM Sans,sans-serif" font-size="17" fill="#5A574C"> TWh</tspan></text>
+          <text x="296" y="188">11<tspan font-family="DM Sans,sans-serif" font-size="17" fill="#5A574C"> TWh</tspan></text>
+          <text x="484" y="36">33<tspan font-family="DM Sans,sans-serif" font-size="17" fill="#5A574C"> TWh</tspan></text>
+        </g>
+        <g font-family="DM Sans,sans-serif" font-size="16" fill="#948F7E" text-anchor="middle">
+          <text x="108" y="422">Today</text><text x="296" y="422">+3 years</text><text x="484" y="422">+6 years</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">03</div>
+</section>
+
+<!-- ══════════ 04 · SOLUTION ══════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>4</span></div>
+  <div style="margin-top:26px">
+    <div class="eyebrow">The solution</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end">
+      <h1>One gateway.<br>One common language.</h1>
+      <p class="lead sm" style="max-width:460px;margin:0 0 6px">The gateway performs <em style="font-style:normal;color:var(--ink);font-weight:500">model</em> translation, not just protocol translation. Many dialects go in the bottom. One standard comes out the top.</p>
+    </div>
+  </div>
+
+  <svg width="1696" height="560" viewBox="0 0 1696 560" style="margin-top:44px">
+    <!-- northbound consumer -->
+    <rect x="608" y="0" width="480" height="76" rx="7" fill="#E8E6F5" stroke="#CFCAE8"/>
+    <text x="848" y="34" text-anchor="middle" font-family="DM Sans" font-size="20" font-weight="500" fill="#474091">DERMS · Utility · Cloud</text>
+    <text x="848" y="58" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#8A85B0">NORTHBOUND CONSUMER</text>
+
+    <path d="M848 76v54M840 122l8 10 8-10M840 84l8-10 8 10" stroke="#AD8324" stroke-width="1.6" fill="none"/>
+    <text x="872" y="108" font-family="DM Mono" font-size="14" fill="#AD8324">IEEE 2030.5</text>
+
+    <!-- gateway -->
+    <rect x="188" y="146" width="1320" height="96" rx="7" fill="#F5E6BE" stroke="#B98A22" stroke-width="1.4"/>
+    <text x="848" y="184" text-anchor="middle" font-family="Newsreader,serif" font-size="30" font-weight="500" fill="#17160F">kWh DER Gateway</text>
+    <text x="848" y="214" text-anchor="middle" font-family="DM Sans" font-size="16" fill="#6B5B2A">Normalises every asset into one IEEE 2030.5 model</text>
+
+    <!-- southbound arrows -->
+    <g stroke="#C4B893" stroke-width="1.5" fill="none">
+      <path d="M320 242v76M320 310l7 9 7-9M320 250l7-9 7 9"/>
+      <path d="M672 242v76M672 310l7 9 7-9M672 250l7-9 7 9"/>
+      <path d="M1024 242v76M1024 310l7 9 7-9M1024 250l7-9 7 9"/>
+      <path d="M1376 242v76M1376 310l7 9 7-9M1376 250l7-9 7 9"/>
+    </g>
+    <g font-family="DM Mono" font-size="13" fill="#948F7E">
+      <text x="344" y="288">SunSpec Modbus</text><text x="696" y="288">Modbus, curves</text>
+      <text x="1048" y="288">CAN 2.0B, cell level</text><text x="1400" y="288">Modbus, DNP3</text>
+    </g>
+
+    <!-- asset row -->
+    <g>
+      <rect x="188" y="330" width="288" height="104" rx="7" fill="#FFFDF7" stroke="#E7E0CE"/>
+      <text x="332" y="372" text-anchor="middle" font-family="DM Sans" font-size="19" font-weight="500" fill="#17160F">Solar PV</text>
+      <text x="332" y="398" text-anchor="middle" font-family="DM Sans" font-size="15" fill="#948F7E">Generation profile</text>
+
+      <rect x="540" y="330" width="288" height="104" rx="7" fill="#FFFDF7" stroke="#E7E0CE"/>
+      <text x="684" y="372" text-anchor="middle" font-family="DM Sans" font-size="19" font-weight="500" fill="#17160F">Inverters</text>
+      <text x="684" y="398" text-anchor="middle" font-family="DM Sans" font-size="15" fill="#948F7E">Volt-VAR, Volt-Watt</text>
+
+      <rect x="892" y="330" width="288" height="104" rx="7" fill="#FFFDF7" stroke="#E7E0CE"/>
+      <text x="1036" y="372" text-anchor="middle" font-family="DM Sans" font-size="19" font-weight="500" fill="#17160F">Battery · BMS</text>
+      <text x="1036" y="398" text-anchor="middle" font-family="DM Sans" font-size="15" fill="#948F7E">SOC, SOH, cell faults</text>
+
+      <rect x="1244" y="330" width="264" height="104" rx="7" fill="#FFFDF7" stroke="#E7E0CE"/>
+      <text x="1376" y="372" text-anchor="middle" font-family="DM Sans" font-size="19" font-weight="500" fill="#17160F">Distribution transformer</text>
+      <text x="1376" y="398" text-anchor="middle" font-family="DM Sans" font-size="15" fill="#948F7E">Loading, thermal, PQ</text>
+    </g>
+  </svg>
+
+  <p class="note" style="margin-top:12px">The transformer is read through its existing metering or monitoring IED. Neither gateway model meters. Both read what is already measured.</p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">04</div>
+</section>
+
+<!-- ══════════ 05 · SECURITY ══════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>5</span></div>
+  <div class="split tall" style="margin-top:12px">
+    <div>
+      <div class="eyebrow">The solution · security</div>
+      <h1>Every asset<br>guards itself.</h1>
+      <p class="lead">Each DER sits in its own sealed cell. One compromised device never reaches the fleet.</p>
+
+      <hr class="rule" style="margin:52px 0 42px">
+      <div class="stack" style="gap:30px">
+        <div style="display:flex;gap:22px">
+          <svg class="hexmark" viewBox="0 0 44 50" style="color:var(--comb);margin-top:3px"><use href="#hexFill"/></svg>
+          <div><div style="font:500 20px/1.3 var(--sans);margin-bottom:5px">Trusted Execution Environment</div>
+          <p class="small">Policy is enforced on the edge device, not in a cloud an attacker can reach.</p></div>
+        </div>
+        <div style="display:flex;gap:22px">
+          <svg class="hexmark" viewBox="0 0 44 50" style="color:var(--comb);margin-top:3px"><use href="#hexFill"/></svg>
+          <div><div style="font:500 20px/1.3 var(--sans);margin-bottom:5px">Zero-trust device identity</div>
+          <p class="small">Each DER is enrolled and authenticated alone. No shared secret, no lateral move.</p></div>
+        </div>
+        <div style="display:flex;gap:22px">
+          <svg class="hexmark" viewBox="0 0 44 50" style="color:var(--comb);margin-top:3px"><use href="#hexFill"/></svg>
+          <div><div style="font:500 20px/1.3 var(--sans);margin-bottom:5px">Data sovereignty</div>
+          <p class="small">Telemetry stays in-jurisdiction. GDPR, India's DPDP Act and US state law by construction, not by policy document.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative">
+      <svg width="880" height="700" viewBox="0 0 820 700">
+        <!-- tessellated comb: 7 cells sharing walls -->
+        <g stroke="#B98A22" stroke-width="1.6">
+          <path d="M300 108l72 41.6v83.2L300 274l-72-41.6v-83.2z" fill="#E9CE7C"/>
+          <path d="M444 108l72 41.6v83.2L444 274l-72-41.6v-83.2z" fill="#E9CE7C"/>
+          <path d="M228 232l72 41.6v83.2L228 398l-72-41.6v-83.2z" fill="#E9CE7C"/>
+          <path d="M372 232l72 41.6v83.2L372 398l-72-41.6v-83.2z" fill="url(#glow)" stroke="#8A6008" stroke-width="3"/>
+          <path d="M516 232l72 41.6v83.2L516 398l-72-41.6v-83.2z" fill="#E9CE7C"/>
+          <path d="M300 356l72 41.6v83.2L300 522l-72-41.6v-83.2z" fill="#E9CE7C"/>
+          <path d="M444 356l72 41.6v83.2L444 522l-72-41.6v-83.2z" fill="#E9CE7C"/>
+        </g>
+        <g>
+          <use href="#bee" x="276" y="176" width="48" height="34"/><use href="#bee" x="420" y="176" width="48" height="34"/>
+          <use href="#bee" x="204" y="300" width="48" height="34"/><use href="#bee" x="348" y="300" width="48" height="34"/>
+          <use href="#bee" x="492" y="300" width="48" height="34"/>
+          <use href="#bee" x="276" y="424" width="48" height="34"/><use href="#bee" x="420" y="424" width="48" height="34"/>
+        </g>
+        <!-- repelled wasp: flipped so it faces away from the comb -->
+        <g transform="translate(816,120) scale(-1,1)"><use href="#wasp" x="0" y="0" width="150" height="84"/></g>
+        <g stroke="#9E2A22" stroke-width="5" stroke-linecap="round">
+          <path d="M652 250l44 44M696 250l-44 44"/>
+        </g>
+        <text x="674" y="336" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#9E2A22">NO WAY IN</text>
+        <text x="372" y="606" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#8A6008">ONE CELL LIT · THE FLEET UNTOUCHED</text>
+      </svg>
+    </div>
+  </div>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">05</div>
+</section>
+
+<!-- ══════════ 06 · AGENTIC ═══════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>6</span></div>
+  <div style="margin-top:26px">
+    <div class="eyebrow">The solution · agentic</div>
+    <h1>An agent can plan a dispatch.<br>Nothing lets it act.</h1>
+    <p class="lead">There is no interface between a model that reasons and hardware that must not be wrong.</p>
+  </div>
+
+  <div class="split" style="margin-top:58px;gap:88px">
+    <div class="stack" style="gap:26px">
+      <div class="card">
+        <div class="k" style="color:var(--alarm);margin-bottom:9px">No bounded interface</div>
+        <p class="body">An API key to a battery is not a safety model. Access is not the same as authority.</p>
+      </div>
+      <div class="card">
+        <div class="k" style="color:var(--alarm);margin-bottom:9px">No policy at the edge</div>
+        <p class="body">If the link drops or the model errs, nothing on site stops the command from executing.</p>
+      </div>
+      <div class="card">
+        <div class="k" style="color:var(--alarm);margin-bottom:9px">No verifiable record</div>
+        <p class="body">An action nobody can audit is an action nobody will authorise. Utilities do not sign for a black box.</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="border-color:var(--lilac-br);background:var(--lilac);padding:30px 32px">
+        <div class="k mb" style="margin-bottom:10px">Agent proposes</div>
+        <p class="body" style="color:var(--ink)">MCP-native. The agent queries the hive and requests an action in the same language every asset already speaks.</p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:18px;margin:22px 0">
+        <div style="flex:1;height:2px;background:var(--comb-dk)"></div>
+        <span class="k" style="color:var(--gold);letter-spacing:.2em">Boundary</span>
+        <div style="flex:1;height:2px;background:var(--comb-dk)"></div>
+      </div>
+
+      <div class="card" style="border-color:var(--mint-br);background:var(--mint);padding:30px 32px">
+        <div class="k ma" style="margin-bottom:10px">The cell disposes</div>
+        <p class="body" style="color:var(--ink)">Policy-as-code runs on the edge device. Every request is checked against that asset's safe operating envelope before anything moves.</p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:20px;margin-top:34px">
+        <svg width="120" height="130" viewBox="0 0 120 130">
+          <path d="M60 14l40 23v46L60 106 20 83V37z" fill="url(#glow)" stroke="#8A6008" stroke-width="3"/>
+          <use href="#bee" x="34" y="44" width="52" height="37"/>
+        </svg>
+        <p class="small" style="max-width:420px">The same lit cell that turns the wasp away bounds the agent. One security model, two threats, no extra engineering.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="position:absolute;left:112px;bottom:96px;font:400 26px/1.4 var(--serif);color:var(--ink)">
+    The agent can ask the hive for anything. <em style="font-style:normal;color:var(--gold)">The cell decides what is safe.</em></p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">06</div>
+</section>
+
+<!-- ══════════ 07 · PRODUCT LINE ══════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>7</span></div>
+  <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="eyebrow">Product line</div>
+      <h1>Two gateways.<br>One core.</h1>
+    </div>
+    <p class="lead sm" style="max-width:480px;margin:0 0 8px">Same compute, same stack, same northbound interface. The difference is where it has to survive.</p>
+  </div>
+
+  <div style="margin-top:46px;border:1px solid var(--rule);border-radius:9px;overflow:hidden;background:var(--card)">
+    <table>
+      <tr>
+        <th style="width:250px"></th>
+        <th class="col-a">Model A — DER Gateway</th>
+        <th class="col-b">Model B — DT Gateway</th>
+      </tr>
+      <tr><td class="lbl">Application</td><td class="col-a">BESS, solar PV, inverters</td><td class="col-b">Distribution transformer sites</td></tr>
+      <tr><td class="lbl">Class</td><td class="col-a">SBC-tier embedded gateway</td><td class="col-b">Ruggedised, cellular-connected</td></tr>
+      <tr><td class="lbl">Environment</td><td class="col-a">Indoor, enclosure-protected · IP20</td><td class="col-b">Outdoor pole or pad mount · IP65 / IP66</td></tr>
+      <tr><td class="lbl">Temperature</td><td class="col-a">0 to +50 °C commercial</td><td class="col-b">−40 to +85 °C</td></tr>
+      <tr><td class="lbl">Reads</td><td class="col-a">Inverter and BMS telemetry</td><td class="col-b">The transformer's existing meter or IED</td></tr>
+      <tr><td class="lbl">Southbound</td><td class="col-a">RS-485, Ethernet, CAN 2.0B</td><td class="col-b">RS-485, Ethernet, DNP3, optional IEC 61850</td></tr>
+      <tr><td class="lbl">Connectivity</td><td class="col-a">Ethernet, optional 4G LTE</td><td class="col-b">Dual Ethernet + 4G LTE, GPS</td></tr>
+      <tr><td class="lbl">Target price at volume</td>
+          <td class="col-a" style="font:500 24px/1 var(--serif);color:var(--mint-d)">~₹6,000</td>
+          <td class="col-b" style="font:500 24px/1 var(--serif);color:var(--lilac-d)">~₹24,000</td></tr>
+    </table>
+  </div>
+
+  <p style="margin-top:30px;font:400 24px/1.4 var(--serif);color:var(--ink)">
+    Neither model meters. Both read what is already measured, and normalise it into one IEEE 2030.5 model.</p>
+  <p class="note" style="margin-top:14px">Target BOM-driven prices at volume. Early certified, industrial-temperature units land higher.</p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">07</div>
+</section>
+
+<!-- ══════════ 08 · VALUE ═════════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>8</span></div>
+  <div style="margin-top:26px">
+    <div class="eyebrow">Value</div>
+    <h1>What each side gets.</h1>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:64px">
+    <div class="card" style="padding:32px 28px">
+      <svg width="34" height="39" viewBox="0 0 44 50" style="color:var(--comb)"><use href="#hexFill"/></svg>
+      <div style="font:500 21px/1.3 var(--sans);margin:20px 0 14px">Asset owner</div>
+      <p class="body" style="color:var(--ink)">A stranded asset becomes a revenue-earning one.</p>
+      <hr class="rule" style="margin:20px 0 14px">
+      <p class="small" style="color:var(--slate2)">Instead of waiting for a replacement they will not buy.</p>
+    </div>
+    <div class="card" style="padding:32px 28px">
+      <svg width="34" height="39" viewBox="0 0 44 50" style="color:var(--comb)"><use href="#hexFill"/></svg>
+      <div style="font:500 21px/1.3 var(--sans);margin:20px 0 14px">Utility · DISCOM</div>
+      <p class="body" style="color:var(--ink)">Visibility and control at the LV network edge.</p>
+      <hr class="rule" style="margin:20px 0 14px">
+      <p class="small" style="color:var(--slate2)">Instead of a blind spot below the feeder.</p>
+    </div>
+    <div class="card" style="padding:32px 28px">
+      <svg width="34" height="39" viewBox="0 0 44 50" style="color:var(--comb)"><use href="#hexFill"/></svg>
+      <div style="font:500 21px/1.3 var(--sans);margin:20px 0 14px">OEM</div>
+      <p class="body" style="color:var(--ink)">Grid-program eligibility without building a standards stack.</p>
+      <hr class="rule" style="margin:20px 0 14px">
+      <p class="small" style="color:var(--slate2)">Instead of twelve months of protocol engineering.</p>
+    </div>
+    <div class="card" style="padding:32px 28px">
+      <svg width="34" height="39" viewBox="0 0 44 50" style="color:var(--comb)"><use href="#hexFill"/></svg>
+      <div style="font:500 21px/1.3 var(--sans);margin:20px 0 14px">Financier</div>
+      <p class="body" style="color:var(--ink)">Independent telemetry on the whole book.</p>
+      <hr class="rule" style="margin:20px 0 14px">
+      <p class="small" style="color:var(--slate2)">Instead of residual value they cannot verify.</p>
+    </div>
+  </div>
+
+  <div class="banner" style="margin-top:56px">One integration replaces a project per site.</div>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">08</div>
+</section>
+
+<!-- ══════════ 09 · DISCOM ════════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>9</span></div>
+  <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="eyebrow">The beachhead</div>
+      <h1>The blind spot below<br>the feeder, closed.</h1>
+    </div>
+    <p class="lead sm" style="max-width:420px;margin:0 0 8px">Transformer blindness is a problem a DISCOM already knows it has, and already budgets against.</p>
+  </div>
+
+  <div class="split" style="margin-top:44px;gap:56px">
+    <div>
+      <div class="k ma" style="margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--mint-br)">Model A — at the DER</div>
+      <div class="stack" style="gap:20px">
+        <div><div style="font:500 17px/1.3 var(--sans);margin-bottom:5px">Visibility</div><p class="small">Active power per site and per feeder · reactive power and power factor · availability and connection status · reverse power flow</p></div>
+        <div><div style="font:500 17px/1.3 var(--sans);margin-bottom:5px">Grid support</div><p class="small">Volt-VAR and Volt-Watt curve status · voltage at point of connection · frequency response · ride-through event log</p></div>
+        <div><div style="font:500 17px/1.3 var(--sans);margin-bottom:5px">Dispatch</div><p class="small">Curtailment requested vs delivered · setpoint compliance · ramp-rate adherence · response latency</p></div>
+        <div><div style="font:500 17px/1.3 var(--sans);margin-bottom:5px">Battery</div><p class="small">State of charge and state of health · cycles · round-trip efficiency · cell-level temperature and fault flags</p></div>
+      </div>
+    </div>
+    <div>
+      <div class="k mb" style="margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--lilac-br)">Model B — at the transformer</div>
+      <div class="stack" style="gap:20px">
+        <div><div style="font:500 17px/1.3 var(--sans);margin-bottom:5px">Loading and health</div><p class="small">kVA vs rating · overload events and duration · oil and winding temperature · estimated loss-of-life · tap position</p></div>
+        <div><div style="font:500 17px/1.3 var(--sans);margin-bottom:5px">Power quality, LV side</div><p class="small">Per-phase voltage · phase imbalance · reverse power flow duration · sags, swells, interruptions</p></div>
+        <div><div style="font:500 17px/1.3 var(--sans);margin-bottom:5px">Loss and efficiency</div><p class="small">Energy through the transformer per interval · input vs downstream consumption for AT&amp;C loss localisation · overloaded vs underutilised DTs</p></div>
+        <div><div style="font:500 17px/1.3 var(--sans);margin-bottom:5px">Reliability</div><p class="small">Outage and restoration timestamps · interruption duration and frequency feeding SAIDI and SAIFI · last-gasp reporting through power-loss ride-through</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chips" style="margin-top:44px">
+    <span class="chip gold">Fewer transformer failures</span>
+    <span class="chip gold">AT&amp;C loss localisation</span>
+    <span class="chip gold">SAIDI / SAIFI at fine grain</span>
+    <span class="chip gold">Rooftop solar without LV overload</span>
+    <span class="chip gold">Deferred transformer replacement</span>
+  </div>
+  <p class="note" style="margin-top:20px">Transformer metrics are derived from the DT's existing instrumentation. Availability depends on what that system exposes.</p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">09</div>
+</section>
+
+<!-- ══════════ 10 · OPERATOR UX ═══════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>10</span></div>
+  <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="eyebrow">Platform</div>
+      <h1>What the operator<br>actually sees.</h1>
+    </div>
+    <div style="text-align:right">
+      <div class="stat gold">340ms</div>
+      <div class="micro" style="margin-top:10px">Dispatch latency, measured live</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:22px;margin-top:52px">
+    <div class="ui">
+      <div class="k" style="margin-bottom:12px">Fleet dispatch map</div>
+      <svg width="100%" height="292" viewBox="0 0 520 292">
+        <rect width="520" height="292" rx="5" fill="#1E1C14"/>
+        <g stroke="#3A3627" stroke-width="1" fill="none">
+          <path d="M0 96h520M0 194h520M132 0v292M320 0v292"/>
+          <path d="M28 40Q160 96 272 62T512 132"/><path d="M14 240Q150 200 268 232T506 188"/>
+        </g>
+        <g><circle cx="96" cy="72" r="8" fill="#4FBF7F"/><circle cx="222" cy="128" r="8" fill="#4FBF7F"/>
+           <circle cx="300" cy="86" r="8" fill="#E3B851"/><circle cx="188" cy="222" r="8" fill="#4FBF7F"/>
+           <circle cx="392" cy="182" r="8" fill="#9E5FE0"/><circle cx="438" cy="94" r="8" fill="#E3B851"/>
+           <circle cx="128" cy="164" r="8" fill="#4FBF7F"/></g>
+      </svg>
+      <p style="font:400 14px/1.5 var(--sans);color:#9A947F;margin-top:12px">Every gateway, asset state and active dispatch signal, live.</p>
+    </div>
+
+    <div class="ui">
+      <div class="k" style="margin-bottom:12px">Asset detail</div>
+      <div style="background:#1E1C14;border-radius:5px;padding:18px">
+        <div style="font:400 17px/1 var(--serif);color:#EDE7D6">Site A123 · BESS</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:20px">
+          <div><div style="font:400 11px/1 var(--mono);color:#8C8672">SOC</div><div style="font:500 26px/1.3 var(--serif);color:#4FBF7F">78%</div></div>
+          <div><div style="font:400 11px/1 var(--mono);color:#8C8672">TEMP</div><div style="font:500 26px/1.3 var(--serif);color:#EDE7D6">28°C</div></div>
+          <div><div style="font:400 11px/1 var(--mono);color:#8C8672">POWER</div><div style="font:500 26px/1.3 var(--serif);color:#EDE7D6">45kW</div></div>
+        </div>
+        <svg width="100%" height="104" viewBox="0 0 300 104" style="margin-top:16px">
+          <polyline points="0,80 40,66 80,72 120,44 160,52 200,26 240,36 300,18" fill="none" stroke="#E3B851" stroke-width="2"/>
+          <line x1="0" y1="98" x2="300" y2="98" stroke="#3A3627"/>
+        </svg>
+      </div>
+      <p style="font:400 14px/1.5 var(--sans);color:#9A947F;margin-top:12px">Charge, power, faults and degradation, per asset.</p>
+    </div>
+
+    <div class="ui">
+      <div class="k" style="margin-bottom:12px">Flexibility forecast</div>
+      <div style="background:#1E1C14;border-radius:5px;padding:18px">
+        <div style="font:400 11px/1 var(--mono);color:#8C8672">NEXT 24 H</div>
+        <svg width="100%" height="176" viewBox="0 0 300 176" style="margin-top:12px">
+          <path d="M0 140Q40 128 62 96T118 44 168 88 220 58 300 74" fill="none" stroke="#9E5FE0" stroke-width="2.2"/>
+          <path d="M0 140Q40 128 62 96T118 44 168 88 220 58 300 74L300 168 0 168z" fill="#9E5FE0" opacity=".14"/>
+          <line x1="0" y1="168" x2="300" y2="168" stroke="#3A3627"/>
+          <g font-family="DM Mono" font-size="10" fill="#8C8672"><text x="0" y="176">00</text><text x="96" y="176">08</text><text x="192" y="176">16</text><text x="276" y="176">24</text></g>
+        </svg>
+      </div>
+      <p style="font:400 14px/1.5 var(--sans);color:#9A947F;margin-top:12px">Demand and generation forecasts driving automated offers.</p>
+    </div>
+  </div>
+
+  <div class="console" style="margin-top:24px">
+    <div style="font:400 20px/1 var(--serif)"><b style="font-weight:600">kWh</b> Fleet Console <span style="color:#4FBF7F;font-family:var(--mono);font-size:14px;margin-left:14px"><i class="dot"></i>LIVE</span></div>
+    <div style="display:flex;gap:52px;font:400 15px/1 var(--sans);color:#9A947F">
+      <span>BESS 004 · <span style="color:#EDE7D6">Kintech Synergy</span></span>
+      <span>State of charge <span style="color:#EDE7D6">78%</span></span>
+      <span>Dispatch <span style="color:#4FBF7F">Active</span></span>
+      <span>Latency <span style="color:#E3B851">340ms</span></span>
+    </div>
+  </div>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">10</div>
+</section>
+
+<!-- ══════════ 11 · ONBOARDING ════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>11</span></div>
+  <div style="margin-top:26px">
+    <div class="eyebrow">Deployment</div>
+    <h1>Live in <span class="ph" style="font-size:.82em">[X]</span> days,<br>not a quarter.</h1>
+  </div>
+
+  <svg width="1696" height="240" viewBox="0 0 1696 240" style="margin-top:56px">
+    <path d="M120 130Q300 44 480 130T840 130 1200 130 1560 96" stroke="#CDA53F" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-dasharray="0.5 11" opacity=".75"/>
+    <g stroke="#B98A22" stroke-width="1.6" fill="#F5E6BE">
+      <path d="M120 74l44 25.4v50.8L120 176l-44-25.4V99.4z"/>
+      <path d="M480 74l44 25.4v50.8L480 176l-44-25.4V99.4z"/>
+      <path d="M840 74l44 25.4v50.8L840 176l-44-25.4V99.4z"/>
+      <path d="M1200 74l44 25.4v50.8L1200 176l-44-25.4V99.4z"/>
+      <path d="M1560 74l44 25.4v50.8L1560 176l-44-25.4V99.4z"/>
+    </g>
+    <g font-family="Newsreader,serif" font-size="26" font-weight="500" fill="#17160F" text-anchor="middle">
+      <text x="120" y="134">1</text><text x="480" y="134">2</text><text x="840" y="134">3</text><text x="1200" y="134">4</text><text x="1560" y="134">5</text>
+    </g>
+    <use href="#bee" x="1618" y="52" width="52" height="37"/>
+  </svg>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:26px;margin-top:6px;text-align:center">
+    <div><div style="font:500 21px/1.3 var(--sans);margin-bottom:8px">Activate</div><p class="small">Gateway powered and licensed.</p><div class="ph" style="margin-top:12px">[ ] min</div></div>
+    <div><div style="font:500 21px/1.3 var(--sans);margin-bottom:8px">Discover</div><p class="small">Devices found, protocols identified automatically.</p><div class="ph" style="margin-top:12px">[ ] min</div></div>
+    <div><div style="font:500 21px/1.3 var(--sans);margin-bottom:8px">Model</div><p class="small">Digital twin built, unified asset record created.</p><div class="ph" style="margin-top:12px">[ ] min</div></div>
+    <div><div style="font:500 21px/1.3 var(--sans);margin-bottom:8px">Register</div><p class="small">2030.5 client registers with the utility, certificates install.</p><div class="ph" style="margin-top:12px">[ ] hrs</div></div>
+    <div><div style="font:500 21px/1.3 var(--sans);margin-bottom:8px">Dispatch</div><p class="small">Applications installed, asset earning.</p><div class="ph" style="margin-top:12px">[ ] days</div></div>
+  </div>
+
+  <div class="card" style="margin-top:54px;display:flex;align-items:center;gap:44px;padding:26px 32px">
+    <div style="flex:1">
+      <div class="k" style="margin-bottom:12px">Conventional integration</div>
+      <div style="height:22px;background:var(--rule);border-radius:3px"></div>
+      <div class="ph" style="margin-top:10px">[ ] weeks</div>
+    </div>
+    <div style="flex:1">
+      <div class="k" style="margin-bottom:12px;color:var(--gold)">kWh onboarding</div>
+      <div style="height:22px;width:22%;background:var(--comb);border-radius:3px"></div>
+      <div class="ph" style="margin-top:10px">[ ] days</div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:20px">No site survey per asset. No vendor engineering engagement. No custom driver written on site.</p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">11</div>
+</section>
+
+<!-- ══════════ 12 · DISTRIBUTION ══════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>12</span></div>
+  <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="eyebrow">Distribution</div>
+      <h1>How the gateway<br>reaches the asset.</h1>
+    </div>
+    <p class="lead sm" style="max-width:430px;margin:0 0 8px">Every route lands the same core. Only the enclosure and the party who pays for it change.</p>
+  </div>
+
+  <div style="position:relative;height:520px;margin-top:34px">
+    <svg width="1696" height="500" viewBox="0 0 1696 500" style="position:absolute;inset:0">
+      <g stroke="#CDA53F" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-dasharray="0.5 10" opacity=".8">
+        <path d="M400 106H700l148 130"/><path d="M400 394H700l148-130"/>
+        <path d="M1296 106H996L848 236"/><path d="M1296 394H996l-148-130"/>
+      </g>
+      <path d="M848 168l76 44v88l-76 44-76-44v-88z" fill="#15140E"/>
+      <path d="M848 186l60 34.6v69.2L848 324l-60-34.6v-69.2z" fill="none" stroke="#CDA53F" stroke-width="1.5"/>
+      <use href="#bee" x="822" y="238" width="52" height="37"/>
+      <text x="848" y="386" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#948F7E">INSTALLED GATEWAY</text>
+    </svg>
+
+    <div class="card" style="position:absolute;left:0;top:44px;width:400px">
+      <div style="font:500 20px/1.3 var(--sans);margin-bottom:8px">Direct</div>
+      <p class="small">Asset owners and C&amp;I sites. Gateway sale plus SaaS.</p>
+      <div style="margin-top:14px"><span class="pill a">A</span></div>
+    </div>
+    <div class="card" style="position:absolute;left:0;bottom:34px;width:400px">
+      <div style="font:500 20px/1.3 var(--sans);margin-bottom:8px">Financier &amp; EPC</div>
+      <p class="small">Portfolio owners and installers. Bundled at financing or at install.</p>
+      <div style="margin-top:14px"><span class="pill a">A</span></div>
+    </div>
+    <div class="card" style="position:absolute;right:0;top:44px;width:400px">
+      <div style="font:500 20px/1.3 var(--sans);margin-bottom:8px">DISCOM channel</div>
+      <p class="small">Five DISCOMs via Beckn DEG. Utility-sponsored deployment across their network.</p>
+      <div style="margin-top:14px;display:flex;gap:7px"><span class="pill b">B</span><span class="pill a">A</span></div>
+    </div>
+    <div class="card" style="position:absolute;right:0;bottom:34px;width:400px">
+      <div style="font:500 20px/1.3 var(--sans);margin-bottom:8px">OEM embed</div>
+      <p class="small">Monarch Transformers and equivalents. Telemetry embedded at manufacture, shipped inside the asset.</p>
+      <div style="margin-top:14px"><span class="pill b">B</span></div>
+    </div>
+  </div>
+
+  <p class="note" style="margin-top:4px">Custom PCB in fabrication with PCB Power India.</p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">12</div>
+</section>
+
+<!-- ══════════ 13 · MARKET ════════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>13</span></div>
+  <div style="margin-top:26px">
+    <div class="eyebrow">Market</div>
+    <h1>Stranded megawatts<br>are the beachhead.</h1>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:62px">
+    <div class="card" style="padding:34px 28px">
+      <div class="stat sm ph" style="font-family:var(--serif);font-size:52px">[X GW]</div>
+      <div class="k" style="margin-top:20px">Installed base</div>
+      <p class="small" style="margin-top:7px">Behind the meter</p>
+    </div>
+    <div class="card" style="padding:34px 28px">
+      <div class="stat sm ph" style="font-family:var(--serif);font-size:52px">[Y GW]</div>
+      <div class="k" style="margin-top:20px">Addressable stranded</div>
+      <p class="small" style="margin-top:7px">Reachable via retrofit and OEM cloud</p>
+    </div>
+    <div class="card" style="padding:34px 28px">
+      <div class="stat sm ph" style="font-family:var(--serif);font-size:52px">[$Z]</div>
+      <div class="k" style="margin-top:20px">Annual SAM</div>
+      <p class="small" style="margin-top:7px">SaaS, hardware and revenue share</p>
+    </div>
+    <div class="card" style="padding:34px 28px">
+      <div class="stat sm ph" style="font-family:var(--serif);font-size:52px">[X&nbsp;million]</div>
+      <div class="k" style="margin-top:20px">Distribution transformers</div>
+      <p class="small" style="margin-top:7px">Today largely uninstrumented</p>
+    </div>
+  </div>
+
+  <!-- stranded → connected -->
+  <svg width="1400" height="140" viewBox="0 0 1400 140" style="margin-top:82px">
+    <g>
+      <path d="M60 20l48 27.7v55.4L60 130l-48-27.7V47.7z" fill="#DFDACB"/>
+      <path d="M172 20l48 27.7v55.4L172 130l-48-27.7V47.7z" fill="#DDD7C6"/>
+      <path d="M284 20l48 27.7v55.4L284 130l-48-27.7V47.7z" fill="#D9D2BC"/>
+      <path d="M396 20l48 27.7v55.4L396 130l-48-27.7V47.7z" fill="#D6CCAE"/>
+      <path d="M508 20l48 27.7v55.4L508 130l-48-27.7V47.7z" fill="#DDCB9A"/>
+      <path d="M620 20l48 27.7v55.4L620 130l-48-27.7V47.7z" fill="#E7CD86"/>
+      <path d="M732 20l48 27.7v55.4L732 130l-48-27.7V47.7z" fill="url(#lit)"/>
+      <path d="M844 20l48 27.7v55.4L844 130l-48-27.7V47.7z" fill="url(#lit)"/>
+      <path d="M956 20l48 27.7v55.4L956 130l-48-27.7V47.7z" fill="url(#lit)"/>
+      <path d="M1068 20l48 27.7v55.4L1068 130l-48-27.7V47.7z" fill="url(#lit)"/>
+    </g>
+    <path d="M1152 74q60-42 108 4t128-30" stroke="#CDA53F" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="0.5 10"/>
+    <use href="#bee" x="1340" y="24" width="52" height="37"/>
+    <text x="60" y="20" font-family="DM Mono" font-size="13" fill="#948F7E">STRANDED</text>
+    <text x="1068" y="20" text-anchor="end" font-family="DM Mono" font-size="13" fill="#AD8324">CONNECTED</text>
+  </svg>
+
+  <p class="body" style="margin-top:34px;max-width:1100px">Beachhead: India DISCOMs via the Beckn DEG channel, expanding to U.S. utilities and aggregators on IEEE 2030.5. India is the proving ground for velocity, not the market cap.</p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">13</div>
+</section>
+
+<!-- ══════════ 14 · HARDWARE ECONOMICS ════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>14</span></div>
+  <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="eyebrow">Unit economics · hardware</div>
+      <h1>Model B is Model A<br>plus the environment.</h1>
+    </div>
+    <p class="lead sm" style="max-width:440px;margin:0 0 8px">The four-times price gap is entirely explainable by physics, not by markup.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:26px;margin-top:52px;align-items:start">
+    <div class="card tint-a" style="padding:38px 32px;text-align:center">
+      <div class="k ma">Model A — DER Edge</div>
+      <div style="font:500 62px/1.1 var(--serif);color:var(--mint-d);margin:22px 0 8px">~₹6,000</div>
+      <p class="small" style="color:var(--mint-d)">Indoor · IP20 · 0 to +50 °C</p>
+      <hr class="rule" style="margin:24px 0 16px;background:var(--mint-br)">
+      <div class="k" style="margin-bottom:8px">Contribution per unit</div>
+      <div class="ph" style="font-size:19px">[₹    ]&nbsp;&nbsp;[ %]</div>
+    </div>
+
+    <div class="card tint-b" style="padding:38px 32px;text-align:center">
+      <div class="k mb">Model B — Transformer Edge</div>
+      <div style="font:500 62px/1.1 var(--serif);color:var(--lilac-d);margin:22px 0 8px">~₹24,000</div>
+      <p class="small" style="color:var(--lilac-d)">Outdoor · IP65/66 · −40 to +85 °C</p>
+      <hr class="rule" style="margin:24px 0 16px;background:var(--lilac-br)">
+      <div class="k" style="margin-bottom:8px">Contribution per unit</div>
+      <div class="ph" style="font-size:19px">[₹    ]&nbsp;&nbsp;[ %]</div>
+    </div>
+
+    <div>
+      <div class="k" style="margin-bottom:20px">Where the difference goes</div>
+      <div class="stack" style="gap:15px">
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="color:var(--gold);font-family:var(--mono)">+</span><div style="flex:1"><span class="body" style="color:var(--ink)">IP65 / IP66 outdoor enclosure</span></div><span class="ph">[₹    ]</span></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="color:var(--gold);font-family:var(--mono)">+</span><div style="flex:1"><span class="body" style="color:var(--ink)">−40 to +85 °C component grade</span></div><span class="ph">[₹    ]</span></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="color:var(--gold);font-family:var(--mono)">+</span><div style="flex:1"><span class="body" style="color:var(--ink)">Surge and EMC protection, pole-top</span></div><span class="ph">[₹    ]</span></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="color:var(--gold);font-family:var(--mono)">+</span><div style="flex:1"><span class="body" style="color:var(--ink)">Cellular modem and antenna</span></div><span class="ph">[₹    ]</span></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="color:var(--gold);font-family:var(--mono)">+</span><div style="flex:1"><span class="body" style="color:var(--ink)">Wider isolated I/O count</span></div><span class="ph">[₹    ]</span></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="color:var(--gold);font-family:var(--mono)">+</span><div style="flex:1"><span class="body" style="color:var(--ink)">Power-loss ride-through for last gasp</span></div><span class="ph">[₹    ]</span></div>
+      </div>
+      <hr class="rule" style="margin:24px 0 18px">
+      <div style="display:flex;gap:40px">
+        <div><div class="k" style="margin-bottom:7px">Blended contribution</div><div class="ph" style="font-size:18px">[₹    ]</div></div>
+        <div><div class="k" style="margin-bottom:7px">Units to breakeven on tooling</div><div class="ph" style="font-size:18px">[X]</div></div>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top:46px;font:400 24px/1.4 var(--serif);color:var(--ink);max-width:1180px">
+    Hardware is not the margin engine. It is the wedge that installs the software, and Model B is the wedge that gets a DISCOM to pay for the network.</p>
+  <p class="note" style="margin-top:14px">Model B price composition to be confirmed as hardware-only versus hardware plus connectivity plus SLA.</p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">14</div>
+</section>
+
+<!-- ══════════ 15 · SOFTWARE ECONOMICS ════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>15</span></div>
+  <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="eyebrow">Unit economics · software</div>
+      <h1>The gateway installs<br>the software.</h1>
+    </div>
+    <p class="lead sm" style="max-width:440px;margin:0 0 8px">Each device profile built unlocks a whole model class. The library compounds; the cost to onboard does not.</p>
+  </div>
+
+  <div class="split" style="margin-top:52px;gap:64px">
+    <div>
+      <div class="k" style="margin-bottom:18px">What sits on the box</div>
+      <div class="stack" style="gap:8px">
+        <div style="padding:17px 26px;border:1px dashed var(--rule-2);border-radius:6px;font:400 18px/1 var(--sans);color:var(--slate2)">Applications · DERMS · third-party</div>
+        <div style="padding:17px 26px;border-radius:6px;background:#4F7A63;color:#F3F7F4;font:500 18px/1 var(--sans)">kWh Platform — SaaS</div>
+        <div style="padding:17px 26px;border-radius:6px;background:#3E6752;color:#F3F7F4;font:500 18px/1 var(--sans)">Gateway OS</div>
+        <div style="padding:17px 26px;border-radius:6px;background:#2C5341;color:#F3F7F4;font:500 18px/1 var(--sans)">Edge agent — policy-as-code</div>
+        <div style="padding:17px 26px;border-radius:6px;background:var(--panel);color:#E8E2D0;font:500 18px/1 var(--sans)">Hardware</div>
+      </div>
+      <p class="note" style="margin-top:22px">Hardware is sold once. Everything above it recurs.</p>
+    </div>
+
+    <div>
+      <div class="k" style="margin-bottom:18px">Recurring economics, per asset</div>
+      <div class="card" style="padding:0">
+        <table>
+          <tr><td>SaaS revenue per asset / month</td><td style="text-align:right"><span class="ph">[    ]</span></td></tr>
+          <tr><td style="color:var(--slate)">less &nbsp;Cloud and telemetry storage</td><td style="text-align:right"><span class="ph">[    ]</span></td></tr>
+          <tr><td style="color:var(--slate)">less &nbsp;Support and success</td><td style="text-align:right"><span class="ph">[    ]</span></td></tr>
+          <tr style="background:var(--mint)"><td style="font-weight:500">Gross profit / asset / month</td><td style="text-align:right"><span class="ph">[    ]&nbsp;&nbsp;[ %]</span></td></tr>
+        </table>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px">
+        <div class="card" style="padding:20px 18px"><div class="k" style="margin-bottom:10px">CAC / asset</div><div class="ph" style="font-size:19px">[    ]</div></div>
+        <div class="card" style="padding:20px 18px"><div class="k" style="margin-bottom:10px">Payback</div><div class="ph" style="font-size:19px">[X] mo</div></div>
+        <div class="card" style="padding:20px 18px"><div class="k" style="margin-bottom:10px">LTV / CAC</div><div class="ph" style="font-size:19px">[X]×</div></div>
+        <div class="card" style="padding:20px 18px"><div class="k" style="margin-bottom:10px">Net rev. retention</div><div class="ph" style="font-size:19px">[X%]</div></div>
+      </div>
+
+      <hr class="rule" style="margin:30px 0 20px">
+      <div style="display:flex;gap:52px">
+        <div><div class="k" style="margin-bottom:8px">Cost per MW, via gateway</div><div class="ph" style="font-size:18px">[    ]</div></div>
+        <div><div class="k" style="margin-bottom:8px">Cost per MW, via OEM cloud</div><div class="ph" style="font-size:18px">[    ]</div></div>
+      </div>
+      <p class="note" style="margin-top:16px">Cloud onboarding carries no hardware cost, so blended cost per MW falls as that path scales.</p>
+    </div>
+  </div>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">15</div>
+</section>
+
+<!-- ══════════ 16 · PROJECTIONS ═══════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>16</span></div>
+  <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="eyebrow">Projections</div>
+      <h1>Recurring revenue<br>crosses hardware.</h1>
+    </div>
+    <div style="text-align:right">
+      <div class="micro">Shape is illustrative. Every value below is</div>
+      <div class="micro">an unfilled placeholder pending the model.</div>
+    </div>
+  </div>
+
+  <div class="split r" style="margin-top:44px;gap:52px;align-items:start">
+    <div>
+      <div class="chips" style="margin-bottom:20px">
+        <span class="chip"><span style="width:11px;height:11px;background:var(--mint-d);border-radius:2px"></span>Model A hardware</span>
+        <span class="chip"><span style="width:11px;height:11px;background:var(--lilac-d);border-radius:2px"></span>Model B hardware</span>
+        <span class="chip"><span style="width:20px;height:2px;background:var(--comb-dk)"></span>Recurring revenue</span>
+      </div>
+      <svg width="100%" height="410" viewBox="0 0 900 410">
+        <line x1="0" y1="360" x2="880" y2="360" stroke="#D6CDB4" stroke-width="1.2"/>
+        <g>
+          <rect x="46"  y="322" width="42" height="38"  fill="#4F7A63"/><rect x="92"  y="336" width="42" height="24"  fill="#8E88C4"/>
+          <rect x="226" y="286" width="42" height="74"  fill="#4F7A63"/><rect x="272" y="306" width="42" height="54"  fill="#8E88C4"/>
+          <rect x="406" y="228" width="42" height="132" fill="#4F7A63"/><rect x="452" y="252" width="42" height="108" fill="#8E88C4"/>
+          <rect x="586" y="164" width="42" height="196" fill="#4F7A63"/><rect x="632" y="140" width="42" height="220" fill="#8E88C4"/>
+          <rect x="766" y="120" width="42" height="240" fill="#4F7A63"/><rect x="812" y="62"  width="42" height="298" fill="#8E88C4"/>
+        </g>
+        <path d="M90 352 270 318 450 244 630 132 833 40" fill="none" stroke="#B98A22" stroke-width="3"/>
+        <g fill="#B98A22"><circle cx="90" cy="352" r="5"/><circle cx="270" cy="318" r="5"/><circle cx="450" cy="244" r="5"/><circle cx="630" cy="132" r="5"/><circle cx="833" cy="40" r="5"/></g>
+        <line x1="630" y1="24" x2="630" y2="360" stroke="#9E2A22" stroke-width="1.3" stroke-dasharray="5 5"/>
+        <text x="642" y="34" font-family="DM Mono" font-size="13" fill="#9E2A22">CROSSOVER</text>
+        <g font-family="DM Sans" font-size="16" fill="#948F7E" text-anchor="middle">
+          <text x="90" y="390">Year 1</text><text x="270" y="390">Year 2</text><text x="450" y="390">Year 3</text><text x="630" y="390">Year 4</text><text x="833" y="390">Year 5</text>
+        </g>
+      </svg>
+      <p class="note" style="margin-top:8px">The crossover is the story of this slide. Where it lands is what the model has to prove.</p>
+    </div>
+
+    <div class="card" style="padding:0">
+      <table>
+        <tr><th style="width:230px">Driver</th><th style="text-align:center">Y1</th><th style="text-align:center">Y2</th><th style="text-align:center">Y3</th><th style="text-align:center">Y4</th><th style="text-align:center">Y5</th></tr>
+        <tr><td class="lbl">Model A units</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td></tr>
+        <tr><td class="lbl">Model B units</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td></tr>
+        <tr><td class="lbl">Assets under mgmt</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td></tr>
+        <tr><td class="lbl">MW under mgmt</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td></tr>
+        <tr><td class="lbl">Hardware revenue</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td></tr>
+        <tr><td class="lbl">Recurring revenue</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td></tr>
+        <tr><td class="lbl">Gross margin %</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td></tr>
+        <tr><td class="lbl">Burn</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td><td class="ph" style="text-align:center">[ ]</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">16</div>
+</section>
+
+<!-- ══════════ 17 · TRACTION ══════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>17</span></div>
+  <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="eyebrow">Traction</div>
+      <h1>A live channel<br>into DISCOMs.</h1>
+    </div>
+    <p class="lead sm" style="max-width:430px;margin:0 0 8px">Two industrial partners and a channel onto three continents, run at roughly $2,000 a month.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:52px">
+    <div class="card" style="padding:26px 24px">
+      <svg width="30" height="34" viewBox="0 0 44 50" style="color:var(--comb)"><use href="#hexFill"/></svg>
+      <div class="k" style="margin:16px 0 8px">Hardware</div>
+      <p class="body" style="color:var(--ink)">Custom PCB in fabrication with PCB Power India</p>
+    </div>
+    <div class="card" style="padding:26px 24px">
+      <svg width="30" height="34" viewBox="0 0 44 50" style="color:var(--comb)"><use href="#hexFill"/></svg>
+      <div class="k" style="margin:16px 0 8px">Live telemetry</div>
+      <p class="body" style="color:var(--ink)">Kintech Synergy BESS streaming today</p>
+    </div>
+    <div class="card" style="padding:26px 24px">
+      <svg width="30" height="34" viewBox="0 0 44 50" style="color:var(--comb)"><use href="#hexFill"/></svg>
+      <div class="k" style="margin:16px 0 8px">Channel</div>
+      <p class="body" style="color:var(--ink)">5 DISCOMs via Beckn DEG, across 3 continents</p>
+    </div>
+    <div class="card" style="padding:26px 24px">
+      <svg width="30" height="34" viewBox="0 0 44 50" style="color:var(--comb)"><use href="#hexFill"/></svg>
+      <div class="k" style="margin:16px 0 8px">Deployed</div>
+      <p class="body" style="color:var(--ink)">2 operating plants live since December 2025</p>
+    </div>
+  </div>
+
+  <div class="split" style="margin-top:36px;gap:26px">
+    <div class="card" style="padding:30px 32px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div style="font:400 28px/1.2 var(--serif)">Zodiac Energy</div>
+        <div class="k">NSE &amp; BSE listed</div>
+      </div>
+      <p class="body" style="margin-top:14px;color:var(--ink)">2,500+ sites, 30+ MW rooftop solar in Gujarat. Data sharing live, generation records feeding model training, gateway telemetry pilot in setup.</p>
+    </div>
+    <div class="card" style="padding:30px 32px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div style="font:400 28px/1.2 var(--serif)">Kintech Synergy</div>
+        <div class="k">₹800 Cr+ revenue EPC</div>
+      </div>
+      <p class="body" style="margin-top:14px;color:var(--ink)">Thirty years in solar, wind and storage. Live BESS assets streaming gateway telemetry, with state-of-charge and dispatch validation running.</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:30px">
+    <div><div class="k" style="margin-bottom:8px">Device profiles built</div><div class="ph" style="font-size:19px">[X]</div></div>
+    <div><div class="k" style="margin-bottom:8px">Sites live</div><div class="ph" style="font-size:19px">[X]</div></div>
+    <div><div class="k" style="margin-bottom:8px">MW under management</div><div class="ph" style="font-size:19px">[X]</div></div>
+    <div><div class="k" style="margin-bottom:8px">IEEE 2030.5</div><div class="ph" style="font-size:19px">[status]</div></div>
+  </div>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">17</div>
+</section>
+
+<!-- ══════════ 18 · WHY WE WIN ════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>18</span></div>
+  <div style="margin-top:26px">
+    <div class="eyebrow">The moat</div>
+    <h1>Five advantages<br>that compound.</h1>
+  </div>
+
+  <svg width="1696" height="150" viewBox="0 0 1696 150" style="margin-top:64px">
+    <path d="M110 92Q290 14 470 92T830 92 1190 92 1560 44" stroke="#CDA53F" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="0.5 11" opacity=".72"/>
+    <g stroke="#B98A22" stroke-width="1.6" fill="#F5E6BE">
+      <path d="M110 44l40 23v46l-40 23-40-23V67z"/><path d="M470 44l40 23v46l-40 23-40-23V67z"/>
+      <path d="M830 44l40 23v46l-40 23-40-23V67z"/><path d="M1190 44l40 23v46l-40 23-40-23V67z"/>
+      <path d="M1550 44l40 23v46l-40 23-40-23V67z"/>
+    </g>
+    <g font-family="Newsreader,serif" font-size="26" font-weight="500" fill="#17160F" text-anchor="middle">
+      <text x="110" y="100">1</text><text x="470" y="100">2</text><text x="830" y="100">3</text><text x="1190" y="100">4</text><text x="1550" y="100">5</text>
+    </g>
+  </svg>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:30px;margin-top:14px">
+    <div><div style="font:500 22px/1.3 var(--sans);margin-bottom:12px">Profile library</div><p class="small">Build a device profile once and unlock a whole model class forever. The library compounds with every integration.</p></div>
+    <div><div style="font:500 22px/1.3 var(--sans);margin-bottom:12px">Retrofit reach</div><p class="small">We reach assets already in the ground. Nobody else is competing for equipment that has already been sold.</p></div>
+    <div><div style="font:500 22px/1.3 var(--sans);margin-bottom:12px">Edge safety</div><p class="small">An autonomous safety layer lets us command hardware we never installed, inside limits the asset owner sets.</p></div>
+    <div><div style="font:500 22px/1.3 var(--sans);margin-bottom:12px">Standards native</div><p class="small">Built on IEEE 2030.5 and 1547 from the first line of code, so grid programs accept us without an exception.</p></div>
+    <div><div style="font:500 22px/1.3 var(--sans);margin-bottom:12px">One core</div><p class="small">The DER gateway and the transformer gateway share every profile, every driver and every update.</p></div>
+  </div>
+
+  <p style="position:absolute;left:112px;bottom:104px;font:400 26px/1.4 var(--serif);color:var(--ink);max-width:1250px">
+    Each profile built and each site retrofit widens a lead nobody else is chasing.</p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">18</div>
+</section>
+
+<!-- ══════════ 19 · TEAM ══════════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>19</span></div>
+  <div style="margin-top:26px">
+    <div class="eyebrow">Team</div>
+    <h1>Built by practitioners.</h1>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:30px;margin-top:66px">
+    <div class="card" style="padding:34px 32px">
+      <div class="k" style="margin-bottom:26px">Founder</div>
+      <div style="display:flex;gap:22px;align-items:flex-start">
+        <svg width="66" height="75" viewBox="0 0 44 50" style="color:var(--rule-2);flex:none"><use href="#hexOut"/></svg>
+        <div>
+          <div style="font:400 27px/1.2 var(--serif)">Arham Shah</div>
+          <div class="k" style="margin-top:7px">Founder &amp; CEO</div>
+          <p class="small" style="margin-top:14px">M.S. Energy, Stanford · B.S. Industrial Engineering, UIUC</p>
+          <p class="small" style="margin-top:6px;color:var(--ink)">Ex-Tesla, Rivian, Beckn. Launched the first open energy networks in India and Brazil.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:34px 32px">
+      <div class="k" style="margin-bottom:26px">Advisors</div>
+      <div class="stack" style="gap:24px">
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <svg width="52" height="59" viewBox="0 0 44 50" style="color:var(--rule-2);flex:none"><use href="#hexOut"/></svg>
+          <div><div style="font:400 22px/1.2 var(--serif)">Sujith Nair</div><p class="small" style="margin-top:6px">Co-founder, Beckn &amp; FIDE</p></div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <svg width="52" height="59" viewBox="0 0 44 50" style="color:var(--rule-2);flex:none"><use href="#hexOut"/></svg>
+          <div><div style="font:400 22px/1.2 var(--serif)">Dr. Pramod Varma</div><p class="small" style="margin-top:6px">Chief architect of UPI and Aadhaar</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:34px 32px">
+      <div class="k" style="margin-bottom:26px">Engineering</div>
+      <div class="stack" style="gap:24px">
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <svg width="52" height="59" viewBox="0 0 44 50" style="color:var(--rule-2);flex:none"><use href="#hexOut"/></svg>
+          <div><div style="font:400 22px/1.2 var(--serif)">Sudheer Kumar</div><p class="small" style="margin-top:6px">Founding forward-deployment engineer</p></div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <svg width="52" height="59" viewBox="0 0 44 50" style="color:var(--rule-2);flex:none"><use href="#hexOut"/></svg>
+          <div><div style="font:400 22px/1.2 var(--serif)">Yuvaraju Meenuga</div><p class="small" style="margin-top:6px">Founding backend and integrations engineer</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chips" style="margin-top:44px">
+    <span class="chip">15+ years combined at Uplight and AutoGrid</span>
+    <span class="chip">Three full-time, zero attrition</span>
+    <span class="chip">Production PCB already in fabrication</span>
+    <span class="chip">$65,000 raised to date · ~$2,000 monthly burn</span>
+  </div>
+
+  <p style="position:absolute;left:112px;bottom:100px;font:400 26px/1.4 var(--serif);color:var(--ink)">
+    The team that shipped the pilot is the team building the company.</p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">19</div>
+</section>
+
+<!-- ══════════ 20 · THE ASK ═══════════════════════════════ -->
+<section class="slide">
+  <div class="badge"><svg viewBox="0 0 44 50" style="color:var(--rule-2)"><use href="#hexOut"/></svg><span>20</span></div>
+
+  <!-- the cover's hollow lattice, now lit: the deck closes on the frame it opened with -->
+  <svg width="740" height="380" viewBox="0 0 740 380" style="position:absolute;right:76px;top:56px">
+    <g fill="url(#lit)" stroke="#B98A22" stroke-width="1.3">
+      <path d="M380 34l44 25.4v50.8L380 136l-44-25.4V59.4z"/><path d="M468 34l44 25.4v50.8L468 136l-44-25.4V59.4z"/>
+      <path d="M556 34l44 25.4v50.8L556 136l-44-25.4V59.4z"/><path d="M644 34l44 25.4v50.8L644 136l-44-25.4V59.4z"/>
+      <path d="M424 110l44 25.4v50.8L424 212l-44-25.4v-50.8z"/><path d="M512 110l44 25.4v50.8L512 212l-44-25.4v-50.8z"/>
+      <path d="M600 110l44 25.4v50.8L600 212l-44-25.4v-50.8z"/><path d="M688 110l44 25.4v50.8L688 212l-44-25.4v-50.8z"/>
+      <path d="M468 186l44 25.4v50.8L468 288l-44-25.4v-50.8z"/><path d="M556 186l44 25.4v50.8L556 288l-44-25.4v-50.8z"/>
+      <path d="M644 186l44 25.4v50.8L644 288l-44-25.4v-50.8z"/>
+    </g>
+    <path d="M96 176q76-66 148-12t108-40" stroke="#CDA53F" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="0.5 10" opacity=".8"/>
+    <use href="#bee" x="52" y="158" width="54" height="38"/>
+  </svg>
+
+  <div style="margin-top:48px">
+    <div class="eyebrow">The ask</div>
+    <h1 class="big" style="font-size:118px;line-height:1">$1.5M.</h1>
+    <p class="lead" style="font-size:26px;margin-top:18px">On a SAFE, <span class="ph" style="font-size:.88em">[$ cap]</span> cap.</p>
+  </div>
+
+  <div style="margin-top:78px">
+    <div class="k" style="margin-bottom:16px">Use of funds</div>
+    <div class="fundbar">
+      <div style="flex:40;background:#C9A040"><div>Engineering and device profiles<br><span class="ph" style="color:#3A2E0A">[X%]</span></div></div>
+      <div style="flex:25;background:#B58F33"><div>Hardware production, both models<br><span class="ph" style="color:#3A2E0A">[X%]</span></div></div>
+      <div style="flex:20;background:#9E7B28"><div>Certification and utility integration<br><span class="ph" style="color:#EDE3C8">[X%]</span></div></div>
+      <div style="flex:15;background:#84661E"><div style="color:#F0E7CD">Runway and operations<br><span class="ph" style="color:#EDE3C8">[X%]</span></div></div>
+    </div>
+  </div>
+
+  <div style="margin-top:62px">
+    <div class="k" style="margin-bottom:18px">This gets us to</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1180px">
+      <div class="card" style="padding:28px 26px"><div class="ph" style="font:400 26px/1 var(--serif);margin-bottom:10px">[X] MW</div><p class="small">under management</p></div>
+      <div class="card" style="padding:28px 26px"><div class="ph" style="font:400 26px/1 var(--serif);margin-bottom:10px">[X] profiles</div><p class="small">device profiles shipped</p></div>
+      <div class="card" style="padding:28px 26px"><div class="ph" style="font:400 26px/1 var(--serif);margin-bottom:10px">[X] DT sites</div><p class="small">Model B certified and deployed</p></div>
+    </div>
+    <p class="note" style="margin-top:20px">Runway <span class="ph">[X]</span> months.</p>
+  </div>
+
+  <p style="position:absolute;left:112px;bottom:104px;font:400 34px/1.32 var(--serif);color:var(--ink);max-width:1320px">
+    Everyone else is chasing next year's assets. <em style="font-style:normal;color:var(--gold)">We're switching on the ones already in the ground.</em></p>
+  <div class="foot-l"><b>kWh</b> <i>Electric</i></div>
+  <div class="foot-r">20</div>
+</section>
+
+</div><!-- /#stage -->
+
+<div id="nav">
+  <span id="count"></span>
+  <button id="prev" aria-label="Previous slide">‹</button>
+  <button id="next" aria-label="Next slide">›</button>
+</div>
+
+<script>
+(function(){
+  var stage  = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var count  = document.getElementById('count');
+  var i = 0;
+  var isPrint = /(\?|&)print/.test(location.search);
+
+  if(isPrint){
+    document.documentElement.classList.add('print');
+    document.body.classList.add('print');
+    slides.forEach(function(s){ s.classList.add('on'); });
+    return;
+  }
+
+  function show(n){
+    i = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach(function(s,k){ s.classList.toggle('on', k===i); });
+    count.textContent = (i+1)+' / '+slides.length;
+    try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
+  }
+  function fit(){
+    var s = Math.min(innerWidth/1920, innerHeight/1080);
+    stage.style.transform = 'translate(-50%,-50%) scale('+s+')';
+  }
+
+  addEventListener('resize', fit);
+  addEventListener('keydown', function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); show(i+1); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); show(i-1); }
+    else if(e.key==='Home'){ show(0); }
+    else if(e.key==='End'){ show(slides.length-1); }
+  });
+  document.getElementById('next').onclick = function(){ show(i+1); };
+  document.getElementById('prev').onclick = function(){ show(i-1); };
+  addEventListener('click', function(e){
+    if(e.target.closest('#nav')) return;
+    show(e.clientX < innerWidth*0.32 ? i-1 : i+1);
+  });
+
+  // reveal the controls on activity, then get out of the way
+  var nav = document.getElementById('nav'), hideT;
+  function wake(){
+    nav.classList.add('show');
+    clearTimeout(hideT);
+    hideT = setTimeout(function(){ nav.classList.remove('show'); }, 2200);
+  }
+  ['mousemove','keydown','click'].forEach(function(ev){ addEventListener(ev, wake); });
+
+  var start = parseInt((location.hash||'').slice(1),10);
+  fit(); show(isNaN(start) ? 0 : start-1);
+})();
+</script>
+</body>
+</html>

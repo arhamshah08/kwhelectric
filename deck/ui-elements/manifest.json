@@ -1,0 +1,60 @@
+[
+  { "file": "g-01-network-planning.html", "title": "Network Planning", "category": "Introduction" },
+
+  { "file": "slide-01-telemetry-dashboard.html", "title": "Telemetry Dashboard (cover)", "category": "Product" },
+  { "file": "slide-01-device-management.html", "title": "Asset Management (cover)", "category": "Product" },
+  { "file": "slide-05-telemetry-dashboard.html", "title": "Telemetry Dashboard (full nav)", "category": "Product" },
+  { "file": "slide-05-device-management.html", "title": "Asset Management (full nav)", "category": "Product" },
+  { "file": "g-05-asset-record.html", "title": "Asset Record", "category": "Product" },
+  { "file": "g-08-utility-asset-registry.html", "title": "Utility Asset Registry", "category": "Product" },
+  { "file": "g-09-fleet-telemetry.html", "title": "Fleet Telemetry", "category": "Product" },
+  { "file": "g-21-unified-workspace.html", "title": "Unified Grid Workspace", "category": "Product" },
+
+  { "file": "g-19-competition-layered.html", "title": "kWh Neutral Layer (corrected layout)", "category": "Infrastructure" },
+  { "file": "g-32-platform-architecture.html", "title": "Grid Intelligence — Platform Architecture", "category": "Infrastructure" },
+  { "file": "g-33-universal-platform-architecture.html", "title": "Universal Energy Translation Platform (4-Layer)", "category": "Infrastructure" },
+
+  { "file": "slide-07-phone-connect.html", "title": "Phone — Connect", "category": "Owner Experience" },
+  { "file": "slide-07-phone-discover.html", "title": "Phone — Discover", "category": "Owner Experience" },
+  { "file": "slide-07-phone-authorize.html", "title": "Phone — Authorize", "category": "Owner Experience" },
+  { "file": "slide-07-phone-join.html", "title": "Phone — Join", "category": "Owner Experience" },
+  { "file": "slide-07-phone-earn.html", "title": "Phone — Earn", "category": "Owner Experience" },
+  { "file": "g-07-owner-access.html", "title": "Owner Access (3-step)", "category": "Owner Experience" },
+  { "file": "g-38-onboarding-flow.html", "title": "Simple Customer Onboarding (full slide)", "category": "Owner Experience" },
+
+  { "file": "g-10-dispatch-event.html", "title": "Dispatch Event", "category": "Operations" },
+  { "file": "g-17-operating-evidence.html", "title": "Operating Evidence", "category": "Operations" },
+  { "file": "g-22-workflow-design.html", "title": "Workflow — 1. Design", "category": "Operations" },
+  { "file": "g-23-workflow-target.html", "title": "Workflow — 2. Target", "category": "Operations" },
+  { "file": "g-24-workflow-enroll.html", "title": "Workflow — 3. Enroll", "category": "Operations" },
+  { "file": "g-25-workflow-dispatch.html", "title": "Workflow — 4. Dispatch", "category": "Operations" },
+  { "file": "g-26-workflow-verify-settle.html", "title": "Workflow — 5. Verify & Settle", "category": "Operations" },
+  { "file": "g-39-utility-workflow.html", "title": "Utility Accesses DERs (full slide)", "category": "Operations" },
+
+  { "file": "g-13a-revenue-access-paths.html", "title": "Access Paths ($30 / $199)", "category": "Finance" },
+  { "file": "g-13b-revenue-summary.html", "title": "7-Year Revenue Summary", "category": "Finance" },
+  { "file": "g-15a-financial-chart.html", "title": "Modeled Outlook — Chart", "category": "Finance" },
+  { "file": "g-15b-financial-stats.html", "title": "Modeled Outlook — Stats", "category": "Finance" },
+  { "file": "g-27-staircase-build.html", "title": "Staircase Build — Full Slide", "category": "Finance" },
+  { "file": "g-34-pricing-option-a-grid.html", "title": "Pricing — Option A: Process Grid", "category": "Finance" },
+  { "file": "g-35-pricing-option-b-staircase.html", "title": "Pricing — Option B: Staircase", "category": "Finance" },
+  { "file": "g-36-pricing-option-c-matrix.html", "title": "Pricing — Option C: Hybrid Matrix", "category": "Finance" },
+  { "file": "g-37-staircase-detailed.html", "title": "Staircase Build — Detailed (exact)", "category": "Finance" },
+  { "file": "g-28-market-size-summary.html", "title": "Market Opportunity — TAM / SAM / SOM", "category": "Finance" },
+  { "file": "g-29-bottom-up-calculation.html", "title": "Bottom-Up Endpoints (US + Australia)", "category": "Finance" },
+  { "file": "g-30-pricing-model.html", "title": "Pricing Model", "category": "Finance" },
+  { "file": "g-31-revenue-growth-chart.html", "title": "Revenue Growth Potential", "category": "Finance" },
+
+  { "file": "team-1-product.html", "title": "Team — Product fragment", "category": "Team" },
+  { "file": "team-2-deployment.html", "title": "Team — Deployment fragment", "category": "Team" },
+  { "file": "team-3-integrations.html", "title": "Team — Integrations fragment", "category": "Team" },
+
+  { "file": "g-40-typography-scale.html", "title": "Typography Scale (deck standard)", "category": "Standards" },
+
+  { "file": "g-41-financials-snapshot.html", "title": "4-Year Financial Snapshot (KPIs)", "category": "Financials" },
+  { "file": "g-42-revenue-by-product.html", "title": "Revenue by Product, Year 1-4", "category": "Financials" },
+  { "file": "g-43-revenue-mix-year4.html", "title": "Year 4 Revenue Mix by Product", "category": "Financials" },
+  { "file": "g-44-product-trajectories.html", "title": "Each Product's Trajectory (small multiples)", "category": "Financials" },
+  { "file": "g-45-revenue-vs-cost-ebitda.html", "title": "Revenue vs. Cost — Path to Profitability", "category": "Financials" },
+  { "file": "g-46-unit-economics-by-product.html", "title": "Per-Device Economics by Product", "category": "Financials" }
+]

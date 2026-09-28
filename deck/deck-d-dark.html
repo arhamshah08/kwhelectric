@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>kWh Electric — Deck D</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+:root{
+  --bg0:      #070A08;
+  --bg1:      #0C1611;
+  --paper:    #FFFFFF;
+  --ink:      #EAF1EC;
+  --ink2:     #A9B8AE;
+  --ink3:     #6E7C73;
+  --accent:   #34D399;
+  --accent-dk:#0F5C3D;
+  --line:     rgba(234,241,236,.14);
+  --line-soft:rgba(234,241,236,.08);
+  --dark-ink: #12181A;
+  --dark-ink2:#55645B;
+  --dark-line:#E1E8E3;
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  --eyebrow: 13px;
+  --headline: 46px;
+  --body: 18px;
+  --stat: 66px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html,body{ background:#15201A; color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+body{ padding:48px 24px 120px; }
+
+.masthead{ max-width:1280px; margin:0 auto 48px; }
+.masthead .who{ font-size:var(--body); font-weight:600; color:var(--accent); }
+.masthead h1{ font-weight:600; font-size:26px; color:#EAF1EC; margin-top:8px; }
+.masthead p{ font-size:15px; color:#9FB0A5; margin-top:8px; max-width:680px; line-height:1.55; }
+
+.deck-wrap{ max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:36px; }
+.slide-tag{ font-size:13px; color:#8A9B90; }
+
+.crop-scroll{ overflow-x:auto; padding:4px 2px 4px; }
+.dslide{
+  width:1280px; height:720px; position:relative; overflow:hidden; flex-shrink:0;
+  background:
+    radial-gradient(760px 520px at 84% 12%, rgba(52,211,153,.16), transparent 60%),
+    radial-gradient(900px 700px at 0% 100%, rgba(52,211,153,.07), transparent 55%),
+    linear-gradient(180deg, var(--bg1) 0%, var(--bg0) 100%);
+  border:1px solid rgba(234,241,236,.08);
+}
+.dslide::before{
+  content:''; position:absolute; inset:0; pointer-events:none; opacity:.5;
+  background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image: radial-gradient(760px 560px at 100% 0%, #000 0%, transparent 70%);
+          mask-image: radial-gradient(760px 560px at 100% 0%, #000 0%, transparent 70%);
+}
+
+.eyebrow{ font-size:var(--eyebrow); color:var(--accent); font-weight:600; }
+.headline{ font-size:var(--headline); font-weight:600; line-height:1.14; color:#F5FAF7; margin-top:14px; letter-spacing:-.01em; }
+.body-copy{ font-size:var(--body); color:var(--ink2); line-height:1.6; margin-top:20px; max-width:480px; }
+
+.icon{ width:22px; height:22px; stroke:#EAF1EC; fill:none; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round; display:block; }
+.icon.accent{ stroke:var(--accent); }
+.icon.sm{ width:16px; height:16px; stroke-width:2.3; }
+.icon.lg{ width:28px; height:28px; stroke-width:1.9; }
+
+.node{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+.node .lbl{ font-size:14px; color:#D9E4DC; text-align:center; }
+
+/* ---- screenshot panel: light UI, dark chrome, dropped onto the dark canvas ---- */
+.shot{ position:absolute; border-radius:8px; overflow:hidden; background:var(--paper); box-shadow:0 30px 60px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.35); }
+.shot-chrome{ height:28px; background:#EFF3F0; display:flex; align-items:center; gap:6px; padding:0 12px; border-bottom:1px solid #E3E9E5; }
+.shot-chrome .dot{ width:7px; height:7px; border-radius:50%; background:#D3DBD6; }
+.shot-body{ color:var(--dark-ink); font-family:var(--sans); }
+
+.tag{ font-size:11px; font-weight:600; padding:3px 9px; border-radius:2px; border:1px solid #E1E8E3; color:var(--dark-ink2); background:#fff; display:inline-block; }
+.tag.g{ background:#EAF6EE; border-color:transparent; color:#0F5C2C; }
+
+.fine-d{ font-size:11px; color:var(--dark-ink2); }
+
+svg.connector{ position:absolute; inset:0; width:100%; height:100%; }
+
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+<defs>
+<symbol id="i-battery" viewBox="0 0 24 24"><rect x="2" y="7" width="17" height="10" rx="2.2"/><rect x="20" y="10" width="2" height="4" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24"><rect x="5" y="9" width="14" height="11" rx="2.4"/><line x1="9" y1="9" x2="9" y2="4"/><line x1="15" y1="9" x2="15" y2="4"/></symbol>
+<symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 13h3.2l2-8 4.6 16 2-8h3l1.6 3.4H22"/></symbol>
+<symbol id="i-meter" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.2"/><line x1="12" y1="13" x2="16" y2="8.6"/><circle cx="12" cy="13" r="1.1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><path d="M4.5 21V9.2L12 4l7.5 5.2V21"/><line x1="3" y1="21" x2="21" y2="21"/><line x1="9.2" y1="21" x2="9.2" y2="13.5"/><line x1="14.8" y1="21" x2="14.8" y2="13.5"/></symbol>
+<symbol id="i-agg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.1"/><circle cx="4.2" cy="5.5" r="1.5"/><circle cx="19.8" cy="5.5" r="1.5"/><circle cx="4.2" cy="18.5" r="1.5"/><circle cx="19.8" cy="18.5" r="1.5"/><line x1="12" y1="12" x2="4.2" y2="5.5"/><line x1="12" y1="12" x2="19.8" y2="5.5"/><line x1="12" y1="12" x2="4.2" y2="18.5"/><line x1="12" y1="12" x2="19.8" y2="18.5"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.4 5.4l2.1 2.1M16.5 16.5l2.1 2.1M5.4 18.6l2.1-2.1M16.5 7.5l2.1-2.1"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 11.6L11.6 3 21 12.4 12.4 21z"/><circle cx="7.6" cy="7.6" r="1.5" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-gw" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.6 8.6h6.8v6.8H8.6z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5.2 5L20 6"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4.4 14h6l-1 8L21 10h-6z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.5-3 7.5-7 9.5-4-2-7-5-7-9.5V6z"/><path d="M9 12l2.2 2.2L15.5 9.5"/></symbol>
+<symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M4.6 20c1-3.6 4-5.6 7.4-5.6s6.4 2 7.4 5.6"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3.4 21 8l-9 4.6L3 8z"/><path d="M3 12.4l9 4.6 9-4.6"/><path d="M3 16.6l9 4.6 9-4.6"/></symbol>
+<symbol id="i-signal" viewBox="0 0 24 24"><path d="M4 18v-3M9 18v-6M14 18v-9M19 18V4" stroke-width="2.3"/></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9.5a13 13 0 0 1 18 0M6.3 13a8.6 8.6 0 0 1 11.4 0M9.6 16.4a4.2 4.2 0 0 1 4.8 0"/><circle cx="12" cy="19.2" r="1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-battfull" viewBox="0 0 24 24"><rect x="2" y="8" width="18" height="8" rx="1.8"/><rect x="21" y="10.4" width="1.6" height="3.2" fill="currentColor" stroke="none"/></symbol>
+</defs>
+</svg>
+
+<div class="masthead">
+  <div class="who">kWh Electric — deck, version D</div>
+  <h1>The full problem, the full solution</h1>
+  <p>A real eight-slide deck, dark canvas, product screenshots doing the talking on the right while the copy carries the argument on the left. 20&ndash;50 words of real copy per slide &mdash; nothing here is a placeholder.</p>
+</div>
+
+<div class="deck-wrap">
+
+<!-- SLIDE 1 — COVER -->
+<div>
+  <div class="slide-tag">Slide 1 &middot; Cover</div>
+  <div class="crop-scroll"><div class="dslide">
+    <div style="position:absolute; left:96px; top:170px; max-width:920px;">
+      <div class="eyebrow">kWh Electric</div>
+      <div class="headline" style="font-size:52px;">Every energy asset should be visible and dispatchable. Today, almost none of them are.</div>
+      <div class="body-copy" style="max-width:720px; font-size:19px;">Rooftop solar, batteries, EV chargers and smart appliances now number over 100 million, deployed globally with no common way to see them, let alone control them.</div>
+    </div>
+    <div style="position:absolute; left:96px; bottom:64px; display:flex; align-items:center; gap:10px;">
+      <svg class="icon accent"><use href="#i-gw"/></svg>
+      <span style="color:#D9E4DC; font-size:15px;">One gateway, every asset</span>
+    </div>
+  </div></div>
+</div>
+
+<!-- SLIDE 2 — PROBLEM: THE CHAIN -->
+<div>
+  <div class="slide-tag">Slide 2 &middot; Problem</div>
+  <div class="crop-scroll"><div class="dslide">
+    <div style="position:absolute; left:96px; top:110px; max-width:480px;">
+      <div class="eyebrow">The problem</div>
+      <div class="headline">One battery. Four tolls.</div>
+      <div class="body-copy">To dispatch a single customer's battery, a utility routes through an aggregator, an integrator, and the OEM's own cloud &mdash; each one taking a fee and adding delay. Then it repeats, in full, for the next customer. And the next.</div>
+    </div>
+
+    <div style="position:absolute; left:700px; top:200px; width:500px;">
+      <div style="display:flex; flex-direction:column;">
+        <div style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--line);"><svg class="icon"><use href="#i-building"/></svg><span class="node lbl" style="color:#EAF1EC; font-size:15px;">Utility</span></div>
+        <div style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--line); padding-left:28px;"><svg class="icon"><use href="#i-agg"/></svg><span style="color:#D9E4DC; font-size:15px;">Aggregator</span><span style="margin-left:auto; font-size:12px; color:#7C8B81;">fee</span></div>
+        <div style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--line); padding-left:56px;"><svg class="icon"><use href="#i-gear"/></svg><span style="color:#D9E4DC; font-size:15px;">Integrator</span><span style="margin-left:auto; font-size:12px; color:#7C8B81;">fee</span></div>
+        <div style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--line); padding-left:84px;"><svg class="icon"><use href="#i-tag"/></svg><span style="color:#D9E4DC; font-size:15px;">OEM</span><span style="margin-left:auto; font-size:12px; color:#7C8B81;">fee</span></div>
+        <div style="display:flex; align-items:center; gap:14px; padding:14px 0; padding-left:112px;"><svg class="icon"><use href="#i-battery"/></svg><span style="color:#EAF1EC; font-size:15px; font-weight:600;">Customer's battery</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SLIDE 3 — PROBLEM: SCALE -->
+<div>
+  <div class="slide-tag">Slide 3 &middot; Problem, at scale</div>
+  <div class="crop-scroll"><div class="dslide">
+    <div style="position:absolute; left:96px; top:110px; max-width:520px;">
+      <div class="eyebrow">The problem, at scale</div>
+      <div class="headline">The tax doesn't shrink. It repeats.</div>
+      <div class="body-copy">Eighty percent of distributed energy fleets never make it past a pilot. Utilities pay an estimated fifty thousand dollars or more per month, per OEM, just to keep one integration alive.</div>
+    </div>
+
+    <div style="position:absolute; left:700px; top:150px; display:flex; flex-direction:column; gap:56px;">
+      <div>
+        <div style="font-size:var(--stat); font-weight:700; color:#F5FAF7; line-height:1;">80%</div>
+        <div style="font-size:15px; color:#9FB0A5; margin-top:8px; max-width:340px;">of DER fleets stall before they ever reach production dispatch</div>
+      </div>
+      <div>
+        <div style="font-size:var(--stat); font-weight:700; color:var(--accent); line-height:1;">$50K+</div>
+        <div style="font-size:15px; color:#9FB0A5; margin-top:8px; max-width:340px;">per month, per utility, per OEM &mdash; just to keep one integration alive</div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SLIDE 4 — SOLUTION: THESIS -->
+<div>
+  <div class="slide-tag">Slide 4 &middot; Solution</div>
+  <div class="crop-scroll"><div class="dslide">
+    <div style="position:absolute; left:96px; top:100px; max-width:520px;">
+      <div class="eyebrow">The solution</div>
+      <div class="headline">One gateway. Four jobs.</div>
+      <div class="body-copy">kWh Electric is an edge gateway that sits on-site and speaks every asset's native protocol. It connects the device, normalizes its data into one model, dispatches commands in real time, and verifies every event as it happens.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:440px; display:flex; gap:0; width:1088px;">
+      <div style="flex:1; padding-right:20px;"><svg class="icon lg accent"><use href="#i-bolt"/></svg><div style="font-weight:600; color:#F5FAF7; margin-top:14px;">Connect</div><div style="font-size:13.5px; color:#9FB0A5; margin-top:6px;">Speaks the asset's own protocol, on-site.</div></div>
+      <div style="width:1px; background:var(--line);"></div>
+      <div style="flex:1; padding:0 20px;"><svg class="icon lg accent"><use href="#i-layers"/></svg><div style="font-weight:600; color:#F5FAF7; margin-top:14px;">Normalize</div><div style="font-size:13.5px; color:#9FB0A5; margin-top:6px;">Turns every dialect into one clean model.</div></div>
+      <div style="width:1px; background:var(--line);"></div>
+      <div style="flex:1; padding:0 20px;"><svg class="icon lg accent"><use href="#i-signal"/></svg><div style="font-weight:600; color:#F5FAF7; margin-top:14px;">Dispatch</div><div style="font-size:13.5px; color:#9FB0A5; margin-top:6px;">Sends setpoints from any platform, live.</div></div>
+      <div style="width:1px; background:var(--line);"></div>
+      <div style="flex:1; padding-left:20px;"><svg class="icon lg accent"><use href="#i-check"/></svg><div style="font-weight:600; color:#F5FAF7; margin-top:14px;">Verify</div><div style="font-size:13.5px; color:#9FB0A5; margin-top:6px;">Logs the event, before, during, after.</div></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SLIDE 5 — SOLUTION: VISIBILITY (two-panel screenshot slide) -->
+<div>
+  <div class="slide-tag">Slide 5 &middot; Solution, in the browser</div>
+  <div class="crop-scroll"><div class="dslide">
+    <div style="position:absolute; left:96px; top:140px; max-width:420px; z-index:2;">
+      <div class="eyebrow">The solution, in the browser</div>
+      <div class="headline">See every asset. Trust every number.</div>
+      <div class="body-copy">The same gateway that talks to the hardware feeds a live utility dashboard &mdash; fleet health, protocol, and connection path for every asset, gateway or OEM cloud, in one screen.</div>
+    </div>
+
+    <!-- Panel A: analytics -->
+    <div class="shot" style="left:620px; top:96px; width:560px;">
+      <div class="shot-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="shot-body" style="padding:20px;">
+        <div style="font-weight:600; font-size:15px;">Fleet overview</div>
+        <div class="fine-d" style="margin-top:2px;">System health, live</div>
+        <div style="display:flex; gap:10px; margin-top:16px;">
+          <div style="flex:1; border:1px solid #E1E8E3; border-radius:6px; padding:10px;"><div class="fine-d">Assets online</div><div style="font-weight:700; font-size:20px; margin-top:2px;">1,842</div></div>
+          <div style="flex:1; border:1px solid #E1E8E3; border-radius:6px; padding:10px;"><div class="fine-d">Uptime</div><div style="font-weight:700; font-size:20px; margin-top:2px; color:#0F5C2C;">99.6%</div></div>
+          <div style="flex:1; border:1px solid #E1E8E3; border-radius:6px; padding:10px;"><div class="fine-d">Dispatch events</div><div style="font-weight:700; font-size:20px; margin-top:2px;">312</div></div>
+        </div>
+        <svg viewBox="0 0 520 130" style="width:100%; height:130px; margin-top:16px;">
+          <g>
+            <rect x="0" y="86" width="24" height="44" rx="2" fill="#DCFCE7"/>
+            <rect x="34" y="70" width="24" height="60" rx="2" fill="#DCFCE7"/>
+            <rect x="68" y="50" width="24" height="80" rx="2" fill="#BBF7D0"/>
+            <rect x="102" y="60" width="24" height="70" rx="2" fill="#BBF7D0"/>
+            <rect x="136" y="30" width="24" height="100" rx="2" fill="#34D399"/>
+            <rect x="170" y="44" width="24" height="86" rx="2" fill="#BBF7D0"/>
+            <rect x="204" y="20" width="24" height="110" rx="2" fill="#34D399"/>
+            <rect x="238" y="56" width="24" height="74" rx="2" fill="#BBF7D0"/>
+            <rect x="272" y="38" width="24" height="92" rx="2" fill="#34D399"/>
+            <rect x="306" y="66" width="24" height="64" rx="2" fill="#BBF7D0"/>
+            <rect x="340" y="26" width="24" height="104" rx="2" fill="#34D399"/>
+            <rect x="374" y="48" width="24" height="82" rx="2" fill="#BBF7D0"/>
+            <rect x="408" y="34" width="24" height="96" rx="2" fill="#34D399"/>
+            <rect x="442" y="58" width="24" height="72" rx="2" fill="#BBF7D0"/>
+            <rect x="476" y="42" width="24" height="88" rx="2" fill="#34D399"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Panel B: list -->
+    <div class="shot" style="left:756px; top:380px; width:460px;">
+      <div class="shot-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="shot-body" style="padding:18px;">
+        <div style="font-weight:600; font-size:14px;">Asset management</div>
+        <div style="margin-top:10px;">
+          <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:6px 0; border-bottom:1px solid #E1E8E3;"><span class="fine-d" style="font-weight:600;">Asset</span><span class="fine-d" style="font-weight:600;">Protocol</span><span class="fine-d" style="font-weight:600;">Path</span></div>
+          <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:7px 0; border-bottom:1px solid #E1E8E3; align-items:center;"><span style="font-size:12.5px;">Site01-bess</span><span class="fine-d">sunspec</span><span class="tag g">Gateway</span></div>
+          <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:7px 0; border-bottom:1px solid #E1E8E3; align-items:center;"><span style="font-size:12.5px;">Site01-solaredge</span><span class="fine-d">oem_api</span><span class="tag">Integration</span></div>
+          <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:7px 0; align-items:center;"><span style="font-size:12.5px;">Site02-bess</span><span class="fine-d">can</span><span class="tag g">Gateway</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SLIDE 6 — SOLUTION: DISPATCH LOOP (second two-panel screenshot slide) -->
+<div>
+  <div class="slide-tag">Slide 6 &middot; Solution, closing the loop</div>
+  <div class="crop-scroll"><div class="dslide">
+    <div style="position:absolute; left:96px; top:140px; max-width:420px; z-index:2;">
+      <div class="eyebrow">The solution, closing the loop</div>
+      <div class="headline">Dispatch goes out. Dollars come back.</div>
+      <div class="body-copy">A utility requests flexibility from a feeder. The gateway carries the setpoint to the asset and confirms the response. The customer sees a payout, not a protocol.</div>
+    </div>
+
+    <!-- Panel A: dispatch -->
+    <div class="shot" style="left:640px; top:120px; width:500px;">
+      <div class="shot-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="shot-body" style="padding:20px;">
+        <div class="fine-d">Grid services</div>
+        <div style="font-weight:600; font-size:17px; margin-top:4px;">New flexibility event</div>
+        <div class="fine-d" style="margin-top:8px;">Feeder 07 &middot; 40 kW for 30 min &middot; 1,842 eligible assets</div>
+        <div style="margin-top:16px; background:#16A34A; color:#fff; font-weight:600; font-size:13px; border-radius:6px; padding:10px 0; text-align:center; width:200px;">Dispatch event</div>
+      </div>
+    </div>
+
+    <!-- Panel B: phone-style payout -->
+    <div class="shot" style="left:820px; top:400px; width:280px; border-radius:22px;">
+      <div style="height:20px; background:#EFF3F0; display:flex; align-items:center; justify-content:center;"><div style="width:60px; height:6px; border-radius:4px; background:#D3DBD6;"></div></div>
+      <div class="shot-body" style="padding:20px; text-align:center;">
+        <svg class="icon" style="width:22px;height:22px; stroke:#0F5C2C; margin:0 auto;"><use href="#i-check"/></svg>
+        <div class="fine-d" style="margin-top:10px; font-weight:600;">You just earned</div>
+        <div style="font-size:32px; font-weight:700; margin-top:2px;">$4.20</div>
+        <div class="fine-d" style="margin-top:8px;">Your battery helped balance the grid.</div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SLIDE 7 — SOLUTION: SECURITY / INTEROP -->
+<div>
+  <div class="slide-tag">Slide 7 &middot; Solution, underneath</div>
+  <div class="crop-scroll"><div class="dslide">
+    <div style="position:absolute; left:96px; top:120px; max-width:560px;">
+      <div class="eyebrow">The solution, underneath</div>
+      <div class="headline">Every dialect in. One trusted language out.</div>
+      <div class="body-copy">Modbus, SunSpec, CAN, MQTT, OCPP &mdash; the gateway speaks all of it on-site, then presents one IEEE 2030.5 interface upstream. Every device carries its own identity, so one compromised asset never reaches the fleet.</div>
+    </div>
+
+    <div style="position:absolute; left:96px; top:430px; display:flex; flex-wrap:wrap; gap:10px; max-width:760px;">
+      <span class="tag" style="background:transparent; border-color:var(--line); color:#D9E4DC;">Modbus TCP</span>
+      <span class="tag" style="background:transparent; border-color:var(--line); color:#D9E4DC;">SunSpec Modbus</span>
+      <span class="tag" style="background:transparent; border-color:var(--line); color:#D9E4DC;">RS-485</span>
+      <span class="tag" style="background:transparent; border-color:var(--line); color:#D9E4DC;">CAN 2.0B</span>
+      <span class="tag" style="background:transparent; border-color:var(--line); color:#D9E4DC;">MQTT</span>
+      <span class="tag" style="background:transparent; border-color:var(--line); color:#D9E4DC;">OCPP</span>
+    </div>
+
+    <div style="position:absolute; left:96px; top:494px; display:flex; align-items:center; gap:10px;">
+      <svg class="icon sm accent"><use href="#i-shield"/></svg>
+      <span style="font-size:14px; color:#9FB0A5;">IEEE 2030.5 &middot; mTLS &middot; device-level trust</span>
+    </div>
+  </div></div>
+</div>
+
+<!-- SLIDE 8 — CLOSE -->
+<div>
+  <div class="slide-tag">Slide 8 &middot; Close</div>
+  <div class="crop-scroll"><div class="dslide">
+    <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 160px;">
+      <svg class="icon accent" style="width:34px; height:34px; margin-bottom:26px;"><use href="#i-gw"/></svg>
+      <div class="headline" style="font-size:40px; max-width:820px;">One gateway makes every energy asset visible and dispatchable.</div>
+      <div class="body-copy" style="text-align:center; margin:22px auto 0; max-width:520px;">Not a platform to adopt. A layer underneath the ones you already run.</div>
+    </div>
+  </div></div>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Every Bee Has a Cell — kWh Electric</title>
+<meta name="description" content="A papercraft fable — every bee has a cell.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,900&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+<style>
+
+html,body{margin:0;padding:0;background:#FBF7EA;color:#241f18;font-family:'DM Sans',sans-serif;overflow:hidden;height:100%}
+a{color:#C2932A}a:hover{color:#241f18}
+.wing{transform-origin:0 0;animation:flap .13s ease-in-out infinite alternate}
+.wingB{animation-delay:.06s}
+.wingSlow{animation-duration:.45s}
+@keyframes flap{from{transform:rotate(-12deg)}to{transform:rotate(21deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+.navBtn{width:52px;height:52px;border:none;cursor:pointer;background:#241f18;color:#FBF7EA;font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%);transition:background .2s,opacity .2s;font-family:'DM Sans',sans-serif}
+.navBtn:hover{background:#C2932A}
+.navBtn[disabled]{opacity:.25;cursor:default;background:#241f18}
+@media (max-width:820px){
+.copyCard{left:4vw !important;right:4vw !important;top:auto !important;bottom:12vh !important;max-width:none !important;padding:18px 20px 20px !important}
+#heroCopy{left:5vw !important;right:5vw !important;max-width:none !important}
+#prog{display:none !important}
+}
+@media (prefers-reduced-motion: reduce){
+.wing{animation:none !important}
+.hexdot{animation:none !important}
+}
+
+#prog{display:none!important}
+#stage{background:#FBF7EA}
+.brandBar{position:absolute;top:16px;left:18px;z-index:60;display:flex;align-items:center;gap:10px;pointer-events:none}
+.brandBar img{display:block;width:32px;height:32px}
+.brandBar span{font-size:11px;font-weight:800;letter-spacing:.22em;color:#8a7c58}
+</style>
+</head>
+<body>
+<div id="stage" data-screen-label="Bee story — continuous world" style="position:relative;height:100vh;overflow:hidden;touch-action:none">
+  <div class="brandBar"><img src="./kwh-logo-mark.png" alt="kWh Electric" width="32" height="32"><span>kWh ELECTRIC</span></div>
+  <svg id="world" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;display:block"></svg>
+
+  <div id="heroCopy" data-screen-label="Beat 1 — the queen signals" style="position:absolute;z-index:5;top:50%;left:4vw;transform:translateY(-50%);text-align:left;max-width:360px;width:88%;pointer-events:none">
+    <h1 style="font-size:clamp(42px,6.2vw,80px);font-weight:900;letter-spacing:-.03em;line-height:1;margin:0">Every bee<br>has a cell.</h1>
+    <p style="margin:18px 0 0;font-size:clamp(16px,1.7vw,21px);font-weight:500;line-height:1.6;color:#4b4433">One queen signals from her branch. Inside the comb, the right foragers hear it — and set out.</p>
+  </div>
+  <div id="scrollHint" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none">
+    <div class="hexdot" style="width:16px;height:16px;background:#E4B33C;clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%);animation:bob 1.6s ease-in-out infinite"></div>
+    <div style="font-size:12px;font-weight:700;letter-spacing:.18em;color:#8a7c58">SCROLL OR PRESS → TO TRAVEL</div>
+  </div>
+
+  <div class="copyCard" id="copyGardens" data-screen-label="Beat 2 — the hive answers" style="position:absolute;z-index:5;left:4vw;top:7vh;max-width:380px;pointer-events:none;background:rgba(251,247,234,.9);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);padding:22px 26px 24px;border:1px solid rgba(36,31,24,.09);border-radius:16px;clip-path:inset(0% 0% 100% 0%)">
+    <div style="width:40px;height:3px;background:#C2932A;margin:0 0 12px"></div>
+    <h2 style="font-size:clamp(24px,3vw,38px);font-weight:900;line-height:1.05;letter-spacing:-.02em;margin:0 0 8px">The hive answers as one.</h2>
+    <p style="font-size:clamp(15px,1.4vw,17px);line-height:1.55;color:#4b4433;font-weight:500;margin:0">The courier from home meets the foragers as they leave their own cells — <em style="font-style:italic;color:#C2932A;font-weight:700">one signal, no translation.</em></p>
+  </div>
+
+  <div class="copyCard" id="copyWork" data-screen-label="Beat 3 — work at the source" style="position:absolute;z-index:5;left:4vw;top:7vh;max-width:380px;pointer-events:none;background:rgba(251,247,234,.9);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);padding:22px 26px 24px;border:1px solid rgba(36,31,24,.09);border-radius:16px;clip-path:inset(0% 0% 100% 0%)">
+    <div style="width:40px;height:3px;background:#C2932A;margin:0 0 12px"></div>
+    <h2 style="font-size:clamp(24px,3vw,38px);font-weight:900;line-height:1.05;letter-spacing:-.02em;margin:0 0 8px">Work happens at the source.</h2>
+    <p style="font-size:clamp(15px,1.4vw,17px);line-height:1.55;color:#4b4433;font-weight:500;margin:0">Each forager drinks straight from the flower and carries its own nectar home — <em style="font-style:italic;color:#C2932A;font-weight:700">nothing skimmed, nothing lost.</em></p>
+  </div>
+
+  <div class="copyCard" id="copyShield" data-screen-label="Beat 4 — the shield" style="position:absolute;z-index:5;left:4vw;top:7vh;max-width:380px;pointer-events:none;background:rgba(251,247,234,.9);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);padding:22px 26px 24px;border:1px solid rgba(36,31,24,.09);border-radius:16px;clip-path:inset(0% 0% 100% 0%)">
+    <div style="width:40px;height:3px;background:#C2932A;margin:0 0 12px"></div>
+    <h2 style="font-size:clamp(24px,3vw,38px);font-weight:900;line-height:1.05;letter-spacing:-.02em;margin:0 0 8px">A shield that's always on.</h2>
+    <p style="font-size:clamp(15px,1.4vw,17px);line-height:1.55;color:#4b4433;font-weight:500;margin:0">Raiders dive as the foragers dock — and bounce off. <em style="font-style:italic;color:#C2932A;font-weight:700">Every cell is armored, so every bee is covered.</em></p>
+  </div>
+
+  <div class="copyCard" id="copyCounted" data-screen-label="Beat 5 — every drop counted" style="position:absolute;z-index:5;left:4vw;top:7vh;max-width:380px;pointer-events:none;background:rgba(251,247,234,.9);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);padding:22px 26px 24px;border:1px solid rgba(36,31,24,.09);border-radius:16px;clip-path:inset(0% 0% 100% 0%)">
+    <div style="width:40px;height:3px;background:#C2932A;margin:0 0 12px"></div>
+    <h2 style="font-size:clamp(24px,3vw,38px);font-weight:900;line-height:1.05;letter-spacing:-.02em;margin:0 0 8px">Every drop counted.</h2>
+    <p style="font-size:clamp(15px,1.4vw,17px);line-height:1.55;color:#4b4433;font-weight:500;margin:0">Each drop lands in its own cell, and the comb brightens by exactly <em style="font-style:italic;color:#C2932A;font-weight:700">what that bee earned.</em></p>
+  </div>
+
+  <div id="finaleOv" data-screen-label="Finale" style="position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;background:rgba(251,247,234,.96);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;visibility:hidden;overflow:auto">
+    <div id="finaleInner" style="text-align:center;max-width:920px;width:94%;padding:18px 3vw 28px">
+      <h2 style="font-size:clamp(28px,4.4vw,56px);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin:0 0 6px">The comb turns into honey.</h2>
+      <p style="font-size:clamp(14px,1.5vw,18px);line-height:1.5;color:#4b4433;margin:0 0 14px;font-weight:500">Every drop credited and stored — then poured into what it was for. The difference is the cell.</p>
+      <svg id="svgF" viewBox="0 0 680 460" style="width:min(780px,96vw);height:auto;margin:0 auto 10px;display:block;overflow:visible"></svg>
+      <a href="https://kwhelectric.io" target="_blank" rel="noopener" style="display:inline-block;font-weight:900;font-size:15px;letter-spacing:.05em;color:#FBF7EA;background:#241f18;padding:14px 28px;border-radius:999px;text-decoration:none;transition:background .2s">See the real thing → kwhelectric.io</a>
+    </div>
+  </div>
+<div id="navUI" style="position:absolute;bottom:22px;right:22px;z-index:60;display:flex;align-items:center;gap:12px">
+    <div id="stepCount" style="font-size:13px;font-weight:700;letter-spacing:.12em;color:#8a7c58">1 / 6</div>
+    <button id="navPrev" class="navBtn" aria-label="Previous step">←</button>
+    <button id="navNext" class="navBtn" aria-label="Next step">→</button>
+  </div>
+</div>
+<script>
+
+(function(){
+  function boot(){
+    if(!window.gsap || !window.MotionPathPlugin){ setTimeout(boot, 40); return; }
+    try{
+    if(window.__beeNavClean){ try{window.__beeNavClean();}catch(e){} window.__beeNavClean=null; }
+    if(window.__beeWorldCtx){ try{window.__beeWorldCtx.revert();}catch(e){} window.__beeWorldCtx=null; }
+    const PACE = 1;
+    const SHOW_DOTS = false;
+    const AMBIENT = true;
+    gsap.registerPlugin(MotionPathPlugin);
+    window.__beeWorldCtx = gsap.context(()=>{
+
+    const RM=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const INK='#241f18',GOLD='#E4B33C',DGOLD='#C2932A',HONEY='#F5C044',RED='#9E2B25',
+          BODY='#F4C452',HEAD='#332A1D',WING='#FFFCF0',CHEEK='#E8998D',
+          WAX='#EFDCA6',WAXO='#E7CE8F',WAXD='#E1CE9A',CELLDARK='#4A350D',
+          GREEN='#93A468',GREEND='#6F8049',BRANCH='#5C4230';
+    let uid=0;
+    const q=s=>document.querySelector(s);
+    const P=n=>(+n).toFixed(1);
+
+    /* ---------- geometry ---------- */
+    function hexPts(cx,cy,r){let s='';for(let i=0;i<6;i++){const a=Math.PI/6+i*Math.PI/3;s+=P(cx+r*Math.cos(a))+','+P(cy+r*Math.sin(a))+' ';}return s.trim();}
+    function hexPoly(cx,cy,r,fill,stroke,sw,extra){return '<polygon points="'+hexPts(cx,cy,r)+'" fill="'+fill+'"'+(stroke?' stroke="'+stroke+'" stroke-width="'+sw+'"':'')+' '+(extra||'')+'/>';}
+
+    /* ---------- the bee ---------- */
+    function bee(x,y,s,o){
+      s=s||1;o=o||{};
+      const id=++uid,flip=o.flip?-1:1,rot=o.rot||0;
+      const w=o.still?'':'wing ';
+      const droplet=o.droplet?`<g class="droplet" opacity="${o.dropletOn?1:0}">
+        <path d="M-2 40 C -13 56 -13 70 -2 76 C 9 70 9 56 -2 40 Z" fill="${o.dropColor||HONEY}" stroke="${DGOLD}" stroke-width="2.5"/>
+        <circle cx="-6" cy="60" r="3.4" fill="#FFF3CE"/></g>`:'';
+      const pollenLoad=o.droplet?`<g class="pollenLoad" opacity="0">
+        <circle class="pd" cx="-20" cy="16" r="4.2" fill="${o.dropColor||HONEY}" stroke="${DGOLD}" stroke-width="1.2"/>
+        <circle class="pd" cx="-8" cy="20" r="3.4" fill="${o.dropColor||HONEY}" stroke="${DGOLD}" stroke-width="1"/>
+        <circle class="pd" cx="-24" cy="6" r="2.8" fill="${o.dropColor||GOLD}" stroke="${DGOLD}" stroke-width="1"/>
+        <circle class="pd" cx="12" cy="18" r="3.6" fill="${o.dropColor||HONEY}" stroke="${DGOLD}" stroke-width="1"/>
+        <circle class="pd" cx="20" cy="10" r="2.8" fill="${o.dropColor||GOLD}" stroke="${DGOLD}" stroke-width="1"/>
+      </g>`:'';
+      const crown=o.master?`<g transform="translate(34,-34)">
+        <path d="M-15 6 L15 6 L12 -3 L-12 -3 Z" fill="${DGOLD}"/>
+        <polygon points="${hexPts(-9,-9,5.5)}" fill="${GOLD}" stroke="${DGOLD}" stroke-width="1.5"/>
+        <polygon points="${hexPts(9,-9,5.5)}" fill="${GOLD}" stroke="${DGOLD}" stroke-width="1.5"/>
+        <polygon points="${hexPts(0,-13,7)}" fill="${GOLD}" stroke="${DGOLD}" stroke-width="1.5"/></g>`:'';
+      const eye=o.sleep
+        ?`<path d="M30 -10 q8 7 17 -1" stroke="#FBF7EA" stroke-width="2.8" fill="none" stroke-linecap="round"/>`
+        :`<circle cx="39" cy="-11" r="9.5" fill="#FFFDF4"/>
+          <g class="eyeP"><circle cx="41.5" cy="-10" r="5.6" fill="${INK}"/>
+          <circle cx="43.5" cy="-12.5" r="2.3" fill="#fff"/>
+          <circle cx="39.5" cy="-8" r="1.1" fill="#fff" opacity=".9"/></g>`;
+      return `<g class="beeG" transform="translate(${x},${y}) rotate(${rot}) scale(${s*flip},${s})">
+        <g class="${w}wingB" transform="translate(-10,-20)"><ellipse cx="9" cy="-19" rx="12" ry="21" fill="${WING}" stroke="${DGOLD}" stroke-width="1.8" opacity=".55"/></g>
+        <ellipse cx="-31" cy="1" rx="16" ry="14" fill="${INK}"/>
+        <ellipse cx="0" cy="0" rx="33" ry="26" fill="${BODY}"/>
+        <clipPath id="bc${id}"><ellipse cx="0" cy="0" rx="33" ry="26"/></clipPath>
+        <g clip-path="url(#bc${id})">
+          <rect x="-25" y="-30" width="12" height="60" rx="6" fill="${INK}"/>
+          <rect x="-3" y="-30" width="12" height="60" rx="6" fill="${INK}"/>
+          <ellipse cx="2" cy="18" rx="27" ry="10" fill="rgba(36,31,24,.07)"/>
+        </g>
+        <g stroke="${INK}" stroke-width="3" stroke-linecap="round" fill="none" opacity=".85">
+          <path d="M-8 24 q-2 9 -8 11"/><path d="M8 23 q2 9 -3 12"/>
+        </g>
+        <circle cx="32" cy="-8" r="23" fill="${HEAD}"/>
+        <g class="antA"><path d="M24 -28 q-3 -11 -11 -15" stroke="${HEAD}" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="12" cy="-44" r="4.5" fill="${o.master?GOLD:DGOLD}"/></g>
+        <g class="antB"><path d="M37 -29 q3 -11 11 -13" stroke="${HEAD}" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="49" cy="-43" r="4.5" fill="${o.master?GOLD:DGOLD}"/></g>
+        ${eye}
+        <ellipse cx="34" cy="2" rx="5" ry="3.4" fill="${CHEEK}" opacity=".9"/>
+        <path d="M40 1 q4 4 9 .5" stroke="#FBF7EA" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        ${crown}
+        <g class="${w}wingF" transform="translate(2,-21)">
+          <ellipse cx="14" cy="-20" rx="15" ry="25" fill="${WING}" stroke="${DGOLD}" stroke-width="2" opacity=".92"/>
+          <path d="M8 -34 q7 9 9 24" stroke="${DGOLD}" stroke-width="1.4" fill="none" opacity=".5"/>
+          <path d="M16 -38 q4 10 5 26" stroke="${DGOLD}" stroke-width="1.4" fill="none" opacity=".35"/>
+          <ellipse cx="2" cy="-10" rx="9" ry="16" fill="${WING}" stroke="${DGOLD}" stroke-width="1.6" opacity=".8" transform="rotate(-18 2 -10)"/>
+        </g>
+        ${droplet}${pollenLoad}
+      </g>`;
+    }
+
+    /* ---------- the black bumblebee ---------- */
+    function bumble(x,y,s,flip){
+      const id=++uid;let fur='';
+      for(let i=0;i<16;i++){
+        const a=(i/16)*Math.PI*2,bx=Math.cos(a)*46,by=Math.sin(a)*36,ex=Math.cos(a)*53,ey=Math.sin(a)*43;
+        fur+='<path d="M'+P(bx)+' '+P(by)+' L'+P(ex)+' '+P(ey)+'"/>';
+      }
+      return `<g class="bumbleArt" transform="translate(${x},${y}) scale(${flip?-s:s},${s})">
+        <g class="wing wingSlow" transform="translate(-16,-30)"><ellipse cx="12" cy="-18" rx="15" ry="24" fill="rgba(210,204,190,.4)" stroke="#5d574b" stroke-width="2"/></g>
+        <path d="M-84 -2 L-108 6 L-84 14 Z" fill="#0e0a06"/>
+        <ellipse cx="-46" cy="3" rx="27" ry="23" fill="#15100b"/>
+        <g stroke="#15100b" stroke-width="2.6" stroke-linecap="round" opacity=".85">${fur}</g>
+        <ellipse cx="0" cy="0" rx="46" ry="36" fill="#1d1710"/>
+        <clipPath id="bb${id}"><ellipse cx="0" cy="0" rx="46" ry="36"/></clipPath>
+        <g clip-path="url(#bb${id})">
+          <rect x="-30" y="-40" width="14" height="80" rx="7" fill="#0b0805"/>
+          <rect x="-2" y="-40" width="14" height="80" rx="7" fill="#0b0805"/>
+          <ellipse cx="0" cy="24" rx="44" ry="12" fill="rgba(0,0,0,.35)"/>
+        </g>
+        <g stroke="#15100b" stroke-width="4" stroke-linecap="round" fill="none">
+          <path d="M-16 32 q-3 11 -10 14"/><path d="M4 34 q0 12 -6 16"/><path d="M22 30 q4 10 12 12"/>
+        </g>
+        <circle cx="44" cy="-8" r="25" fill="#15100b"/>
+        <circle cx="52" cy="-10" r="8.5" fill="#F5EFE0"/>
+        <circle cx="54.5" cy="-9" r="4.6" fill="#0b0805"/>
+        <circle cx="56" cy="-11" r="1.6" fill="#fff"/>
+        <path d="M40 -26 l22 6" stroke="#0b0805" stroke-width="6" stroke-linecap="round"/>
+        <path d="M48 6 q6 2 11 -3" stroke="#050302" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M34 -30 q-2 -11 -10 -16" stroke="#15100b" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="23" cy="-48" r="5" fill="${RED}"/>
+        <path d="M50 -28 q4 -11 12 -13" stroke="#15100b" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="63" cy="-43" r="5" fill="${RED}"/>
+        <g class="wing wingSlow" transform="translate(-2,-28)">
+          <ellipse cx="12" cy="-20" rx="18" ry="27" fill="rgba(222,216,202,.5)" stroke="#5d574b" stroke-width="2.4"/>
+          <path d="M6 -36 q7 10 9 26" stroke="#5d574b" stroke-width="1.4" fill="none" opacity=".5"/>
+        </g>
+      </g>`;
+    }
+
+    /* ---------- the peeker ---------- */
+    function peeker(x,y,s){
+      return `<g class="peeker" transform="translate(${P(x)},${P(y)}) scale(${s})">
+        <circle cx="0" cy="0" r="15" fill="${HEAD}"/>
+        <g class="pkEyes">
+          <circle cx="-5.5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="-4" cy="-2.6" r="2.6" fill="${INK}"/><circle cx="-3" cy="-4.2" r="1" fill="#fff"/>
+          <circle cx="6.5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="8" cy="-2.6" r="2.6" fill="${INK}"/><circle cx="9" cy="-4.2" r="1" fill="#fff"/>
+        </g>
+        <path d="M-8 -13 q-3 -8 -9 -10" stroke="${HEAD}" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="-18" cy="-24" r="3.2" fill="${DGOLD}"/>
+        <path d="M6 -13 q3 -8 9 -9" stroke="${HEAD}" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="16" cy="-23" r="3.2" fill="${DGOLD}"/>
+      </g>`;
+    }
+
+    /* ---------- the home comb ---------- */
+    const HSLOTS=[],HTUCK=[];
+    const LAYOUT=['..h.h..','.aSdSa.','hSaTaSh','.aSdSa.','..h.h..'];
+    function comb(cx,cy,r,opts){
+      opts=opts||{};
+      const w=Math.sqrt(3)*r,rows=opts.rows||LAYOUT;
+      let cells='',peekers='';
+      const blob=`<path class="combBlob" fill="${WAX}" d="M ${P(cx-6.0*r)} ${P(cy-0.6*r)} C ${P(cx-6.4*r)} ${P(cy-2.8*r)} ${P(cx-3.9*r)} ${P(cy-4.3*r)} ${P(cx-1.8*r)} ${P(cy-4.5*r)} C ${P(cx-0.2*r)} ${P(cy-5.0*r)} ${P(cx+2.0*r)} ${P(cy-4.8*r)} ${P(cx+3.5*r)} ${P(cy-4.2*r)} C ${P(cx+5.9*r)} ${P(cy-3.4*r)} ${P(cx+6.5*r)} ${P(cy-1.5*r)} ${P(cx+6.2*r)} ${P(cy+0.4*r)} C ${P(cx+6.4*r)} ${P(cy+2.4*r)} ${P(cx+4.6*r)} ${P(cy+4.1*r)} ${P(cx+2.4*r)} ${P(cy+4.6*r)} C ${P(cx+0.6*r)} ${P(cy+5.1*r)} ${P(cx-2.1*r)} ${P(cy+5.0*r)} ${P(cx-3.9*r)} ${P(cy+4.2*r)} C ${P(cx-5.9*r)} ${P(cy+3.4*r)} ${P(cx-6.3*r)} ${P(cy+1.4*r)} ${P(cx-6.0*r)} ${P(cy-0.6*r)} Z"/>`;
+      rows.forEach((row,ri)=>{
+        const y=cy+(ri-(rows.length-1)/2)*r*1.5;
+        row.split('').forEach((ch,ci)=>{
+          if(ch==='.')return;
+          const x=cx+(ci-(row.length-1)/2)*w+(ri%2?w/2:0);
+          let fill=WAXO,cls='cell';
+          if(ch==='h')fill=HONEY;
+          if(ch==='d')fill=CELLDARK;
+          if(ch==='S'){fill=WAXD;cls='cell slot';HSLOTS.push([x,y]);}
+          if(ch==='T'){fill=CELLDARK;cls='cell tuck';HTUCK.push([x,y]);}
+          const shadow=`<path d="M${P(x-0.62*r)} ${P(y-0.36*r)} L${P(x)} ${P(y-0.72*r)} L${P(x+0.62*r)} ${P(y-0.36*r)}" stroke="rgba(36,31,24,.16)" stroke-width="${P(r*.24)}" fill="none" stroke-linecap="round"/>`;
+          const glow=ch==='h'?`<ellipse cx="${P(x-0.2*r)}" cy="${P(y+0.2*r)}" rx="${P(r*.3)}" ry="${P(r*.2)}" fill="#FFE9A8" opacity=".9"/>`:'';
+          const over=ch==='S'?`<polygon class="slotFill" points="${hexPts(x,y,r*.94)}" fill="${HONEY}" opacity="0"/>`:'';
+          cells+=`<g class="${cls}">${hexPoly(x,y,r*.94,fill,DGOLD,3.2)}${over}${shadow}${glow}</g>`;
+          if(opts.peek&&ch==='d'){peekers+=peeker(x,y+r*.3,r/38);}
+          if(opts.peek&&ch==='T'){peekers+=`<g class="tuckPeeker">${peeker(x,y+r*.3,r/38)}</g>`;}
+        });
+      });
+      return `<g class="combG">${blob}${cells}${peekers}</g>`;
+    }
+
+    function flower(x,y,s,c,cls){
+      let petals='';
+      for(let i=0;i<6;i++){petals+=`<ellipse cx="0" cy="-14" rx="8.5" ry="14" fill="${c}" transform="rotate(${i*60})"/>`;}
+      return `<g class="flowerG ${cls||''}" transform="translate(${x},${y}) scale(${s})">
+        <path d="M0 6 L0 64" stroke="${GREEND}" stroke-width="5" stroke-linecap="round"/>
+        <path d="M1 42 q13 -3 19 -13" stroke="${GREEND}" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <ellipse cx="22" cy="27" rx="9" ry="5" fill="${GREEN}" transform="rotate(-32 22 27)"/>
+        <g class="head">${petals}<circle r="9.5" fill="${HONEY}" stroke="${DGOLD}" stroke-width="2.5"/></g>
+      </g>`;
+    }
+
+    function grass(x,y,s){
+      return `<g class="grassG" transform="translate(${x},${y}) scale(${s||1})" stroke="${GREEN}" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M0 0 q-4 -18 -12 -24"/><path d="M4 0 q0 -20 -2 -28"/><path d="M8 0 q6 -16 14 -22"/>
+      </g>`;
+    }
+
+    /* ---------- background hex grid (drawn as explicit cells so hives can align) ---------- */
+    const GR=40, GW=Math.sqrt(3)*GR, GVY=1.5*GR, GAX=600, GAY=470;
+    const gridCenter=(c,row)=>[GAX+c*GW+((row&1)?GW/2:0), GAY+row*GVY];
+    function hexGridCells(op){
+      let s='';
+      for(let row=-6;row<=6;row++){
+        for(let c=-2;c<=90;c++){
+          const p=gridCenter(c,row);
+          if(p[0]<-120||p[0]>6400)continue;
+          s+=`<polygon points="${hexPts(p[0],p[1],GR)}" fill="none" stroke="${DGOLD}" stroke-width="1.5"/>`;
+        }
+      }
+      return `<g class="gridBG" opacity="${op==null?.1:op}">${s}</g>`;
+    }
+
+    function pollen(n,seed){
+      let s='';
+      for(let i=0;i<n;i++){
+        const x=((seed*97+i*263)%1160)+20,y=((seed*57+i*173)%540)+80;
+        s+=`<circle class="mote" cx="${x}" cy="${y}" r="${2+(i%3)}" fill="${GOLD}" opacity="${(.22+(i%3)*.11).toFixed(2)}"/>`;
+      }
+      return `<g class="pollenG">${s}</g>`;
+    }
+
+    function longBand(yBase,amp,fill){
+      let d='M -300 '+yBase,x=-300,up=true;
+      while(x<6300){d+=' Q '+(x+160)+' '+(yBase+(up?-amp:amp))+' '+(x+320)+' '+yBase;x+=320;up=!up;}
+      d+=' L 6300 820 L -300 820 Z';
+      return '<path d="'+d+'" fill="'+fill+'"/>';
+    }
+
+    /* ================= COORDINATES ================= */
+    const CX=860,CY=440,CR=42;               // home comb
+    const QPOS=[510,300];                    // queen — to the LEFT of the comb
+    /* garden hives sit on exact background-grid centres */
+    const GPOS=[gridCenter(19,-2), gridCenter(24,-4), gridCenter(21,1)];
+    const GTINT=['#E9C46A','#D98A78','#C9CF9A'];
+    const GH=[[GPOS[0][0],GPOS[0][1]-95],[GPOS[1][0],GPOS[1][1]-95],[GPOS[2][0],GPOS[2][1]-95]];
+    const TF=[[4180,560],[3950,600],[4460,570],[4080,650]]; // [hero,g0,g1,g2] target flowers
+    const SUN=[4500,120];
+    const SPROUT=[[1250,706],[1560,712],[2620,702],[2960,706]];
+    const HOME_X=0,GARDEN_X=1460,MEADOW_X=3500;
+
+    /* ================= BUILD THE WORLD ================= */
+    const W=q('#world');
+
+    const doorArt=[
+      `<path d="M0 -8 L14 -3 L0 3 Z" fill="#D98A78"/>`,
+      `<circle cx="0" cy="-2" r="7" fill="#C9CF9A" stroke="${BRANCH}" stroke-width="2.2"/>`,
+      `<path d="M-7 -2 l7 -7 7 7 -7 7 Z" fill="#E0B25C" stroke="${BRANCH}" stroke-width="2.2"/>`
+    ];
+    const garden=i=>{
+      const t=GTINT[i], r=GR*.42, w=Math.sqrt(3)*r;
+      /* mini-hive: center + 4 neighbors = 5 hexes */
+      const offs=[[0,0],[w,0],[-w,0],[w/2,-r*1.5],[-w/2,-r*1.5]];
+      let cells='';
+      offs.forEach((o,k)=>{
+        const fill=k===0?CELLDARK:(k%2?HONEY:t);
+        cells+=hexPoly(o[0],o[1],r*.94,fill,DGOLD,2.6);
+        if(k===0){
+          cells+=`<polygon class="gfill" points="${hexPts(o[0],o[1],r*.94)}" fill="#FFE9A8" opacity="0"/>`;
+          cells+=`<g transform="translate(${o[0]},${o[1]+2}) scale(.55)">${doorArt[i]}</g>`;
+        }
+      });
+      const blob=`<ellipse cx="0" cy="-6" rx="${r*3.2}" ry="${r*2.6}" fill="${WAX}" opacity=".85"/>`;
+      return `<g class="garden g${i}" transform="translate(${GPOS[i][0]},${GPOS[i][1]})">
+        ${blob}${cells}
+        <polygon class="gshield" points="${hexPts(0,0,GR*1.15)}" fill="none" stroke="${GOLD}" stroke-width="4" stroke-linejoin="round" opacity="0"/>
+      </g>`;
+    };
+
+    const meadow=`<g class="meadowZ">
+      <g class="sun"><circle cx="${SUN[0]}" cy="${SUN[1]}" r="42" fill="${HONEY}" opacity=".85"/>
+        <g class="sunRays" stroke="${DGOLD}" stroke-width="4" stroke-linecap="round">
+          ${[0,1,2,3,4,5,6,7].map(i=>{const a=i*Math.PI/4;return `<line x1="${P(SUN[0]+Math.cos(a)*58)}" y1="${P(SUN[1]+Math.sin(a)*58)}" x2="${P(SUN[0]+Math.cos(a)*72)}" y2="${P(SUN[1]+Math.sin(a)*72)}"/>`;}).join('')}
+        </g></g>
+      ${flower(TF[0][0],TF[0][1],1.5,GTINT[0],'heroFlower')}
+      ${flower(TF[1][0],TF[1][1],1.15,GTINT[0],'gflower0')}
+      ${flower(TF[2][0],TF[2][1],1.2,GTINT[1],'gflower1')}
+      ${flower(TF[3][0],TF[3][1],1.05,GTINT[2],'gflower2')}
+      ${flower(4300,632,.9,'#EED9A5')}${flower(3860,640,.85,'#D98A78')}${flower(4560,648,.9,'#C9CF9A')}
+      ${grass(3900,700,1.2)}${grass(4260,706,1)}${grass(4620,700,1.1)}${grass(4020,712,.9)}
+    </g>`;
+
+    const guides=`<g class="guides" opacity="0" fill="none">
+      <path id="trHeroGo" d="M${CX} 388 C 1180 300, 1720 300, 2450 360"/>
+      <path id="trHeroMead" d="M2450 360 C 3050 320, 3600 420, ${TF[0][0]} ${TF[0][1]}"/>
+      <path id="trHeroRet1" d="M${TF[0][0]} ${TF[0][1]} C 3400 380, 2600 320, 1760 340"/>
+      <path id="trHeroRet2" d="M1760 340 C 1360 300, 1150 350, ${CX+118} 360"/>
+      <path id="trG0Mead" d="M${GH[0][0]} ${GH[0][1]} C 2600 250, 3300 430, ${TF[1][0]} ${TF[1][1]}"/>
+      <path id="trG1Mead" d="M${GH[1][0]} ${GH[1][1]} C 3000 220, 3800 380, ${TF[2][0]} ${TF[2][1]}"/>
+      <path id="trG2Mead" d="M${GH[2][0]} ${GH[2][1]} C 2800 540, 3400 610, ${TF[3][0]} ${TF[3][1]}"/>
+      <path id="trG0Ret" d="M${TF[1][0]} ${TF[1][1]} C 3300 430, 2600 250, ${GH[0][0]} ${GH[0][1]}"/>
+      <path id="trG1Ret" d="M${TF[2][0]} ${TF[2][1]} C 3800 380, 3000 220, ${GH[1][0]} ${GH[1][1]}"/>
+      <path id="trG2Ret" d="M${TF[3][0]} ${TF[3][1]} C 3400 610, 2800 540, ${GH[2][0]} ${GH[2][1]}"/>
+    </g>`;
+
+    const sprouts=SPROUT.map((s,i)=>`<g class="sproutWrap"><circle class="pmote pmote${i}" cx="${s[0]}" cy="${s[1]-46}" r="4" fill="${GOLD}" opacity="0"/><g class="sprout sprout${i}" style="transform:scale(0);transform-origin:${s[0]}px ${s[1]}px">${flower(s[0],s[1],.65,GTINT[i%3])}</g></g>`).join('');
+
+    W.innerHTML=`
+      <g class="gridL">${hexGridCells()}</g>
+      <g class="bgFarL">${longBand(640,22,'#F3E8C8')}</g>
+      <g class="bgMidL">${longBand(688,18,'#EEDFB4')}
+        ${flower(120,700,1.0,'#D98A78')}${grass(300,724,1.2)}
+        ${flower(1900,702,.95,'#E9C46A')}${grass(2320,726,1.1)}
+        ${flower(3000,704,1.0,'#D98A78')}${grass(3420,728,1)}
+        ${flower(4980,706,.95,'#E9C46A')}${grass(4560,724,1.2)}
+      </g>
+      <g class="camMain">
+        ${longBand(730,14,'#E7D5A2')}
+        ${grass(500,760,1.3)}${grass(1720,756,1.1)}${grass(2860,760,1.2)}${grass(3980,756,1)}${grass(5100,760,1.2)}
+        ${meadow}
+        ${sprouts}
+        ${garden(0)}${garden(1)}${garden(2)}
+        <g class="homeZ">
+          <g class="branchG">
+            <!-- short stub well above the queen — tip ends under her feet, never through her head -->
+            <path d="M${CX+160} 70 C ${CX+150} 20 ${CX+155} -30 ${CX+160} -60" stroke="${BRANCH}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+            <path d="M${CX+158} 55 C ${CX+90} 48 ${QPOS[0]+40} ${QPOS[1]+8} ${QPOS[0]-28} ${QPOS[1]+36}" stroke="${BRANCH}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="${CX+175}" cy="52" rx="7" ry="3.5" fill="${GREEN}" transform="rotate(-28 ${CX+175} 52)"/>
+            <ellipse cx="${CX+100}" cy="48" rx="6" ry="3" fill="${GREEN}" transform="rotate(18 ${CX+100} 48)"/>
+          </g>
+          <g class="heroComb">${comb(CX,CY,CR,{peek:true})}</g>
+          <g class="qsig">
+            <polygon class="qr qpulse" points="${hexPts(QPOS[0],QPOS[1],42)}" fill="none" stroke="${GOLD}" stroke-width="6" opacity="0" stroke-linejoin="round"/>
+            <polygon class="qr qr0" points="${hexPts(QPOS[0],QPOS[1],42)}" fill="none" stroke="${GOLD}" stroke-width="5" opacity="0" stroke-linejoin="round"/>
+            <polygon class="qr qr1" points="${hexPts(QPOS[0],QPOS[1],42)}" fill="none" stroke="${GOLD}" stroke-width="4" opacity="0" stroke-linejoin="round"/>
+          </g>
+          <g class="queenW" transform="translate(${QPOS[0]},${QPOS[1]})">${bee(0,0,1.3,{master:true})}</g>
+        </g>
+        ${guides}
+        ${[0,1,2].map(i=>`<g class="gbee gbee${i}"><g class="flip">${bee(0,0,1.0,{droplet:true,dropColor:GTINT[i]})}</g></g>`).join('')}
+        <g class="heroBee"><g class="flip">${bee(0,0,1.0,{droplet:true})}</g></g>
+        ${[0,1,2].map(i=>`<g class="wasp wasp${i}">${bumble(0,0,.92,true)}</g>`).join('')}
+        ${[0,1,2].map(i=>`<g class="beeShield beeShield${i}" opacity="0">${hexPoly(0,0,62,'rgba(228,179,60,.22)',GOLD,7)}
+          <polygon points="${hexPts(0,0,72)}" fill="none" stroke="${GOLD}" stroke-width="3" opacity=".45"/></g>`).join('')}
+      </g>
+      ${pollen(12,3)}
+    `;
+
+    /* ---------- dotted trails (dots appear behind the bee, then vanish) ---------- */
+    function buildDots(id,color){
+      const p=q('#'+id);if(!p)return;const L=p.getTotalLength();
+      const n=Math.max(3,Math.round(L/44));
+      const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+      g.setAttribute('class','dots dots_'+id);
+      for(let i=1;i<n;i++){
+        const pt=p.getPointAtLength(i/n*L);
+        const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        c.setAttribute('cx',pt.x.toFixed(1));c.setAttribute('cy',pt.y.toFixed(1));
+        c.setAttribute('r','3');c.setAttribute('fill',color);c.setAttribute('opacity','0');
+        g.appendChild(c);
+      }
+      q('#world .camMain').appendChild(g);
+    }
+    [['trHeroGo',DGOLD],['trHeroMead',DGOLD],['trHeroRet1',DGOLD],['trHeroRet2',DGOLD],
+     ['trG0Mead',GTINT[0]],['trG1Mead',GTINT[1]],['trG2Mead',GTINT[2]],
+     ['trG0Ret',GTINT[0]],['trG1Ret',GTINT[1]],['trG2Ret',GTINT[2]]].forEach(a=>buildDots(a[0],a[1]));
+
+    /* initial positions — front peekers only inside the comb; side-profile hero fully hidden until departure */
+    gsap.set('#world .heroBee',{x:CX,y:CY,scale:.42,autoAlpha:0,visibility:'hidden'});
+    [0,1,2].forEach(i=>gsap.set('#world .gbee'+i,{x:GPOS[i][0],y:GPOS[i][1],autoAlpha:0,scale:.18}));
+    [0,1,2].forEach(i=>gsap.set('#world .wasp'+i,{x:GPOS[i][0]+250,y:-280,autoAlpha:0}));
+    [0,1,2].forEach(i=>gsap.set('#world .beeShield'+i,{x:GPOS[i][0],y:GPOS[i][1],autoAlpha:0,scale:.85,transformOrigin:'50% 50%'}));
+
+    /* ---------- entrance ---------- */
+    if(!RM){
+      gsap.from('#world .homeZ .branchG',{opacity:0,y:-24,duration:1.0,ease:'power2.out',delay:.2});
+      gsap.from('#world .heroComb .combBlob',{scale:.5,opacity:0,transformOrigin:'center',duration:1.1,ease:'back.out(1.4)',delay:.5});
+      gsap.from('#world .heroComb .cell, #world .heroComb .peeker',{scale:0,transformOrigin:'center',stagger:{each:.06,from:'center'},duration:.9,ease:'back.out(1.7)',delay:.9});
+      gsap.from('#world .queenW',{opacity:0,scale:.6,transformOrigin:'center',duration:1.0,ease:'back.out(1.6)',delay:1.2});
+      gsap.from('#heroCopy > *',{opacity:0,y:24,stagger:.2,duration:1.0,ease:'power3.out',delay:1.3});
+      /* heroBee stays hidden until signal departure — peeker shows front view in cell */
+      gsap.from('#scrollHint, #navUI',{opacity:0,duration:.8,delay:2.6});
+    }
+
+    /* ================= MASTER TIMELINE ================= */
+    const tl=gsap.timeline({paused:true});
+    function camTo(X,dur,at,ease){
+      ease=ease||'power1.inOut';
+      tl.to('#world .camMain',{x:-X,duration:dur,ease:ease},at)
+        .to('#world .gridL',{x:-X,duration:dur,ease:ease},at)
+        .to('#world .bgMidL',{x:-X*.85,duration:dur,ease:ease},at)
+        .to('#world .bgFarL',{x:-X*.72,duration:dur,ease:ease},at);
+    }
+    function copyIn(sel,at){tl.fromTo(sel,{clipPath:'inset(0% 0% 100% 0%)',y:34,autoAlpha:0},{clipPath:'inset(0% 0% 0% 0%)',y:0,autoAlpha:1,duration:.8,ease:'power3.out'},at);}
+    function copyOut(sel,at){tl.to(sel,{autoAlpha:0,y:-24,duration:.6,ease:'power2.in'},at);}
+    function fly(beeSel,id,at,dur,faceLeft){
+      if(faceLeft!=null)tl.set(beeSel+' > .flip',{scaleX:faceLeft?-1:1},at);
+      tl.to(beeSel,{motionPath:{path:'#'+id,align:'#'+id,alignOrigin:[.5,.5]},duration:dur,ease:'power1.inOut'},at);
+      tl.set('.dots_'+id+' circle',{opacity:0},at)
+        .to('.dots_'+id+' circle',{opacity:.65,duration:.25,stagger:{amount:Math.max(.4,dur*.72),from:'start'},ease:'none'},at+.05)
+        .to('.dots_'+id+' circle',{opacity:0,duration:.8,ease:'power1.in'},at+dur+.15);
+    }
+    function drink(beeSel,fSel,t,pollenColor){
+      tl.to(fSel+' .head',{y:6,rotation:-8,transformOrigin:'center',duration:.3,ease:'power2.out'},t)
+        .to(fSel+' .head',{y:0,rotation:0,duration:.5,ease:'back.out(2)'},t+.3)
+        .fromTo(beeSel+' .droplet',{opacity:0,scale:.3,transformOrigin:'50% 0%'},{opacity:1,scale:1,duration:.6,ease:'back.out(2)'},t+.15);
+      /* small pollen dots matching the flower — collection only, no bloom here */
+      if(pollenColor){
+        tl.set(beeSel+' .pollenLoad .pd',{attr:{fill:pollenColor}},t+.2);
+      }
+      tl.fromTo(beeSel+' .pollenLoad',{opacity:0,scale:.4,transformOrigin:'50% 50%'},{opacity:1,scale:1,duration:.55,ease:'back.out(2)'},t+.25);
+    }
+
+    tl.addLabel('s0',0);
+
+    /* === STEP 1 -> 2 · queen signals RIGHT into the comb; foragers receive === */
+    /* traveling hex packets from queen → hive cells (rightward) — x/y only, no MotionPath on polygons */
+    const SIG_TARGETS = (HSLOTS.length ? HSLOTS.slice(0,4) : HTUCK.slice(0,4));
+    const sigGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+    sigGroup.setAttribute('class','sigPackets');
+    q('#world .homeZ').appendChild(sigGroup);
+    SIG_TARGETS.forEach((tgt,i)=>{
+      const wrap=document.createElementNS('http://www.w3.org/2000/svg','g');
+      wrap.setAttribute('class','sigP sigP'+i);
+      wrap.setAttribute('opacity','0');
+      const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+      poly.setAttribute('points', hexPts(0,0,16));
+      poly.setAttribute('fill','rgba(228,179,60,.18)');
+      poly.setAttribute('stroke',GOLD);
+      poly.setAttribute('stroke-width','4');
+      poly.setAttribute('stroke-linejoin','round');
+      wrap.appendChild(poly);
+      sigGroup.appendChild(wrap);
+      const dx = tgt[0]-QPOS[0], dy = tgt[1]-QPOS[1];
+      tl.fromTo(wrap,
+        {x:QPOS[0], y:QPOS[1], scale:.55, opacity:0, transformOrigin:'50% 50%'},
+        {x:QPOS[0]+dx*.18, y:QPOS[1]+dy*.12-12, scale:.85, opacity:.95, duration:.28, ease:'power1.out'},
+        .2+i*.12);
+      tl.to(wrap,{x:tgt[0], y:tgt[1], scale:1.05, duration:1.0, ease:'power1.inOut'}, .4+i*.12);
+      tl.to(wrap,{scale:1.45, opacity:0, duration:.4, ease:'sine.out'}, 1.35+i*.12);
+    });
+    /* soft pulse stays tight — no leftward bloom */
+    tl.fromTo('#world .qpulse',{scale:.2,opacity:.4,transformOrigin:'center'},{scale:1.35,opacity:0,duration:1.0,ease:'sine.out',svgOrigin:QPOS[0]+' '+QPOS[1]},.2);
+    /* peekers RECEIVE the signal */
+    tl.to('#world .heroComb .peeker',{y:'-=10',duration:.28,ease:'power2.out',stagger:.1},1.15)
+      .to('#world .heroComb .peeker',{y:'+=10',duration:.6,ease:'bounce.out',stagger:.1},1.45);
+    /* brighten receiving cells briefly */
+    tl.to('#world .heroComb .slotFill',{opacity:.35,duration:.35,stagger:.08},1.2)
+      .to('#world .heroComb .slotFill',{opacity:0,duration:.5},1.7);
+    tl.to('#heroCopy',{autoAlpha:0,y:-30,duration:.9,ease:'power1.in'},.6)
+      .to('#scrollHint',{autoAlpha:0,duration:.5},.3);
+    /* hero emerges from cell (front peeker fades; side bee appears only once outside) */
+    tl.to('#world .heroComb .tuckPeeker',{opacity:0,duration:.3},1.55);
+    tl.set('#world .heroBee',{visibility:'visible'},1.55);
+    tl.to('#world .heroBee',{autoAlpha:1,scale:1.05,duration:.55,ease:'back.out(1.7)'},1.6)
+      .to('#world .heroBee',{y:'-=56',duration:.5,ease:'power2.out'},1.85);
+    camTo(GARDEN_X,3.6,1.5);
+    fly('#world .heroBee','trHeroGo',2.05,3.0,false);
+    /* garden mini-hives answer; foragers 10–20% tinier; hero slightly bigger */
+    [0,1,2].forEach(i=>{
+      const t=2.6+i*.32;
+      tl.fromTo('#world .g'+i,{scale:.92},{scale:1.04,duration:.35,ease:'power2.out',svgOrigin:GPOS[i][0]+' '+GPOS[i][1]},t)
+        .to('#world .g'+i,{scale:1,duration:.4},t+.35)
+        .fromTo('#world .gbee'+i,{autoAlpha:0,scale:.16},{autoAlpha:1,scale:.52,duration:.5,ease:'back.out(2)'},t+.15)
+        .to('#world .gbee'+i,{x:GH[i][0],y:GH[i][1],scale:.58,duration:.75,ease:'power2.out'},t+.35);
+    });
+    /* main courier a touch larger than the friends */
+    tl.to('#world .heroBee',{scale:1.12,duration:.4},3.2);
+    copyIn('#copyGardens',3.1);
+    tl.addLabel('s1',4.5);
+
+    /* === STEP 2 -> 3 · fly to the meadow, drink at the source === */
+    copyOut('#copyGardens',4.65);
+    camTo(MEADOW_X,3.8,4.8);
+    fly('#world .heroBee','trHeroMead',4.9,3.2,false);
+    [0,1,2].forEach(i=>fly('#world .gbee'+i,'trG'+i+'Mead',4.92+i*.18,3.2,false));
+    drink('#world .heroBee','#world .heroFlower',8.1,GTINT[0]);
+    [0,1,2].forEach(i=>drink('#world .gbee'+i,'#world .gflower'+i,8.15+i*.16,GTINT[i]));
+    copyIn('#copyWork',7.0);
+    tl.addLabel('s2',9.0);
+
+    /* === STEP 3 -> 4 · arrive: pollen drops + flowers bloom, then raiders vs bee shields === */
+    copyOut('#copyWork',9.15);
+    camTo(GARDEN_X,4.0,9.3);
+    fly('#world .heroBee','trHeroRet1',9.4,3.2,true);
+    [0,1,2].forEach(i=>fly('#world .gbee'+i,'trG'+i+'Ret',9.42+i*.16,3.1,true));
+    /* Opening of slide 4: pollen falls from foragers → ground; flowers bloom in real time */
+    copyIn('#copyShield',11.9);
+    [0,1,2].forEach(i=>{
+      const tDrop = 11.85 + i*.18;
+      tl.to('#world .gbee'+i+' .pollenLoad',{y:40, opacity:0, duration:.7, ease:'power2.in'}, tDrop);
+      tl.fromTo('#world .pmote'+i,{opacity:0, y:-40},{opacity:.95, y:0, duration:.55, ease:'power1.in'}, tDrop+.15)
+        .to('#world .pmote'+i,{opacity:0, duration:.35}, tDrop+.7)
+        .fromTo('#world .sprout'+i,{scale:0},{scale:1, duration:1.05, ease:'back.out(1.7)'}, tDrop+.45);
+    });
+    tl.to('#world .heroBee .pollenLoad',{y:40, opacity:0, duration:.7, ease:'power2.in'}, 11.9);
+    tl.fromTo('#world .pmote3',{opacity:0,y:-40},{opacity:.9,y:0,duration:.55,ease:'power1.in'},12.1)
+      .to('#world .pmote3',{opacity:0,duration:.35},12.65)
+      .fromTo('#world .sprout3',{scale:0},{scale:1,duration:1.05,ease:'back.out(1.7)'},12.4);
+
+    /* Three protected foragers — shields around the BEES, not the raiders */
+    [0,1,2].forEach(i=>{
+      const d=13.6+i*1.55, wasp='#world .wasp'+i, gb='#world .gbee'+i, gg='#world .g'+i, sh='#world .beeShield'+i;
+      /* forager docks near its mini-hive — stays VISIBLE (protected) */
+      tl.to(gb,{x:GPOS[i][0],y:GPOS[i][1]-18,scale:.55,duration:.9,ease:'power2.inOut'},d-1.0);
+      tl.to(gb+' .droplet',{opacity:0,scale:.4,duration:.28,transformOrigin:'50% 0%'},d-.2)
+        .to(gg+' .gfill',{opacity:.85,duration:.55,ease:'power2.out'},d);
+      /* shield rises around the friendly bee */
+      tl.set(sh,{x:GPOS[i][0],y:GPOS[i][1]-18,opacity:0,scale:.7},d-.35);
+      tl.to(sh,{opacity:1,scale:1.05,duration:.45,ease:'back.out(2)'},d-.3);
+      /* raider: slow dive → impact on bee shield → bounce → leave */
+      tl.fromTo(wasp,
+        {x:GPOS[i][0]+320,y:-340,rotation:12,scale:1.05,opacity:0},
+        {opacity:1,x:GPOS[i][0]+110,y:GPOS[i][1]-110,rotation:40,duration:1.55,ease:'power2.in'},
+        d-.85);
+      tl.to(wasp,{x:GPOS[i][0]+58,y:GPOS[i][1]-52,rotation:62,duration:.55,ease:'power3.in'},d+.55);
+      /* impact flash on bee shield */
+      tl.to(sh,{scale:1.18,duration:.18,ease:'power2.out'},d+1.05)
+        .to(sh,{scale:1.02,duration:.35,ease:'power2.out'},d+1.22);
+      tl.to('#world',{keyframes:[{x:-4,y:2,duration:.06},{x:4,y:-2,duration:.06},{x:0,y:0,duration:.08}]},d+1.05);
+      /* bounce off then leave */
+      tl.to(wasp,{x:GPOS[i][0]+40,y:GPOS[i][1]-70,rotation:20,duration:.28,ease:'power2.out'},d+1.1)
+        .to(wasp,{x:GPOS[i][0]+300,y:-360,rotation:160,scale:.7,opacity:0,duration:1.35,ease:'power2.in'},d+1.4);
+      /* shield softens but forager remains visible and protected */
+      tl.to(sh,{opacity:.35,duration:.8},d+1.8)
+        .to(sh,{opacity:0,duration:.9},d+2.5);
+      tl.to(gb,{scale:.52,duration:.4},d+1.6); /* still there */
+    });
+    tl.addLabel('s3',19.2);
+
+    /* === STEP 4 -> 5 · the courier deposits at home and SITS in its cell === */
+    copyOut('#copyShield',19.35);
+    camTo(HOME_X,3.6,19.5);
+    fly('#world .heroBee','trHeroRet2',19.6,3.0,true);
+    tl.to('#world .heroBee .droplet',{opacity:0,scale:.4,duration:.25,transformOrigin:'50% 0%'},22.45);
+    tl.to('#world .heroComb .slotFill',{opacity:(i)=>[.5,.62,.74,.84,.94,1][i]||.9,duration:.45,stagger:.12,ease:'power2.out'},22.6);
+    /* sit inside the same hive cell (tuck), not the bottom of the screen */
+    const tuck = HTUCK[0] || [CX, CY];
+    tl.to('#world .heroBee',{x:tuck[0],y:tuck[1],scale:.38,duration:1.0,ease:'power2.inOut'},22.9)
+      .set('#world .heroBee > .flip',{scaleX:1},23.7)
+      /* morph to front-view peeker language: fade side bee, restore tuck peeker */
+      .to('#world .heroBee',{autoAlpha:0,duration:.35},23.75)
+      .to('#world .heroComb .tuckPeeker',{opacity:1,duration:.4},23.85);
+    copyIn('#copyCounted',21.9);
+    tl.addLabel('s4',25.0);
+
+    /* === STEP 5 · finale === */
+    copyOut('#copyCounted',25.2);
+    tl.fromTo('#finaleOv',{autoAlpha:0},{autoAlpha:1,duration:1.1},25.4)
+      .fromTo('#finaleInner > *',{y:26,opacity:0},{y:0,opacity:1,stagger:.12,duration:.8,ease:'power2.out'},25.8);
+    tl.addLabel('s5',27.2);
+
+    /* ---------- finale: Without/With kWh contrast (punchline) + mini hive → jars ---------- */
+    const F=q('#svgF');
+    function tinyBee(x,y,s){
+      return `<g transform="translate(${x},${y}) scale(${s||.42})">
+        <ellipse cx="0" cy="2" rx="16" ry="12" fill="${BODY}"/>
+        <rect x="-10" y="-8" width="6" height="20" rx="3" fill="${INK}"/>
+        <rect x="0" y="-8" width="6" height="20" rx="3" fill="${INK}"/>
+        <circle cx="14" cy="-2" r="10" fill="${HEAD}"/>
+        <circle cx="17" cy="-4" r="3.2" fill="#FFFDF4"/>
+        <circle cx="18" cy="-3.5" r="1.6" fill="${INK}"/>
+        <ellipse cx="-2" cy="-14" rx="7" ry="11" fill="${WING}" opacity=".85"/>
+      </g>`;
+    }
+    function contrastPanel(){
+      /* LEFT — Without kWh: one shared cell, crowded, under attack */
+      const leftBees=[[-18,-10],[-2,8],[16,-6],[-14,14],[8,16],[-6,-18],[12,4]].map(([x,y])=>tinyBee(x,y,.32)).join('');
+      const left=`<g class="contrastLeft" transform="translate(160,150)">
+        <text x="0" y="-108" text-anchor="middle" font-family="DM Sans,sans-serif" font-weight="800" font-size="15" letter-spacing="1.5" fill="${RED}">WITHOUT kWh</text>
+        <polygon points="${hexPts(0,0,78)}" fill="#9E2B25" stroke="#6E1A16" stroke-width="4"/>
+        <polygon points="${hexPts(0,0,78)}" fill="rgba(36,31,24,.12)"/>
+        ${leftBees}
+        <g class="raiderHit" transform="translate(-110,-20) rotate(-18)">
+          ${bumble(0,0,.55,false)}
+        </g>
+        <path d="M-70 -55 L-48 -28 L-42 -48 L-22 -20" fill="none" stroke="${GOLD}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
+        <text x="0" y="118" text-anchor="middle" font-family="DM Sans,sans-serif" font-weight="600" font-size="13" fill="#4b4433">One shared cell — one strike hits all.</text>
+      </g>`;
+      /* RIGHT — With kWh: each bee its own hex, protected */
+      const R=28, Ww=Math.sqrt(3)*R;
+      const ring=[[0,0],[Ww,0],[-Ww,0],[Ww/2,-R*1.5],[-Ww/2,-R*1.5],[Ww/2,R*1.5],[-Ww/2,R*1.5]];
+      const rightCells=ring.map(([x,y],i)=>`
+        <g transform="translate(${x},${y})">
+          <polygon points="${hexPts(0,0,R*.92)}" fill="${i%2?HONEY:WAXO}" stroke="${DGOLD}" stroke-width="2.8"/>
+          ${tinyBee(0,2,.28)}
+          <polygon class="cellShield" points="${hexPts(0,0,R*1.08)}" fill="none" stroke="${GOLD}" stroke-width="2.2" opacity=".55"/>
+        </g>`).join('');
+      const right=`<g class="contrastRight" transform="translate(520,150)">
+        <text x="0" y="-108" text-anchor="middle" font-family="DM Sans,sans-serif" font-weight="800" font-size="15" letter-spacing="1.5" fill="${DGOLD}">WITH kWh</text>
+        <ellipse cx="0" cy="4" rx="118" ry="96" fill="${WAX}" opacity=".75"/>
+        ${rightCells}
+        <g class="raiderBounce" transform="translate(130,-70) rotate(28)" opacity=".9">
+          ${bumble(0,0,.48,true)}
+        </g>
+        <path d="M95 -40 Q78 -10 88 18" fill="none" stroke="${GOLD}" stroke-width="3" stroke-dasharray="4 5" opacity=".7"/>
+        <text x="0" y="118" text-anchor="middle" font-family="DM Sans,sans-serif" font-weight="600" font-size="13" fill="#4b4433">Each bee sealed — the attack stops outside.</text>
+      </g>`;
+      return `<g class="contrast">${left}${right}
+        <line x1="340" y1="40" x2="340" y2="270" stroke="rgba(36,31,24,.14)" stroke-width="2" stroke-dasharray="6 8"/>
+      </g>`;
+    }
+    function miniFinaleHive(){
+      const cx=450, cy=310, r=12, w=Math.sqrt(3)*r;
+      const layout=['.h.','.SaS','hTh','.SaS','.h.'];
+      let cells='', blob=`<ellipse cx="${cx}" cy="${cy}" rx="${r*3.2}" ry="${r*2.6}" fill="${WAX}"/>`;
+      layout.forEach((row,ri)=>{
+        const y=cy+(ri-(layout.length-1)/2)*r*1.5;
+        row.split('').forEach((ch,ci)=>{
+          if(ch==='.')return;
+          const x=cx+(ci-(row.length-1)/2)*w+(ri%2?w/2:0);
+          let fill=WAXO;
+          if(ch==='h')fill=HONEY;
+          if(ch==='d'||ch==='T')fill=CELLDARK;
+          if(ch==='S'||ch==='a')fill=WAXD;
+          cells+=hexPoly(x,y,r*.92,fill,DGOLD,2);
+        });
+      });
+      return `<g class="finaleHive">${blob}${cells}</g>`;
+    }
+    function jar(x,label){
+      const cid='jc'+(x|0);
+      return `<g class="jar" transform="translate(${x},392)" scale="0.55">
+        <rect x="-54" y="-96" width="108" height="30" rx="8" fill="#E7CE8F" stroke="${DGOLD}" stroke-width="4"/>
+        <path d="M-4 -96 L0 -88 L4 -96 Z" fill="${HONEY}" stroke="${DGOLD}" stroke-width="1.5"/>
+        <path d="M-58 -62 Q-58 -74 -46 -74 L46 -74 Q58 -74 58 -62 L58 122 Q58 140 40 140 L-40 140 Q-58 140 -58 122 Z" fill="rgba(255,255,255,.45)" stroke="${DGOLD}" stroke-width="4"/>
+        <clipPath id="${cid}"><path d="M-54 -58 L54 -58 L54 120 Q54 136 38 136 L-38 136 Q-54 136 -54 120 Z"/></clipPath>
+        <g clip-path="url(#${cid})">
+          <rect class="jfill" x="-54" y="150" width="108" height="210" fill="${HONEY}"/>
+          <ellipse class="jtop" cx="0" cy="150" rx="54" ry="7" fill="#FFDF7E" opacity=".9"/>
+        </g>
+        <ellipse cx="-22" cy="30" rx="10" ry="40" fill="rgba(255,255,255,.4)"/>
+        <text x="0" y="182" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="34" fill="${INK}">${label}</text>
+      </g>`;
+    }
+    function honeyStream(x, cls){
+      return `<g class="${cls}" opacity="0">
+        <path d="M${x} 330 C ${x-3} 350 ${x-2} 365 ${x} 378" fill="none" stroke="${HONEY}" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+        <path d="M${x} 330 C ${x-3} 350 ${x-2} 365 ${x} 378" fill="none" stroke="#FFDF7E" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+        <circle class="flowPulse" cx="${x}" cy="335" r="3.5" fill="#FFDF7E"/>
+      </g>`;
+    }
+    F.innerHTML=`${contrastPanel()}
+      ${miniFinaleHive()}
+      ${honeyStream(410,'hstream hstream0')}
+      ${honeyStream(490,'hstream hstream1')}
+      ${jar(410,'Forecasting')}${jar(490,'Peer-to-Peer Trading')}`;
+
+    /* ================= STEP NAVIGATION ================= */
+    const STEPS=['s0','s1','s2','s3','s4','s5'];
+    let cur=0,drv=null;
+    const driving=()=>!!(drv&&drv.isActive());
+    const prevB=q('#navPrev'),nextB=q('#navNext'),count=q('#stepCount');
+    const prog=q('#prog');
+    if(prog){
+      prog.innerHTML='';
+      prog.style.display=SHOW_DOTS?'flex':'none';
+      if(SHOW_DOTS){
+        STEPS.forEach((_,i)=>{
+          const sp=document.createElement('span');
+          sp.style.cssText='width:12px;height:12px;display:block;cursor:pointer;clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%);background:rgba(36,31,24,.18);transition:background .3s';
+          sp.addEventListener('click',()=>{if(driving()){drv.progress(1);}goTo(i,true);});
+          prog.appendChild(sp);
+        });
+      }
+    }
+    function updateUI(){
+      if(SHOW_DOTS && prog)[...prog.children].forEach((d,i)=>d.style.background=i===cur?'#E4B33C':'rgba(36,31,24,.18)');
+      count.textContent=(cur+1)+' / '+STEPS.length;
+      prevB.disabled=cur===0;
+      nextB.disabled=cur===STEPS.length-1;
+    }
+    function goTo(i,viaDots){
+      i=Math.max(0,Math.min(STEPS.length-1,i));
+      const tt=tl.labels[STEPS[i]],ct=tl.time();
+      if(i===cur&&Math.abs(tt-ct)<.01)return;
+      if(drv)drv.kill();
+      cur=i;updateUI();
+      if(RM){tl.time(tt);return;}
+      let dur,ease;
+      if(tt>ct){dur=(tt-ct)*PACE;ease='none';if(viaDots)dur=Math.min(dur,2.8);}
+      else{dur=Math.min(1.2,(ct-tt)*.22);ease='power2.inOut';}
+      drv=gsap.to(tl,{time:tt,duration:Math.max(dur,.35),ease:ease});
+    }
+    function nav(d){ if(driving()){drv.progress(1);} goTo(cur+d); }
+    prevB.addEventListener('click',()=>nav(-1));
+    nextB.addEventListener('click',()=>nav(1));
+    let acc=0,lastWheel=0,lastNav=0;
+    const onWheel=e=>{
+      e.preventDefault();
+      const now=Date.now();
+      if(now-lastWheel>260)acc=0;
+      lastWheel=now;
+      if(driving()||now-lastNav<600)return;
+      acc+=e.deltaY;
+      if(Math.abs(acc)>90){lastNav=now;const d=acc>0?1:-1;acc=0;goTo(cur+d);}
+    };
+    const onKey=e=>{
+      if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();if(!driving())goTo(cur+1);}
+      else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();if(!driving())goTo(cur-1);}
+    };
+    let tY=null;
+    const onTS=e=>{tY=e.touches[0].clientY;};
+    const onTE=e=>{
+      if(tY==null)return;
+      const dy=tY-e.changedTouches[0].clientY;tY=null;
+      if(Math.abs(dy)>50&&!driving())goTo(cur+(dy>0?1:-1));
+    };
+    window.addEventListener('wheel',onWheel,{passive:false});
+    window.addEventListener('keydown',onKey);
+    window.addEventListener('touchstart',onTS,{passive:true});
+    window.addEventListener('touchend',onTE);
+    window.__beeNavClean=()=>{
+      window.removeEventListener('wheel',onWheel);
+      window.removeEventListener('keydown',onKey);
+      window.removeEventListener('touchstart',onTS);
+      window.removeEventListener('touchend',onTE);
+      if(drv)drv.kill();
+    };
+    updateUI();
+
+    /* expose for debugging / embed hooks */
+    window.__beeGoTo = goTo;
+    window.__beeTl = tl;
+
+    /* ================= AMBIENT LOOPS ================= */
+    const loop=fn=>{if(!RM&&AMBIENT)fn();};
+    loop(()=>{gsap.to('#world .heroBee .beeG',{y:'-=7',duration:1.7,yoyo:true,repeat:-1,ease:'sine.inOut'});});
+    loop(()=>{gsap.utils.toArray('#world .gbee .beeG').forEach((b,i)=>gsap.to(b,{y:'-=9',duration:2+i*.35,yoyo:true,repeat:-1,ease:'sine.inOut',delay:i*.4}));});
+    loop(()=>{gsap.to('#world .queenW .beeG',{y:'-=6',duration:2.1,yoyo:true,repeat:-1,ease:'sine.inOut'});
+      gsap.to('#world .queenW .antA',{rotation:-12,transformOrigin:'right bottom',duration:.5,yoyo:true,repeat:-1,ease:'sine.inOut'});
+      gsap.to('#world .queenW .antB',{rotation:12,transformOrigin:'left bottom',duration:.5,yoyo:true,repeat:-1,ease:'sine.inOut'});});
+    loop(()=>{
+      /* soft hex pulses drift RIGHT toward the hive — never expand left into empty air */
+      const pulseRight=(sel,delay)=>{
+        gsap.timeline({repeat:-1,repeatDelay:1.4,delay})
+          .set(sel,{opacity:0, x:0, y:0, scale:.7, svgOrigin:QPOS[0]+' '+QPOS[1]})
+          .to(sel,{opacity:.8, x:70, y:-8, scale:.85, duration:.4, ease:'power1.out'})
+          .to(sel,{x:320, y:40, opacity:0, scale:1.1, duration:1.5, ease:'sine.out'});
+      };
+      pulseRight('#world .qr0',0);
+      pulseRight('#world .qr1',1.0);
+    });
+    loop(()=>{gsap.utils.toArray('#world .pkEyes').forEach((el,i)=>{
+      gsap.timeline({repeat:-1,repeatDelay:2.4+i*1.1,delay:i*.7})
+        .to(el,{scaleY:.12,transformOrigin:'center',duration:.07})
+        .to(el,{scaleY:1,duration:.1},'+=.06');});});
+    loop(()=>{gsap.utils.toArray('#world .mote').forEach((el,i)=>{
+      gsap.to(el,{y:'-=26',x:'+=14',duration:3+(i%4),yoyo:true,repeat:-1,ease:'sine.inOut',delay:i*.35});});});
+    loop(()=>{gsap.utils.toArray('#world .flowerG').forEach((el,i)=>{
+      gsap.to(el,{rotation:2.5+(i%3),transformOrigin:'50% 100%',duration:2.4+(i%5)*.3,yoyo:true,repeat:-1,ease:'sine.inOut',delay:(i%4)*.4});});});
+    loop(()=>{gsap.to('#world .sunRays',{rotation:360,svgOrigin:SUN[0]+' '+SUN[1],duration:40,repeat:-1,ease:'none'});});
+    loop(()=>{
+      /* jars fill up as honey streams continuously */
+      gsap.fromTo('#svgF .jfill',{y:150},{y:18,duration:5.5,ease:'power1.inOut', delay:0.4});
+      gsap.fromTo('#svgF .jtop',{y:150},{y:18,duration:5.5,ease:'power1.inOut', delay:0.4});
+      gsap.fromTo('#svgF .hstream',{opacity:0},{opacity:1,duration:.8,stagger:.25,delay:.2});
+      gsap.utils.toArray('#svgF .flowPulse').forEach((el,i)=>{
+        gsap.fromTo(el,{cy:335, opacity:.9},{cy:375, opacity:.15, duration:1.0, repeat:-1, ease:'none', delay:i*.4});
+      });
+      /* contrast micro-motion: left under pressure, right shields hold */
+      gsap.to('#svgF .contrastLeft .raiderHit',{x:'+=6',y:'+=4',duration:1.1,yoyo:true,repeat:-1,ease:'sine.inOut'});
+      gsap.to('#svgF .contrastRight .cellShield',{opacity:.9,duration:.9,yoyo:true,repeat:-1,ease:'sine.inOut',stagger:.08});
+      gsap.to('#svgF .contrastRight .raiderBounce',{x:'+=10',y:'-=8',rotation:'+=6',duration:1.4,yoyo:true,repeat:-1,ease:'sine.inOut'});
+    });
+    
+    }); // gsap.context
+    }catch(err){
+      console.error('[bee-story] init failed', err);
+      window.__beeInitErr = String(err && err.stack || err);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+</body>
+</html>

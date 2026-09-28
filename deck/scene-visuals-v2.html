@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>kWh Deck Scenes — v2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+:root{
+  --ink:      #121A16;
+  --ink2:     #55645B;
+  --ink3:     #8E9C93;
+  --accent:   #157A3D;
+  --accent-ink:#0F5C2C;
+  --accent-bg:#EAF6EE;
+  --line:     #E1E8E3;
+  --wh:       #FFFFFF;
+  --page:     #EDF1EE;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  --t1: 22px;   /* title */
+  --t2: 14.5px; /* body */
+  --t3: 12px;   /* small / meta */
+  --hero: 36px; /* single hero number, used once per scene at most */
+}
+
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html,body{ background:var(--page); color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+body{ padding:48px 24px 120px; }
+
+.masthead{ max-width:1280px; margin:0 auto 56px; }
+.masthead .who{ font-size:var(--t2); font-weight:600; color:var(--accent-ink); }
+.masthead h1{ font-weight:600; font-size:28px; letter-spacing:-.01em; margin-top:8px; color:var(--ink); }
+.masthead p{ font-size:var(--t2); color:var(--ink2); margin-top:10px; max-width:680px; line-height:1.55; }
+
+.case-head{ max-width:1280px; margin:88px auto 28px; display:flex; align-items:baseline; gap:14px; }
+.case-head .n{ font-size:var(--t1); font-weight:600; color:var(--ink3); }
+.case-head h2{ font-size:var(--t1); font-weight:600; color:var(--ink); }
+.case-head p{ font-size:var(--t2); color:var(--ink2); margin-top:2px; width:100%; max-width:760px; }
+.case-head-row{ display:flex; flex-wrap:wrap; align-items:baseline; gap:14px; width:100%; }
+
+.scene{ max-width:1280px; margin:0 auto 40px; }
+.scene-head{ margin-bottom:14px; display:flex; align-items:baseline; gap:10px; }
+.scene-head .n{ font-size:var(--t2); font-weight:600; color:var(--ink3); min-width:16px; }
+.scene-head h3{ font-size:var(--t2); font-weight:600; color:var(--ink); }
+.scene-head p{ font-size:var(--t3); color:var(--ink2); margin-left:26px; width:100%; max-width:820px; margin-top:2px; }
+
+.crop-scroll{ overflow-x:auto; padding:4px 2px 16px; }
+.crop{
+  width:1280px; height:720px; border-radius:2px;
+  border:1px dashed #C9D3CB; position:relative; overflow:hidden; flex-shrink:0;
+}
+.crop.wh{ background:var(--wh); }
+.crop.tint{ background:#F6FAF7; }
+.crop.paper{ background:#FBFAF7; }
+
+/* ---- icons: no box, thick stroke, ink by default ---- */
+.icon{ width:22px; height:22px; stroke:var(--ink); fill:none; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round; display:block; }
+.icon.sm{ width:16px; height:16px; stroke-width:2.3; }
+.icon.lg{ width:30px; height:30px; stroke-width:1.9; }
+.icon.xl{ width:38px; height:38px; stroke-width:1.8; }
+.icon.accent{ stroke:var(--accent); }
+.icon.muted{ stroke:var(--ink3); }
+.icon.wh{ stroke:#fff; }
+
+.node{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+.node .lbl{ font-size:var(--t2); font-weight:500; color:var(--ink); text-align:center; line-height:1.25; }
+.node .lbl.muted{ color:var(--ink2); font-weight:400; }
+.node .lbl.small{ font-size:var(--t3); }
+
+.tag{ font-size:var(--t3); font-weight:600; padding:4px 11px; border-radius:2px; border:1px solid var(--line); color:var(--ink2); background:var(--wh); display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+.tag.accent{ background:var(--accent-bg); border-color:transparent; color:var(--accent-ink); }
+
+.hline{ height:1px; background:var(--line); }
+.vline{ width:1px; background:var(--line); }
+
+.fine{ font-size:var(--t3); color:var(--ink2); line-height:1.5; }
+.body{ font-size:var(--t2); color:var(--ink2); line-height:1.5; }
+
+/* ---- phone (device chrome — realistic radius is an intentional exception) ---- */
+.phone{ width:250px; height:512px; border-radius:36px; background:#0D1210; padding:10px; box-shadow:0 14px 28px rgba(15,26,20,.16); flex-shrink:0; }
+.phone-screen{ width:100%; height:100%; background:var(--wh); border-radius:27px; overflow:hidden; position:relative; display:flex; flex-direction:column; }
+.island{ position:absolute; top:11px; left:50%; transform:translateX(-50%); width:78px; height:22px; background:#0D1210; border-radius:12px; z-index:6; }
+.statusbar{ height:38px; display:flex; align-items:flex-end; justify-content:space-between; padding:0 20px 6px; font-size:12.5px; font-weight:600; flex-shrink:0; }
+.statusbar .icons{ display:flex; align-items:center; gap:5px; }
+.appbar{ height:46px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 16px; border-bottom:1px solid var(--line); }
+.appbar .name{ font-weight:600; font-size:var(--t2); color:var(--ink); }
+.phone-body{ flex:1; padding:18px 16px; overflow:hidden; }
+.tabbar{ height:54px; flex-shrink:0; display:flex; align-items:center; justify-content:space-around; border-top:1px solid var(--line); background:var(--wh); }
+.tabbar .tab{ display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--ink3); }
+.tabbar .tab.on{ color:var(--accent); }
+.tabbar .tab span{ font-size:10px; font-weight:500; }
+
+/* ---- browser panel: content container, so it gets the 2px radius rule ---- */
+.browser{ border-radius:2px; border:1px solid var(--line); overflow:hidden; background:var(--wh); flex-shrink:0; }
+.chrome{ height:30px; background:#FAFBFA; display:flex; align-items:center; gap:6px; padding:0 12px; border-bottom:1px solid var(--line); }
+.chrome .dot{ width:7px; height:7px; border-radius:50%; background:#D6DED9; }
+.chrome .url{ margin-left:8px; font-size:11px; color:var(--ink3); }
+
+svg.connector{ position:absolute; inset:0; width:100%; height:100%; }
+
+</style>
+</head>
+<body>
+
+<!-- ============ ICON SPRITE ============ -->
+<svg style="display:none">
+<defs>
+<symbol id="i-battery" viewBox="0 0 24 24"><rect x="2" y="7" width="17" height="10" rx="2.2"/><rect x="20" y="10" width="2" height="4" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24"><rect x="5" y="9" width="14" height="11" rx="2.4"/><line x1="9" y1="9" x2="9" y2="4"/><line x1="15" y1="9" x2="15" y2="4"/></symbol>
+<symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 13h3.2l2-8 4.6 16 2-8h3l1.6 3.4H22"/></symbol>
+<symbol id="i-meter" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.2"/><line x1="12" y1="13" x2="16" y2="8.6"/><circle cx="12" cy="13" r="1.1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><path d="M4.5 21V9.2L12 4l7.5 5.2V21"/><line x1="3" y1="21" x2="21" y2="21"/><line x1="9.2" y1="21" x2="9.2" y2="13.5"/><line x1="14.8" y1="21" x2="14.8" y2="13.5"/></symbol>
+<symbol id="i-agg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.1"/><circle cx="4.2" cy="5.5" r="1.5"/><circle cx="19.8" cy="5.5" r="1.5"/><circle cx="4.2" cy="18.5" r="1.5"/><circle cx="19.8" cy="18.5" r="1.5"/><line x1="12" y1="12" x2="4.2" y2="5.5"/><line x1="12" y1="12" x2="19.8" y2="5.5"/><line x1="12" y1="12" x2="4.2" y2="18.5"/><line x1="12" y1="12" x2="19.8" y2="18.5"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.4 5.4l2.1 2.1M16.5 16.5l2.1 2.1M5.4 18.6l2.1-2.1M16.5 7.5l2.1-2.1"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 11.6L11.6 3 21 12.4 12.4 21z"/><circle cx="7.6" cy="7.6" r="1.5" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-gw" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.6 8.6h6.8v6.8H8.6z"/></symbol>
+<symbol id="i-bt" viewBox="0 0 24 24"><path d="M7 7.2L17 17l-5 4.3V2.7l5 4.3L7 16.8"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5.2 5L20 6"/></symbol>
+<symbol id="i-dollar" viewBox="0 0 24 24"><path d="M12 6.4v11.2M15.2 9.4c0-1.5-1.5-2.4-3.2-2.4S8.8 8 8.8 9.5s1.5 2 3.2 2.4 3.2 1 3.2 2.5-1.5 2.4-3.2 2.4-3.2-1-3.2-2.4"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4.4 14h6l-1 8L21 10h-6z"/></symbol>
+<symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M4.6 20c1-3.6 4-5.6 7.4-5.6s6.4 2 7.4 5.6"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3.4 21 8l-9 4.6L3 8z"/><path d="M3 12.4l9 4.6 9-4.6"/><path d="M3 16.6l9 4.6 9-4.6"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="i-signal" viewBox="0 0 24 24"><path d="M4 18v-3M9 18v-6M14 18v-9M19 18V4" stroke-width="2.3"/></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9.5a13 13 0 0 1 18 0M6.3 13a8.6 8.6 0 0 1 11.4 0M9.6 16.4a4.2 4.2 0 0 1 4.8 0"/><circle cx="12" cy="19.2" r="1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-battfull" viewBox="0 0 24 24"><rect x="2" y="8" width="18" height="8" rx="1.8"/><rect x="21" y="10.4" width="1.6" height="3.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1.4"/><rect x="3" y="14" width="18" height="6" rx="1.4"/><circle cx="7" cy="7" r=".9" fill="currentColor" stroke="none"/><circle cx="7" cy="17" r=".9" fill="currentColor" stroke="none"/></symbol>
+</defs>
+</svg>
+
+<div class="masthead">
+  <div class="who">kWh Electric — deck visuals</div>
+  <h1>One infrastructure, six moments</h1>
+  <p>Three complete visual directions for the same six scenes, each a screenshot-ready 16:9 crop (dashed border = exact bounds). Calm, open layout throughout: one typeface, one accent color, no boxed icons, no decorative labels &mdash; hierarchy comes from weight and space, not size or color count.</p>
+</div>
+
+<!-- ============================================================================================= -->
+<!-- CASE A — Open editorial -->
+<!-- ============================================================================================= -->
+<div class="case-head">
+  <div class="case-head-row">
+    <span class="n">A</span><h2>Open editorial</h2>
+  </div>
+  <p>Pure white, generous whitespace, straight connectors. The quietest of the three &mdash; nothing competes with the story.</p>
+</div>
+
+<!-- A · Scene 1 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">1</span><h3>Every customer pays the same toll</h3></div>
+  <p class="fine" style="max-width:820px; margin:-6px 0 14px 26px;">Before, connecting one battery routes through four intermediaries, and that full chain repeats for every customer. After, the utility and the asset share one gateway.</p>
+  <div class="crop-scroll"><div class="crop wh">
+
+    <div style="position:absolute; left:64px; top:56px; font-weight:600; font-size:var(--t2); color:var(--ink);">Before</div>
+    <div style="position:absolute; left:64px; top:98px; display:flex; align-items:center; gap:0; width:1152px;">
+      <div class="node"><svg class="icon"><use href="#i-building"/></svg><div class="lbl">Utility</div></div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; padding:0 6px 20px;"><div class="fine">fee</div><div class="hline" style="width:100%;"></div></div>
+      <div class="node"><svg class="icon"><use href="#i-agg"/></svg><div class="lbl">Aggregator</div></div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; padding:0 6px 20px;"><div class="fine">fee</div><div class="hline" style="width:100%;"></div></div>
+      <div class="node"><svg class="icon"><use href="#i-gear"/></svg><div class="lbl">Integrator</div></div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; padding:0 6px 20px;"><div class="fine">fee</div><div class="hline" style="width:100%;"></div></div>
+      <div class="node"><svg class="icon"><use href="#i-tag"/></svg><div class="lbl">OEM</div></div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; padding:0 6px 20px;"><div class="fine">fee</div><div class="hline" style="width:100%;"></div></div>
+      <div class="node"><svg class="icon"><use href="#i-battery"/></svg><div class="lbl">Customer</div></div>
+    </div>
+    <p class="body" style="position:absolute; left:64px; top:210px;">One customer, four tolls. The utility repeats this exact chain, in full, for customer two, three&hellip; a hundred.</p>
+
+    <div class="hline" style="position:absolute; left:64px; top:288px; width:1152px;"></div>
+
+    <div style="position:absolute; left:64px; top:326px; font-weight:600; font-size:var(--t2); color:var(--ink);">After</div>
+    <div style="position:absolute; left:64px; top:368px; display:flex; align-items:center; width:1152px;">
+      <div class="node"><svg class="icon"><use href="#i-building"/></svg><div class="lbl">Utility</div></div>
+      <div style="flex:1; height:1px; background:var(--accent); margin:0 8px 20px;"></div>
+      <div class="node"><svg class="icon accent" style="width:26px;height:26px;"><use href="#i-gw"/></svg><div class="lbl">kWh gateway</div></div>
+      <div style="flex:1; height:1px; background:var(--accent); margin:0 8px 20px;"></div>
+      <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-start;">
+        <div style="display:flex; align-items:center; gap:10px;"><svg class="icon sm"><use href="#i-battery"/></svg><span class="lbl muted" style="text-align:left;">Customer A</span></div>
+        <div style="display:flex; align-items:center; gap:10px;"><svg class="icon sm"><use href="#i-battery"/></svg><span class="lbl muted" style="text-align:left;">Customer B</span></div>
+        <div style="display:flex; align-items:center; gap:10px;"><svg class="icon sm"><use href="#i-battery"/></svg><span class="lbl muted" style="text-align:left;">Customer C</span></div>
+      </div>
+    </div>
+    <p class="body" style="position:absolute; left:64px; top:492px; max-width:700px;">Every customer, one gateway. The same connection serves the next hundred with no new integration.</p>
+
+    <div style="position:absolute; left:64px; bottom:56px; display:flex; align-items:center; gap:10px;">
+      <svg class="icon sm accent"><use href="#i-check"/></svg>
+      <span class="fine">Zero new integration per customer</span>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- A · Scene 2 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">2</span><h3>Onboarding is a Bluetooth handshake</h3></div>
+  <p class="fine" style="max-width:820px; margin:-6px 0 14px 26px;">The customer opens the app, finds the gateway over Bluetooth, and connects. The gateway is already the hub for every asset on site.</p>
+  <div class="crop-scroll"><div class="crop wh">
+
+    <div style="position:absolute; left:64px; top:70px;">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="island"></div>
+          <div class="statusbar"><span>9:41</span><span class="icons"><svg class="icon sm"><use href="#i-signal"/></svg><svg class="icon sm"><use href="#i-wifi"/></svg><svg class="icon sm"><use href="#i-battfull"/></svg></span></div>
+          <div class="appbar"><span class="name">kWh Electric</span></div>
+          <div class="phone-body">
+            <div class="fine" style="color:var(--accent-ink); font-weight:600;">Step 2 of 3</div>
+            <div style="font-size:20px; font-weight:600; margin-top:8px; line-height:1.3;">Find your gateway</div>
+            <div class="body" style="margin-top:8px;">Scanning nearby over Bluetooth. No QR code &mdash; just tap the gateway that's yours.</div>
+
+            <div style="display:flex; align-items:center; gap:8px; margin-top:20px;">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);"></span>
+              <span class="fine" style="color:var(--accent-ink); font-weight:600;">Scanning&hellip;</span>
+            </div>
+
+            <div style="margin-top:14px; border-top:1px solid var(--line); border-bottom:1px solid var(--accent); padding:12px 2px; display:flex; align-items:center; justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <svg class="icon" style="color:var(--accent);"><use href="#i-bt"/></svg>
+                <div>
+                  <div style="font-size:var(--t2); font-weight:600;">KWH-GW-b748</div>
+                  <div class="fine">Strongest signal</div>
+                </div>
+              </div>
+              <svg class="icon sm muted"><use href="#i-chev"/></svg>
+            </div>
+            <div style="border-bottom:1px solid var(--line); padding:12px 2px; display:flex; align-items:center; justify-content:space-between; opacity:.5;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <svg class="icon muted"><use href="#i-bt"/></svg>
+                <div>
+                  <div style="font-size:var(--t2); font-weight:500;">KWH-GW-4d4d</div>
+                  <div class="fine">Weaker signal</div>
+                </div>
+              </div>
+              <svg class="icon sm muted"><use href="#i-chev"/></svg>
+            </div>
+          </div>
+          <div class="tabbar">
+            <div class="tab"><svg class="icon sm"><use href="#i-gw"/></svg><span>Devices</span></div>
+            <div class="tab on"><svg class="icon sm"><use href="#i-bt"/></svg><span>Enroll</span></div>
+            <div class="tab"><svg class="icon sm"><use href="#i-wave"/></svg><span>Telemetry</span></div>
+            <div class="tab"><svg class="icon sm"><use href="#i-bolt"/></svg><span>Events</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vline" style="position:absolute; left:394px; top:64px; height:592px;"></div>
+
+    <div style="position:absolute; left:440px; top:70px; font-weight:600; font-size:var(--t2);">Meanwhile, at the gateway</div>
+
+    <div style="position:absolute; left:454px; top:150px; display:flex; align-items:center; gap:0;">
+      <div class="node">
+        <svg class="icon sm muted"><use href="#i-bt"/></svg>
+        <div class="fine" style="width:70px;">Phone</div>
+      </div>
+      <div style="width:60px; height:1px; background:var(--ink3); border-top:1px dashed var(--ink3); margin-bottom:22px;"></div>
+      <div class="node">
+        <svg class="icon lg accent"><use href="#i-gw"/></svg>
+        <div class="lbl">kWh gateway</div>
+      </div>
+    </div>
+
+    <div style="position:absolute; left:454px; top:300px; display:flex; flex-direction:column; gap:0;">
+      <div style="display:flex; align-items:center; gap:0; height:64px;">
+        <svg class="icon accent" style="width:20px;height:20px;"><use href="#i-gw"/></svg>
+        <div style="width:64px; height:1px; background:var(--line);"></div>
+        <svg class="icon"><use href="#i-battery"/></svg>
+        <span class="lbl" style="margin-left:10px; text-align:left;">Battery</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:0; height:64px;">
+        <svg class="icon" style="width:20px;height:20px; visibility:hidden;"><use href="#i-gw"/></svg>
+        <div style="width:64px; height:1px; background:var(--line);"></div>
+        <svg class="icon"><use href="#i-plug"/></svg>
+        <span class="lbl" style="margin-left:10px; text-align:left;">EV charger</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:0; height:64px;">
+        <svg class="icon" style="width:20px;height:20px; visibility:hidden;"><use href="#i-gw"/></svg>
+        <div style="width:64px; height:1px; background:var(--line);"></div>
+        <svg class="icon"><use href="#i-wave"/></svg>
+        <span class="lbl" style="margin-left:10px; text-align:left;">Inverter</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:0; height:64px;">
+        <svg class="icon" style="width:20px;height:20px; visibility:hidden;"><use href="#i-gw"/></svg>
+        <div style="width:64px; height:1px; background:var(--line);"></div>
+        <svg class="icon"><use href="#i-meter"/></svg>
+        <span class="lbl" style="margin-left:10px; text-align:left;">Meter</span>
+      </div>
+      <div class="vline" style="position:absolute; left:9px; top:8px; height:248px;"></div>
+    </div>
+
+    <p class="body" style="position:absolute; left:454px; top:592px; max-width:600px;">One handshake enrolls the phone. The gateway was already wired to every asset on site.</p>
+
+  </div></div>
+</div>
+
+<!-- A · Scene 3 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">3</span><h3>One gateway, every dialect</h3></div>
+  <p class="fine" style="max-width:820px; margin:-6px 0 14px 26px;">Assets speak whatever they already speak. The gateway is the only thing that has to understand all of it. The server is the foundation underneath.</p>
+  <div class="crop-scroll"><div class="crop wh">
+    <div style="position:absolute; inset:0; padding:56px 64px; display:flex; flex-direction:column; align-items:center;">
+
+      <div style="display:flex; gap:56px;">
+        <div class="node"><svg class="icon lg"><use href="#i-battery"/></svg><div class="lbl">Battery</div></div>
+        <div class="node"><svg class="icon lg"><use href="#i-plug"/></svg><div class="lbl">EV charger</div></div>
+        <div class="node"><svg class="icon lg"><use href="#i-wave"/></svg><div class="lbl">Inverter</div></div>
+        <div class="node"><svg class="icon lg"><use href="#i-meter"/></svg><div class="lbl">Meter</div></div>
+      </div>
+
+      <div class="vline" style="height:34px; margin-top:14px;"></div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; max-width:760px;">
+        <span class="tag">Modbus TCP</span>
+        <span class="tag">SunSpec Modbus</span>
+        <span class="tag">RS-485</span>
+        <span class="tag">CAN 2.0B</span>
+        <span class="tag">MQTT</span>
+        <span class="tag">OCPP</span>
+      </div>
+
+      <div class="vline" style="height:34px;"></div>
+
+      <div style="display:flex; align-items:center; gap:16px; padding:18px 34px; border:1px solid var(--accent); border-radius:2px;">
+        <svg class="icon lg accent"><use href="#i-gw"/></svg>
+        <div>
+          <div style="font-size:var(--t1); font-weight:600;">kWh gateway</div>
+          <div class="fine">Every dialect in, one canonical model out</div>
+        </div>
+      </div>
+
+      <div class="vline" style="height:34px;"></div>
+
+      <div style="width:100%; max-width:900px; border-top:2px solid var(--ink); padding-top:16px; display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <svg class="icon"><use href="#i-server"/></svg>
+          <div>
+            <div style="font-weight:600; font-size:var(--t2);">IEEE 2030.5 server</div>
+            <div class="fine">The infrastructure everything above stands on</div>
+          </div>
+        </div>
+        <span class="fine">sep.kwhelectric.io &middot; mTLS</span>
+      </div>
+
+    </div>
+  </div></div>
+</div>
+
+<!-- A · Scene 4 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">4</span><h3>Same data, two audiences, real time</h3></div>
+  <p class="fine" style="max-width:820px; margin:-6px 0 14px 26px;">One telemetry stream from the gateway. The customer sees a simple app; the utility sees one row in a fleet &mdash; at the same moment, from the same source.</p>
+  <div class="crop-scroll"><div class="crop wh">
+
+    <div style="position:absolute; left:0; top:52px; width:1280px; text-align:center;">
+      <div class="node" style="display:inline-flex;">
+        <svg class="icon xl accent"><use href="#i-gw"/></svg>
+        <div class="lbl">kWh gateway</div>
+      </div>
+    </div>
+
+    <svg viewBox="0 0 1280 720" style="position:absolute; inset:0; width:1280px; height:720px;">
+      <line x1="640" y1="146" x2="330" y2="240" stroke="var(--accent)" stroke-width="1.6"/>
+      <line x1="640" y1="146" x2="950" y2="240" stroke="var(--accent)" stroke-width="1.6"/>
+    </svg>
+
+    <div style="position:absolute; left:110px; top:262px; text-align:center; width:280px; font-weight:600; font-size:var(--t2);">Customer app</div>
+    <div style="position:absolute; left:80px; top:304px;">
+      <div class="phone" style="width:264px; height:400px;">
+        <div class="phone-screen">
+          <div class="island"></div>
+          <div class="statusbar"><span>9:41</span><span class="icons"><svg class="icon sm"><use href="#i-wifi"/></svg><svg class="icon sm"><use href="#i-battfull"/></svg></span></div>
+          <div class="appbar"><span class="name">Your battery</span><span style="display:flex; align-items:center; gap:6px; font-size:var(--t3); color:var(--accent-ink); font-weight:600;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></span>Live</span></div>
+          <div class="phone-body">
+            <div class="fine">State of charge</div>
+            <div style="font-size:var(--hero); font-weight:600; margin-top:2px;">78%</div>
+            <div style="height:5px; background:var(--line); border-radius:2px; margin-top:12px; overflow:hidden;"><div style="width:78%; height:100%; background:var(--accent);"></div></div>
+            <div style="display:flex; gap:24px; margin-top:22px;">
+              <div><div class="fine">Power</div><div style="font-weight:600; font-size:var(--t1); margin-top:2px;">2.4 kW</div></div>
+              <div><div class="fine">Mode</div><div style="font-weight:600; font-size:var(--t1); margin-top:2px; color:var(--accent-ink);">Charging</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute; left:850px; top:262px; text-align:center; width:340px; font-weight:600; font-size:var(--t2);">Utility portal</div>
+    <div style="position:absolute; left:780px; top:314px;">
+      <div class="browser" style="width:460px;">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">grid.kwhelectric.io</span></div>
+        <div style="padding:22px;">
+          <div class="fine">Site01-bess &middot; PoC Site 01 &middot; asset 1 of 1,842 on this feeder</div>
+          <div style="display:flex; gap:0; margin-top:18px; align-items:baseline;">
+            <div style="flex:1;"><div class="fine">State of charge</div><div style="font-weight:600; font-size:var(--t1); margin-top:2px;">78%</div></div>
+            <div class="vline" style="height:36px; margin:0 18px;"></div>
+            <div style="flex:1;"><div class="fine">Power</div><div style="font-weight:600; font-size:var(--t1); margin-top:2px;">2.4 kW</div></div>
+            <div class="vline" style="height:36px; margin:0 18px;"></div>
+            <div style="flex:1;"><div class="fine">Status</div><div style="font-weight:600; font-size:var(--t1); margin-top:2px; color:var(--accent-ink);">Online</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- A · Scene 5 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">5</span><h3>Gateway or OEM cloud, one asset list either way</h3></div>
+  <p class="fine" style="max-width:820px; margin:-6px 0 14px 26px;">The utility's asset list doesn't care how a device connects. Grid services runs on top of the same list &mdash; deploy a flex event, watch telemetry, or dispatch, all from one place.</p>
+  <div class="crop-scroll"><div class="crop wh">
+    <div style="position:absolute; inset:0; padding:32px;">
+      <div class="browser" style="width:1216px; height:656px;">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">grid.kwhelectric.io</span></div>
+        <div style="display:flex; height:calc(100% - 30px);">
+
+          <div style="width:180px; border-right:1px solid var(--line); padding:22px 16px; flex-shrink:0;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:26px;">
+              <svg class="icon accent" style="width:19px;height:19px;"><use href="#i-bolt"/></svg>
+              <span style="font-weight:600; font-size:var(--t2);">Grid Intelligence</span>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+              <div style="display:flex; align-items:center; gap:10px; padding:9px 0; color:var(--ink2); font-size:var(--t2);"><svg class="icon sm"><use href="#i-person"/></svg>Customer management</div>
+              <div style="display:flex; align-items:center; gap:10px; padding:9px 0; color:var(--ink); font-size:var(--t2); font-weight:600; border-bottom:2px solid var(--accent);"><svg class="icon sm"><use href="#i-layers"/></svg>Asset management</div>
+              <div style="display:flex; align-items:center; gap:10px; padding:9px 0; color:var(--ink2); font-size:var(--t2);"><svg class="icon sm"><use href="#i-bolt"/></svg>Grid services</div>
+            </div>
+          </div>
+
+          <div style="flex:1; padding:24px 30px; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="font-weight:600; font-size:var(--t1);">Asset management</div>
+            <div class="fine" style="margin-top:2px;">All connected assets, gateway-managed or OEM-integrated</div>
+
+            <div style="margin-top:14px;">
+              <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:8px 0; border-bottom:1px solid var(--line);">
+                <span class="fine" style="font-weight:600;">Asset</span><span class="fine" style="font-weight:600;">Protocol</span><span class="fine" style="font-weight:600;">Path</span>
+              </div>
+              <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:9px 0; border-bottom:1px solid var(--line); align-items:center;">
+                <span style="font-size:var(--t2);">Site01-bess</span><span class="fine">sunspec</span><span class="tag accent" style="width:fit-content;">kWh gateway</span>
+              </div>
+              <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:9px 0; border-bottom:1px solid var(--line); align-items:center;">
+                <span style="font-size:var(--t2);">Site01-solaredge</span><span class="fine">oem_api</span><span class="tag" style="width:fit-content;">kWh integration</span>
+              </div>
+              <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:9px 0; border-bottom:1px solid var(--line); align-items:center;">
+                <span style="font-size:var(--t2);">Site02-bess</span><span class="fine">can</span><span class="tag accent" style="width:fit-content;">kWh gateway</span>
+              </div>
+              <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:9px 0; align-items:center;">
+                <span style="font-size:var(--t2);">Site02-tesla</span><span class="fine">oem_api</span><span class="tag" style="width:fit-content;">kWh integration</span>
+              </div>
+            </div>
+
+            <div style="margin-top:auto; padding-top:18px; border-top:1px solid var(--ink);">
+              <div style="font-weight:600; font-size:var(--t2); margin-bottom:10px;">Grid services &mdash; same assets, one layer up</div>
+              <div style="display:flex; gap:0;">
+                <div style="flex:1; padding-right:20px;">
+                  <div style="display:flex; align-items:center; gap:8px;"><svg class="icon sm accent"><use href="#i-bolt"/></svg><span style="font-weight:600; font-size:var(--t2);">Deploy flex event</span></div>
+                  <div class="fine" style="margin-top:3px;">Request capacity from eligible assets on a feeder</div>
+                </div>
+                <div class="vline" style="height:44px;"></div>
+                <div style="flex:1; padding:0 20px;">
+                  <div style="display:flex; align-items:center; gap:8px;"><svg class="icon sm accent"><use href="#i-wave"/></svg><span style="font-weight:600; font-size:var(--t2);">Telemetry</span></div>
+                  <div class="fine" style="margin-top:3px;">Live power, SOC and status, fleet-wide</div>
+                </div>
+                <div class="vline" style="height:44px;"></div>
+                <div style="flex:1; padding-left:20px;">
+                  <div style="display:flex; align-items:center; gap:8px;"><svg class="icon sm accent"><use href="#i-signal"/></svg><span style="font-weight:600; font-size:var(--t2);">Dispatch</span></div>
+                  <div class="fine" style="margin-top:3px;">Send and confirm setpoints in real time</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- A · Scene 6 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">6</span><h3>The utility sees flexibility. The customer sees dollars.</h3></div>
+  <p class="fine" style="max-width:820px; margin:-6px 0 14px 26px;">A grid service call goes out, reaches the asset, and comes back as a plain notification &mdash; the customer never sees the infrastructure that made it happen.</p>
+  <div class="crop-scroll"><div class="crop wh">
+    <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:0; padding:0 60px;">
+
+      <div class="browser" style="width:360px; flex-shrink:0;">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">grid.kwhelectric.io</span></div>
+        <div style="padding:20px;">
+          <div class="fine">Grid services</div>
+          <div style="font-size:var(--t1); font-weight:600; margin-top:6px;">New flexibility event</div>
+          <div class="fine" style="margin-top:8px;">Feeder 07 &middot; 40 kW for 30 min &middot; 1,842 eligible assets</div>
+          <div style="margin-top:16px; background:var(--accent); color:#fff; font-weight:600; font-size:var(--t2); border-radius:2px; padding:11px 0; text-align:center;">Dispatch event</div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; flex-shrink:0; margin:0 20px;">
+        <div style="width:70px; height:1px; background:var(--line);"></div>
+        <div class="node"><svg class="icon muted" style="width:24px;height:24px;"><use href="#i-gw"/></svg><div class="fine">Gateway</div></div>
+        <div style="width:70px; height:1px; background:var(--accent);"></div>
+      </div>
+
+      <div class="node" style="flex-shrink:0; margin-right:20px;">
+        <svg class="icon lg"><use href="#i-battery"/></svg>
+        <div class="lbl">Discharging</div>
+      </div>
+
+      <div class="phone" style="flex-shrink:0;">
+        <div class="phone-screen">
+          <div class="island"></div>
+          <div class="statusbar"><span>9:41</span><span class="icons"><svg class="icon sm"><use href="#i-wifi"/></svg><svg class="icon sm"><use href="#i-battfull"/></svg></span></div>
+          <div class="appbar"><span class="name">kWh Electric</span></div>
+          <div class="phone-body" style="display:flex; flex-direction:column; justify-content:center; height:100%;">
+            <div style="border-top:2px solid var(--accent); padding-top:18px;">
+              <svg class="icon accent"><use href="#i-check"/></svg>
+              <div class="fine" style="margin-top:10px; font-weight:600; letter-spacing:0;">You just earned</div>
+              <div style="font-size:var(--hero); font-weight:600; margin-top:2px;">$4.20</div>
+              <div class="fine" style="margin-top:10px;">Your battery helped balance the grid at 6:32 PM.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- ============================================================================================= -->
+<!-- CASE B — Structured system -->
+<!-- ============================================================================================= -->
+<div class="case-head">
+  <div class="case-head-row">
+    <span class="n">B</span><h2>Structured system</h2>
+  </div>
+  <p>A faint tint, right-angle connectors, thin rule dividers between sections. Reads like a spec sheet &mdash; built for the parts of the deck that need to feel engineered.</p>
+</div>
+
+<!-- B · Scene 1 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">1</span><h3>Every customer pays the same toll</h3></div>
+  <div class="crop-scroll"><div class="crop tint">
+    <div style="position:absolute; inset:0; padding:48px 60px;">
+
+      <div style="display:grid; grid-template-columns:1fr 1px 1fr; gap:40px; height:100%;">
+        <div>
+          <div style="font-weight:600; font-size:var(--t2); padding-bottom:10px; border-bottom:1px solid var(--ink);">Before &middot; one customer</div>
+          <div style="display:flex; flex-direction:column; margin-top:22px;">
+            <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--line);"><svg class="icon"><use href="#i-building"/></svg><span class="lbl" style="text-align:left; flex:1;">Utility</span><span class="fine">pays a fee to &darr;</span></div>
+            <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--line);"><svg class="icon"><use href="#i-agg"/></svg><span class="lbl" style="text-align:left; flex:1;">Aggregator</span><span class="fine">pays a fee to &darr;</span></div>
+            <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--line);"><svg class="icon"><use href="#i-gear"/></svg><span class="lbl" style="text-align:left; flex:1;">Integrator</span><span class="fine">pays a fee to &darr;</span></div>
+            <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--line);"><svg class="icon"><use href="#i-tag"/></svg><span class="lbl" style="text-align:left; flex:1;">OEM</span><span class="fine">connects &darr;</span></div>
+            <div style="display:flex; align-items:center; gap:14px; padding:12px 0;"><svg class="icon"><use href="#i-battery"/></svg><span class="lbl" style="text-align:left; flex:1;">Customer</span></div>
+          </div>
+          <p class="body" style="margin-top:18px;">Repeat this exact chain, in full, for customer two, three&hellip; a hundred.</p>
+        </div>
+
+        <div class="vline"></div>
+
+        <div>
+          <div style="font-weight:600; font-size:var(--t2); padding-bottom:10px; border-bottom:1px solid var(--accent);">After &middot; every customer</div>
+          <div style="display:flex; flex-direction:column; margin-top:22px;">
+            <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--accent);"><svg class="icon"><use href="#i-building"/></svg><span class="lbl" style="text-align:left; flex:1;">Utility</span><span class="fine" style="color:var(--accent-ink); font-weight:600;">connects once to &darr;</span></div>
+            <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--accent);"><svg class="icon accent"><use href="#i-gw"/></svg><span class="lbl" style="text-align:left; flex:1; font-weight:600;">kWh gateway</span><span class="fine" style="color:var(--accent-ink); font-weight:600;">serves &darr;</span></div>
+            <div style="padding:14px 0 0 0; display:flex; flex-direction:column; gap:10px;">
+              <div style="display:flex; align-items:center; gap:14px;"><svg class="icon sm"><use href="#i-battery"/></svg><span class="fine">Customer A</span></div>
+              <div style="display:flex; align-items:center; gap:14px;"><svg class="icon sm"><use href="#i-battery"/></svg><span class="fine">Customer B</span></div>
+              <div style="display:flex; align-items:center; gap:14px;"><svg class="icon sm"><use href="#i-battery"/></svg><span class="fine">Customer C &hellip; 100</span></div>
+            </div>
+          </div>
+          <p class="body" style="margin-top:18px;">Same gateway, same connection, every time. Nothing new to integrate.</p>
+        </div>
+      </div>
+
+    </div>
+  </div></div>
+</div>
+
+<!-- B · Scene 2 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">2</span><h3>Onboarding is a Bluetooth handshake</h3></div>
+  <div class="crop-scroll"><div class="crop tint">
+    <div style="position:absolute; inset:0; padding:44px 56px; display:flex; gap:56px;">
+
+      <div style="flex-shrink:0; padding-top:12px;">
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="island"></div>
+            <div class="statusbar"><span>9:41</span><span class="icons"><svg class="icon sm"><use href="#i-signal"/></svg><svg class="icon sm"><use href="#i-wifi"/></svg><svg class="icon sm"><use href="#i-battfull"/></svg></span></div>
+            <div class="appbar"><span class="name">kWh Electric</span></div>
+            <div class="phone-body">
+              <div class="fine" style="color:var(--accent-ink); font-weight:600;">Step 2 of 3</div>
+              <div style="font-size:20px; font-weight:600; margin-top:8px; line-height:1.3;">Find your gateway</div>
+              <div class="body" style="margin-top:8px;">Scanning nearby over Bluetooth. No QR code &mdash; just tap the gateway that's yours.</div>
+              <div style="display:flex; align-items:center; gap:8px; margin-top:20px;">
+                <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);"></span>
+                <span class="fine" style="color:var(--accent-ink); font-weight:600;">Scanning&hellip;</span>
+              </div>
+              <div style="margin-top:14px; border-top:1px solid var(--line); border-bottom:1px solid var(--accent); padding:12px 2px; display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <svg class="icon" style="color:var(--accent);"><use href="#i-bt"/></svg>
+                  <div><div style="font-size:var(--t2); font-weight:600;">KWH-GW-b748</div><div class="fine">Strongest signal</div></div>
+                </div>
+                <svg class="icon sm muted"><use href="#i-chev"/></svg>
+              </div>
+            </div>
+            <div class="tabbar">
+              <div class="tab"><svg class="icon sm"><use href="#i-gw"/></svg><span>Devices</span></div>
+              <div class="tab on"><svg class="icon sm"><use href="#i-bt"/></svg><span>Enroll</span></div>
+              <div class="tab"><svg class="icon sm"><use href="#i-wave"/></svg><span>Telemetry</span></div>
+              <div class="tab"><svg class="icon sm"><use href="#i-bolt"/></svg><span>Events</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vline"></div>
+
+      <div style="flex:1; padding-top:12px;">
+        <div style="font-weight:600; font-size:var(--t2); padding-bottom:12px; border-bottom:1px solid var(--ink);">On site &middot; one gateway, every asset</div>
+
+        <div style="display:flex; align-items:center; gap:0; margin-top:28px;">
+          <div class="node"><svg class="icon sm muted"><use href="#i-bt"/></svg><div class="fine">Phone</div></div>
+          <div style="width:50px; border-top:1px dashed var(--ink3); margin:0 0 20px;"></div>
+          <div class="node"><svg class="icon lg accent"><use href="#i-gw"/></svg><div class="lbl" style="font-weight:600;">kWh gateway</div></div>
+        </div>
+
+        <div style="margin-top:30px; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; gap:16px; padding:11px 0; border-top:1px solid var(--line);"><svg class="icon"><use href="#i-battery"/></svg><span class="lbl" style="text-align:left; flex:1;">Battery</span><span class="fine">CAN 2.0B</span></div>
+          <div style="display:flex; align-items:center; gap:16px; padding:11px 0; border-top:1px solid var(--line);"><svg class="icon"><use href="#i-plug"/></svg><span class="lbl" style="text-align:left; flex:1;">EV charger</span><span class="fine">OCPP</span></div>
+          <div style="display:flex; align-items:center; gap:16px; padding:11px 0; border-top:1px solid var(--line);"><svg class="icon"><use href="#i-wave"/></svg><span class="lbl" style="text-align:left; flex:1;">Inverter</span><span class="fine">SunSpec Modbus</span></div>
+          <div style="display:flex; align-items:center; gap:16px; padding:11px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);"><svg class="icon"><use href="#i-meter"/></svg><span class="lbl" style="text-align:left; flex:1;">Meter</span><span class="fine">Modbus RTU</span></div>
+        </div>
+        <p class="body" style="margin-top:18px;">One handshake enrolls the phone. The gateway was already wired to all four.</p>
+      </div>
+
+    </div>
+  </div></div>
+</div>
+
+<!-- B · Scene 3 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">3</span><h3>One gateway, every dialect</h3></div>
+  <div class="crop-scroll"><div class="crop tint">
+    <div style="position:absolute; inset:0; padding:52px 220px; display:flex; flex-direction:column;">
+
+      <div style="display:flex; align-items:center; gap:18px;">
+        <span class="fine" style="width:16px;">1</span>
+        <div style="flex:1; display:flex; justify-content:space-between;">
+          <div class="node"><svg class="icon"><use href="#i-battery"/></svg><div class="fine">Battery</div></div>
+          <div class="node"><svg class="icon"><use href="#i-plug"/></svg><div class="fine">EV charger</div></div>
+          <div class="node"><svg class="icon"><use href="#i-wave"/></svg><div class="fine">Inverter</div></div>
+          <div class="node"><svg class="icon"><use href="#i-meter"/></svg><div class="fine">Meter</div></div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:18px; margin-top:26px;">
+        <span class="fine" style="width:16px;">&darr;</span>
+        <div style="flex:1; height:1px; background:var(--ink3);"></div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:18px; margin-top:26px;">
+        <span class="fine" style="width:16px;">2</span>
+        <div style="flex:1; display:flex; flex-wrap:wrap; gap:10px;">
+          <span class="tag">Modbus TCP</span><span class="tag">SunSpec Modbus</span><span class="tag">RS-485</span><span class="tag">CAN 2.0B</span><span class="tag">MQTT</span><span class="tag">OCPP</span>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:18px; margin-top:26px;">
+        <span class="fine" style="width:16px;">&darr;</span>
+        <div style="flex:1; height:1px; background:var(--ink3);"></div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:18px; margin-top:26px;">
+        <span class="fine" style="width:16px;">3</span>
+        <div style="flex:1; display:flex; align-items:center; gap:16px; padding:16px 20px; border:1px solid var(--accent);">
+          <svg class="icon lg accent"><use href="#i-gw"/></svg>
+          <div><div style="font-weight:600; font-size:var(--t2);">kWh gateway</div><div class="fine">Every dialect in, one canonical model out</div></div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:18px; margin-top:26px;">
+        <span class="fine" style="width:16px;">&darr;</span>
+        <div style="flex:1; height:1px; background:var(--ink3);"></div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:18px; margin-top:26px;">
+        <span class="fine" style="width:16px;">4</span>
+        <div style="flex:1; border-top:2px solid var(--ink); padding-top:14px; display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:14px;"><svg class="icon"><use href="#i-server"/></svg><div><div style="font-weight:600; font-size:var(--t2);">IEEE 2030.5 server</div><div class="fine">The infrastructure everything above stands on</div></div></div>
+          <span class="fine">sep.kwhelectric.io &middot; mTLS</span>
+        </div>
+      </div>
+
+    </div>
+  </div></div>
+</div>
+
+<!-- B · Scene 4 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">4</span><h3>Same data, two audiences, real time</h3></div>
+  <div class="crop-scroll"><div class="crop tint">
+    <div style="position:absolute; inset:0; padding:48px 70px; display:flex; flex-direction:column;">
+
+      <div style="display:flex; align-items:center; gap:16px; padding-bottom:16px; border-bottom:1px solid var(--ink);">
+        <svg class="icon accent" style="width:26px;height:26px;"><use href="#i-gw"/></svg>
+        <div style="font-weight:600; font-size:var(--t1);">kWh gateway</div>
+        <div class="fine" style="margin-left:auto;">One telemetry stream, two destinations</div>
+      </div>
+
+      <div style="flex:1; display:grid; grid-template-columns:1fr 1px 1fr; gap:48px; margin-top:30px;">
+
+        <div>
+          <div style="font-weight:600; font-size:var(--t2); margin-bottom:16px;">Customer app</div>
+          <div class="phone" style="width:280px; height:420px;">
+            <div class="phone-screen">
+              <div class="island"></div>
+              <div class="statusbar"><span>9:41</span><span class="icons"><svg class="icon sm"><use href="#i-wifi"/></svg><svg class="icon sm"><use href="#i-battfull"/></svg></span></div>
+              <div class="appbar"><span class="name">Your battery</span><span style="display:flex; align-items:center; gap:6px; font-size:var(--t3); color:var(--accent-ink); font-weight:600;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></span>Live</span></div>
+              <div class="phone-body">
+                <div class="fine">State of charge</div>
+                <div style="font-size:var(--hero); font-weight:600; margin-top:2px;">78%</div>
+                <div style="height:5px; background:var(--line); margin-top:12px; overflow:hidden;"><div style="width:78%; height:100%; background:var(--accent);"></div></div>
+                <div style="display:flex; gap:26px; margin-top:22px;">
+                  <div><div class="fine">Power</div><div style="font-weight:600; font-size:var(--t1); margin-top:2px;">2.4 kW</div></div>
+                  <div><div class="fine">Mode</div><div style="font-weight:600; font-size:var(--t1); margin-top:2px; color:var(--accent-ink);">Charging</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vline"></div>
+
+        <div>
+          <div style="font-weight:600; font-size:var(--t2); margin-bottom:16px;">Utility portal</div>
+          <div style="display:flex; flex-direction:column;">
+            <div style="display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid var(--line);"><span class="fine">Asset</span><span style="font-size:var(--t2);">Site01-bess</span></div>
+            <div style="display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid var(--line);"><span class="fine">State of charge</span><span style="font-size:var(--t2); font-weight:600;">78%</span></div>
+            <div style="display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid var(--line);"><span class="fine">Power</span><span style="font-size:var(--t2); font-weight:600;">2.4 kW</span></div>
+            <div style="display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);"><span class="fine">Status</span><span style="font-size:var(--t2); font-weight:600; color:var(--accent-ink);">Online</span></div>
+          </div>
+          <p class="fine" style="margin-top:14px;">1 of 1,842 assets on this feeder, same instant.</p>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- B · Scene 5 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">5</span><h3>Gateway or OEM cloud, one asset list either way</h3></div>
+  <div class="crop-scroll"><div class="crop tint">
+    <div style="position:absolute; inset:0; padding:32px;">
+      <div class="browser" style="width:1216px; height:656px;">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">grid.kwhelectric.io</span></div>
+        <div style="display:flex; height:calc(100% - 30px);">
+          <div style="width:180px; border-right:1px solid var(--line); padding:22px 16px; flex-shrink:0;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:26px;"><svg class="icon accent" style="width:19px;height:19px;"><use href="#i-bolt"/></svg><span style="font-weight:600; font-size:var(--t2);">Grid Intelligence</span></div>
+            <div style="display:flex; flex-direction:column;">
+              <div style="display:flex; align-items:center; gap:10px; padding:9px 0; color:var(--ink2); font-size:var(--t2);"><svg class="icon sm"><use href="#i-person"/></svg>Customer management</div>
+              <div style="display:flex; align-items:center; gap:10px; padding:9px 0; color:var(--ink2); font-size:var(--t2);"><svg class="icon sm"><use href="#i-layers"/></svg>Asset management</div>
+              <div style="display:flex; align-items:center; gap:10px; padding:9px 0; color:var(--ink); font-size:var(--t2); font-weight:600; border-bottom:2px solid var(--accent);"><svg class="icon sm"><use href="#i-bolt"/></svg>Grid services</div>
+            </div>
+          </div>
+
+          <div style="flex:1; padding:24px 30px; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="font-weight:600; font-size:var(--t1);">Grid services</div>
+            <div class="fine" style="margin-top:2px;">Runs on the same asset list, gateway or OEM path, no difference</div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; margin-top:22px; border-top:1px solid var(--ink);">
+              <div style="padding:18px 20px 18px 0; border-right:1px solid var(--line);">
+                <svg class="icon accent"><use href="#i-bolt"/></svg>
+                <div style="font-weight:600; font-size:var(--t2); margin-top:10px;">Deploy flex event</div>
+                <div class="fine" style="margin-top:6px;">Request 40 kW for 30 min from Feeder 07's 1,842 eligible assets.</div>
+              </div>
+              <div style="padding:18px 20px; border-right:1px solid var(--line);">
+                <svg class="icon accent"><use href="#i-wave"/></svg>
+                <div style="font-weight:600; font-size:var(--t2); margin-top:10px;">Telemetry</div>
+                <div class="fine" style="margin-top:6px;">Live power, state of charge and status, fleet-wide, one feed.</div>
+              </div>
+              <div style="padding:18px 0 18px 20px;">
+                <svg class="icon accent"><use href="#i-signal"/></svg>
+                <div style="font-weight:600; font-size:var(--t2); margin-top:10px;">Dispatch</div>
+                <div class="fine" style="margin-top:6px;">Send a setpoint, get a confirmed response back per asset.</div>
+              </div>
+            </div>
+
+            <div style="margin-top:auto; padding-top:16px; border-top:1px solid var(--line);">
+              <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:6px 0;"><span class="fine" style="font-weight:600;">Asset</span><span class="fine" style="font-weight:600;">Protocol</span><span class="fine" style="font-weight:600;">Path</span></div>
+              <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:6px 0; align-items:center;"><span style="font-size:var(--t2);">Site01-bess</span><span class="fine">sunspec</span><span class="tag accent" style="width:fit-content;">kWh gateway</span></div>
+              <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; padding:6px 0; align-items:center;"><span style="font-size:var(--t2);">Site01-solaredge</span><span class="fine">oem_api</span><span class="tag" style="width:fit-content;">kWh integration</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- B · Scene 6 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">6</span><h3>The utility sees flexibility. The customer sees dollars.</h3></div>
+  <div class="crop-scroll"><div class="crop tint">
+    <div style="position:absolute; inset:0; padding:56px 70px; display:flex; flex-direction:column;">
+
+      <div style="display:flex; align-items:stretch; gap:0; flex:1;">
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+          <div class="browser" style="width:340px;">
+            <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">grid.kwhelectric.io</span></div>
+            <div style="padding:18px;">
+              <div class="fine">Grid services</div>
+              <div style="font-size:var(--t1); font-weight:600; margin-top:6px;">New flexibility event</div>
+              <div class="fine" style="margin-top:8px;">Feeder 07 &middot; 40 kW for 30 min</div>
+              <div style="margin-top:14px; background:var(--accent); color:#fff; font-weight:600; font-size:var(--t2); padding:10px 0; text-align:center;">Dispatch event</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width:160px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;">
+          <div style="width:100%; height:1px; background:var(--line);"></div>
+          <div class="node"><svg class="icon muted" style="width:22px;height:22px;"><use href="#i-gw"/></svg><div class="fine">Gateway</div></div>
+          <div style="width:100%; height:1px; background:var(--accent);"></div>
+          <div class="node"><svg class="icon"><use href="#i-battery"/></svg><div class="fine">Discharging</div></div>
+          <div style="width:100%; height:1px; background:var(--accent);"></div>
+        </div>
+
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:flex-start;">
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="island"></div>
+              <div class="statusbar"><span>9:41</span><span class="icons"><svg class="icon sm"><use href="#i-wifi"/></svg><svg class="icon sm"><use href="#i-battfull"/></svg></span></div>
+              <div class="appbar"><span class="name">kWh Electric</span></div>
+              <div class="phone-body" style="display:flex; flex-direction:column; justify-content:center; height:100%;">
+                <div style="border-top:2px solid var(--accent); padding-top:18px;">
+                  <svg class="icon accent"><use href="#i-check"/></svg>
+                  <div class="fine" style="margin-top:10px; font-weight:600;">You just earned</div>
+                  <div style="font-size:var(--hero); font-weight:600; margin-top:2px;">$4.20</div>
+                  <div class="fine" style="margin-top:10px;">Your battery helped balance the grid at 6:32 PM.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="fine" style="border-top:1px solid var(--line); padding-top:14px;">One dispatch, three views: the utility's request, the gateway's silent handoff, the customer's payout.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- ============================================================================================= -->
+<!-- CASE C — Confident product -->
+<!-- ============================================================================================= -->
+<div class="case-head">
+  <div class="case-head-row">
+    <span class="n">C</span><h2>Confident product</h2>
+  </div>
+  <p>Warm near-white paper, bigger weight contrast, the gateway drawn larger as the visual hero of every scene. Built for slides that need to feel like a finished product, not a diagram.</p>
+</div>
+
+<!-- C · Scene 1 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">1</span><h3>Every customer pays the same toll</h3></div>
+  <div class="crop-scroll"><div class="crop paper">
+    <div style="position:absolute; inset:0; padding:64px 70px;">
+
+      <div style="display:flex; align-items:center; gap:0;">
+        <div class="node"><svg class="icon lg"><use href="#i-building"/></svg><div class="lbl" style="font-weight:600;">Utility</div></div>
+        <div style="flex:1; text-align:center;"><div class="fine">fee</div><div class="hline"></div></div>
+        <div class="node"><svg class="icon lg"><use href="#i-agg"/></svg><div class="lbl" style="font-weight:600;">Aggregator</div></div>
+        <div style="flex:1; text-align:center;"><div class="fine">fee</div><div class="hline"></div></div>
+        <div class="node"><svg class="icon lg"><use href="#i-gear"/></svg><div class="lbl" style="font-weight:600;">Integrator</div></div>
+        <div style="flex:1; text-align:center;"><div class="fine">fee</div><div class="hline"></div></div>
+        <div class="node"><svg class="icon lg"><use href="#i-tag"/></svg><div class="lbl" style="font-weight:600;">OEM</div></div>
+        <div style="flex:1; text-align:center;"><div class="fine">fee</div><div class="hline"></div></div>
+        <div class="node"><svg class="icon lg"><use href="#i-battery"/></svg><div class="lbl" style="font-weight:600;">Customer</div></div>
+      </div>
+      <div style="text-align:center; margin-top:22px; font-size:28px; font-weight:600; color:var(--ink);">&times;100 &mdash; the same chain, every customer</div>
+
+      <div style="height:1px; background:var(--ink); margin:44px 0;"></div>
+
+      <div style="display:flex; align-items:center; gap:0;">
+        <div class="node"><svg class="icon lg"><use href="#i-building"/></svg><div class="lbl" style="font-weight:600;">Utility</div></div>
+        <div style="flex:1; height:2px; background:var(--accent);"></div>
+        <div class="node"><svg class="icon xl accent"><use href="#i-gw"/></svg><div class="lbl" style="font-weight:600;">kWh gateway</div></div>
+        <div style="flex:1; height:2px; background:var(--accent);"></div>
+        <div style="display:flex; gap:28px;">
+          <div class="node"><svg class="icon lg"><use href="#i-battery"/></svg><div class="fine">Customer A</div></div>
+          <div class="node"><svg class="icon lg"><use href="#i-battery"/></svg><div class="fine">Customer B</div></div>
+          <div class="node"><svg class="icon lg"><use href="#i-battery"/></svg><div class="fine">Customer C</div></div>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:22px; font-size:28px; font-weight:600; color:var(--accent-ink);">One gateway. Every customer.</div>
+    </div>
+  </div></div>
+</div>
+
+<!-- C · Scene 2 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">2</span><h3>Onboarding is a Bluetooth handshake</h3></div>
+  <div class="crop-scroll"><div class="crop paper">
+    <div style="position:absolute; inset:0; padding:52px 64px; display:flex; align-items:center; gap:60px;">
+
+      <div class="phone" style="flex-shrink:0;">
+        <div class="phone-screen">
+          <div class="island"></div>
+          <div class="statusbar"><span>9:41</span><span class="icons"><svg class="icon sm"><use href="#i-signal"/></svg><svg class="icon sm"><use href="#i-wifi"/></svg><svg class="icon sm"><use href="#i-battfull"/></svg></span></div>
+          <div class="appbar"><span class="name">kWh Electric</span></div>
+          <div class="phone-body">
+            <div class="fine" style="color:var(--accent-ink); font-weight:600;">Step 2 of 3</div>
+            <div style="font-size:22px; font-weight:600; margin-top:8px;">Find your gateway</div>
+            <div class="body" style="margin-top:8px;">Scanning nearby over Bluetooth.</div>
+            <div style="margin-top:18px; border-top:1px solid var(--line); border-bottom:2px solid var(--accent); padding:14px 2px; display:flex; align-items:center; justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:10px;"><svg class="icon" style="color:var(--accent);"><use href="#i-bt"/></svg><div style="font-size:var(--t2); font-weight:600;">KWH-GW-b748</div></div>
+              <svg class="icon sm muted"><use href="#i-chev"/></svg>
+            </div>
+          </div>
+          <div class="tabbar">
+            <div class="tab"><svg class="icon sm"><use href="#i-gw"/></svg><span>Devices</span></div>
+            <div class="tab on"><svg class="icon sm"><use href="#i-bt"/></svg><span>Enroll</span></div>
+            <div class="tab"><svg class="icon sm"><use href="#i-wave"/></svg><span>Telemetry</span></div>
+            <div class="tab"><svg class="icon sm"><use href="#i-bolt"/></svg><span>Events</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1;">
+        <div style="font-size:24px; font-weight:600;">One tap. Every asset on site.</div>
+        <div class="body" style="margin-top:10px; max-width:480px;">The phone pairs with the gateway once. The gateway was already wired to all four.</div>
+
+        <div style="margin-top:40px; display:flex; align-items:center; gap:0;">
+          <svg class="icon xl accent"><use href="#i-gw"/></svg>
+          <div style="width:60px; height:2px; background:var(--line); margin:0 0 0 0;"></div>
+        </div>
+        <div style="margin-top:22px; display:flex; flex-direction:column; gap:20px;">
+          <div style="display:flex; align-items:center; gap:16px;"><svg class="icon lg"><use href="#i-battery"/></svg><span style="font-size:var(--t1); font-weight:500;">Battery</span></div>
+          <div style="display:flex; align-items:center; gap:16px;"><svg class="icon lg"><use href="#i-plug"/></svg><span style="font-size:var(--t1); font-weight:500;">EV charger</span></div>
+          <div style="display:flex; align-items:center; gap:16px;"><svg class="icon lg"><use href="#i-wave"/></svg><span style="font-size:var(--t1); font-weight:500;">Inverter</span></div>
+          <div style="display:flex; align-items:center; gap:16px;"><svg class="icon lg"><use href="#i-meter"/></svg><span style="font-size:var(--t1); font-weight:500;">Meter</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- C · Scene 3 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">3</span><h3>One gateway, every dialect</h3></div>
+  <div class="crop-scroll"><div class="crop paper">
+    <div style="position:absolute; inset:0; padding:56px 80px; display:flex; flex-direction:column; align-items:center; justify-content:space-between;">
+
+      <div style="display:flex; gap:60px;">
+        <div class="node"><svg class="icon xl"><use href="#i-battery"/></svg><div class="lbl">Battery</div></div>
+        <div class="node"><svg class="icon xl"><use href="#i-plug"/></svg><div class="lbl">EV charger</div></div>
+        <div class="node"><svg class="icon xl"><use href="#i-wave"/></svg><div class="lbl">Inverter</div></div>
+        <div class="node"><svg class="icon xl"><use href="#i-meter"/></svg><div class="lbl">Meter</div></div>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; max-width:820px;">
+        <span class="tag">Modbus TCP</span><span class="tag">SunSpec Modbus</span><span class="tag">RS-485</span><span class="tag">CAN 2.0B</span><span class="tag">MQTT</span><span class="tag">OCPP</span>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:20px; padding:24px 48px; border:2px solid var(--accent);">
+        <svg class="icon xl accent"><use href="#i-gw"/></svg>
+        <div style="font-size:26px; font-weight:600;">kWh gateway</div>
+      </div>
+
+      <div style="width:100%; background:var(--ink); color:#fff; padding:22px 34px; display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:16px;"><svg class="icon wh"><use href="#i-server"/></svg><div style="font-weight:600; font-size:var(--t1);">IEEE 2030.5 server &mdash; the infrastructure underneath</div></div>
+        <span class="fine" style="color:#C9D6CE;">sep.kwhelectric.io</span>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- C · Scene 4 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">4</span><h3>Same data, two audiences, real time</h3></div>
+  <div class="crop-scroll"><div class="crop paper">
+    <div style="position:absolute; inset:0; padding:56px 60px; display:flex; flex-direction:column; align-items:center;">
+
+      <div style="display:flex; align-items:center; gap:16px;">
+        <svg class="icon xl accent"><use href="#i-gw"/></svg>
+        <div style="font-size:26px; font-weight:600;">One gateway, two audiences, same instant</div>
+      </div>
+
+      <svg viewBox="0 0 1160 120" style="width:1160px; height:120px; margin-top:6px;">
+        <path d="M580 0 C 470 40, 400 60, 300 100" stroke="var(--accent)" stroke-width="2" fill="none"/>
+        <path d="M580 0 C 690 40, 760 60, 860 100" stroke="var(--accent)" stroke-width="2" fill="none"/>
+      </svg>
+
+      <div style="display:flex; gap:80px; align-items:flex-start;">
+        <div style="text-align:center;">
+          <div style="font-weight:600; font-size:var(--t1); margin-bottom:14px;">Customer app</div>
+          <div class="phone" style="width:290px; height:430px;">
+            <div class="phone-screen">
+              <div class="island"></div>
+              <div class="statusbar"><span>9:41</span><span class="icons"><svg class="icon sm"><use href="#i-wifi"/></svg><svg class="icon sm"><use href="#i-battfull"/></svg></span></div>
+              <div class="appbar"><span class="name">Your battery</span></div>
+              <div class="phone-body">
+                <div class="fine">State of charge</div>
+                <div style="font-size:44px; font-weight:600;">78%</div>
+                <div style="height:6px; background:var(--line); margin-top:12px;"><div style="width:78%; height:100%; background:var(--accent);"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-weight:600; font-size:var(--t1); margin-bottom:14px;">Utility portal</div>
+          <div class="browser" style="width:420px;">
+            <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">grid.kwhelectric.io</span></div>
+            <div style="padding:24px;">
+              <div class="fine">Site01-bess &middot; 1 of 1,842 assets</div>
+              <div style="font-size:44px; font-weight:600; margin-top:6px;">78%</div>
+              <div class="fine" style="margin-top:10px; color:var(--accent-ink); font-weight:600;">Online</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- C · Scene 5 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">5</span><h3>Gateway or OEM cloud, one asset list either way</h3></div>
+  <div class="crop-scroll"><div class="crop paper">
+    <div style="position:absolute; inset:0; padding:32px;">
+      <div class="browser" style="width:1216px; height:656px;">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">grid.kwhelectric.io</span></div>
+        <div style="display:flex; height:calc(100% - 30px);">
+          <div style="width:190px; border-right:1px solid var(--line); padding:24px 18px; flex-shrink:0;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:30px;"><svg class="icon accent" style="width:21px;height:21px;"><use href="#i-bolt"/></svg><span style="font-weight:600; font-size:var(--t2);">Grid Intelligence</span></div>
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <div style="display:flex; align-items:center; gap:10px; padding:10px 0; color:var(--ink2); font-size:var(--t2);"><svg class="icon sm"><use href="#i-person"/></svg>Customer management</div>
+              <div style="display:flex; align-items:center; gap:10px; padding:10px 0; color:var(--ink2); font-size:var(--t2);"><svg class="icon sm"><use href="#i-layers"/></svg>Asset management</div>
+              <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; color:#fff; font-size:var(--t2); font-weight:600; background:var(--accent);"><svg class="icon sm wh"><use href="#i-bolt"/></svg>Grid services</div>
+            </div>
+          </div>
+
+          <div style="flex:1; padding:28px 34px; display:flex; flex-direction:column;">
+            <div style="font-size:26px; font-weight:600;">What the utility can do, right now</div>
+            <div class="body" style="margin-top:4px;">Same asset list underneath, whether it arrived through a gateway or an OEM cloud.</div>
+
+            <div style="display:flex; gap:0; margin-top:28px; flex:1;">
+              <div style="flex:1; padding-right:24px;">
+                <svg class="icon xl accent"><use href="#i-bolt"/></svg>
+                <div style="font-weight:600; font-size:20px; margin-top:14px;">Deploy flex event</div>
+                <div class="body" style="margin-top:8px;">40 kW for 30 minutes, 1,842 eligible assets on Feeder 07.</div>
+              </div>
+              <div class="vline" style="height:auto;"></div>
+              <div style="flex:1; padding:0 24px;">
+                <svg class="icon xl accent"><use href="#i-wave"/></svg>
+                <div style="font-weight:600; font-size:20px; margin-top:14px;">Telemetry</div>
+                <div class="body" style="margin-top:8px;">Live power, state of charge and status, fleet-wide.</div>
+              </div>
+              <div class="vline" style="height:auto;"></div>
+              <div style="flex:1; padding-left:24px;">
+                <svg class="icon xl accent"><use href="#i-signal"/></svg>
+                <div style="font-weight:600; font-size:20px; margin-top:14px;">Dispatch</div>
+                <div class="body" style="margin-top:8px;">Send a setpoint, get a confirmed response per asset.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- C · Scene 6 -->
+<div class="scene">
+  <div class="scene-head"><span class="n">6</span><h3>The utility sees flexibility. The customer sees dollars.</h3></div>
+  <div class="crop-scroll"><div class="crop paper">
+    <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:36px;">
+
+      <div style="font-size:26px; font-weight:600; text-align:center; max-width:760px;">One dispatch. The utility sees flexibility &mdash; the customer just sees dollars.</div>
+
+      <div style="display:flex; align-items:center; gap:0;">
+        <div class="browser" style="width:320px;">
+          <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">grid.kwhelectric.io</span></div>
+          <div style="padding:18px;">
+            <div class="fine">Grid services</div>
+            <div style="font-weight:600; font-size:var(--t1); margin-top:4px;">Flexibility event &middot; 40 kW</div>
+          </div>
+        </div>
+
+        <div style="width:90px; height:2px; background:var(--accent); margin:0 8px;"></div>
+        <svg class="icon lg muted"><use href="#i-gw"/></svg>
+        <div style="width:90px; height:2px; background:var(--accent); margin:0 8px;"></div>
+
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="island"></div>
+            <div class="statusbar"><span>9:41</span><span class="icons"><svg class="icon sm"><use href="#i-wifi"/></svg><svg class="icon sm"><use href="#i-battfull"/></svg></span></div>
+            <div class="appbar"><span class="name">kWh Electric</span></div>
+            <div class="phone-body" style="display:flex; flex-direction:column; justify-content:center; height:100%; text-align:center;">
+              <svg class="icon xl accent" style="margin:0 auto;"><use href="#i-check"/></svg>
+              <div class="fine" style="margin-top:12px; font-weight:600;">You just earned</div>
+              <div style="font-size:44px; font-weight:600; margin-top:2px;">$4.20</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+</body>
+</html>

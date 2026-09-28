@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kWh Electric — Hero Hive Story (standalone)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+<style>
+
+*, *::before, *::after { box-sizing: border-box; font-family: inherit; }
+html {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  scroll-behavior: smooth;
+}
+html, body { margin: 0; padding: 0; }
+body { -webkit-font-smoothing: antialiased; background: #FBF7EA; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+/* ── BEE WINGS + AMBIENT MOTION (bee-story) ── */
+    .wing { transform-origin: 0px 0px; animation: flap .14s ease-in-out infinite alternate; }
+    .wing.back { animation-delay: .05s; opacity: .55; }
+    @keyframes flap { from { transform: rotate(-14deg); } to { transform: rotate(22deg); } }
+    .hoverwrap { animation: hover-bob 2.6s ease-in-out infinite; }
+    @keyframes hover-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+    .hexdot {
+      width: 16px; height: 16px; background: #E4B33C;
+      clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+      animation: cue-bob 1.6s ease-in-out infinite;
+    }
+    @keyframes cue-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+    @media (prefers-reduced-motion: reduce) {
+      .wing, .wing.back, .hoverwrap, .hexdot { animation: none !important; }
+    }
+    /* ── HERO (illustrated bee-story meadow) ── */
+    #hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .55; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27112.80%27%20height%3D%2765.13%27%20viewBox%3D%270%200%20112.80%2065.13%27%3E%3Cpolygon%20points%3D%2737.60%2C0.00%2018.80%2C32.56%20-18.80%2C32.56%20-37.60%2C0.00%20-18.80%2C-32.56%2018.80%2C-32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%27150.40%2C0.00%20131.60%2C32.56%2094.00%2C32.56%2075.20%2C0.00%2094.00%2C-32.56%20131.60%2C-32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C32.56%2075.20%2C65.13%2037.60%2C65.13%2018.80%2C32.56%2037.60%2C0.00%2075.20%2C0.00%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2737.60%2C65.13%2018.80%2C97.69%20-18.80%2C97.69%20-37.60%2C65.13%20-18.80%2C32.56%2018.80%2C32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%27150.40%2C65.13%20131.60%2C97.69%2094.00%2C97.69%2075.20%2C65.13%2094.00%2C32.56%20131.60%2C32.56%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C97.69%2075.20%2C130.25%2037.60%2C130.25%2018.80%2C97.69%2037.60%2C65.13%2075.20%2C65.13%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3Cpolygon%20points%3D%2794.00%2C-32.56%2075.20%2C0.00%2037.60%2C0.00%2018.80%2C-32.56%2037.60%2C-65.13%2075.20%2C-65.13%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271.4%27/%3E%3C/svg%3E");
+      background-size: 112.80px 65.13px; background-repeat: repeat; background-position: 0 0;
+    }
+    #hero-art { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+    #hero-ground { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 150px; display: block; }
+    #hero-sun { position: absolute; right: 7%; top: 13%; width: 150px; height: 150px; }
+    #hero-hoverbee { position: absolute; left: 9%; top: 40%; width: 140px; height: 120px; }
+    .hero-flower { position: absolute; bottom: 78px; transform-origin: 50% 100%; }
+    .hero-flower .stem-plant { transform-origin: 50% 100%; }
+    .hero-sprout { position: absolute; bottom: 78px; overflow: visible; }
+    .hero-sprout.is-new { opacity: 0; transform: scaleY(0); transform-origin: 50% 100%; }
+
+    .hero-blossom .blossom-petals { transform-box: fill-box; transform-origin: center; opacity: 0; }
+    .hero-blossom.is-sprouting .blossom-petals { opacity: 0; }
+
+    #hive-wrap {
+      position: absolute; left: 50%; bottom: 8px; width: 480px; height: 420px;
+      margin-left: -240px; transform-origin: bottom center; z-index: 6;
+    }
+    #hero-hoverbee { z-index: 5; }
+    #hero-art .bee-flight-overlay { z-index: 8 !important; }
+    #bee-cell {
+      position: absolute; left: 150px; top: 150px;
+      width: 60px; height: 50px;
+      overflow: hidden; pointer-events: none; z-index: 3;
+    }
+    #bee { position: absolute; top: 0; left: 0; pointer-events: none; transform: translate(0px, 52px); }
+    
+    .hero-inner {
+      position: relative; z-index: 2; text-align: center;
+      width: 100%; max-width: 1280px; margin: 0 auto;
+      padding: calc(74px + 6vh) clamp(20px, 4vw, 56px) 0;
+    }
+    .hero-title {
+      font-size: clamp(34px, 6.8vw, 100px);
+      font-weight: 900; color: #241f18;
+      letter-spacing: -0.03em; line-height: 1.04;
+      margin: 0 auto 24px;
+      max-width: min(1200px, 100%);
+    }
+    .hero-line1 { display: block; }
+    .hero-line2 { display: block; white-space: nowrap; }
+    #bee-land { position: relative; display: inline-block; }
+    .hero-sub {
+      font-size: clamp(16px, 1.5vw, 20px);
+      color: #4b4433;
+      max-width: min(720px, 100%);
+      margin: 0 auto; line-height: 1.62; font-weight: 500;
+    }
+    .scrollcue { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2; }
+    
+@media (max-width: 1100px) {
+  #hero-hoverbee { display: none; }
+  #hive-wrap { transform: scale(0.84); }
+}
+@media (max-width: 768px) {
+  .hero-inner { padding: calc(70px + 4vh) clamp(16px, 4vw, 24px) 0 !important; }
+  .hero-title { font-size: clamp(30px, 8.5vw, 52px); }
+  .hero-line2 { white-space: nowrap; letter-spacing: -0.03em; }
+  #hero-sun { display: none; }
+  .hero-flower--sm { display: none; }
+  #hive-wrap { transform: scale(0.6); bottom: -6px; }
+}
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px clamp(20px, 4vw, 40px);
+  pointer-events: none;
+}
+.site-nav img { display: block; height: 34px; width: auto; }
+
+</style>
+</head>
+<body>
+<!-- Standalone shareable cut of the kwhelectric.io cream hero meadow + hive narrative.
+     Source: index.html hero + bees.js launchBee (hero path only). -->
+<nav class="site-nav" aria-label="Brand">
+  <img src="data:image/png;base64,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" height="34" alt="kWh Electric" />
+</nav>
+
+<section id="hero" style="position:relative;height:100vh;min-height:640px;overflow:hidden;background:#FBF7EA;">
+  <div id="hero-art" aria-hidden="true">
+    <svg id="hero-ground" viewBox="0 0 1200 150" preserveAspectRatio="none">
+  <path d="M0 55 Q 300 15 620 45 T 1200 35 L1200 150 L0 150 Z" fill="#EFE3BC"/>
+  <path d="M0 92 Q 400 58 800 88 T 1200 78 L1200 150 L0 150 Z" fill="#E7D8A8"/>
+  <g stroke="#8fae5f" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8">
+    <path d="M90 70 q-3 -14 -8 -18 M90 70 q2 -12 8 -16"/>
+    <path d="M420 58 q-3 -13 -7 -17 M420 58 q2 -11 7 -15"/>
+    <path d="M760 72 q-3 -14 -8 -18 M760 72 q2 -12 8 -16"/>
+    <path d="M1080 60 q-3 -13 -7 -17 M1080 60 q2 -11 7 -15"/>
+  </g></svg>
+    <svg id="hero-sun" viewBox="0 0 180 180">
+  <defs>
+    <radialGradient id="heroSunGrad" cx="42%" cy="38%" r="58%">
+      <stop offset="0%" stop-color="#FFF8E0"/>
+      <stop offset="35%" stop-color="#F5C044"/>
+      <stop offset="72%" stop-color="#E4B33C"/>
+      <stop offset="100%" stop-color="#C2932A"/>
+    </radialGradient>
+  </defs>
+  <circle cx="90" cy="90" r="42" fill="url(#heroSunGrad)" opacity=".95"/>
+</svg>
+    <svg class="hero-flower" style="left:6%;bottom:78px;" width="106" height="148" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#E9C46A" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#E9C46A" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#E9C46A" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#E9C46A" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#E9C46A" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#E9C46A" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    <svg class="hero-flower hero-flower--sm" style="left:15%;bottom:78px;" width="75" height="95" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#D98A78" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#D98A78" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#D98A78" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#D98A78" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#D98A78" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#D98A78" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    <svg class="hero-flower hero-flower--sm" style="left:26%;bottom:78px;" width="62" height="78" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#EED9A5" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#EED9A5" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#EED9A5" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#EED9A5" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#EED9A5" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#EED9A5" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    <svg class="hero-flower hero-flower--sm" style="left:79%;bottom:78px;" width="84" height="106" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#EED9A5" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#EED9A5" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#EED9A5" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#EED9A5" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#EED9A5" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#EED9A5" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    <svg class="hero-flower" style="left:89%;bottom:78px;" width="110" height="154" viewBox="-45 -28 90 130">
+  <g transform="scale(1)">
+    <path d="M0 10 L0 90" stroke="#6f8a4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 40 q14 -2 20 -12" stroke="#6f8a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="26" rx="9" ry="5" fill="#8fae5f" transform="rotate(-30 24 26)"/>
+    <g><ellipse cx="13" cy="0" rx="10" ry="14" fill="#E9C46A" transform="rotate(0.0 13.0 0.0)"/><ellipse cx="6.500000000000002" cy="11.258330249197702" rx="10" ry="14" fill="#E9C46A" transform="rotate(60.0 6.5 11.3)"/><ellipse cx="-6.499999999999997" cy="11.258330249197703" rx="10" ry="14" fill="#E9C46A" transform="rotate(120.0 -6.5 11.3)"/><ellipse cx="-13" cy="1.592040838891559e-15" rx="10" ry="14" fill="#E9C46A" transform="rotate(180.0 -13.0 0.0)"/><ellipse cx="-6.500000000000005" cy="-11.258330249197698" rx="10" ry="14" fill="#E9C46A" transform="rotate(240.0 -6.5 -11.3)"/><ellipse cx="6.500000000000002" cy="-11.258330249197702" rx="10" ry="14" fill="#E9C46A" transform="rotate(300.0 6.5 -11.3)"/><circle r="10" fill="#F5C044" stroke="#C2932A" stroke-width="2.5"/></g>
+  </g></svg>
+    
+    <svg class="hero-sprout is-new hero-blossom" data-blossom="1" style="left:34%;" width="56" height="78" viewBox="-28 -28 56 100" aria-hidden="true">
+      <path class="blossom-stem" d="M0 68 L0 22" stroke="#6f8a4a" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <ellipse class="blossom-leaf" cx="-12" cy="42" rx="8" ry="4.5" fill="#8fae5f" transform="rotate(-35 -12 42)"/>
+      <ellipse class="blossom-leaf" cx="12" cy="44" rx="8" ry="4.5" fill="#8fae5f" transform="rotate(35 12 44)"/>
+      <g class="blossom-petals" transform="translate(0,10)">
+        <ellipse cx="11" cy="0" rx="8" ry="12" fill="#E9C46A" transform="rotate(0 11 0)"/>
+        <ellipse cx="5.5" cy="9.5" rx="8" ry="12" fill="#E9C46A" transform="rotate(60 5.5 9.5)"/>
+        <ellipse cx="-5.5" cy="9.5" rx="8" ry="12" fill="#E9C46A" transform="rotate(120 -5.5 9.5)"/>
+        <ellipse cx="-11" cy="0" rx="8" ry="12" fill="#E9C46A" transform="rotate(180 -11 0)"/>
+        <ellipse cx="-5.5" cy="-9.5" rx="8" ry="12" fill="#E9C46A" transform="rotate(240 -5.5 -9.5)"/>
+        <ellipse cx="5.5" cy="-9.5" rx="8" ry="12" fill="#E9C46A" transform="rotate(300 5.5 -9.5)"/>
+        <circle r="8" fill="#F5C044" stroke="#C2932A" stroke-width="2"/>
+      </g>
+    </svg>
+    <svg class="hero-sprout is-new hero-blossom" data-blossom="2" style="left:48%;" width="48" height="68" viewBox="-24 -24 48 90" aria-hidden="true">
+      <path class="blossom-stem" d="M0 60 L0 18" stroke="#6f8a4a" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <g class="blossom-petals" transform="translate(0,8)">
+        <ellipse cx="9" cy="0" rx="7" ry="10" fill="#D98A78" transform="rotate(0 9 0)"/>
+        <ellipse cx="4.5" cy="7.8" rx="7" ry="10" fill="#D98A78" transform="rotate(60 4.5 7.8)"/>
+        <ellipse cx="-4.5" cy="7.8" rx="7" ry="10" fill="#D98A78" transform="rotate(120 -4.5 7.8)"/>
+        <ellipse cx="-9" cy="0" rx="7" ry="10" fill="#D98A78" transform="rotate(180 -9 0)"/>
+        <ellipse cx="-4.5" cy="-7.8" rx="7" ry="10" fill="#D98A78" transform="rotate(240 -4.5 -7.8)"/>
+        <ellipse cx="4.5" cy="-7.8" rx="7" ry="10" fill="#D98A78" transform="rotate(300 4.5 -7.8)"/>
+        <circle r="7" fill="#F5C044" stroke="#C2932A" stroke-width="1.8"/>
+      </g>
+    </svg>
+    <svg class="hero-sprout is-new hero-blossom" data-blossom="3" style="left:62%;" width="64" height="88" viewBox="-32 -32 64 110" aria-hidden="true">
+      <path class="blossom-stem" d="M0 78 L0 24" stroke="#6f8a4a" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <ellipse class="blossom-leaf" cx="-14" cy="48" rx="9" ry="5" fill="#8fae5f" transform="rotate(-40 -14 48)"/>
+      <ellipse class="blossom-leaf" cx="14" cy="50" rx="9" ry="5" fill="#8fae5f" transform="rotate(40 14 50)"/>
+      <g class="blossom-petals" transform="translate(0,12)">
+        <ellipse cx="12" cy="0" rx="9" ry="13" fill="#EED9A5" transform="rotate(0 12 0)"/>
+        <ellipse cx="6" cy="10.4" rx="9" ry="13" fill="#EED9A5" transform="rotate(60 6 10.4)"/>
+        <ellipse cx="-6" cy="10.4" rx="9" ry="13" fill="#EED9A5" transform="rotate(120 -6 10.4)"/>
+        <ellipse cx="-12" cy="0" rx="9" ry="13" fill="#EED9A5" transform="rotate(180 -12 0)"/>
+        <ellipse cx="-6" cy="-10.4" rx="9" ry="13" fill="#EED9A5" transform="rotate(240 -6 -10.4)"/>
+        <ellipse cx="6" cy="-10.4" rx="9" ry="13" fill="#EED9A5" transform="rotate(300 6 -10.4)"/>
+        <circle r="9" fill="#F5C044" stroke="#C2932A" stroke-width="2.2"/>
+      </g>
+    </svg>
+    <svg class="hero-sprout is-new hero-blossom" data-blossom="4" style="left:72%;" width="44" height="62" viewBox="-22 -22 44 84" aria-hidden="true">
+      <path class="blossom-stem" d="M0 54 L0 16" stroke="#6f8a4a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <g class="blossom-petals" transform="translate(0,6)">
+        <ellipse cx="8" cy="0" rx="6" ry="9" fill="#E9C46A" transform="rotate(0 8 0)"/>
+        <ellipse cx="4" cy="6.9" rx="6" ry="9" fill="#E9C46A" transform="rotate(60 4 6.9)"/>
+        <ellipse cx="-4" cy="6.9" rx="6" ry="9" fill="#E9C46A" transform="rotate(120 -4 6.9)"/>
+        <ellipse cx="-8" cy="0" rx="6" ry="9" fill="#E9C46A" transform="rotate(180 -8 0)"/>
+        <ellipse cx="-4" cy="-6.9" rx="6" ry="9" fill="#E9C46A" transform="rotate(240 -4 -6.9)"/>
+        <ellipse cx="4" cy="-6.9" rx="6" ry="9" fill="#E9C46A" transform="rotate(300 4 -6.9)"/>
+        <circle r="6" fill="#F5C044" stroke="#C2932A" stroke-width="1.6"/>
+      </g>
+    </svg>
+<svg id="hero-hoverbee" class="hoverwrap" viewBox="-95 -85 190 160">
+  <g class="beeG" transform="translate(0,0) scale(0.85,0.85)">
+    <g class="wing back" transform="translate(-14,-26)">
+      <ellipse cx="14" cy="-16" rx="15" ry="24" fill="#FFF8E4" stroke="#C2932A" stroke-width="2" opacity=".9"/>
+    </g>
+    <ellipse cx="-30" cy="0" rx="20" ry="17" fill="#F6C95C"/>
+    <ellipse cx="0" cy="0" rx="34" ry="26" fill="#F6C95C"/>
+    <clipPath id="hbc1"><ellipse cx="0" cy="0" rx="34" ry="26"/></clipPath>
+    <g clip-path="url(#hbc1)">
+      <rect x="-22" y="-30" width="13" height="60" rx="6" fill="#241f18"/>
+      <rect x="1" y="-30" width="13" height="60" rx="6" fill="#241f18"/>
+    </g>
+    <circle cx="30" cy="-4" r="22" fill="#3b2f20"/>
+    <circle cx="38" cy="-8" r="8.5" fill="#FFFDF4"/>
+    <circle cx="41" cy="-7" r="4.6" fill="#241f18"/>
+    <circle cx="43" cy="-10" r="1.8" fill="#fff"/>
+    <ellipse cx="30" cy="6" rx="5.5" ry="3.6" fill="#E8998D"/>
+    <path d="M36 4 q5 5 11 1" stroke="#1a140e" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M22 -24 q-2 -14 -12 -18" stroke="#241f18" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="-44" r="5" fill="#C2932A"/>
+    <path d="M34 -22 q4 -13 14 -15" stroke="#241f18" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="49" cy="-39" r="5" fill="#C2932A"/>
+    <g class="wing" transform="translate(-2,-24)">
+      <ellipse cx="12" cy="-18" rx="17" ry="27" fill="#FFF8E4" stroke="#C2932A" stroke-width="2.5" opacity=".95"/>
+      <path d="M6 -30 q6 8 8 20" stroke="#C2932A" stroke-width="1.6" fill="none" opacity=".5"/>
+    </g>
+  </g></svg>
+    <div id="hive-wrap">
+      <svg viewBox="0 0 480 420" width="480" height="420">
+<g class="hiveG">
+<g class="hive-cell" data-kind="gold">
+<polygon class="hive-cell-poly" points="203.3,108.8 170.7,127.6 138.2,108.8 138.2,71.2 170.7,52.4 203.3,71.2" fill="#F5D06A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M152.7,68.0 L188.7,68.0 L182.7,76.0 L158.7,76.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="158.7" cy="104.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="amber">
+<polygon class="hive-cell-poly" points="272.6,108.8 240.0,127.6 207.4,108.8 207.4,71.2 240.0,52.4 272.6,71.2" fill="#E8C056" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M222.0,68.0 L258.0,68.0 L252.0,76.0 L228.0,76.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="228.0" cy="104.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="gold">
+<polygon class="hive-cell-poly" points="341.8,108.8 309.3,127.6 276.7,108.8 276.7,71.2 309.3,52.4 341.8,71.2" fill="#F5D06A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M291.3,68.0 L327.3,68.0 L321.3,76.0 L297.3,76.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="297.3" cy="104.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="cream">
+<polygon class="hive-cell-poly" points="168.6,168.8 136.1,187.6 103.5,168.8 103.5,131.2 136.1,112.4 168.6,131.2" fill="#FFF6DF" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="peeker" id="worker-a-cell">
+<polygon class="hive-cell-poly" points="237.9,168.8 205.4,187.6 172.8,168.8 172.8,131.2 205.4,112.4 237.9,131.2" fill="#C9A66A" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="gold">
+<polygon class="hive-cell-poly" points="307.2,168.8 274.6,187.6 242.1,168.8 242.1,131.2 274.6,112.4 307.2,131.2" fill="#F5D06A" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="nectar">
+<polygon class="hive-cell-poly" points="376.5,168.8 343.9,187.6 311.4,168.8 311.4,131.2 343.9,112.4 376.5,131.2" fill="#F0C24A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M325.9,128.0 L361.9,128.0 L355.9,136.0 L331.9,136.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="331.9" cy="164.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="peeker" id="peeker-static-cell">
+<polygon class="hive-cell-poly" points="445.8,168.8 413.2,187.6 380.6,168.8 380.6,131.2 413.2,112.4 445.8,131.2" fill="#C9A66A" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="gold">
+<polygon class="hive-cell-poly" points="64.7,228.8 32.2,247.6 -0.4,228.8 -0.4,191.2 32.2,172.4 64.7,191.2" fill="#F5D06A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M14.2,188.0 L50.2,188.0 L44.2,196.0 L20.2,196.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="20.2" cy="224.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="cream">
+<polygon class="hive-cell-poly" points="134.0,228.8 101.4,247.6 68.9,228.8 68.9,191.2 101.4,172.4 134.0,191.2" fill="#FFF6DF" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="nectar" id="nectar-neighbor-l">
+<polygon class="hive-cell-poly" points="203.3,228.8 170.7,247.6 138.2,228.8 138.2,191.2 170.7,172.4 203.3,191.2" fill="#F0C24A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M152.7,188.0 L188.7,188.0 L182.7,196.0 L158.7,196.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="158.7" cy="224.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="queen" id="queen-cell">
+<polygon class="hive-cell-poly" points="272.6,228.8 240.0,247.6 207.4,228.8 207.4,191.2 240.0,172.4 272.6,191.2" fill="#FFE18A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M222.0,188.0 L258.0,188.0 L252.0,196.0 L228.0,196.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="228.0" cy="224.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="gold">
+<polygon class="hive-cell-poly" points="341.8,228.8 309.3,247.6 276.7,228.8 276.7,191.2 309.3,172.4 341.8,191.2" fill="#F5D06A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M291.3,188.0 L327.3,188.0 L321.3,196.0 L297.3,196.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="297.3" cy="224.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="cream">
+<polygon class="hive-cell-poly" points="411.1,228.8 378.6,247.6 346.0,228.8 346.0,191.2 378.6,172.4 411.1,191.2" fill="#FFF6DF" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="gold">
+<polygon class="hive-cell-poly" points="480.4,228.8 447.8,247.6 415.3,228.8 415.3,191.2 447.8,172.4 480.4,191.2" fill="#F5D06A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M429.8,188.0 L465.8,188.0 L459.8,196.0 L435.8,196.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="435.8" cy="224.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="amber" id="nectar-neighbor-ll">
+<polygon class="hive-cell-poly" points="168.6,288.8 136.1,307.6 103.5,288.8 103.5,251.2 136.1,232.4 168.6,251.2" fill="#E8C056" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M118.1,248.0 L154.1,248.0 L148.1,256.0 L124.1,256.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="124.1" cy="284.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="deposit" id="nectar-deposit-cell">
+<polygon class="hive-cell-poly" points="237.9,288.8 205.4,307.6 172.8,288.8 172.8,251.2 205.4,232.4 237.9,251.2" fill="#F7D274" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M187.4,248.0 L223.4,248.0 L217.4,256.0 L193.4,256.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="193.4" cy="284.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="peeker" id="worker-b-cell">
+<polygon class="hive-cell-poly" points="307.2,288.8 274.6,307.6 242.1,288.8 242.1,251.2 274.6,232.4 307.2,251.2" fill="#C9A66A" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="nectar">
+<polygon class="hive-cell-poly" points="376.5,288.8 343.9,307.6 311.4,288.8 311.4,251.2 343.9,232.4 376.5,251.2" fill="#F0C24A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M325.9,248.0 L361.9,248.0 L355.9,256.0 L331.9,256.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="331.9" cy="284.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g class="hive-cell" data-kind="gold">
+<polygon class="hive-cell-poly" points="445.8,288.8 413.2,307.6 380.6,288.8 380.6,251.2 413.2,232.4 445.8,251.2" fill="#F5D06A" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="cream">
+<polygon class="hive-cell-poly" points="203.3,348.8 170.7,367.6 138.2,348.8 138.2,311.2 170.7,292.4 203.3,311.2" fill="#FFF6DF" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="gold">
+<polygon class="hive-cell-poly" points="272.6,348.8 240.0,367.6 207.4,348.8 207.4,311.2 240.0,292.4 272.6,311.2" fill="#F5D06A" stroke="#D4B06A" stroke-width="3.2"/>
+</g>
+<g class="hive-cell" data-kind="nectar">
+<polygon class="hive-cell-poly" points="341.8,348.8 309.3,367.6 276.7,348.8 276.7,311.2 309.3,292.4 341.8,311.2" fill="#F0C24A" stroke="#D4B06A" stroke-width="3.2"/>
+<path d="M291.3,308.0 L327.3,308.0 L321.3,316.0 L297.3,316.0 Z" fill="#C9A24A" opacity="0.5"/><ellipse cx="297.3" cy="344.0" rx="7" ry="4.5" fill="#FFF8E8" opacity="0.92"/>
+</g>
+<g id="peeker-static" transform="translate(413.2,161.2) scale(1.05)">
+    <circle cx="0" cy="0" r="15" fill="#3b2f20"/>
+    <circle cx="-5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="-3.4" cy="-2.6" r="2.6" fill="#241f18"/>
+    <circle cx="7" cy="-3" r="5" fill="#FFFDF4"/><circle cx="8.6" cy="-2.6" r="2.6" fill="#241f18"/>
+    <ellipse cx="-6" cy="5" rx="3.2" ry="2.2" fill="#E8998D" opacity=".85"/>
+    <ellipse cx="6" cy="5" rx="3.2" ry="2.2" fill="#E8998D" opacity=".85"/>
+    <path d="M-8 -12 q-3 -8 -9 -10" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="-18" cy="-23" r="3.2" fill="#C2932A"/>
+    <path d="M6 -13 q3 -8 9 -9" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="16" cy="-23" r="3.2" fill="#C2932A"/>
+</g>
+<g id="worker-a-peeker" transform="translate(205.4,161.2) scale(1.05)">
+    <circle cx="0" cy="0" r="15" fill="#3b2f20"/>
+    <circle cx="-5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="-3.4" cy="-2.6" r="2.6" fill="#241f18"/>
+    <circle cx="7" cy="-3" r="5" fill="#FFFDF4"/><circle cx="8.6" cy="-2.6" r="2.6" fill="#241f18"/>
+    <ellipse cx="-6" cy="5" rx="3.2" ry="2.2" fill="#E8998D" opacity=".85"/>
+    <ellipse cx="6" cy="5" rx="3.2" ry="2.2" fill="#E8998D" opacity=".85"/>
+    <path d="M-8 -12 q-3 -8 -9 -10" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="-18" cy="-23" r="3.2" fill="#C2932A"/>
+    <path d="M6 -13 q3 -8 9 -9" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="16" cy="-23" r="3.2" fill="#C2932A"/>
+</g>
+<g id="worker-b-peeker" transform="translate(274.6,281.2) scale(1.05)">
+    <circle cx="0" cy="0" r="15" fill="#3b2f20"/>
+    <circle cx="-5" cy="-3" r="5" fill="#FFFDF4"/><circle cx="-3.4" cy="-2.6" r="2.6" fill="#241f18"/>
+    <circle cx="7" cy="-3" r="5" fill="#FFFDF4"/><circle cx="8.6" cy="-2.6" r="2.6" fill="#241f18"/>
+    <ellipse cx="-6" cy="5" rx="3.2" ry="2.2" fill="#E8998D" opacity=".85"/>
+    <ellipse cx="6" cy="5" rx="3.2" ry="2.2" fill="#E8998D" opacity=".85"/>
+    <path d="M-8 -12 q-3 -8 -9 -10" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="-18" cy="-23" r="3.2" fill="#C2932A"/>
+    <path d="M6 -13 q3 -8 9 -9" stroke="#241f18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="16" cy="-23" r="3.2" fill="#C2932A"/>
+</g>
+<g id="queen-bee" transform="translate(240,210) scale(1.18)">
+    <g class="queen-crown" transform="translate(0,-22)">
+      <path d="M-12 8 L-8 -2 L-4 6 L0 -6 L4 6 L8 -2 L12 8 Z" fill="#E4B33C" stroke="#C2932A" stroke-width="1.2"/>
+      <circle cx="-8" cy="-2" r="2.2" fill="#FFF3B0"/>
+      <circle cx="0" cy="-6" r="2.4" fill="#FFF3B0"/>
+      <circle cx="8" cy="-2" r="2.2" fill="#FFF3B0"/>
+    </g>
+    <circle cx="0" cy="0" r="17" fill="#3b2f20"/>
+    <circle cx="-5.5" cy="-3" r="5.5" fill="#FFFDF4"/><circle cx="-3.7" cy="-2.5" r="2.8" fill="#241f18"/>
+    <circle cx="7.5" cy="-3" r="5.5" fill="#FFFDF4"/><circle cx="9.3" cy="-2.5" r="2.8" fill="#241f18"/>
+    <ellipse cx="-6.5" cy="6" rx="3.5" ry="2.4" fill="#E8998D" opacity=".85"/>
+    <ellipse cx="6.5" cy="6" rx="3.5" ry="2.4" fill="#E8998D" opacity=".85"/>
+    <path d="M-9 -13 q-3 -9 -10 -11" stroke="#241f18" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <circle cx="-20" cy="-25" r="3.6" fill="#E4B33C"/>
+    <path d="M7 -14 q3 -9 10 -10" stroke="#241f18" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <circle cx="18" cy="-25" r="3.6" fill="#E4B33C"/>
+</g>
+<g id="queen-signal" aria-hidden="true"></g>
+</g>
+</svg>
+      <div id="bee-cell" aria-hidden="true" style="display:none"><svg id="bee" viewBox="0 0 1 1" width="1" height="1" aria-hidden="true"></svg></div>
+      </div>
+    <div class="scrollcue"><div class="hexdot"></div></div>
+  </div>
+  <div class="hero-inner">
+    <h1 class="hero-title">
+      <span class="hero-line1">Every energy asse<span id="bee-land">t</span>,</span>
+      <span class="hero-line2">visible and dispatchable.</span>
+    </h1>
+    <p class="hero-sub">
+      Making assets intelligent using <img src="data:image/png;base64,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" alt="kWh" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> communication infrastructure
+    </p>
+
+  </div>
+</section>
+
+<script>
+// kWh Electric — hero hive story (standalone export)
+(function () {
+  if (window.__kwhBeesInit) return;
+  window.__kwhBeesInit = true;
+
+  function waitForGsap(cb, n) {
+    if (window.gsap && window.MotionPathPlugin) {
+      gsap.registerPlugin(MotionPathPlugin);
+      cb();
+    } else if ((n || 0) < 80) {
+      setTimeout(() => waitForGsap(cb, (n || 0) + 1), 100);
+    }
+  }
+
+  function waitForEl(id, cb, n) {
+    const el = document.getElementById(id);
+    if (el) cb(el);
+    else if ((n || 0) < 80) setTimeout(() => waitForEl(id, cb, (n || 0) + 1), 100);
+  }
+
+  // ── HERO: queen signals → 2 workers exit ───────────────────────────────────
+  function paperSideBeeSVG(id) {
+    /* Papercraft side-view matching #hero-hoverbee: striped body, white wings + gold stroke, cheeks, gold antenna tips */
+    const c = id + '-clip';
+    const w1 = id + '-w1';
+    const w2 = id + '-w2';
+    return (
+      '<defs><clipPath id="' + c + '"><ellipse cx="28" cy="24" rx="20" ry="14"/></clipPath></defs>' +
+      '<g class="wing back" transform="translate(4,2)">' +
+        '<ellipse id="' + w2 + '" cx="10" cy="6" rx="12" ry="18" fill="#FFF8E4" stroke="#C2932A" stroke-width="1.6" opacity=".88"/>' +
+      '</g>' +
+      '<ellipse cx="10" cy="24" rx="11" ry="10" fill="#F6C95C" stroke="#241f18" stroke-width="1.4"/>' +
+      '<ellipse cx="28" cy="24" rx="20" ry="14" fill="#F6C95C" stroke="#241f18" stroke-width="1.5"/>' +
+      '<g clip-path="url(#' + c + ')">' +
+        '<rect x="16" y="8" width="7" height="32" rx="3.2" fill="#241f18"/>' +
+        '<rect x="28" y="8" width="7" height="32" rx="3.2" fill="#241f18"/>' +
+      '</g>' +
+      '<circle cx="46" cy="22" r="12" fill="#3b2f20" stroke="#241f18" stroke-width="1.2"/>' +
+      '<circle cx="50" cy="19" r="4.6" fill="#FFFDF4"/>' +
+      '<circle cx="51.6" cy="19.4" r="2.4" fill="#241f18"/>' +
+      '<circle cx="52.6" cy="18" r="0.9" fill="#fff"/>' +
+      '<ellipse cx="46" cy="28" rx="4" ry="2.6" fill="#E8998D"/>' +
+      '<path d="M48 26 q4 3.5 8 0.5" stroke="#1a140e" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+      '<path d="M42 12 q-2 -10 -8 -13" stroke="#241f18" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="33" cy="-2" r="3.2" fill="#C2932A"/>' +
+      '<path d="M49 11 q3 -9 9 -11" stroke="#241f18" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="59" cy="-1" r="3.2" fill="#C2932A"/>' +
+      '<g class="wing" transform="translate(18,0)">' +
+        '<ellipse id="' + w1 + '" cx="8" cy="4" rx="14" ry="20" fill="#FFF8E4" stroke="#C2932A" stroke-width="2" opacity=".95"/>' +
+        '<path d="M4 -4 q4 6 5 14" stroke="#C2932A" stroke-width="1.2" fill="none" opacity=".45"/>' +
+      '</g>'
+    );
+  }
+
+  function makeFlyer(id) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.id = id;
+    svg.setAttribute('viewBox', '0 0 70 44');
+    svg.setAttribute('width', '64');
+    svg.setAttribute('height', '40');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.style.cssText = 'position:absolute;top:0;left:0;overflow:visible;pointer-events:none;z-index:12;';
+    svg.innerHTML = paperSideBeeSVG(id);
+    return svg;
+  }
+
+  function hiveToHeroXY(hiveSvg, cx, cy, hero) {
+    const pt = hiveSvg.createSVGPoint();
+    pt.x = cx; pt.y = cy;
+    const ctm = hiveSvg.getScreenCTM();
+    if (!ctm) return { x: 0, y: 0 };
+    const sp = pt.matrixTransform(ctm);
+    const hR = hero.getBoundingClientRect();
+    return { x: sp.x - hR.left - 32, y: sp.y - hR.top - 20 };
+  }
+
+  function launchBee() {
+    const land = document.getElementById('bee-land');
+    const hero = document.getElementById('hero');
+    const hiveWrap = document.getElementById('hive-wrap');
+    const hiveSvg = hiveWrap && hiveWrap.querySelector('svg');
+    const queen = document.getElementById('queen-bee');
+    const peekerA = document.getElementById('worker-a-peeker');
+    const peekerB = document.getElementById('worker-b-peeker');
+    if (!land || !hero || !hiveSvg || !queen || !peekerA || !peekerB) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    const hRect = hero.getBoundingClientRect();
+    const lRect = land.getBoundingClientRect();
+    /* Sit on the very top of the "t" stem (not the crossbar) */
+    const LAND_Y_FRAC = -0.02;
+    const LAND_Y_OFF = -10;
+    const lx = lRect.left - hRect.left + lRect.width * 0.5 - 32;
+    const ly = lRect.top - hRect.top + lRect.height * LAND_Y_FRAC + LAND_Y_OFF;
+
+    const startA = hiveToHeroXY(hiveSvg, 205.4, 161.2, hero);
+    const startB = hiveToHeroXY(hiveSvg, 274.6, 281.2, hero);
+    const deposit = hiveToHeroXY(hiveSvg, 205.4, 270, hero);
+
+    const flowers = hero.querySelectorAll('.hero-flower');
+    let flowerPt = { x: hRect.width * 0.12, y: hRect.height * 0.62 };
+    if (flowers.length) {
+      const fR = flowers[Math.min(1, flowers.length - 1)].getBoundingClientRect();
+      flowerPt = {
+        x: fR.left - hRect.left + fR.width * 0.45 - 32,
+        y: fR.top - hRect.top + fR.height * 0.18 - 20
+      };
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'bee-flight-overlay';
+    canvas.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:9;';
+    canvas.width = Math.round(hRect.width);
+    canvas.height = Math.round(hRect.height);
+    hero.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    let lastDotX = -999, lastDotY = -999;
+
+    function dropNectarDot(beeEl, color) {
+      const bx = gsap.getProperty(beeEl, 'x') + 34;
+      const by = gsap.getProperty(beeEl, 'y') + 22;
+      if (Math.hypot(bx - lastDotX, by - lastDotY) < 14) return;
+      ctx.beginPath();
+      ctx.arc(bx, by, 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = color || 'rgba(245,192,68,0.85)';
+      ctx.fill();
+      lastDotX = bx; lastDotY = by;
+    }
+
+    function orient(beeEl, state) {
+      const x = gsap.getProperty(beeEl, 'x');
+      const y = gsap.getProperty(beeEl, 'y');
+      if (state.lastX != null) {
+        const dx = x - state.lastX, dy = y - state.lastY;
+        if (Math.abs(dx) > 0.5) state.face = dx < 0 ? -1 : 1;
+        let dip = Math.atan2(dy, Math.max(0.0001, Math.abs(dx))) * 180 / Math.PI;
+        dip = Math.max(-28, Math.min(28, dip));
+        gsap.set(beeEl, {
+          scaleX: state.face,
+          scaleY: 1,
+          rotation: state.face < 0 ? -dip : dip,
+          transformOrigin: '50% 55%'
+        });
+      }
+      state.lastX = x; state.lastY = y;
+    }
+
+    function flapWings(id, play) {
+      const w1 = '#' + id + '-w1';
+      const w2 = '#' + id + '-w2';
+      gsap.killTweensOf([w1, w2]);
+      gsap.set([w1, w2], { transformOrigin: '30% 90%' });
+      if (!play) {
+        gsap.set([w1, w2], { rotation: 0, scaleY: 1 });
+        return null;
+      }
+      return gsap.timeline({ repeat: -1, yoyo: true, defaults: { ease: 'sine.inOut' } })
+        .to(w1, { rotation: 26, scaleY: 0.55, duration: 0.09 }, 0)
+        .to(w2, { rotation: -18, scaleY: 0.65, duration: 0.10 }, 0.01);
+    }
+
+    /* Queen pulse + hex signal packets toward workers */
+    function sendQueenSignal(done) {
+      const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      pulse.setAttribute('cx', '240');
+      pulse.setAttribute('cy', '210');
+      pulse.setAttribute('r', '18');
+      pulse.setAttribute('fill', 'none');
+      pulse.setAttribute('stroke', '#E4B33C');
+      pulse.setAttribute('stroke-width', '3');
+      pulse.setAttribute('opacity', '0.9');
+      const signalLayer = document.getElementById('queen-signal');
+      if (signalLayer) signalLayer.appendChild(pulse);
+      gsap.to(pulse, {
+        attr: { r: 52 },
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power2.out',
+        onComplete: () => pulse.remove()
+      });
+      gsap.fromTo(queen, { opacity: 1 }, {
+        opacity: 0.55, duration: 0.28, yoyo: true, repeat: 5, ease: 'sine.inOut'
+      });
+      const signal = signalLayer;
+      if (!signal) { done(); return; }
+      const targets = [
+        { x: 205.4, y: 161.2 },
+        { x: 274.6, y: 281.2 }
+      ];
+      targets.forEach((t, i) => {
+        for (let k = 0; k < 3; k++) {
+          const hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+          const s = 5 + k;
+          hex.setAttribute('points',
+            (0) + ',' + (-s) + ' ' + (s * 0.87) + ',' + (-s * 0.5) + ' ' +
+            (s * 0.87) + ',' + (s * 0.5) + ' ' + (0) + ',' + (s) + ' ' +
+            (-s * 0.87) + ',' + (s * 0.5) + ' ' + (-s * 0.87) + ',' + (-s * 0.5)
+          );
+          hex.setAttribute('fill', '#E4B33C');
+          hex.setAttribute('opacity', '0');
+          hex.setAttribute('transform', 'translate(240,210)');
+          signal.appendChild(hex);
+          gsap.to(hex, {
+            opacity: 0.85,
+            duration: 0.2,
+            delay: i * 0.12 + k * 0.08,
+            onComplete: () => {
+              gsap.to(hex, {
+                attr: { transform: 'translate(' + t.x + ',' + t.y + ')' },
+                opacity: 0,
+                duration: 0.7,
+                ease: 'power2.out',
+                onComplete: () => hex.remove()
+              });
+            }
+          });
+        }
+      });
+      gsap.delayedCall(1.1, done);
+    }
+
+    function darkenNectarCell() {
+      const depositCell = document.querySelector('#nectar-deposit-cell .hive-cell-poly');
+      const nL = document.querySelector('#nectar-neighbor-l .hive-cell-poly');
+      const nLL = document.querySelector('#nectar-neighbor-ll .hive-cell-poly');
+      if (depositCell) gsap.to(depositCell, { attr: { fill: '#E0B03A' }, duration: 0.8, ease: 'power1.out' });
+      if (nL) gsap.to(nL, { attr: { fill: '#E8BC48' }, duration: 0.9, ease: 'power1.out' });
+      if (nLL) gsap.to(nLL, { attr: { fill: '#DDB24A' }, duration: 1.0, ease: 'power1.out' });
+    }
+
+    function blossomAfterNectar() {
+      const sprouts = document.querySelectorAll('.hero-sprout.is-new');
+      if (!sprouts.length) return;
+      gsap.set(sprouts, { opacity: 0, scaleY: 0, transformOrigin: '50% 100%' });
+      sprouts.forEach((el) => {
+        const petals = el.querySelector('.blossom-petals');
+        if (petals) gsap.set(petals, { scale: 0.15, opacity: 0, transformOrigin: '50% 80%' });
+      });
+      const tl = gsap.timeline({ delay: 2.4 });
+      sprouts.forEach((el, i) => {
+        const petals = el.querySelector('.blossom-petals');
+        tl.to(el, {
+          opacity: 1,
+          scaleY: 1,
+          duration: 1.6,
+          ease: 'power2.out',
+          transformOrigin: '50% 100%'
+        }, i * 0.35);
+        if (petals) {
+          tl.to(petals, {
+            scale: 1,
+            opacity: 1,
+            duration: 2.0,
+            ease: 'power2.out'
+          }, i * 0.35 + 0.55);
+        }
+      });
+    }
+
+    const beeA = makeFlyer('hero-worker-a');
+    const beeB = makeFlyer('hero-worker-b');
+    hero.appendChild(beeA);
+    hero.appendChild(beeB);
+    gsap.set([beeA, beeB], { opacity: 0, transformOrigin: '50% 55%' });
+
+    const stateA = { lastX: null, lastY: null, face: 1 };
+    const stateB = { lastX: null, lastY: null, face: -1 };
+    let flapA = null, flapB = null;
+    const R = Math.min(hRect.height * 0.1, 88);
+
+    const master = gsap.timeline({ delay: 0.85 });
+
+    master.call(() => { sendQueenSignal(() => {}); });
+    master.to({}, { duration: 1.05 });
+
+    /* Workers emerge: hide peekers, show side-view flyers */
+    master.addLabel('emerge');
+    master.call(() => {
+      gsap.to([peekerA, peekerB], { opacity: 0, duration: 0.25 });
+      gsap.set(beeA, { x: startA.x, y: startA.y, opacity: 1, scaleX: 1, scaleY: 1, rotation: 0 });
+      gsap.set(beeB, { x: startB.x, y: startB.y, opacity: 1, scaleX: -1, scaleY: 1, rotation: 0 });
+      flapA = flapWings('hero-worker-a', true);
+      flapB = flapWings('hero-worker-b', true);
+    }, 'emerge');
+
+    /* Worker A → top of “t” */
+    master.to(beeA, {
+      duration: 7.8,
+      ease: 'power1.inOut',
+      onUpdate: () => orient(beeA, stateA),
+      motionPath: {
+        path: [
+          { x: startA.x, y: startA.y },
+          { x: startA.x - 0.4 * R, y: startA.y - 0.8 * R },
+          { x: lx - 1.2 * R, y: ly + 0.4 * R },
+          { x: lx - 0.3 * R, y: ly - 0.9 * R },
+          { x: lx + 0.35 * R, y: ly - 1.55 * R },
+          { x: lx - 0.15 * R, y: ly - 0.55 * R },
+          { x: lx, y: ly }
+        ],
+        curviness: 1.15,
+        autoRotate: false,
+        alignOrigin: [0.5, 0.55]
+      }
+    }, 'emerge');
+
+    master.call(() => {
+      if (flapA) flapA.pause();
+      flapWings('hero-worker-a', false);
+      gsap.set(beeA, { rotation: -6, scaleX: 1, scaleY: 1 });
+      const dx = gsap.getProperty(beeA, 'x') - lx;
+      const dy = gsap.getProperty(beeA, 'y') - ly;
+      const pin = () => {
+        const hR = hero.getBoundingClientRect();
+        const lR = land.getBoundingClientRect();
+        gsap.set(beeA, {
+          x: lR.left - hR.left + lR.width * 0.5 - 32 + dx,
+          y: lR.top - hR.top + lR.height * LAND_Y_FRAC + LAND_Y_OFF + dy
+        });
+      };
+      pin();
+      window.addEventListener('resize', pin);
+      gsap.to('#' + beeA.id + '-w1', {
+        scaleY: 0.72, duration: 0.5, yoyo: true, repeat: -1, ease: 'sine.inOut',
+        transformOrigin: '30% 90%'
+      });
+    }, 'emerge+=7.8');
+
+    /* Worker B → flower collect → deposit → peeker (parallel) */
+    master.to(beeB, {
+      duration: 4.2,
+      ease: 'power1.inOut',
+      onUpdate: () => { orient(beeB, stateB); dropNectarDot(beeB, 'rgba(232,180,70,0.55)'); },
+      motionPath: {
+        path: [
+          { x: startB.x, y: startB.y },
+          { x: (startB.x + flowerPt.x) * 0.5, y: Math.min(startB.y, flowerPt.y) - 0.6 * R },
+          { x: flowerPt.x, y: flowerPt.y }
+        ],
+        curviness: 1.1,
+        autoRotate: false,
+        alignOrigin: [0.5, 0.55]
+      }
+    }, 'emerge+=0.15');
+
+    master.to(beeB, {
+      y: '+=6', duration: 0.35, yoyo: true, repeat: 3, ease: 'sine.inOut',
+      onUpdate: () => dropNectarDot(beeB, 'rgba(245,200,80,0.9)')
+    }, 'emerge+=4.4');
+
+    master.to(beeB, {
+      duration: 4.6,
+      ease: 'power1.inOut',
+      onUpdate: () => { orient(beeB, stateB); dropNectarDot(beeB, 'rgba(205,140,40,0.75)'); },
+      motionPath: {
+        path: [
+          { x: flowerPt.x, y: flowerPt.y },
+          { x: (flowerPt.x + deposit.x) * 0.45, y: Math.min(flowerPt.y, deposit.y) - 0.7 * R },
+          { x: deposit.x + 40, y: deposit.y - 30 },
+          { x: deposit.x, y: deposit.y }
+        ],
+        curviness: 1.05,
+        autoRotate: false,
+        alignOrigin: [0.5, 0.55]
+      }
+    }, 'emerge+=5.9');
+
+    master.call(() => {
+      darkenNectarCell();
+      dropNectarDot(beeB, 'rgba(200,130,30,0.95)');
+    }, 'emerge+=10.5');
+
+    master.to(beeB, {
+      duration: 1.4,
+      ease: 'power2.inOut',
+      onUpdate: () => orient(beeB, stateB),
+      motionPath: {
+        path: [
+          { x: deposit.x, y: deposit.y },
+          { x: startB.x, y: startB.y }
+        ],
+        curviness: 0.6,
+        autoRotate: false,
+        alignOrigin: [0.5, 0.55]
+      }
+    }, 'emerge+=10.7');
+
+    master.call(() => {
+      if (flapB) flapB.pause();
+      flapWings('hero-worker-b', false);
+      gsap.to(beeB, { opacity: 0, duration: 0.2 });
+      /* Sit as peeker in the nectar-filled deposit cell */
+      peekerB.setAttribute('transform', 'translate(205.4,281.2) scale(1.05)');
+      gsap.set(peekerB, { opacity: 0 });
+      gsap.to(peekerB, { opacity: 1, duration: 0.35 });
+      gsap.to(canvas, { opacity: 0, duration: 0.5, onComplete: () => canvas.remove() });
+      blossomAfterNectar();
+    }, 'emerge+=12.2');
+  }
+
+
+  waitForGsap(function () {
+    waitForEl('queen-bee', function () {
+      setTimeout(launchBee, 700);
+    });
+  });
+})();
+
+</script>
+</body>
+</html>

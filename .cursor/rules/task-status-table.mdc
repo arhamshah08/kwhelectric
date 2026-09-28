@@ -1,0 +1,52 @@
+---
+description: Before/after task status tables with 🔴🟢🟡 so Arham can scan reds
+alwaysApply: true
+---
+
+# Task Status Table protocol
+
+On **every multi-step task**, show an indexed status table **in the chat response** (never only a canvas).
+
+## Status icons
+
+| Icon | Meaning |
+|------|---------|
+| 🟢 | Done |
+| 🔴 | Left / still to do |
+| 🟡 | Deliberately waiting on something else first |
+
+## Before work
+
+1. Show the planned work as a numbered markdown table **before** making changes.
+2. Mark planned items 🔴 (or 🟡 if blocked on an external dependency).
+3. Pause so Arham can verify scope. If he already said "go", proceed after showing the table.
+
+Example:
+
+| # | Item | Status | Note |
+|---|---|---|---|
+| 1 | … | 🔴 | … |
+| 2 | … | 🟡 | blocked on X |
+| 3 | … | 🟢 | already done |
+
+## After work
+
+1. Show the **same indexed table** updated.
+2. Unchanged 🟢 stays 🟢 (no arrow).
+3. Status changes use transition arrows: `🔴 → 🟢`, `🟡 → 🟢`, `🔴 → 🟡`, etc.
+4. Leftover work stays 🔴 or 🟡.
+
+Example:
+
+| # | Item | Status | Note |
+|---|---|---|---|
+| 1 | … | 🔴 → 🟢 | … |
+| 2 | … | 🟡 | still waiting on X |
+| 3 | … | 🟢 | unchanged |
+
+## Rules of thumb
+
+- Put the table **in chat** with emoji so **reds are easy to scan**.
+- One row per concrete deliverable, not vague phases.
+- Do not invent fake greens — if not done, keep 🔴/🟡.
+- Skip the table for trivial one-liner asks (e.g. "what is X?").

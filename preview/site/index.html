@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kWh Electric</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="shortcut icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; font-family: inherit; }
+    html {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      scroll-behavior: smooth;
+    }
+    html, body { margin: 0; padding: 0; }
+    body { -webkit-font-smoothing: antialiased; background: #FFFBF0; }
+    /* ── SMART DOT CURSOR (desktop) ── */
+    @media (hover: hover) and (pointer: fine) {
+      html.dot-cursor-on, html.dot-cursor-on * { cursor: none !important; }
+      #dot-cursor {
+        position: fixed; left: 0; top: 0; width: 9px; height: 9px;
+        border-radius: 50%; background: rgba(11, 11, 14, 0.45);
+        pointer-events: none; z-index: 10001; transform: translate(-50%, -50%);
+        opacity: 0; transition: opacity 0.12s ease, background-color 0.08s ease, transform 0.08s ease;
+      }
+      html.dot-cursor-on #dot-cursor { opacity: 1; }
+      #dot-cursor.pressed { transform: translate(-50%, -50%) scale(1.15); }
+    }
+    a { text-decoration: none; color: inherit; }
+    input, textarea, button, select, label { font-family: inherit; }
+    input::placeholder, textarea::placeholder { font-family: inherit; opacity: 1; }
+    #contact, #contact * { font-family: inherit; }
+    /* Cream rectangular boxes: slight 2px corner (UA/Safari softens inputs without !important). */
+    :root { --box-radius: 2px; }
+    #contact input[type="text"],
+    #contact input[type="email"],
+    #contact input[type="search"],
+    #contact textarea {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border: 0 !important;
+      border-radius: var(--box-radius) !important;
+      border-top-left-radius: var(--box-radius) !important;
+      border-top-right-radius: var(--box-radius) !important;
+      border-bottom-left-radius: var(--box-radius) !important;
+      border-bottom-right-radius: var(--box-radius) !important;
+      background-clip: padding-box;
+    }
+    input:focus, textarea:focus { outline: 2px solid rgba(205,127,50,0.45); outline-offset: 1px; }
+    @keyframes logo-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    /* ── BEES ── */
+    #bee-cell {
+      position:absolute; left:30%; top:72%;
+      width:60px; height:50px;
+      transform:translate(-50%, -50%);
+      overflow:hidden; pointer-events:none; z-index:3;
+    }
+    #bee { position:absolute; top:0; left:0; pointer-events:none; transform:translate(2px,70px); }
+    #arch-stack-inner { position:relative; z-index:2; }
+    .hero-inner {
+      position:relative; z-index:1; text-align:center;
+      width:100%; max-width:1280px;
+      margin-left:auto; margin-right:auto;
+      padding:0 clamp(20px, 4vw, 56px);
+      min-width:0; box-sizing:border-box;
+    }
+    .hero-title {
+      display:block; width:100%;
+      font-size:clamp(39px, 6.12vw, 102px);
+      font-weight:700; color:#FFFBF0;
+      letter-spacing:-0.035em; line-height:1.05;
+      margin:0 auto 32px;
+      max-width:min(1020px, 85%);
+      text-align:center;
+    }
+    .hero-line1 { display:block; width:100%; text-align:center; }
+    /* nowrap line is wider than the title box; text-align alone start-flushes overflow.
+       left:50% + translateX(-50%) centers the max-content box in the viewport. */
+    .hero-line2 {
+      display:block; width:max-content; max-width:none;
+      white-space:nowrap; text-align:center;
+      position:relative; left:50%; transform:translateX(-50%);
+    }
+    #bee-land { position:relative; display:inline-block; }
+    .hero-sub {
+      display:block; width:100%;
+      font-size:clamp(26px, 1.8vw, 30px);
+      color:rgba(255,251,240,0.8);
+      max-width:min(720px, 100%);
+      margin:0 auto 48px; line-height:1.68; font-weight:400;
+      text-align:center;
+    }
+    .section-heading-wide {
+      max-width:min(960px, 92vw) !important;
+      margin-left:auto !important; margin-right:auto !important;
+    }
+    .how-grid {
+      max-width:min(1120px, 94vw) !important;
+      gap:56px clamp(40px, 6vw, 88px) !important;
+    }
+    .backed-logo {
+      border-radius:var(--box-radius); height:99px; width:99px; min-width:99px; max-width:99px; flex:0 0 99px;
+      overflow:hidden; flex-shrink:0;
+      background:#fff; display:flex; align-items:center; justify-content:center;
+      padding:12px; box-sizing:border-box;
+    }
+    .backed-logo img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; object-position:center; display:block; margin:auto; }
+    .backed-logo--nvidia { padding:8px; }
+    .backed-logo--cover { padding:0; }
+    .backed-logo--cover img { width:100%; height:100%; max-width:none; max-height:none; object-fit:cover; }
+    .backed-logo--ms { padding:10px; }
+    .backed-logo--ms img { width:100%; height:100%; max-width:none; max-height:none; object-fit:contain; object-position:center; }
+    .backed-logo--polsky { padding:0; }
+    .backed-logo--polsky img { width:100%; height:100%; max-width:none; max-height:none; object-fit:cover; object-position:center 62%; transform:translateY(3px); }
+    /* ── FLIP CARDS ── */
+    .flip {
+      perspective:1000px; cursor:pointer;
+      -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none;
+      touch-action:manipulation; outline:none;
+    }
+    .flip:focus, .flip:focus-visible { outline:none; }
+    .flip-inner { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform 0.5s ease; }
+    .flip:hover .flip-inner, .flip.pinned .flip-inner { transform:rotateY(180deg); }
+    .flip-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:var(--box-radius); }
+    .flip-back { transform:rotateY(180deg); }
+    /* ── CREAM HONEYCOMB BACKGROUND (flat-top hex grid) ── */
+    .cream-hex-section {
+      position:relative; overflow:hidden;
+      background-color:#FFFBF0 !important;
+    }
+    .cream-hex-section::before {
+      content:'';
+      position:absolute; top:0; left:0; right:0; bottom:0;
+      width:100%; height:100%;
+      pointer-events:none; z-index:0;
+      background-color:#FFFBF0;
+      background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2772.00%27%20height%3D%2741.57%27%20viewBox%3D%270%200%2072.00%2041.57%27%3E%3Cpolygon%20points%3D%2724.00%2C0.00%2012.00%2C20.78%20-12.00%2C20.78%20-24.00%2C0.00%20-12.00%2C-20.78%2012.00%2C-20.78%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2724.00%2C41.57%2012.00%2C62.35%20-12.00%2C62.35%20-24.00%2C41.57%20-12.00%2C20.78%2012.00%2C20.78%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2796.00%2C0.00%2084.00%2C20.78%2060.00%2C20.78%2048.00%2C0.00%2060.00%2C-20.78%2084.00%2C-20.78%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2796.00%2C41.57%2084.00%2C62.35%2060.00%2C62.35%2048.00%2C41.57%2060.00%2C20.78%2084.00%2C20.78%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2760.00%2C20.78%2048.00%2C41.57%2024.00%2C41.57%2012.00%2C20.78%2024.00%2C0.00%2048.00%2C0.00%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2760.00%2C-20.78%2048.00%2C0.00%2024.00%2C0.00%2012.00%2C-20.78%2024.00%2C-41.57%2048.00%2C-41.57%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3Cpolygon%20points%3D%2760.00%2C62.35%2048.00%2C83.14%2024.00%2C83.14%2012.00%2C62.35%2024.00%2C41.57%2048.00%2C41.57%27%20fill%3D%27none%27%20stroke%3D%27%23E0D4B8%27%20stroke-width%3D%271%27%2F%3E%3C%2Fsvg%3E");
+      background-size:72px 41.57px;
+      background-repeat:repeat;
+      background-position:0 0;
+    }
+    .cream-hex-section > * { position:relative; z-index:1; }
+    .cream-hex-section section { background:transparent; }
+    /* ── HOW IT WORKS HEX FLIPS (flat-top honeycomb) ── */
+    .how-hex-grid {
+      --hex-w: clamp(180px, 23vw, 250px);
+      --hex-h: calc(1.1547 * var(--hex-w));  /* regular pointy-top: H = W / 0.866 */
+      --col: calc(0.5 * var(--hex-w));       /* horizontal step (diagonal neighbor) */
+      --off: calc(0.75 * var(--hex-h));      /* alternating vertical offset          */
+      position:relative; z-index:1;
+      width:calc(3 * var(--col) + var(--hex-w));
+      height:calc(var(--hex-h) + var(--off));
+      margin:0 auto;
+    }
+    .how-hex-grid .hex-flip {
+      position:absolute;
+      width:var(--hex-w);
+      height:var(--hex-h);
+      min-width:var(--hex-w);
+      min-height:var(--hex-h);
+      flex-shrink:0;
+      transform:scale(0.93);
+    }
+    /* Connect → Dispatch → Normalize → Verify (desktop honeycomb zigzag) */
+    .how-hex-grid .hex-flip:nth-child(1) { left:0;                    top:0; }
+    .how-hex-grid .hex-flip:nth-child(2) { left:var(--col);           top:var(--off); }
+    .how-hex-grid .hex-flip:nth-child(3) { left:calc(2 * var(--col)); top:0; }
+    .how-hex-grid .hex-flip:nth-child(4) { left:calc(3 * var(--col)); top:var(--off); }
+    .how-hex-grid .hex-flip:hover, .how-hex-grid .hex-flip.pinned { z-index:10; }
+    .hex-flip .flip-inner { width:100%; height:100%; min-height:var(--hex-h); }
+    .hex-face {
+      clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      border-radius:0;
+    }
+    .hex-face-front {
+      background:#2B1A08; display:flex; align-items:center; justify-content:center;
+      padding:0 17%;
+    }
+    .hex-face-front::before {
+      content:''; position:absolute; inset:0;
+      clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background:#CD7F32; transform:scale(0.94); z-index:0;
+      transition:background 0.3s ease;
+    }
+    .how-hex-grid .hex-flip:hover .hex-face-front::before { background:#B86F28; }
+    .hex-face-back {
+      background:#2B1A08; transform:rotateY(180deg);
+      display:flex; align-items:center; justify-content:center;
+      padding:0 16%; text-align:center; overflow:hidden;
+    }
+    .hex-face-back::before {
+      content:''; position:absolute; inset:0;
+      clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background:#FFF7E6; transform:scale(0.94); z-index:0;
+    }
+    .hex-face-back p { font-size:clamp(13.5px,1.65vw,16.5px); color:#4A3A1F; line-height:1.4; margin:0; font-weight:500; position:relative; z-index:1; }
+    .hex-word { font-size:clamp(26px,4.2vw,40px); font-weight:700; color:#FFFBF0; margin:0; letter-spacing:-0.03em; line-height:1.05; text-align:center; position:relative; z-index:1; }
+    /* ── SCORECARD FLIPS ── */
+    .score-flip { min-height:156px; cursor:pointer; border-radius:var(--box-radius); overflow:hidden; }
+    .score-flip .flip-face { display:flex; flex-direction:column; justify-content:center; padding:22px 24px; box-sizing:border-box; overflow:hidden; border-radius:var(--box-radius); }
+    .score-flip .flip-front, .score-flip .flip-back { border-radius:var(--box-radius); }
+    .score-flip .flip-front { background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.32); }
+    .score-flip--light .flip-front { background:#FFFFFF; border:1px solid #E3D2B0; box-shadow:0 1px 2px rgba(120,80,30,0.05); }
+    .score-flip .flip-back { background:#FFF7E6; border:1px solid #E3D2B0; align-items:flex-start; justify-content:center; text-align:left; }
+    .score-flip--light .flip-back { background:#CD7F32; border:1px solid #B86F28; }
+    .score-flip .flip-back p { font-size:clamp(15px,1.5vw,18px); line-height:1.5; margin:0; font-weight:400; color:#0B0B0E; max-width:100%; }
+    .score-flip--light .flip-back p { color:#0B0B0E; }
+    @media (min-width: 769px) {
+      #who .score-flip .flip-back {
+        background:#FFF7E6 !important;
+        border:1px solid #E3D2B0 !important;
+      }
+      #who .score-flip .flip-back p { color:#0B0B0E !important; }
+    }
+    .card-front-split { display:flex; flex-direction:column; align-items:flex-start; gap:16px; width:100%; }
+    .card-front-left { display:flex; align-items:center; gap:13px; }
+    .card-front-left svg { width:38px; height:38px; }
+    .card-front-right { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-start; align-items:center; }
+    .card-category-title { font-size:clamp(18px,2vw,23px); font-weight:700; color:#0B0B0E; margin:0; letter-spacing:-0.02em; line-height:1.18; }
+    .score-tag { font-size:12px; color:#6B5A3F; border:1px solid #D9B896; border-radius:6px; padding:4px 11px; font-weight:500; white-space:nowrap; }
+    /* Platform feature cards: never overflow viewport */
+    #platform-features { overflow-x:clip; box-sizing:border-box; padding:48px clamp(20px,4vw,64px) 72px !important; }
+    #platform-features > div { min-width:0; max-width:1160px; margin:0 auto; }
+    #platform-features [data-grid] { display:grid !important; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)) !important; gap:20px !important; min-width:0; width:100%; }
+    #platform-features .score-flip { min-width:0; max-width:100%; overflow:hidden; }
+    #platform-features .card-front-split { min-width:0; width:100%; }
+    #platform-features .card-front-left { min-width:0; flex:1 1 auto; }
+    #platform-features .card-front-right { min-width:0; flex:1 1 100%; }
+    #platform-features .card-category-title { overflow-wrap:break-word; }
+    #platform-features .score-tag { white-space:normal; text-align:center; line-height:1.25; }
+    .score-flip .flip-face svg { flex-shrink:0; }
+    /* ── PROBLEM DIVIDER (thin bronze bar) ── */
+    #problem {
+      background: #CD7F32;
+      height: 32px;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      display: block;
+    }
+    /* ── ARCHITECTURE LAYER TYPE (shares .card-category-title metrics) ── */
+    .arch-layer-title { color:#CD7F32; margin:0 0 10px; }
+    #architecture .card-category-title { color:#CD7F32; margin:0 0 10px; }
+    .arch-layer-body { font-size:clamp(15px,1.5vw,18px); color:rgba(255,251,240,0.72); line-height:1.5; margin:0; font-weight:400; }
+    .nav-brand-text { font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1; white-space:nowrap; }
+    /* ── PRODUCT SECTIONS ── */
+    .kwh-prod { padding:88px clamp(20px,4vw,64px); }
+    .kwh-prod-inner { max-width:1140px; margin:0 auto; }
+    .kwh-prod-h { font-size:clamp(38px,4.2vw,56px); font-weight:700; letter-spacing:-0.032em; line-height:1.08; margin:0 0 44px; color:#0B0B0E; }
+    .kwh-prod-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:stretch; }
+    .kwh-prod-card { background:#FFF6E4; border:1px solid #EAD9B6; border-radius:var(--box-radius); padding:22px 26px 24px; display:flex; flex-direction:column; min-width:0; box-shadow:0 1px 3px rgba(120,80,30,0.05); }
+    .kwh-prod-fig { flex:0 0 148px; display:flex; align-items:center; justify-content:center; padding:6px 0 20px; }
+    .kwh-prod-body { flex:1; }
+    .kwh-prod-card h3 { font-size:clamp(29px,2.4vw,33px); font-weight:700; letter-spacing:-0.02em; color:#0B0B0E; margin:0 0 7px; line-height:1.18; }
+    .kwh-prod-card p { font-size:24.5px; line-height:1.55; margin:0; font-weight:400; color:#4A3A24; }
+    #product-gateway.kwh-prod { background:#FFFBF0; }
+    #product-gateway .kwh-prod-grid { grid-template-columns:repeat(3,1fr); }
+    #product-gateway .kwh-prod-card.wide { grid-column:1 / -1; flex-direction:row; align-items:center; gap:44px; }
+    #product-gateway .kwh-prod-card.wide .kwh-prod-fig { flex:0 0 320px; padding:0; }
+    #product-gateway .kwh-prod-card.wide .kwh-prod-body { flex:1; }
+    /* Who it's for — light cards, black text, on the dark honeycomb band */
+    #who.kwh-prod { position:relative; overflow:hidden; background:#120d04; }
+    #who .who-hex-bg { position:absolute; inset:0; background:url(uploads/hero-bg.webp) center/cover no-repeat; opacity:0.30; z-index:0; pointer-events:none; }
+    #who .kwh-prod-inner { position:relative; z-index:1; }
+    #who .kwh-prod-h { color:#FFFBF0; }
+    #who .kwh-prod-grid { grid-template-columns:repeat(3,1fr); }
+    #who .kwh-prod-card { background:#FFF6E4; }
+    /* ── graphic atoms — flat, minimal, black wordmark ── */
+    .kg { display:flex; align-items:center; justify-content:center; gap:16px; width:100%; }
+    .kg-col { display:flex; flex-direction:column; gap:8px; }
+    .kg-tag { display:inline-flex; align-items:center; gap:8px; font-size:15.5px; font-weight:500; color:#5B4A2C; white-space:nowrap; }
+    .kg-pill { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:15px; font-weight:500; white-space:nowrap; background:#F4EEE1; color:#4A3A24; }
+    .kg-dot { width:6px; height:6px; border-radius:50%; background:#CD7F32; flex-shrink:0; }
+    .kg-mark { height:19px; width:auto; display:block; }
+    .kg-arrow { color:#C3B394; font-size:13px; line-height:1; }
+    .kg-lines { width:38px; height:96px; flex-shrink:0; }
+    .kg-lines path { stroke:#D8C6A2; stroke-width:1.4; fill:none; }
+    .kg-code { font-family:ui-monospace,Menlo,monospace; font-size:14.5px; line-height:2; width:100%; color:#9A8A6C; }
+    .kg-code .row { display:flex; align-items:center; gap:8px; }
+    .kg-code .lead { flex:1; border-top:1px dashed #DAC9A6; }
+    .kg-code .rhs { color:#1F9C6B; }
+    .kg-log { font-family:ui-monospace,Menlo,monospace; font-size:14px; line-height:2; width:100%; }
+    .kg-log .hd { display:flex; align-items:center; gap:7px; margin-bottom:5px; color:#9A8A6C; }
+    .kg-log .live { width:7px; height:7px; border-radius:50%; background:#1F9C6B; flex-shrink:0; }
+    .kg-log .ev { display:flex; align-items:center; gap:8px; color:#5B4A2C; }
+    .kg-log .ev .v { margin-left:auto; color:#B7793A; }
+    .kg-steps { display:flex; flex-direction:column; gap:11px; width:100%; max-width:280px; }
+    .kg-steps li { display:flex; align-items:center; gap:11px; font-size:15.5px; color:#5B4A2C; list-style:none; }
+    .kg-steps .sd { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .kg-modes { display:flex; width:100%; text-align:left; }
+    .kg-modes > div { flex:1; padding:0 18px; }
+    .kg-modes > div:first-child { padding-left:0; }
+    .kg-modes > div + div { border-left:1px solid #E7DAC0; }
+    .kg-modes b { display:block; font-size:18px; font-weight:700; color:#0B0B0E; margin-bottom:4px; }
+    .kg-modes span { font-size:15.5px; line-height:1.45; color:#6E5E42; }
+    @media (max-width:900px){ .kwh-prod-grid, #who .kwh-prod-grid, #product-gateway .kwh-prod-grid { grid-template-columns:1fr 1fr; } #product-gateway .kwh-prod-card.wide { flex-direction:column; align-items:stretch; gap:0; } #product-gateway .kwh-prod-card.wide .kwh-prod-fig { flex:none; } }
+    @media (max-width:600px){ .kwh-prod-grid, #who .kwh-prod-grid, #product-gateway .kwh-prod-grid { grid-template-columns:1fr; } .kwh-prod { padding:56px 22px; } .kwh-prod-h { margin-bottom:32px; } }
+    /* ── SITE FOOTER ── */
+    .site-footer { background:#120d04; color:rgba(255,251,240,0.72); padding:72px clamp(20px,4vw,64px) 40px; }
+    .site-footer-inner { max-width:1160px; margin:0 auto; display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr 1fr; gap:40px 32px; }
+    .site-footer img.foot-logo { height:26px; width:auto; display:block; margin-bottom:16px; }
+    .site-footer .foot-tag { font-size:23.5px; line-height:1.5; margin:0; max-width:320px; color:rgba(255,251,240,0.6); }
+    .site-footer h4 { font-size:14px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,251,240,0.5); margin:0 0 14px; }
+    .site-footer a { display:block; font-size:18px; color:rgba(255,251,240,0.78); margin-bottom:10px; transition:color 0.15s; }
+    .site-footer a:hover { color:#CD7F32; }
+    .site-footer-bottom { max-width:1160px; margin:44px auto 0; padding-top:22px; border-top:1px solid rgba(255,251,240,0.12); font-size:16px; color:rgba(255,251,240,0.5); }
+    @media (max-width:900px){ .site-footer-inner { grid-template-columns:1fr 1fr; } }
+    @media (max-width:560px){ .site-footer-inner { grid-template-columns:1fr; gap:28px; } }
+    .nav-login {
+      display: inline-flex;
+      align-items: center;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 999px;
+      background: #CD7F32;
+      color: #FFFBF0;
+      border: 1px solid #CD7F32;
+      line-height: 1;
+      text-decoration: none;
+      transition: opacity 0.15s, background 0.15s;
+    }
+    .nav-login:hover { opacity: 0.88; background: #B86F28; border-color: #B86F28; }
+    .card-icon-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .card-icon-title svg { flex-shrink: 0; display: block; }
+    @media (max-width: 768px) {
+      .card-front-split { flex-direction:column; gap:14px; }
+      .card-front-right { max-width:100%; justify-content:flex-start; }
+      [data-nav-links] { display: none !important; }
+      [data-grid] { display: flex !important; flex-direction: column !important; gap: 24px !important; }
+      #hero > div:last-child { padding: 0 clamp(16px, 4vw, 24px) !important; }
+      .hero-title { font-size: clamp(36px, 7.2vw, 54px); }
+      .hero-line2 { white-space: nowrap; letter-spacing: -0.03em; }
+      #problem { height: 32px !important; padding: 0 !important; }
+      #how-it-works { padding: 64px 24px 0 !important; }
+      /* Vertical honeycomb: transpose of laptop zigzag adjacency */
+      .how-hex-grid {
+        --hex-w: min(158px, calc((100vw - 48px) / 1.5)) !important;
+        --hex-h: calc(1.1547 * var(--hex-w)) !important;
+        --col: calc(0.5 * var(--hex-w)) !important;
+        --row: calc(0.75 * var(--hex-h)) !important;
+        display:block !important;
+        width:calc(var(--col) + var(--hex-w)) !important;
+        height:calc(3 * var(--row) + var(--hex-h)) !important;
+        margin:0 auto !important;
+      }
+      .how-hex-grid .hex-flip {
+        position:absolute !important;
+        width:var(--hex-w) !important;
+        height:var(--hex-h) !important;
+        min-width:var(--hex-w) !important;
+        min-height:var(--hex-h) !important;
+        flex-shrink:0 !important;
+      }
+      /* Keep regular hex ratio — mobile flip flattening must not squash height */
+      .how-hex-grid .hex-flip .flip-inner {
+        height:100% !important;
+        min-height:var(--hex-h) !important;
+      }
+      .how-hex-grid .hex-flip .hex-face-front {
+        position:absolute !important;
+        inset:0 !important;
+        width:100% !important;
+        height:100% !important;
+        transform:none !important;
+      }
+      /* Connect ↘ Dispatch ↙ Normalize ↘ Verify */
+      .how-hex-grid .hex-flip:nth-child(1) { left:var(--col) !important; top:0 !important; }
+      .how-hex-grid .hex-flip:nth-child(2) { left:0 !important; top:var(--row) !important; }
+      .how-hex-grid .hex-flip:nth-child(3) { left:var(--col) !important; top:calc(2 * var(--row)) !important; }
+      .how-hex-grid .hex-flip:nth-child(4) { left:0 !important; top:calc(3 * var(--row)) !important; }
+      .hex-word { font-size:20px !important; }
+      .hex-face-back { padding:0 16% !important; }
+      .hex-face-back p { font-size:14px !important; line-height:1.42 !important; }
+      #how-it-works [data-grid] { max-width: 100% !important; gap: 40px !important; }
+      #platform-features { padding: 64px 24px !important; }
+      #platform-features > div { max-width: 100% !important; }
+      #who { padding: 64px 24px !important; }
+      #who > div { max-width: 100% !important; }
+      #architecture { padding: 64px 24px !important; }
+      #architecture > div > div { max-width: 100% !important; }
+      #contact { padding: 64px 24px 72px !important; }
+      #contact > div { max-width: 100% !important; }
+      [data-name-row] { grid-template-columns: 1fr !important; }
+
+      /* All flip cards: front face only — no 3D flip or tap-to-pin */
+      [data-flip], .flip {
+        cursor:default !important;
+        pointer-events:none !important;
+        perspective:none !important;
+      }
+      [data-flip] .flip-inner, .flip .flip-inner {
+        transform:none !important;
+        transition:none !important;
+        transform-style:flat !important;
+        height:100%;
+      }
+      [data-flip]:hover .flip-inner,
+      [data-flip].pinned .flip-inner,
+      .flip:hover .flip-inner,
+      .flip.pinned .flip-inner { transform:none !important; }
+      [data-flip] .flip-back, .flip .flip-back,
+      .hex-flip .hex-face-back { display:none !important; }
+      [data-flip] .flip-front,
+      [data-flip] .flip-face:not(.flip-back),
+      .hex-flip .hex-face-front {
+        position:relative !important;
+        backface-visibility:visible !important;
+        -webkit-backface-visibility:visible !important;
+        transform:none !important;
+      }
+      #who [data-grid] {
+        display:grid !important;
+        grid-template-columns:1fr 1fr !important;
+        gap:16px !important;
+        flex-direction:unset !important;
+      }
+      #who .score-flip { min-height:130px !important; border-radius:var(--box-radius); }
+      #who .score-flip .flip-front { padding:18px 16px !important; }
+      #who .card-front-left { gap:10px !important; align-items:center; }
+      #who .card-front-left svg { width:36px !important; height:36px !important; flex-shrink:0; }
+      #platform-features .score-flip { min-height:156px !important; border-radius:var(--box-radius); }
+      #platform-features .score-flip .flip-face { border-radius:var(--box-radius); }
+      .card-front-split { gap:12px !important; }
+      .card-front-right { gap:7px; }
+    }
+  </style>
+  <link rel="stylesheet" href="_shared/nav.css?v9">
+</helmet>
+
+<!-- ══════════════════════════════════════════════════
+     NAV
+══════════════════════════════════════════════════ -->
+<nav style="{{ navStyle }}" class="kwh-nav" id="site-nav">
+  <a href="/" class="kwh-nav-brand">
+    <img class="mark-dark" src="assets/kwh-logo-mark.png?v=3" alt="kWh Electric" />
+  </a>
+  <button class="kwh-nav-toggle" type="button" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+  <div class="kwh-nav-links">
+    <a href="/">Home</a>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <div class="kwh-nav-item">
+      <button type="button" data-solutions-toggle aria-haspopup="true">Solutions
+        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+      <div class="kwh-mega" role="menu"><a href="/solutions/"><strong>Solutions</strong><span>One platform to connect, normalize, and dispatch energy assets.</span></a><a href="/solutions/aggregators/"><strong>Aggregators</strong><span>Launch and scale programs across mixed OEM fleets.</span></a><a href="/solutions/oems/"><strong>OEMs</strong><span>Make devices program-ready without building every downstream integration.</span></a><a href="/solutions/financiers/"><strong>Financiers</strong><span>Portfolio visibility and performance data across battery fleets.</span></a><a href="/solutions/utilities/"><strong>Utilities</strong><span>Behind-the-meter visibility and flexible capacity at scale.</span></a></div>
+    </div>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <a href="/docs/oem-integration-platform/">Guide</a>
+    <span class="kwh-nav-dot" aria-hidden="true"></span>
+    <a href="/demo/" class="kwh-nav-demo">Book a Demo</a>
+    <a href="https://portal.kwhelectric.io/" class="kwh-nav-signin" target="_blank" rel="noopener">Sign In</a>
+  </div>
+</nav>
+<div class="kwh-nav-overlay" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════ -->
+<section id="hero" style="position:relative;height:100vh;min-height:580px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+  <div style="position:absolute;inset:0;background:url(uploads/hero-bg.webp) center/cover no-repeat;"></div>
+  <div style="position:absolute;inset:0;background:rgba(10,5,0,0.55);"></div>
+  <div id="bee-cell" aria-hidden="true">
+    <svg id="bee" viewBox="0 0 56 38" xmlns="http://www.w3.org/2000/svg" width="56" height="38" aria-hidden="true">
+      <defs><clipPath id="bee-body-clip"><ellipse cx="26" cy="23" rx="17" ry="9.5"/></clipPath></defs>
+      <ellipse cx="26" cy="23" rx="17" ry="9.5" fill="#FBCF2E"/>
+      <g clip-path="url(#bee-body-clip)">
+        <rect x="13" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>
+        <rect x="25" y="13" width="5.5" height="20" fill="#1a1a1a" rx="0.5"/>
+      </g>
+      <circle cx="44" cy="22" r="7.5" fill="#FBCF2E"/>
+      <circle cx="47" cy="19" r="2.2" fill="#1a1a1a"/>
+      <circle cx="47.8" cy="18.4" r="0.7" fill="#fff"/>
+      <polygon points="9,20 9,26 3,23" fill="#666"/>
+      <line x1="41" y1="15" x2="35" y2="4" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>
+      <circle cx="35" cy="4" r="1.9" fill="#1a1a1a"/>
+      <line x1="45" y1="14" x2="43" y2="3" stroke="#1a1a1a" stroke-width="1.3" stroke-linecap="round"/>
+      <circle cx="43" cy="3" r="1.9" fill="#1a1a1a"/>
+      <ellipse id="bw1" cx="17" cy="9" rx="14" ry="8.5" fill="rgba(210,235,255,0.88)" stroke="rgba(140,180,230,0.6)" stroke-width="0.8"/>
+      <ellipse id="bw2" cx="21" cy="21" rx="11" ry="6.5" fill="rgba(210,235,255,0.75)" stroke="rgba(140,180,230,0.5)" stroke-width="0.7"/>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <h1 class="hero-title">
+      <span class="hero-line1">Every energy asse<span id="bee-land">t</span></span>
+      <span class="hero-line2">made visible and dispatchable.</span>
+    </h1>
+    <p class="hero-sub">
+      Enabling asset intelligence using <img src="assets/kwh-logo-mark-light.png?v=3" alt="kWh" style="height:0.78em;vertical-align:-0.06em;display:inline-block;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.35));" /> communication infrastructure
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     THE PROBLEM — thin bronze divider (nav target)
+══════════════════════════════════════════════════ -->
+<div id="problem" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════════
+     HOW IT WORKS + PLATFORM, cream honeycomb band
+══════════════════════════════════════════════════ -->
+<div class="cream-hex-section">
+
+<!-- ══════════════════════════════════════════════════
+     PRODUCT 1 — OEM Integration Platform
+══════════════════════════════════════════════════ -->
+<section id="products" class="kwh-prod kwh-prod--light">
+  <div class="kwh-prod-inner">
+    <h2 class="kwh-prod-h">The Universal Communication Pane</h2>
+    <div class="kwh-prod-grid">
+
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg">
+            <div class="kg-col">
+              <span class="kg-tag"><span class="kg-dot"></span>Batteries</span>
+              <span class="kg-tag"><span class="kg-dot"></span>EV chargers</span>
+              <span class="kg-tag"><span class="kg-dot"></span>Thermostats</span>
+              <span class="kg-tag"><span class="kg-dot"></span>Inverters</span>
+              <span class="kg-tag"><span class="kg-dot"></span>Solar</span>
+            </div>
+            <svg class="kg-lines" viewBox="0 0 38 96" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0 8 C19 8 19 48 38 48"/><path d="M0 28 C19 28 19 48 38 48"/>
+              <path d="M0 48 H38"/><path d="M0 68 C19 68 19 48 38 48"/>
+              <path d="M0 88 C19 88 19 48 38 48"/>
+            </svg>
+            <div class="kg-col" style="align-items:center;gap:6px;">
+              <img class="kg-mark" src="assets/kwh-logo-mark.png?v=3" alt="kWh">
+              <span style="font-size:11px;font-weight:600;color:#8A7A5C;">one API</span>
+            </div>
+          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Connect</h3>
+          <p>Batteries, EV chargers, thermostats, and inverters from any manufacturer reach kWh through one API, instead of one integration per OEM.</p>
+        </div>
+      </div>
+
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg-code">
+            <div class="row"><span># oem field</span><span style="margin-left:auto;">canonical</span></div>
+            <div class="row"><span>battery_soc_pct</span><span class="lead"></span><span class="rhs">state_of_charge</span></div>
+            <div class="row"><span>power_w</span><span class="lead"></span><span class="rhs">active_power</span></div>
+            <div class="row"><span>tstat_setpt_f</span><span class="lead"></span><span class="rhs">target_temp</span></div>
+            <div class="row"><span>dev_uid</span><span class="lead"></span><span class="rhs">oem_device_id</span></div>
+          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Normalize</h3>
+          <p>Units, timestamps, and enums map into one canonical model at ingestion. Fields with no equivalent are preserved, so nothing is lost.</p>
+        </div>
+      </div>
+
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg" style="flex-direction:column;gap:10px;">
+            <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8A7A5C;">POST /devices/&#42;/commands &nbsp;<span style="color:#B7793A;">set_charge_mode</span></div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;">
+              <span class="kg-pill">BESS <span style="color:#1F9C6B;">&#10003;</span></span>
+              <span class="kg-pill">Inverter <span style="color:#1F9C6B;">&#10003;</span></span>
+              <span class="kg-pill">EV charger <span style="color:#1F9C6B;">&#10003;</span></span>
+            </div>
+            <div style="font-size:11px;color:#8A7A5C;">one command &rarr; every native API, tracked</div>
+          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Dispatch</h3>
+          <p>Issue one canonical command and kWh translates it into each manufacturer's native API, then tracks execution across the whole fleet.</p>
+        </div>
+      </div>
+
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg-log">
+            <div class="hd"><span class="live"></span>dispatch log</div>
+            <div class="ev"><span>12:04:31</span><span>dispatch.sent</span><span class="v">fleet A</span></div>
+            <div class="ev"><span>12:04:33</span><span>response.ack</span><span class="v">1,284 assets</span></div>
+            <div class="ev"><span>12:04:41</span><span>delivered.kW</span><span class="v">2.6 MW</span></div>
+            <div class="ev"><span>12:05:00</span><span>settlement</span><span class="v">verified</span></div>
+          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Verify</h3>
+          <p>Every dispatch is logged with a provable response, so performance is auditable and the revenue behind it is claimable.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PRODUCT 2 — Open Protocol Gateway
+══════════════════════════════════════════════════ -->
+<section id="product-gateway" class="kwh-prod kwh-prod--light">
+  <div class="kwh-prod-inner">
+    <h2 class="kwh-prod-h">Edge Gateway</h2>
+    <div class="kwh-prod-grid">
+
+      <div class="kwh-prod-card wide">
+        <div class="kwh-prod-fig">
+          <div class="kg" style="flex-direction:column;gap:9px;">
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;"><span class="kg-pill">Utilities</span><span class="kg-pill">Aggregators</span></div>
+            <span class="kg-arrow">&#8595;</span>
+            <img class="kg-mark" src="assets/kwh-logo-mark.png?v=3" alt="kWh" style="height:22px;">
+            <span class="kg-arrow">&#8595;</span>
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;"><span class="kg-pill"><span class="kg-dot"></span>Batteries</span><span class="kg-pill"><span class="kg-dot"></span>Inverters</span><span class="kg-pill"><span class="kg-dot"></span>EV chargers</span><span class="kg-pill"><span class="kg-dot"></span>Solar</span></div>
+          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Shared Language</h3>
+          <p>kWh sits between the market side and the device side and translates in both directions, right at the site edge &mdash; so utilities and aggregators reach every asset without ever handling a single device dialect.</p>
+        </div>
+      </div>
+
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg-modes">
+            <div><b>Software</b><span>A license on your existing edge hardware</span></div>
+            <div><b>Hardware</b><span>A palm-sized kWh gateway, provisioned by kWh</span></div>
+          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Two modes</h3>
+          <p>Run the gateway as a license or as a palm-sized kWh device. Same protocol stack, same policy model, either way.</p>
+        </div>
+      </div>
+
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <ul class="kg-steps">
+            <li><span class="sd" style="background:#F59E0B;"></span>Cloud link lost</li>
+            <li><span class="sd" style="background:#1F9C6B;"></span>Local policy keeps programs running</li>
+            <li><span class="sd" style="background:#9A8A6C;"></span>Link restored</li>
+            <li><span class="sd" style="background:#1F9C6B;"></span>State auto-resynced</li>
+          </ul>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Resilience</h3>
+          <p>Local policy keeps programs running through connectivity gaps, then resyncs automatically when the cloud link returns.</p>
+        </div>
+      </div>
+
+      <div class="kwh-prod-card">
+        <div class="kwh-prod-fig">
+          <div class="kg" style="flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;">
+              <span class="kg-pill">Substation</span><span class="kg-arrow">&rarr;</span>
+              <span class="kg-pill">Feeder</span><span class="kg-arrow">&rarr;</span>
+              <span class="kg-pill">Transformer</span>
+            </div>
+            <span class="kg-arrow">&#8595;</span>
+            <img class="kg-mark" src="assets/kwh-logo-mark.png?v=3" alt="kWh">
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;">
+              <span class="kg-tag"><span class="kg-dot"></span>Battery</span>
+              <span class="kg-tag"><span class="kg-dot"></span>EV</span>
+              <span class="kg-tag"><span class="kg-dot"></span>Solar</span>
+            </div>
+          </div>
+        </div>
+        <div class="kwh-prod-body">
+          <h3>Coverage</h3>
+          <p>See feeders, transformers, and devices along real grid topology so utilities and platforms can coordinate flexible capacity at scale.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     WHO IT'S FOR (dark honeycomb, black cards)
+══════════════════════════════════════════════════ -->
+<section id="who" class="kwh-prod kwh-prod--dark">
+  <div class="who-hex-bg" aria-hidden="true"></div>
+  <div class="kwh-prod-inner">
+    <h2 class="kwh-prod-h">Buyers</h2>
+    <div class="kwh-prod-grid">
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Aggregators</h3><p>Dispatch a unified fleet of any asset type, from any manufacturer, in real time.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Financiers</h3><p>Real-time visibility into the health and performance of every battery in your portfolio.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>OEMs</h3><p>Make your hardware interoperable and dispatch-ready without building a full software platform.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Utilities</h3><p>See behind-the-meter assets and dispatch flexible capacity. Devices join automatically, no campaigns needed.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Energy Platforms</h3><p>Clean, standardized data and dispatch APIs for your optimization and AI workflows.</p></div></div>
+      <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Asset Owners</h3><p>Lower bills, grid revenue, and full visibility from your solar, batteries, and EV chargers.</p></div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     GET IN TOUCH, gold contact section
+══════════════════════════════════════════════════ -->
+<section id="contact" style="background:#CD7F32;padding:72px 48px 80px;">
+  <div style="max-width:1160px;margin:0 auto;">
+    <h2 style="font-size:clamp(40px,4.5vw,66px);font-weight:700;color:#0B0B0E;text-align:center;line-height:1.08;margin:0 0 24px;letter-spacing:-0.03em;">
+      Talk to the <img src="assets/kwh-logo-mark.png?v=3" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> team.
+    </h2>
+    <p style="font-size:27px;color:#0B0B0E;text-align:center;line-height:1.68;max-width:520px;margin:0 auto 44px;font-weight:400;">
+      Connect with us about piloting the edge gateway or integrating with the cloud platform.
+    </p>
+
+    <!-- Backed by carousel -->
+    <div style="max-width:720px;margin:0 auto 52px;text-align:center;padding-bottom:44px;">
+      <p style="font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin:0 0 20px;">Supported By</p>
+      <div style="position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent);mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent);">
+        <div style="display:flex;align-items:center;gap:18px;animation:logo-scroll 26s linear infinite;width:max-content;">
+          <div class="backed-logo backed-logo--cover"><img src="uploads/Samayang Logo.png" alt="Samayang" /></div>
+          <div class="backed-logo backed-logo--ms"><img src="uploads/microsoft-for-startups.png" alt="Microsoft for Startups" /></div>
+          <div class="backed-logo backed-logo--nvidia"><img src="uploads/nvidia-inception.png" alt="NVIDIA Inception Program" /></div>
+          <div class="backed-logo backed-logo--polsky"><img src="uploads/Polsky CNVC.png" alt="Polsky CNVC" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/iVenture loo.jpg" alt="iVenture" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/pasted-1782743184735-0.png" alt="Landuyt Center" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/Samayang Logo.png" alt="Samayang" /></div>
+          <div class="backed-logo backed-logo--ms"><img src="uploads/microsoft-for-startups.png" alt="Microsoft for Startups" /></div>
+          <div class="backed-logo backed-logo--nvidia"><img src="uploads/nvidia-inception.png" alt="NVIDIA Inception Program" /></div>
+          <div class="backed-logo backed-logo--polsky"><img src="uploads/Polsky CNVC.png" alt="Polsky CNVC" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/iVenture loo.jpg" alt="iVenture" /></div>
+          <div class="backed-logo backed-logo--cover"><img src="uploads/pasted-1782743184735-0.png" alt="Landuyt Center" /></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:720px;margin:0 auto;">
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div style="background:rgba(255,255,255,0.22);border-radius:var(--box-radius);padding:48px;text-align:center;">
+        <p style="font-size:20px;color:#0B0B0E;font-weight:500;margin:0;">Message received. We'll be in touch shortly.</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <form id="contact-form" onSubmit="{{ handleSubmit }}" style="display:flex;flex-direction:column;gap:28px;">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" aria-hidden="true" />
+
+        <div>
+            <div data-name-row="" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+            <div>
+              <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">First Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
+              <input type="text" name="first_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:var(--box-radius);font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
+            </div>
+            <div>
+              <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Last Name <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
+              <input type="text" name="last_name" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:var(--box-radius);font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Email <span style="color:#C8341A;font-size:15px;font-weight:700;margin-left:1px;"> *</span></label>
+          <input type="email" name="email" required="" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:var(--box-radius);font-size:15px;color:#0B0B0E;-webkit-appearance:none;appearance:none;" />
+        </div>
+
+        <div>
+          <label style="display:block;font-size:13.5px;color:#0B0B0E;font-weight:400;margin-bottom:7px;">Message</label>
+          <textarea name="message" rows="5" style="width:100%;padding:13px 15px;background:#FFFBF0;border:0;border-radius:var(--box-radius);font-size:15px;color:#0B0B0E;resize:vertical;-webkit-appearance:none;appearance:none;"></textarea>
+        </div>
+
+        <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+          <p style="font-size:14px;color:#C8341A;margin:0;line-height:1.5;">{{ formError }}</p>
+        </sc-if>
+
+        <div>
+          <button type="submit" disabled="{{ submitting }}" style="display:inline-flex;align-items:center;padding:15px 40px;background:#0B0B0E;border:none;border-radius:999px;color:white;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;opacity:{{ submitBtnOpacity }};" style-hover="background:#2a2a2a">
+            {{ submitLabel }}
+          </button>
+        </div>
+      </form>
+    </sc-if>
+    </div>
+
+    <p style="font-size:13px;color:rgba(0,0,0,0.5);text-align:center;margin:48px 0 0;font-weight:400;">
+      Palo Alto, California &nbsp;·&nbsp; <a href="mailto:arham@kwhelectric.io" style="color:rgba(0,0,0,0.65);">arham@kwhelectric.io</a>
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <img class="foot-logo" src="assets/kwh-logo-mark-light.png?v=3" alt="kWh Electric" />
+      <p class="foot-tag">Communication infrastructure that makes every energy asset visible and dispatchable.</p>
+    </div>
+    <div>
+      <h4>Solutions</h4>
+      <a href="#products">OEM Platform</a>
+      <a href="#product-gateway">Edge Gateway</a>
+    </div>
+    <div>
+      <h4>Buyers</h4>
+      <a href="#who">Aggregators</a>
+      <a href="#who">OEMs</a>
+      <a href="#who">Financiers</a>
+      <a href="#who">Utilities</a>
+    </div>
+    <div>
+      <h4>Resources</h4>
+      <a href="/demo/">Book a demo</a>
+      <a href="/docs/oem-integration-platform/">Technical guide</a>
+      <a href="https://portal.kwhelectric.io/" target="_blank" rel="noopener">Sign in</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="#how-it-works">How it works</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="site-footer-bottom">© 2026 kWh Electric · Palo Alto, California</div>
+</footer>
+
+</x-dc>
+<div id="dot-cursor" aria-hidden="true"></div>
+<script type="text/x-dc" data-dc-script>
+// Replace with your Web3Forms access key from https://web3forms.com
+const WEB3FORMS_ACCESS_KEY = 'e06d54ca-4593-4bf6-b1d4-2b6c9cf99460';
+
+class Component extends DCLogic {
+  state = { submitted: false, scrolled: false, submitting: false, formError: null };
+
+  componentDidMount() {
+    const onScroll = () => this.setState({ scrolled: window.scrollY > 70 });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    this._cleanup = () => window.removeEventListener('scroll', onScroll);
+  }
+
+  componentWillUnmount() {
+    if (this._cleanup) this._cleanup();
+  }
+
+  renderVals() {
+    const { submitted, scrolled, submitting, formError } = this.state;
+    return {
+      submitted,
+      notSubmitted: !submitted,
+      scrolled,
+      notScrolled: !scrolled,
+      submitting,
+      formError,
+      submitLabel: submitting ? 'SENDING…' : 'SUBMIT',
+      submitBtnOpacity: submitting ? '0.65' : '1',
+      navStyle: {
+        position: 'fixed',
+        top: 0, left: 0, right: 0,
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '14px 48px',
+        background: '#FFFBF0',
+        backdropFilter: 'none',
+        WebkitBackdropFilter: 'none',
+        boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.08)' : '0 1px 0 rgba(0,0,0,0.05)',
+        transition: 'box-shadow 0.3s',
+      },
+      navLinkColor: '#0B0B0E',
+      handleSubmit: async (e) => {
+        e.preventDefault();
+        if (this.state.submitting) return;
+
+        const form = e.target;
+        const data = new FormData(form);
+        const firstName = (data.get('first_name') || '').toString().trim();
+        const lastName = (data.get('last_name') || '').toString().trim();
+        const email = (data.get('email') || '').toString().trim();
+        const message = (data.get('message') || '').toString().trim();
+
+        if (!firstName || !lastName || !email) {
+          this.setState({ formError: 'Please fill in all required fields.' });
+          return;
+        }
+
+        if (WEB3FORMS_ACCESS_KEY === 'YOUR_WEB3FORMS_ACCESS_KEY') {
+          this.setState({
+            formError: 'Form is not configured yet. Add your Web3Forms access key in index.html.',
+          });
+          return;
+        }
+
+        this.setState({ submitting: true, formError: null });
+
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_ACCESS_KEY,
+              subject: 'New inquiry from kwhelectric.io',
+              from_name: `${firstName} ${lastName}`.trim(),
+              email,
+              message: message || '(no message)',
+              botcheck: data.get('botcheck') || '',
+            }),
+          });
+          const json = await res.json();
+
+          if (res.ok && json.success) {
+            this.setState({ submitted: true, submitting: false, formError: null });
+            return;
+          }
+
+          this.setState({
+            submitting: false,
+            formError: json.message || 'Something went wrong. Please try again or email arham@kwhelectric.io.',
+          });
+        } catch {
+          this.setState({
+            submitting: false,
+            formError: 'Network error. Please check your connection and try again.',
+          });
+        }
+      },
+    };
+  }
+}
+
+</script>
+<script src="./bees.js"></script>
+<script src="_shared/nav.js?v9"></script>
+</body>
+</html>

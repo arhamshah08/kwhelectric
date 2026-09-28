@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Workflow — Target</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .win{ width:360px; height:640px; background:#fff; border:1px solid var(--ol); border-radius:22px; overflow:hidden; display:flex; flex-direction:column; color:var(--ink); }
+  .head{ padding:18px 18px 12px; border-bottom:1px solid var(--ol); }
+  .h-t{ font-size:19px; font-weight:800; }
+  .tabs{ display:flex; gap:6px; margin-top:10px; }
+  .tab{ font-size:12.5px; font-weight:700; color:var(--ink-60); padding:5px 10px; border-radius:6px; }
+  .tab.on{ background:var(--g-bg); color:var(--g); }
+
+  .map{ height:200px; margin:14px 18px 0; border-radius:10px; background:var(--g-bg); position:relative; overflow:hidden; }
+  .map svg{ width:100%; height:100%; display:block; }
+  .legend{ position:absolute; left:10px; bottom:10px; font-size:10.5px; font-weight:700; color:var(--ink-60); display:flex; flex-direction:column; gap:3px; }
+  .legend span{ display:flex; align-items:center; gap:5px; }
+  .legend i{ width:8px; height:8px; border-radius:50%; background:var(--g); }
+  .legend i.low{ opacity:.4; }
+
+  .stat{ display:flex; justify-content:space-between; align-items:baseline; padding:14px 18px 0; }
+  .stat .v{ font-size:26px; font-weight:800; }
+  .stat .l{ font-size:12px; font-weight:700; color:var(--ink-60); }
+
+  .lists{ display:flex; gap:14px; padding:12px 18px 18px; flex:1; }
+  .list{ flex:1; display:flex; flex-direction:column; gap:8px; }
+  .list-t{ font-size:11px; font-weight:800; color:var(--ink-60); }
+  .bar-row{ display:flex; align-items:center; gap:6px; font-size:11px; }
+  .bar-row .n{ width:48px; flex-shrink:0; }
+  .bar-row .track{ flex:1; height:5px; background:var(--g-bg); border-radius:99px; overflow:hidden; }
+  .bar-row .fill{ height:100%; background:var(--g); }
+  .bar-row .p{ width:24px; text-align:right; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="head">
+    <div class="h-t">Asset Map</div>
+    <div class="tabs"><div class="tab on">Supply Side</div><div class="tab">Demand Side</div><div class="tab">Full Grid</div></div>
+  </div>
+  <div class="map">
+    <svg viewBox="0 0 300 200">
+      <path d="M20,60 L80,40 L160,45 L240,55 L280,90 L260,140 L180,170 L100,165 L40,130 Z" fill="#DCFCE7" stroke="none"/>
+      <g fill="#16A34A">
+        <circle cx="70" cy="80" r="4"/><circle cx="100" cy="95" r="6"/><circle cx="130" cy="70" r="3"/>
+        <circle cx="160" cy="100" r="7"/><circle cx="190" cy="80" r="4"/><circle cx="210" cy="120" r="5"/>
+        <circle cx="150" cy="130" r="4"/><circle cx="90" cy="120" r="3"/><circle cx="230" cy="90" r="4"/>
+      </g>
+    </svg>
+    <div class="legend"><span><i></i>High</span><span><i class="low"></i>Low</span></div>
+  </div>
+  <div class="stat"><div><div class="v">1.34M</div><div class="l">ELIGIBLE MW</div></div></div>
+  <div class="lists">
+    <div class="list">
+      <div class="list-t">ELIGIBLE ASSETS BY OEM</div>
+      <div class="bar-row"><span class="n">SolarEdge</span><span class="track"><span class="fill" style="width:32%"></span></span><span class="p">32%</span></div>
+      <div class="bar-row"><span class="n">Enphase</span><span class="track"><span class="fill" style="width:28%"></span></span><span class="p">28%</span></div>
+      <div class="bar-row"><span class="n">Tesla</span><span class="track"><span class="fill" style="width:17%"></span></span><span class="p">17%</span></div>
+      <div class="bar-row"><span class="n">Other</span><span class="track"><span class="fill" style="width:23%"></span></span><span class="p">23%</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

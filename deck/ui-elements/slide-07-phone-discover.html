@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slide 07 — Phone: Discover</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ink-35:rgba(11,15,12,.28); --ol:rgba(11,15,12,.1); }
+  *,*::before,*::as{ box-sizing:border-box; margin:0; padding:0; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+
+  .phone{ width:280px; height:570px; border:3px solid var(--ink); border-radius:34px; padding:9px; background:#fff; position:relative; }
+  .notch{ width:54px; height:5px; border-radius:99px; background:var(--ink); margin:2px auto 8px; }
+  .screen{ width:100%; height:calc(100% - 24px); border-radius:22px; display:flex; flex-direction:column; padding:20px 16px; }
+
+  .app-title{ font-size:14px; font-weight:700; }
+  .sub{ font-size:13px; color:var(--ink-60); margin-top:2px; }
+
+  .list{ margin-top:20px; display:flex; flex-direction:column; gap:12px; }
+  .row{ display:flex; align-items:center; gap:12px; border:1px solid var(--ol); border-radius:12px; padding:12px; }
+  .row .ic{ width:36px; height:36px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .row .ic svg{ width:26px; height:26px; color:var(--ink); }
+  .row .txt{ flex:1; min-width:0; }
+  .row .name{ font-size:15px; font-weight:700; }
+  .row .loc{ font-size:12.5px; color:var(--ink-60); margin-top:1px; }
+  .row .ok{ width:20px; height:20px; border-radius:50%; background:var(--g); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .row .ok svg{ width:11px; height:11px; color:#fff; }
+
+  .foot{ margin-top:auto; text-align:center; font-size:13px; font-weight:700; color:var(--g); padding-top:14px; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+    <div class="app-title">Discovered assets</div>
+    <div class="sub">kWh finds every compatible asset.</div>
+
+    <div class="list">
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="1.5"/><path d="M6 6V4M18 6V4M6 20v-2M18 20v-2"/></svg></div>
+        <div class="txt"><div class="name">Solar Inverter</div><div class="loc">Roof Array</div></div>
+        <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M13 8 10 13h3l-2 4"/></svg></div>
+        <div class="txt"><div class="name">Home Battery</div><div class="loc">Basement</div></div>
+        <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="11" height="16" rx="1.5"/><path d="M14 9h3l3 3v6h-2"/><circle cx="8" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/></svg></div>
+        <div class="txt"><div class="name">EV Charger</div><div class="loc">Garage</div></div>
+        <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div>
+      </div>
+    </div>
+
+    <div class="foot">Auto-discovered</div>
+  </div>
+</div>
+
+</body>
+</html>

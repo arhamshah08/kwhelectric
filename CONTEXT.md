@@ -2,12 +2,18 @@
 
 ## Status
 
-Active. Live static site at repo root (GitHub Pages / kwhelectric.io). Latest deploy: typography
-+10px, short 1–3 word section titles (incl. **The Universal Communication Pane**), and clean
-folder URLs (`/solutions/oem-integration-platform/`, `/demo/`, `/docs/oem-integration-platform/`)
-with `.html` redirect stubs. Pushed to `origin/main` for Pages.
+**Offline / not hosted.** GitHub Pages disabled on `arhamshah08/kwhelectric`; Vercel
+project `kwhelectric` paused. `kwhelectric.io` returns GitHub Pages “Site not found”;
+`kwhelectric.vercel.app` returns `DEPLOYMENT_PAUSED`. Site source remains in the repo
+(not deleted).
 
 ## Last meaningful work
+
+21 September 2026 (take site offline) —
+  - Deleted GitHub Pages config (`DELETE /repos/.../pages`); `has_pages: false`.
+  - Paused Vercel project `prj_X7kwsKEFKhYOgFkXCeFqzd8F7ZNL` (domains included
+    `kwhelectric.io`, `www`, `kwhelectric.vercel.app`).
+  - Verified: no kWh marketing HTML served on public URLs. Repo files left intact.
 
 7 September 2026 (typography, titles, clean URLs — pushed to origin/main) —
   - Fonts: +~10px on readable UI in `preview/homepage.src.html` and `_shared/{pages,nav,solution-scroll,brand}.css`. Build cache `VER=v9`.
@@ -328,5 +334,6 @@ The deck consolidates three earlier sources: the Speedrun deck (narrative arc), 
 
 ## Next step
 
-Review local typography / short titles / clean folder URLs, then push to GitHub Pages when ready. Confirm Web3Forms still delivers to arham@kwhelectric.io.
+Site is offline. Decide whether to clear DNS/CNAME for `kwhelectric.io`, or re-enable
+GitHub Pages / unpause Vercel when ready to host again. Source files remain in the repo.
 

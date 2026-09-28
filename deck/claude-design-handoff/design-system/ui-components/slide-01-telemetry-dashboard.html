@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slide 01 — Telemetry Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --g:#16A34A;
+    --g-bg:#EAF7EE;
+    --g-mid:#BBF7D0;
+    --ink:#0B0F0C;
+    --ink-70: rgba(11,15,12,.72);
+    --ink-45: rgba(11,15,12,.45);
+    --ink-25: rgba(11,15,12,.22);
+    --ol:#E4EAE5;
+    --sf:#F8FAF8;
+  }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#EDEFED; }
+  body{ display:flex; align-items:center; justify-content:center; padding:40px; font-family:'DM Sans',sans-serif; }
+
+  .window{
+    width:675px; height:454px;
+    background:#fff;
+    border:1px solid var(--ol);
+    display:flex; flex-direction:column;
+    overflow:hidden;
+    color:var(--ink);
+  }
+
+  /* top bar */
+  .topbar{ height:38px; flex-shrink:0; display:flex; align-items:center; gap:10px; padding:0 16px; border-bottom:1px solid var(--ol); }
+  .logo{ display:flex; align-items:center; gap:5px; font-weight:700; font-size:12.5px; letter-spacing:-.01em; }
+  .logo svg{ width:12px; height:12px; color:var(--g); }
+  .logo .e{ color:var(--g); }
+  .divider{ width:1px; height:12px; background:var(--ol); }
+  .product{ font-size:11.5px; font-weight:600; color:var(--g); }
+
+  .body{ flex:1; display:flex; min-height:0; }
+
+  /* sidebar */
+  .sidebar{ width:150px; flex-shrink:0; border-right:1px solid var(--ol); padding:10px 7px; overflow:hidden; }
+  .nav-label{ font-size:8.5px; font-weight:700; color:var(--ink-45); letter-spacing:.05em; padding:7px 6px 3px; }
+  .nav-item{ display:flex; align-items:center; gap:6px; font-size:9.6px; font-weight:500; color:var(--ink-70); padding:4.5px 6px; border-radius:5px; white-space:nowrap; }
+  .nav-item svg{ width:11px; height:11px; flex-shrink:0; color:currentColor; }
+  .nav-item.active{ background:var(--g-bg); color:var(--g); font-weight:700; }
+
+  /* main */
+  .main{ flex:1; min-width:0; padding:14px 18px 12px; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+
+  .main-head{ display:flex; align-items:center; justify-content:space-between; }
+  .page-title{ font-size:14.5px; font-weight:700; }
+  .head-controls{ display:flex; align-items:center; gap:12px; }
+  .range-tabs{ display:flex; gap:2px; background:var(--sf); border:1px solid var(--ol); border-radius:6px; padding:2px; }
+  .range-tab{ font-size:9px; font-weight:600; color:var(--ink-45); padding:2.5px 7px; border-radius:4px; }
+  .range-tab.active{ background:#fff; color:var(--g); border:1px solid var(--ol); }
+  .field-tabs{ display:flex; gap:9px; font-size:9.5px; font-weight:600; color:var(--ink-45); }
+  .field-tabs .on{ color:var(--ink); }
+  .dev-select{ font-size:9.5px; font-weight:600; color:var(--ink-70); border:1px solid var(--ol); border-radius:6px; padding:3px 8px; }
+
+  .kpi-row{ display:flex; gap:8px; }
+  .kpi{ flex:1; border:1px solid var(--ol); border-radius:7px; padding:8px 10px; }
+  .kpi .icon{ width:16px; height:16px; color:var(--g); margin-bottom:6px; }
+  .kpi .val{ font-size:16px; font-weight:700; line-height:1; }
+  .kpi .lbl{ font-size:8px; font-weight:700; color:var(--ink-45); letter-spacing:.03em; margin-top:4px; }
+
+  .chart-card{ border:1px solid var(--ol); border-radius:7px; padding:10px 14px 8px; flex:1; min-height:0; display:flex; flex-direction:column; }
+  .chart-head{ display:flex; align-items:center; gap:8px; }
+  .chart-title{ font-size:10px; font-weight:700; }
+  .legend{ display:flex; align-items:center; gap:5px; font-size:9px; font-weight:600; color:var(--ink-70); margin-left:auto; }
+  .legend .sw{ width:9px; height:2px; background:var(--g); display:inline-block; }
+  .chart-body{ flex:1; min-height:0; margin-top:4px; }
+  .chart-body svg{ width:100%; height:100%; display:block; }
+  .axis-x{ display:flex; justify-content:space-between; font-size:8px; color:var(--ink-45); margin-top:2px; }
+
+  .lower-row{ display:flex; gap:10px; height:126px; }
+  .panel{ flex:1; border:1px solid var(--ol); border-radius:7px; padding:9px 12px; display:flex; flex-direction:column; min-width:0; }
+  .panel-title{ font-size:9.5px; font-weight:700; margin-bottom:6px; }
+
+  .donut-wrap{ flex:1; display:flex; align-items:center; gap:12px; min-height:0; }
+  .donut-wrap svg{ width:74px; height:74px; flex-shrink:0; }
+  .donut-legend{ display:flex; flex-direction:column; gap:5px; }
+  .donut-legend .row{ display:flex; align-items:center; gap:6px; font-size:9px; }
+  .donut-legend .dot{ width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .donut-legend .num{ font-weight:700; margin-left:auto; padding-left:8px; }
+  .dot.online{ background:var(--g); }
+  .dot.offline{ background:var(--ink-70); }
+  .dot.unreach{ background:var(--ink-25); }
+
+  .bar-list{ display:flex; flex-direction:column; gap:6px; justify-content:center; flex:1; }
+  .bar-row{ display:flex; align-items:center; gap:8px; }
+  .bar-row .name{ font-size:8.7px; width:78px; flex-shrink:0; color:var(--ink-70); }
+  .bar-row .track{ flex:1; height:5px; background:var(--sf); border-radius:99px; overflow:hidden; }
+  .bar-row .fill{ height:100%; background:var(--g); border-radius:99px; }
+  .bar-row .fill.dim{ background:var(--ink-25); }
+  .bar-row .pct{ font-size:8.7px; font-weight:700; width:26px; text-align:right; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<div class="window">
+  <div class="topbar">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 11-13h-7l0-7z"/></svg>
+      kWh <span class="e">Electric</span>
+    </div>
+    <div class="divider"></div>
+    <div class="product">Grid Intelligence</div>
+  </div>
+
+  <div class="body">
+    <div class="sidebar">
+      <div class="nav-label">OPERATIONS</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Device Management</div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-6 4 4 8-10"/></svg>Telemetry</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg>Asset Map</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6.5 7.3 11 16.3M17.5 7.3 13 16.3"/></svg>Network Topology</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-13h-7l0-7z"/></svg>Dispatch at Scale</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Event History</div>
+
+      <div class="nav-label" style="margin-top:6px;">CUSTOMERS</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.3"/><path d="M5 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5"/></svg>Customer Management</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V9l8-5 8 5v12"/><path d="M9 21v-7h6v7"/></svg>Sites</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M11 20V4M18 20v-7"/></svg>Program Analytics</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Programs</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4"/></svg>Recommendations</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Notifications</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>OTA</div>
+    </div>
+
+    <div class="main">
+      <div class="main-head">
+        <div class="page-title">Telemetry Dashboard</div>
+        <div class="head-controls">
+          <div class="range-tabs">
+            <div class="range-tab">1h</div>
+            <div class="range-tab">6h</div>
+            <div class="range-tab active">24h</div>
+            <div class="range-tab">7d</div>
+          </div>
+          <div class="field-tabs">
+            <span class="on">Power</span><span>SOC</span><span>Voltage</span>
+          </div>
+          <div class="dev-select">All devices ▾</div>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18"/></svg>
+          <div class="val">512</div>
+          <div class="lbl">ASSETS</div>
+        </div>
+        <div class="kpi">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+          <div class="val">98%</div>
+          <div class="lbl">REPORTING OF 512</div>
+        </div>
+        <div class="kpi">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="14" height="10" rx="2"/><path d="M17 10.5 21 8v8l-4-2.5"/></svg>
+          <div class="val">16/16</div>
+          <div class="lbl">GATEWAYS ONLINE</div>
+        </div>
+        <div class="kpi">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-13h-7l0-7z"/></svg>
+          <div class="val">1.24 <span style="font-size:9px;font-weight:700;">MW</span></div>
+          <div class="lbl">FLEET PEAK (24H)</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-head">
+          <div class="chart-title">Fleet aggregate (15-min)</div>
+          <div class="legend"><span class="sw"></span>Power (kW)</div>
+        </div>
+        <div class="chart-body">
+          <svg viewBox="0 0 620 140" preserveAspectRatio="none">
+            <line x1="0" y1="10" x2="620" y2="10" stroke="#E4EAE5" stroke-width="1"/>
+            <line x1="0" y1="70" x2="620" y2="70" stroke="#E4EAE5" stroke-width="1"/>
+            <line x1="0" y1="130" x2="620" y2="130" stroke="#E4EAE5" stroke-width="1"/>
+            <text x="0" y="14" font-size="9" fill="rgba(11,15,12,.45)">1,500</text>
+            <text x="0" y="74" font-size="9" fill="rgba(11,15,12,.45)">1,000</text>
+            <text x="0" y="134" font-size="9" fill="rgba(11,15,12,.45)">500</text>
+            <path d="M28,124 C90,120 130,110 170,95 C220,78 260,50 310,38 C350,29 390,32 430,45 C470,58 500,80 540,98 C570,110 600,118 620,122"
+                  fill="none" stroke="#16A34A" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="axis-x">
+          <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>24:00</span>
+        </div>
+      </div>
+
+      <div class="lower-row">
+        <div class="panel">
+          <div class="panel-title">Asset status</div>
+          <div class="donut-wrap">
+            <svg viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke="#E4EAE5" stroke-width="4.5"/>
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke="#16A34A" stroke-width="4.5"
+                stroke-dasharray="94 100" stroke-dashoffset="25" transform="rotate(-90 18 18)"/>
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(11,15,12,.7)" stroke-width="4.5"
+                stroke-dasharray="4.6 100" stroke-dashoffset="-69" transform="rotate(-90 18 18)"/>
+            </svg>
+            <div class="donut-legend">
+              <div class="row"><span class="dot online"></span>Online<span class="num">502</span></div>
+              <div class="row"><span class="dot offline"></span>Offline<span class="num">8</span></div>
+              <div class="row"><span class="dot unreach"></span>Unreachable<span class="num">2</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Power by asset type</div>
+          <div class="bar-list">
+            <div class="bar-row"><span class="name">Storage</span><span class="track"><span class="fill" style="width:52%"></span></span><span class="pct">52%</span></div>
+            <div class="bar-row"><span class="name">EV Chargers</span><span class="track"><span class="fill" style="width:28%"></span></span><span class="pct">28%</span></div>
+            <div class="bar-row"><span class="name">Solar Inverters</span><span class="track"><span class="fill" style="width:17%"></span></span><span class="pct">17%</span></div>
+            <div class="bar-row"><span class="name">Other</span><span class="track"><span class="fill dim" style="width:3%"></span></span><span class="pct">3%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

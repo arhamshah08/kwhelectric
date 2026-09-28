@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slide 07 — Phone: Earn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ink-35:rgba(11,15,12,.28); --ol:rgba(11,15,12,.1); }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+
+  /* identical frame to authorize/join screens */
+  .phone{ width:280px; height:570px; border:3px solid var(--ink); border-radius:34px; padding:9px; background:#fff; position:relative; }
+  .notch{ width:54px; height:5px; border-radius:99px; background:var(--ink); margin:2px auto 8px; }
+  .screen{ width:100%; height:calc(100% - 24px); border-radius:22px; display:flex; flex-direction:column; padding:18px 16px; gap:12px; }
+
+  .card{ border:1px solid var(--ol); border-radius:14px; padding:14px; }
+  .card-head{ display:flex; align-items:center; justify-content:space-between; }
+  .card-head .lbl{ font-size:13.5px; font-weight:700; }
+  .okdot{ width:20px; height:20px; border-radius:50%; background:var(--g); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .okdot svg{ width:11px; height:11px; color:#fff; }
+
+  .chart{ margin-top:10px; }
+  .chart svg{ width:100%; height:60px; display:block; }
+  .times{ display:flex; justify-content:space-between; font-size:10px; color:var(--ink-60); margin-top:4px; }
+  .event{ font-size:12px; margin-top:8px; }
+  .event b{ font-weight:700; }
+  .event .win{ font-size:11px; color:var(--ink-60); margin-top:1px; }
+
+  .amount{ font-size:33px; font-weight:800; color:var(--g); margin-top:8px; }
+  .credit{ font-size:12.5px; color:var(--ink-60); margin-top:3px; }
+  .date{ font-size:11px; color:var(--ink-35); margin-top:2px; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+
+    <div class="card">
+      <div class="card-head"><span class="lbl">Dispatch verified</span><div class="okdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+      <div class="chart">
+        <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+          <rect x="108" y="0" width="46" height="60" fill="#16A34A" opacity=".14"/>
+          <path d="M4,46 C30,44 50,38 70,32 C90,26 100,18 120,14 C140,11 160,20 176,30 C186,36 192,40 196,42"
+                fill="none" stroke="#16A34A" stroke-width="2.4"/>
+        </svg>
+      </div>
+      <div class="times"><span>12 PM</span><span>4 PM</span><span>8 PM</span></div>
+      <div class="event"><b>Event:</b> Peak Reduction<div class="win">4:00 PM – 6:00 PM</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="lbl">Payment delivered</span><div class="okdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+      <div class="amount">$42.18</div>
+      <div class="credit">Credited to your account</div>
+      <div class="date">May 12, 2025</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

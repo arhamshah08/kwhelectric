@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slide 05 — Device Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C;
+    --ink-70: rgba(11,15,12,.72); --ink-45: rgba(11,15,12,.45); --ink-08: rgba(11,15,12,.06);
+    --ol:#E4EAE5; --sf:#F8FAF8;
+  }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#EDEFED; }
+  body{ display:flex; align-items:center; justify-content:center; padding:40px; font-family:'DM Sans',sans-serif; }
+
+  .window{ width:620px; height:410px; background:#fff; border:1px solid var(--ol); display:flex; flex-direction:column; overflow:hidden; color:var(--ink); }
+
+  .topbar{ height:34px; flex-shrink:0; display:flex; align-items:center; gap:9px; padding:0 12px; border-bottom:1px solid var(--ol); }
+  .logo{ display:flex; align-items:center; gap:5px; font-weight:700; font-size:11.5px; }
+  .logo svg{ width:11px; height:11px; color:var(--g); }
+  .logo .e{ color:var(--g); }
+  .divider{ width:1px; height:11px; background:var(--ol); }
+  .product{ font-size:10.5px; font-weight:600; color:var(--g); }
+  .topbar-right{ margin-left:auto; display:flex; align-items:center; gap:8px; }
+  .chip{ font-size:9px; font-weight:700; color:var(--ink-70); border:1px solid var(--ol); border-radius:5px; padding:2px 6px; }
+  .plat{ font-size:9.5px; font-weight:600; color:var(--ink-70); display:flex; align-items:center; gap:3px; }
+  .plat svg{ width:8px; height:8px; }
+  .avatar{ width:17px; height:17px; border-radius:50%; background:var(--g); color:#fff; font-size:7.7px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+
+  .body{ flex:1; display:flex; min-height:0; }
+  .sidebar{ width:128px; flex-shrink:0; border-right:1px solid var(--ol); padding:8px 6px; overflow:hidden; }
+  .nav-label{ font-size:7.4px; font-weight:700; color:var(--ink-45); letter-spacing:.05em; padding:5px 5px 2px; }
+  .nav-item{ display:flex; align-items:center; gap:5px; font-size:8.7px; font-weight:500; color:var(--ink-70); padding:3.2px 5px; border-radius:4px; white-space:nowrap; }
+  .nav-item svg{ width:9.5px; height:9.5px; flex-shrink:0; }
+  .nav-item.active{ background:var(--g-bg); color:var(--g); font-weight:700; }
+
+  .main{ flex:1; min-width:0; padding:12px 14px 10px; display:flex; flex-direction:column; gap:8px; overflow:hidden; }
+  .main-head{ display:flex; align-items:flex-start; justify-content:space-between; }
+  .page-title{ font-size:13px; font-weight:700; }
+  .page-sub{ font-size:8.6px; color:var(--ink-45); margin-top:1px; }
+  .btn{ font-size:9px; font-weight:700; background:var(--g); color:#fff; border-radius:6px; padding:5px 10px; white-space:nowrap; }
+
+  .tabs-row{ display:flex; align-items:center; gap:4px; }
+  .tab{ font-size:9px; font-weight:600; color:var(--ink-45); padding:4px 9px; border-radius:5px; }
+  .tab.active{ background:var(--g-bg); color:var(--g); }
+  .tabs-row .btn{ margin-left:auto; }
+
+  table{ width:100%; border-collapse:collapse; margin-top:2px; }
+  th{ text-align:left; font-size:7.2px; font-weight:700; color:var(--ink-45); letter-spacing:.03em; padding:4px 6px; border-bottom:1px solid var(--ol); white-space:nowrap; }
+  td{ font-size:8.4px; padding:4.2px 6px; border-bottom:1px solid var(--sf); white-space:nowrap; color:var(--ink-70); }
+  td.name{ color:var(--ink); font-weight:600; }
+  .status-pill{ display:inline-flex; align-items:center; gap:3px; font-size:7.6px; font-weight:700; padding:1.5px 6px; border-radius:99px; }
+  .status-pill.online{ background:var(--g-bg); color:var(--g); }
+  .status-pill.offline{ background:var(--ink-08); color:var(--ink); }
+  .status-pill .dot{ width:4px; height:4px; border-radius:50%; background:currentColor; }
+</style>
+</head>
+<body>
+
+<div class="window">
+  <div class="topbar">
+    <div class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 11-13h-7l0-7z"/></svg>kWh <span class="e">Electric</span></div>
+    <div class="divider"></div>
+    <div class="product">Grid Intelligence</div>
+    <div class="topbar-right">
+      <div class="plat">Platform<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></div>
+      <div class="avatar">AR</div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="sidebar">
+      <div class="nav-label">OPERATIONS</div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Device Management</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-6 4 4 8-10"/></svg>Telemetry</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg>Asset Map</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6.5 7.3 11 16.3M17.5 7.3 13 16.3"/></svg>Network Topology</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-13h-7l0-7z"/></svg>Dispatch at Scale</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Event History</div>
+      <div class="nav-label" style="margin-top:4px;">CUSTOMERS</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.3"/><path d="M5 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5"/></svg>Customer Management</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V9l8-5 8 5v12"/><path d="M9 21v-7h6v7"/></svg>Sites</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M11 20V4M18 20v-7"/></svg>Program Analytics</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Programs</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4"/></svg>Recommendations</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Notifications</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>OTA</div>
+      <div class="nav-label" style="margin-top:4px;">ADMINISTRATION</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Users &amp; Settings</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12a4 4 0 0 1 4-4h4M16 12a4 4 0 0 1-4 4H8"/></svg>Integrations</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>Admin / Platform</div>
+    </div>
+
+    <div class="main">
+      <div class="main-head">
+        <div>
+          <div class="page-title">Device Management</div>
+          <div class="page-sub">Asset &amp; gateway registry, enrollment and PKI certificates</div>
+        </div>
+        <div class="btn">+ Provision Gateway</div>
+      </div>
+
+      <div class="tabs-row">
+        <div class="tab active">Asset Registry</div>
+        <div class="tab">Pending</div>
+        <div class="tab">Gateways</div>
+        <div class="tab">Certificates</div>
+        <div class="btn">+ Create asset</div>
+      </div>
+
+      <table>
+        <thead><tr><th>Device Name</th><th>Type</th><th>Site</th><th>Status</th><th>Last Seen</th><th>Power (kW)</th><th>SOC</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Home Battery 01</td><td>Storage</td><td>San Jose, CA</td><td><span class="status-pill online"><span class="dot"></span>Online</span></td><td>2m ago</td><td>5.2</td><td>86%</td></tr>
+          <tr><td class="name">EV Charger 07</td><td>EV Charger</td><td>San Jose, CA</td><td><span class="status-pill online"><span class="dot"></span>Online</span></td><td>2m ago</td><td>7.4</td><td>—</td></tr>
+          <tr><td class="name">Solar Inverter 03</td><td>Solar Inverter</td><td>San Jose, CA</td><td><span class="status-pill online"><span class="dot"></span>Online</span></td><td>1m ago</td><td>4.1</td><td>—</td></tr>
+          <tr><td class="name">Home Battery 02</td><td>Storage</td><td>Austin, TX</td><td><span class="status-pill online"><span class="dot"></span>Online</span></td><td>2m ago</td><td>4.8</td><td>72%</td></tr>
+          <tr><td class="name">EV Charger 12</td><td>EV Charger</td><td>Austin, TX</td><td><span class="status-pill online"><span class="dot"></span>Online</span></td><td>1m ago</td><td>6.6</td><td>—</td></tr>
+          <tr><td class="name">Solar Inverter 08</td><td>Solar Inverter</td><td>Austin, TX</td><td><span class="status-pill offline"><span class="dot"></span>Offline</span></td><td>15m ago</td><td>0.0</td><td>—</td></tr>
+          <tr><td class="name">Home Battery 03</td><td>Storage</td><td>Denver, CO</td><td><span class="status-pill online"><span class="dot"></span>Online</span></td><td>2m ago</td><td>5.6</td><td>91%</td></tr>
+          <tr><td class="name">EV Charger 21</td><td>EV Charger</td><td>Denver, CO</td><td><span class="status-pill online"><span class="dot"></span>Online</span></td><td>1m ago</td><td>7.1</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

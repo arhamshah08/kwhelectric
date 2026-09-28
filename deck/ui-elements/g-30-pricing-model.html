@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pricing Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .win{ width:820px; background:#fff; border:1.5px solid var(--ol); border-radius:22px; padding:28px; color:var(--ink); }
+  .h{ font-size:12px; font-weight:800; letter-spacing:.04em; color:var(--ink-60); margin-bottom:18px; }
+  .cols{ display:flex; gap:28px; }
+  .col{ flex:1; }
+  .col-t{ font-size:13px; font-weight:800; margin-bottom:12px; }
+  .item{ display:flex; justify-content:space-between; align-items:baseline; padding:11px 0; border-top:1px solid var(--ol); gap:12px; }
+  .item .n{ font-size:13px; font-weight:600; }
+  .item .s{ font-size:10.5px; color:var(--ink-60); margin-top:1px; }
+  .item .v{ font-size:13px; font-weight:800; white-space:nowrap; }
+  .total{ margin-top:20px; text-align:center; border-top:1.5px solid var(--ink); padding-top:16px; }
+  .total .v{ font-size:26px; font-weight:800; color:var(--g); }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="h">PRICING MODEL</div>
+  <div class="cols">
+    <div class="col">
+      <div class="col-t">One-time (upfront)</div>
+      <div class="item"><div><div class="n">Gateway</div><div class="s">where needed, BOM $50</div></div><div class="v">$200 / device</div></div>
+      <div class="item"><div><div class="n">Customer license</div><div class="s">software</div></div><div class="v">$30 / endpoint</div></div>
+      <div class="item"><div><div class="n">Utility / OEM onboarding</div></div><div class="v">$150K / integration</div></div>
+      <div class="item"><div><div class="n">Standards enablement</div><div class="s">per utility / OEM</div></div><div class="v">$250K / yr</div></div>
+    </div>
+    <div class="col">
+      <div class="col-t">Recurring (ARR)</div>
+      <div class="item"><div><div class="n">Platform &amp; data access</div><div class="s">telemetry, storage, APIs</div></div><div class="v">$10 / endpoint / yr</div></div>
+      <div class="item"><div><div class="n">Control &amp; DR participation</div><div class="s">dispatch, automation</div></div><div class="v">$7 / endpoint / yr</div></div>
+      <div class="item"><div><div class="n">Advanced applications</div><div class="s">forecasting, optimization</div></div><div class="v">$3 / endpoint / yr</div></div>
+      <div class="total"><div class="v">$20 / endpoint / yr</div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

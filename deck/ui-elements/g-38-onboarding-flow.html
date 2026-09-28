@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Onboarding Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-70:rgba(11,15,12,.7); --ink-60:rgba(11,15,12,.6); --ink-35:rgba(11,15,12,.28); --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+
+  .slide{ width:1600px; background:#fff; color:var(--ink); padding:56px 64px 64px; }
+  .head{ margin-bottom:44px; }
+  .title{ font-size:44px; font-weight:800; line-height:1.15; }
+  .underline{ width:120px; height:3px; background:var(--g); margin-top:18px; }
+
+  .steps-row{ display:flex; gap:18px; justify-content:space-between; margin-top:8px; }
+  .step{ display:flex; flex-direction:column; align-items:center; width:280px; }
+  .step-head{ display:flex; align-items:center; gap:10px; margin-bottom:20px; align-self:flex-start; min-height:56px; }
+  .num{ width:32px; height:32px; border-radius:50%; background:var(--g); color:#fff; font-size:15px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .label{ font-size:16px; font-weight:800; line-height:1.3; }
+
+  /* --- slide-07-phone-connect.html --- */
+  .p1 .phone { width:280px; height:570px; border:3px solid var(--ink); border-radius:34px; padding:9px; background:#fff; position:relative;}
+  .p1 .notch { width:54px; height:5px; border-radius:99px; background:var(--ink); margin:2px auto 8px;}
+  .p1 .screen { width:100%; height:calc(100% - 24px); border-radius:22px; display:flex; flex-direction:column; align-items:center; padding:20px 16px;}
+  .p1 .app-title { font-size:14px; font-weight:700; color:var(--ink); align-self:flex-start;}
+  .p1 .bt-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;}
+  .p1 .bt-circle { width:96px; height:96px; border-radius:50%; background:var(--g-bg); display:flex; align-items:center; justify-content:center;}
+  .p1 .bt-circle svg { width:44px; height:44px; color:var(--g);}
+  .p1 .status { font-size:15.5px; font-weight:600; color:var(--ink-60);}
+  .p1 .check { width:34px; height:34px; border-radius:50%; background:var(--g); display:flex; align-items:center; justify-content:center; margin-top:6px;}
+  .p1 .check svg { width:18px; height:18px; color:#fff;}
+
+  /* --- slide-07-phone-discover.html --- */
+  .p2 .phone { width:280px; height:570px; border:3px solid var(--ink); border-radius:34px; padding:9px; background:#fff; position:relative;}
+  .p2 .notch { width:54px; height:5px; border-radius:99px; background:var(--ink); margin:2px auto 8px;}
+  .p2 .screen { width:100%; height:calc(100% - 24px); border-radius:22px; display:flex; flex-direction:column; padding:20px 16px;}
+  .p2 .app-title { font-size:14px; font-weight:700;}
+  .p2 .sub { font-size:13px; color:var(--ink-60); margin-top:2px;}
+  .p2 .list { margin-top:20px; display:flex; flex-direction:column; gap:12px;}
+  .p2 .row { display:flex; align-items:center; gap:12px; border:1px solid var(--ol); border-radius:12px; padding:12px;}
+  .p2 .row .ic { width:36px; height:36px; flex-shrink:0; display:flex; align-items:center; justify-content:center;}
+  .p2 .row .ic svg { width:26px; height:26px; color:var(--ink);}
+  .p2 .row .txt { flex:1; min-width:0;}
+  .p2 .row .name { font-size:15px; font-weight:700;}
+  .p2 .row .loc { font-size:12.5px; color:var(--ink-60); margin-top:1px;}
+  .p2 .row .ok { width:20px; height:20px; border-radius:50%; background:var(--g); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .p2 .row .ok svg { width:11px; height:11px; color:#fff;}
+  .p2 .foot { margin-top:auto; text-align:center; font-size:13px; font-weight:700; color:var(--g); padding-top:14px;}
+
+  /* --- slide-07-phone-authorize.html --- */
+  .p3 .phone { width:280px; height:570px; border:3px solid var(--ink); border-radius:34px; padding:9px; background:#fff; position:relative;}
+  .p3 .notch { width:54px; height:5px; border-radius:99px; background:var(--ink); margin:2px auto 8px;}
+  .p3 .screen { width:100%; height:calc(100% - 24px); border-radius:22px; display:flex; flex-direction:column; padding:18px 16px;}
+  .p3 .title { font-size:15.5px; font-weight:700; line-height:1.3;}
+  .p3 .desc { font-size:12.5px; color:var(--ink-60); line-height:1.4; margin-top:6px;}
+  .p3 .perm { margin-top:16px; display:flex; flex-direction:column; gap:10px;}
+  .p3 .perm-row { display:flex; align-items:center; gap:10px;}
+  .p3 .perm-row .ic { width:28px; height:28px; border-radius:8px; background:var(--g-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .p3 .perm-row .ic svg { width:15px; height:15px; color:var(--g);}
+  .p3 .perm-row .txt { flex:1; min-width:0;}
+  .p3 .perm-row .name { font-size:13.5px; font-weight:700;}
+  .p3 .perm-row .sub { font-size:11px; color:var(--ink-60); margin-top:1px;}
+  .p3 .toggle { width:32px; height:18px; border-radius:99px; background:var(--g); position:relative; flex-shrink:0;}
+  .p3 .toggle .knob { width:14px; height:14px; border-radius:50%; background:#fff; position:absolute; top:2px; right:2px;}
+  .p3 .authorize-btn { margin-top:auto; background:var(--g); color:#fff; text-align:center; font-size:15px; font-weight:700; border-radius:22px; padding:11px;}
+  .p3 .cancel { text-align:center; font-size:13px; font-weight:600; color:var(--ink-60); margin-top:9px;}
+  .p3 .revoke { display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px; font-weight:600; color:var(--g); margin-top:10px;}
+  .p3 .revoke svg { width:11px; height:11px;}
+
+  /* --- slide-07-phone-join.html --- */
+  .p4 .phone { width:280px; height:570px; border:3px solid var(--ink); border-radius:34px; padding:9px; background:#fff; position:relative;}
+  .p4 .notch { width:54px; height:5px; border-radius:99px; background:var(--ink); margin:2px auto 8px;}
+  .p4 .screen { width:100%; height:calc(100% - 24px); border-radius:22px; display:flex; flex-direction:column; padding:18px 16px;}
+  .p4 .title { font-size:15.5px; font-weight:700;}
+  .p4 .opt-list { margin-top:18px; display:flex; flex-direction:column; gap:10px;}
+  .p4 .opt { border:1px solid var(--ol); border-radius:12px; padding:12px; display:flex; align-items:center; gap:12px;}
+  .p4 .opt.on { border-color:var(--g); background:var(--g-bg);}
+  .p4 .radio { width:18px; height:18px; border-radius:50%; border:2px solid var(--ink-35); flex-shrink:0; position:relative;}
+  .p4 .opt.on .radio { border-color:var(--g);}
+  .p4 .opt.on .radio::after { content:""; width:9px; height:9px; border-radius:50%; background:var(--g); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);}
+  .p4 .opt .ic { width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center;}
+  .p4 .opt .ic svg { width:20px; height:20px; color:var(--ink);}
+  .p4 .opt.on .ic svg { color:var(--g);}
+  .p4 .opt .txt { flex:1; min-width:0;}
+  .p4 .opt .name { font-size:13.5px; font-weight:700;}
+  .p4 .opt .sub { font-size:11px; color:var(--ink-60); margin-top:1px;}
+  .p4 .join-btn { margin-top:auto; background:var(--g); color:#fff; text-align:center; font-size:15px; font-weight:700; border-radius:22px; padding:11px;}
+
+  /* --- slide-07-phone-earn.html --- */
+  .p5 .phone { width:280px; height:570px; border:3px solid var(--ink); border-radius:34px; padding:9px; background:#fff; position:relative;}
+  .p5 .notch { width:54px; height:5px; border-radius:99px; background:var(--ink); margin:2px auto 8px;}
+  .p5 .screen { width:100%; height:calc(100% - 24px); border-radius:22px; display:flex; flex-direction:column; padding:18px 16px; gap:12px;}
+  .p5 .card { border:1px solid var(--ol); border-radius:14px; padding:14px;}
+  .p5 .card-head { display:flex; align-items:center; justify-content:space-between;}
+  .p5 .card-head .lbl { font-size:13.5px; font-weight:700;}
+  .p5 .okdot { width:20px; height:20px; border-radius:50%; background:var(--g); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .p5 .okdot svg { width:11px; height:11px; color:#fff;}
+  .p5 .chart { margin-top:10px;}
+  .p5 .chart svg { width:100%; height:60px; display:block;}
+  .p5 .times { display:flex; justify-content:space-between; font-size:10px; color:var(--ink-60); margin-top:4px;}
+  .p5 .event { font-size:12px; margin-top:8px;}
+  .p5 .event b { font-weight:700;}
+  .p5 .event .win { font-size:11px; color:var(--ink-60); margin-top:1px;}
+  .p5 .amount { font-size:33px; font-weight:800; color:var(--g); margin-top:8px;}
+  .p5 .credit { font-size:12.5px; color:var(--ink-60); margin-top:3px;}
+  .p5 .date { font-size:11px; color:var(--ink-35); margin-top:2px;}
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="head">
+    <div class="title">Simple customer onboarding</div>
+    <div class="underline"></div>
+  </div>
+  <div class="steps-row">
+    <div class="step">
+      <div class="step-head"><div class="num">1</div><div class="label">Bluetooth connection to gateway</div></div>
+      <div class="p1">
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+    <div class="app-title">kWh Electric</div>
+    <div class="bt-wrap">
+      <div class="bt-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>
+      </div>
+      <div class="status">Pairing…</div>
+      <div class="check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="num">2</div><div class="label">Gateway connects to DERs</div></div>
+      <div class="p2">
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+    <div class="app-title">Discovered assets</div>
+    <div class="sub">kWh finds every compatible asset.</div>
+
+    <div class="list">
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="1.5"/><path d="M6 6V4M18 6V4M6 20v-2M18 20v-2"/></svg></div>
+        <div class="txt"><div class="name">Solar Inverter</div><div class="loc">Roof Array</div></div>
+        <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M13 8 10 13h3l-2 4"/></svg></div>
+        <div class="txt"><div class="name">Home Battery</div><div class="loc">Basement</div></div>
+        <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="11" height="16" rx="1.5"/><path d="M14 9h3l3 3v6h-2"/><circle cx="8" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/></svg></div>
+        <div class="txt"><div class="name">EV Charger</div><div class="loc">Garage</div></div>
+        <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div>
+      </div>
+    </div>
+
+    <div class="foot">Auto-discovered</div>
+  </div>
+</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="num">3</div><div class="label">Customer shares consent</div></div>
+      <div class="p3">
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+    <div class="title">Share data with kWh Electric</div>
+    <div class="desc">Allow kWh Electric to securely access your asset data.</div>
+
+    <div class="perm">
+      <div class="perm-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V12M11 20V4M18 20v-8"/></svg></div>
+        <div class="txt"><div class="name">Telemetry</div><div class="sub">Real-time performance</div></div>
+        <div class="toggle"><div class="knob"></div></div>
+      </div>
+      <div class="perm-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <div class="txt"><div class="name">Status &amp; Events</div><div class="sub">Operations and alerts</div></div>
+        <div class="toggle"><div class="knob"></div></div>
+      </div>
+      <div class="perm-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 6h6M9 18h.01"/></svg></div>
+        <div class="txt"><div class="name">Device Info</div><div class="sub">Model and configuration</div></div>
+        <div class="toggle"><div class="knob"></div></div>
+      </div>
+    </div>
+
+    <div class="authorize-btn">Authorize</div>
+    <div class="cancel">Cancel</div>
+    <div class="revoke">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>
+      You can revoke access anytime.
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="num">4</div><div class="label">Customer joins programs</div></div>
+      <div class="p4">
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+    <div class="title">Join a program</div>
+
+    <div class="opt-list">
+      <div class="opt on">
+        <div class="radio"></div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M11 20V4M18 20v-7"/></svg></div>
+        <div class="txt"><div class="name">Peak Savings Program</div><div class="sub">Your Utility</div></div>
+      </div>
+      <div class="opt">
+        <div class="radio"></div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="12" height="16" rx="1.5"/><path d="M15 9h3l3 3v6h-2"/><circle cx="7.5" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/></svg></div>
+        <div class="txt"><div class="name">EV Smart Charge</div><div class="sub">Your Utility</div></div>
+      </div>
+      <div class="opt">
+        <div class="radio"></div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M13 8 10 13h3l-2 4"/></svg></div>
+        <div class="txt"><div class="name">Home Battery Rewards</div><div class="sub">OEM Program</div></div>
+      </div>
+    </div>
+
+    <div class="join-btn">Join program</div>
+  </div>
+</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="num">5</div><div class="label">DER performance verified & paid</div></div>
+      <div class="p5">
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+
+    <div class="card">
+      <div class="card-head"><span class="lbl">Dispatch verified</span><div class="okdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+      <div class="chart">
+        <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+          <rect x="108" y="0" width="46" height="60" fill="#16A34A" opacity=".14"/>
+          <path d="M4,46 C30,44 50,38 70,32 C90,26 100,18 120,14 C140,11 160,20 176,30 C186,36 192,40 196,42"
+                fill="none" stroke="#16A34A" stroke-width="2.4"/>
+        </svg>
+      </div>
+      <div class="times"><span>12 PM</span><span>4 PM</span><span>8 PM</span></div>
+      <div class="event"><b>Event:</b> Peak Reduction<div class="win">4:00 PM – 6:00 PM</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="lbl">Payment delivered</span><div class="okdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+      <div class="amount">$42.18</div>
+      <div class="credit">Credited to your account</div>
+      <div class="date">May 12, 2025</div>
+    </div>
+
+  </div>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

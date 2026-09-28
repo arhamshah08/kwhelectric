@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Network Planning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ink-40:rgba(11,15,12,.4); --ol:#E4EAE5; --red:#C63028; --amber:#D97706; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#EDEFED; }
+  body{ display:flex; align-items:center; justify-content:center; padding:40px; font-family:'DM Sans',sans-serif; }
+
+  .win{ width:1084px; height:680px; background:#fff; border:1px solid var(--ol); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; color:var(--ink); }
+  .chrome{ height:34px; flex-shrink:0; display:flex; align-items:center; gap:7px; padding:0 14px; border-bottom:1px solid var(--ol); }
+  .dot{ width:11px; height:11px; border-radius:50%; }
+  .dot.r{ background:#EF4444; } .dot.y{ background:#F59E0B; }
+
+  .head{ padding:20px 24px 14px; }
+  .brand{ font-size:12px; font-weight:600; color:var(--g); }
+  .title{ font-size:28px; font-weight:800; margin-top:2px; }
+
+  .body{ flex:1; display:grid; grid-template-columns:230px 1fr 260px; gap:16px; padding:0 24px 20px; min-height:0; }
+
+  .kpis{ display:flex; flex-direction:column; gap:10px; }
+  .kpi{ border:1px solid var(--ol); border-radius:8px; padding:12px 14px; display:flex; align-items:center; gap:10px; }
+  .kpi .ic{ width:26px; height:26px; border-radius:6px; background:var(--g-bg); color:var(--g); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .kpi.warn .ic{ background:#FEE2E2; color:var(--red); }
+  .kpi .ic svg{ width:15px; height:15px; }
+  .kpi .lbl{ font-size:10px; font-weight:700; color:var(--ink-60); text-transform:uppercase; letter-spacing:.02em; }
+  .kpi .val{ font-size:19px; font-weight:800; }
+  .kpi .val .u{ font-size:11px; font-weight:700; }
+
+  .map{ border:1px solid var(--ol); border-radius:8px; background:var(--g-bg); position:relative; overflow:hidden; }
+  .map svg{ width:100%; height:100%; display:block; }
+
+  .right{ display:flex; flex-direction:column; gap:14px; }
+  .fc{ border:1px solid var(--ol); border-radius:8px; padding:16px; flex:1; display:flex; flex-direction:column; }
+  .fc-title{ font-size:14px; font-weight:800; }
+  .fc svg{ flex:1; width:100%; }
+
+  .assets{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .asset{ border:1px solid var(--ol); border-radius:8px; padding:10px 12px; }
+  .asset .top{ display:flex; align-items:center; gap:8px; }
+  .asset svg{ width:16px; height:16px; color:var(--g); }
+  .asset .name{ font-size:10.5px; font-weight:700; color:var(--ink-60); }
+  .asset .n{ font-size:19px; font-weight:800; margin-top:4px; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="chrome"><div class="dot r"></div><div class="dot y"></div></div>
+  <div class="head"><div class="brand">kWh Electric</div><div class="title">Network Planning</div></div>
+
+  <div class="body">
+    <div class="kpis">
+      <div class="kpi"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-6 4 4 8-10"/></svg></div><div><div class="lbl">Hosting Capacity</div><div class="val">5.6 <span class="u">MW</span></div></div></div>
+      <div class="kpi warn"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><div><div class="lbl">Overloads</div><div class="val" style="color:var(--red)">3</div></div></div>
+      <div class="kpi warn"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-13h-7l0-7z"/></svg></div><div><div class="lbl">Volt Violations</div><div class="val" style="color:var(--amber)">12</div></div></div>
+      <div class="kpi"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4a8 8 0 0 1 0 16M12 4a8 8 0 0 0 0 16M4 12h16"/></svg></div><div><div class="lbl">Available Response</div><div class="val">2.1 <span class="u">MW</span></div></div></div>
+      <div class="kpi"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/></svg></div><div><div class="lbl">Devices Online</div><div class="val">12,842</div></div></div>
+    </div>
+
+    <div class="map">
+      <svg viewBox="0 0 500 460">
+        <rect width="500" height="460" fill="#EAF7EE"/>
+        <path d="M40,60 C120,20 380,30 460,90 C480,180 460,320 400,400 C300,440 120,430 60,360 C20,260 20,140 40,60Z" fill="#F3FAF5"/>
+        <g stroke="#16A34A" stroke-width="2" fill="none">
+          <path d="M250 40 V460"/><path d="M250 120 H420"/><path d="M250 200 H90"/><path d="M250 280 H400"/><path d="M250 360 H120"/>
+          <path d="M420 120 V180"/><path d="M90 200 V260"/><path d="M400 280 V330"/>
+        </g>
+        <rect x="238" y="14" width="24" height="24" rx="3" fill="#0B0F0C"/>
+        <g fill="#16A34A"><circle cx="250" cy="120" r="5"/><circle cx="420" cy="120" r="5"/><circle cx="250" cy="200" r="5"/><circle cx="90" cy="200" r="5"/><circle cx="250" cy="280" r="5"/><circle cx="400" cy="280" r="5"/><circle cx="250" cy="360" r="5"/><circle cx="120" cy="360" r="5"/></g>
+        <circle cx="330" cy="150" r="9" fill="#fff" stroke="#C63028" stroke-width="2"/><text x="330" y="155" font-size="12" fill="#C63028" text-anchor="middle" font-weight="700">!</text>
+        <circle cx="150" cy="300" r="9" fill="#fff" stroke="#C63028" stroke-width="2"/><text x="150" y="305" font-size="12" fill="#C63028" text-anchor="middle" font-weight="700">!</text>
+      </svg>
+    </div>
+
+    <div class="right">
+      <div class="fc">
+        <div class="fc-title">24-Hour Load</div>
+        <svg viewBox="0 0 220 130" preserveAspectRatio="none">
+          <path d="M4,100 C40,96 60,92 80,86 C110,76 130,40 150,32 C170,26 190,50 216,64" fill="none" stroke="#16A34A" stroke-width="2.6"/>
+        </svg>
+      </div>
+      <div class="fc" style="flex:none;">
+        <div class="fc-title">Connected</div>
+        <div style="display:flex;gap:10px;margin-top:10px;">
+          <div><div style="font-size:22px;font-weight:800;">128</div><div style="font-size:10px;color:var(--ink-60);">Battery</div></div>
+          <div><div style="font-size:22px;font-weight:800;">1,842</div><div style="font-size:10px;color:var(--ink-60);">Solar</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

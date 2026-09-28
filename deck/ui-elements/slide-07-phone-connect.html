@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slide 07 — Phone: Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ink-35:rgba(11,15,12,.28); }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+
+  .phone{ width:280px; height:570px; border:3px solid var(--ink); border-radius:34px; padding:9px; background:#fff; position:relative; }
+  .notch{ width:54px; height:5px; border-radius:99px; background:var(--ink); margin:2px auto 8px; }
+  .screen{ width:100%; height:calc(100% - 24px); border-radius:22px; display:flex; flex-direction:column; align-items:center; padding:20px 16px; }
+
+  .app-title{ font-size:14px; font-weight:700; color:var(--ink); align-self:flex-start; }
+
+  .bt-wrap{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
+  .bt-circle{ width:96px; height:96px; border-radius:50%; background:var(--g-bg); display:flex; align-items:center; justify-content:center; }
+  .bt-circle svg{ width:44px; height:44px; color:var(--g); }
+  .status{ font-size:15.5px; font-weight:600; color:var(--ink-60); }
+
+  .check{ width:34px; height:34px; border-radius:50%; background:var(--g); display:flex; align-items:center; justify-content:center; margin-top:6px; }
+  .check svg{ width:18px; height:18px; color:#fff; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+    <div class="app-title">kWh Electric</div>
+    <div class="bt-wrap">
+      <div class="bt-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>
+      </div>
+      <div class="status">Pairing…</div>
+      <div class="check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

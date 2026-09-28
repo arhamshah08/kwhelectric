@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pricing — Option C: Hybrid Matrix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-70:rgba(11,15,12,.7); --ink-40:rgba(11,15,12,.35); --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+
+  .slide{ width:1600px; background:#fff; color:var(--ink); padding:56px 64px 64px; }
+  .title{ font-size:36px; font-weight:800; }
+  .underline{ width:120px; height:3px; background:var(--g); margin-top:16px; }
+  .sub{ font-size:16px; font-weight:600; color:var(--ink-70); margin-top:14px; }
+
+  .grid{ margin-top:40px; display:grid; grid-template-columns:190px repeat(3,1fr) 260px; }
+
+  .stage-head{ padding:0 16px 18px; }
+  .stage-head .n{ font-size:14px; font-weight:800; color:var(--g); }
+  .stage-head .t{ font-size:18px; font-weight:800; margin-top:6px; line-height:1.25; }
+
+  .row-label{ padding:26px 16px; font-size:13px; font-weight:800; color:var(--ink-70); border-top:1.5px solid var(--ink); display:flex; flex-direction:column; justify-content:center; gap:2px; }
+  .row-label .s{ font-size:12px; font-weight:600; color:var(--ink-40); }
+
+  .cell{ padding:26px 16px; border-top:1.5px solid var(--ink); }
+  .cell .v{ font-size:24px; font-weight:800; color:var(--g); }
+  .cell .v.dash{ color:var(--ink-40); font-weight:600; font-size:20px; }
+  .cell .d{ font-size:13px; font-weight:500; color:var(--ink-70); margin-top:8px; line-height:1.5; }
+
+  .summary{ background:var(--g-bg); border-radius:18px; padding:22px; text-align:center; grid-row:2/4; align-self:stretch; display:flex; flex-direction:column; justify-content:center; gap:8px; }
+  .summary .l{ font-size:13px; font-weight:800; color:var(--ink-70); }
+  .summary .v{ font-size:38px; font-weight:800; color:var(--g); }
+  .summary .p{ font-size:15px; font-weight:600; color:var(--ink-70); }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="title">Pricing model — Option C: hybrid matrix</div>
+  <div class="underline"></div>
+  <div class="sub">Upfront vs. recurring, by stage — each stage carries its own value.</div>
+
+  <div class="grid">
+    <div></div>
+    <div class="stage-head"><div class="n">STAGE 1</div><div class="t">Layer 1 entry point</div></div>
+    <div class="stage-head"><div class="n">STAGE 2</div><div class="t">Standards + protocols</div></div>
+    <div class="stage-head"><div class="n">STAGE 3</div><div class="t">Applications + intelligence</div></div>
+    <div class="stage-head"><div class="n">STAGE 4</div><div class="t">Full stack outcome</div></div>
+
+    <div class="row-label">Upfront<span class="s">one-time</span></div>
+    <div class="cell"><div class="v">$150K–250K</div><div class="d">Gateway or customer license, plus OEM / utility integrations</div></div>
+    <div class="cell"><div class="v dash">—</div></div>
+    <div class="cell"><div class="v dash">—</div></div>
+    <div class="summary" style="grid-row:2/4; grid-column:5/6;">
+      <div class="l">FULL STACK</div>
+      <div class="v">$525K ARR</div>
+      <div class="p">+ Layer 1 upfront</div>
+    </div>
+
+    <div class="row-label">Recurring<span class="s">per year</span></div>
+    <div class="cell"><div class="v dash">—</div></div>
+    <div class="cell"><div class="v">$250K / yr</div><div class="d">IEEE 2030.5 · SunSpec · Modbus · OpenADR</div></div>
+    <div class="cell"><div class="v">$250K / yr</div><div class="d">AI · digital twins · weather &amp; market APIs</div></div>
+  </div>
+</div>
+</body>
+</html>

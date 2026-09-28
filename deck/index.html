@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kwhelectric — Seed Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1512;
+  --slate:#4A5A52;
+  --slate-2:#8A9992;
+  --paper:#FAFAF8;
+  --warm:#FBF7EE;
+  --cool:#F4F6F4;
+  --rule:#E3E7E4;
+  --mint:#E4F4EA;
+  --mint-d:#1E8B4E;
+  --honey:#C8901B;
+  --honey-d:#8A6008;
+  --indigo:#EDEAFB;
+  --indigo-d:#4B31C4;
+
+  --t-display:80px;
+  --t-h1:46px;
+  --t-lead:25px;
+  --t-body:18px;
+  --t-label:12px;
+  --t-micro:13px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-style:normal}
+html,body{height:100%}
+body{
+  background:#1a1c1b;
+  font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+  color:var(--ink);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- stage / scaling ---------- */
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#reel{width:1920px;height:1080px;transform-origin:center center;position:relative}
+.slide{
+  position:absolute;inset:0;
+  width:1920px;height:1080px;
+  background:var(--paper);
+  padding:0;
+  overflow:hidden;
+  opacity:0;pointer-events:none;
+}
+.slide.on{opacity:1;pointer-events:auto}
+.slide-inner{
+  position:relative;
+  width:1600px;height:900px;
+  padding:72px 100px 60px;
+  transform:scale(1.2);
+  transform-origin:top left;
+}
+
+/* ---------- type ---------- */
+.display{font-size:var(--t-display);font-weight:700;letter-spacing:-.035em;line-height:1}
+h1,.h1{font-size:var(--t-h1);font-weight:500;letter-spacing:-.022em;line-height:1.14;max-width:980px}
+.lead{font-size:var(--t-lead);font-weight:400;letter-spacing:-.01em;line-height:1.42;color:var(--slate);max-width:900px}
+.body{font-size:var(--t-body);line-height:1.58;color:var(--slate);max-width:560px}
+.body strong{font-weight:700;color:var(--ink)}
+.ink{color:var(--ink)}
+.label{
+  font-family:'DM Mono',ui-monospace,Menlo,monospace;
+  font-size:var(--t-label);font-weight:500;
+  text-transform:uppercase;letter-spacing:.18em;
+  color:var(--mint-d);
+}
+.label.honey{color:var(--honey)}
+.label.indigo{color:var(--indigo-d)}
+.label.mute{color:var(--slate-2)}
+.micro{
+  font-family:'DM Mono',ui-monospace,Menlo,monospace;
+  font-size:var(--t-micro);letter-spacing:.02em;color:var(--slate-2);line-height:1.5;
+}
+.mono{font-family:'DM Mono',ui-monospace,Menlo,monospace;letter-spacing:-.01em}
+.big{font-family:'DM Mono',ui-monospace,Menlo,monospace;font-weight:500;font-size:76px;line-height:1;letter-spacing:-.03em}
+.big-sm{font-family:'DM Mono',ui-monospace,Menlo,monospace;font-weight:500;font-size:54px;line-height:1;letter-spacing:-.03em}
+.c-mint{color:var(--mint-d)}.c-honey{color:var(--honey-d)}.c-indigo{color:var(--indigo-d)}
+.c-slate{color:var(--slate)}.c-mute{color:var(--slate-2)}
+
+/* ---------- chrome ---------- */
+.head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:34px}
+.head h1{margin-top:26px}
+.hgroup{margin-bottom:44px}
+.hgroup .label{display:block;margin-bottom:26px}
+.hgroup .lead{margin-top:20px}
+.foot{
+  position:absolute;left:100px;right:100px;bottom:42px;
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:'DM Mono',ui-monospace,Menlo,monospace;
+  font-size:var(--t-micro);color:var(--slate-2);letter-spacing:.04em;
+}
+.rule{height:1px;background:var(--rule);border:0}
+
+/* ---------- cards ---------- */
+.card{border-radius:14px;padding:28px 30px;border:1px solid var(--rule);background:#fff}
+.card.mint{background:var(--mint);border-color:rgba(30,139,78,.22)}
+.card.indigo{background:var(--indigo);border-color:rgba(75,49,196,.20)}
+.card.warm{background:var(--warm);border-color:rgba(200,144,27,.32)}
+.card.honey{background:var(--honey);border-color:var(--honey)}
+.card.cool{background:var(--cool);border-color:var(--rule)}
+.card .label{display:block;margin-bottom:14px}
+.card .t{font-size:22px;font-weight:500;letter-spacing:-.015em;line-height:1.25}
+.card .sub{font-family:'DM Mono',ui-monospace,Menlo,monospace;font-size:14px;color:var(--slate-2);margin-top:5px;letter-spacing:.01em}
+.grid{display:grid;gap:20px}
+
+/* ---------- hexagons ---------- */
+.hexb{width:13px;height:15px;flex:none;margin-top:6px}
+.hexb .hollow{fill:none;stroke:var(--ink);stroke-opacity:.28;stroke-width:6}
+.hexb .mint{fill:var(--mint);stroke:var(--mint-d);stroke-width:6}
+.hexb .honey{fill:var(--honey);stroke:none}
+.bullets{display:flex;flex-direction:column;gap:22px}
+.bullet{display:flex;gap:16px;align-items:flex-start}
+.bullet .body{max-width:660px}
+
+.hexnum{position:relative;width:52px;height:60px;flex:none;display:flex;align-items:center;justify-content:center}
+.hexnum svg{position:absolute;inset:0;width:100%;height:100%}
+.hexnum span{position:relative;font-family:'DM Mono',ui-monospace,Menlo,monospace;font-size:15px;font-weight:500;letter-spacing:.02em}
+
+.field svg{width:100%;height:auto;display:block}
+.field .hollow{fill:var(--paper);stroke:var(--ink);stroke-opacity:.16;stroke-width:2.4}
+.field .mint{fill:var(--mint);stroke:var(--mint-d);stroke-width:2.4;stroke-opacity:.85}
+.field .honey{fill:var(--honey);stroke:none}
+
+/* faint lattice for cover / closing */
+.lattice{position:absolute;inset:0;opacity:.038;pointer-events:none}
+.lattice svg{width:100%;height:100%}
+.lattice use{fill:none;stroke:var(--ink);stroke-width:2}
+
+/* ---------- flow / seam ---------- */
+.seam{
+  background:var(--honey);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.seam-arrow{position:absolute;left:-26px;right:-26px;top:-34px;width:124px;height:18px;overflow:visible}
+.seam-arrow line{stroke:#C8901B;stroke-width:1.5}
+.seam-arrow path{fill:#C8901B}
+.seam span{
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-family:'DM Mono',ui-monospace,Menlo,monospace;
+  font-size:var(--t-label);letter-spacing:.22em;text-transform:uppercase;
+  color:#fff;
+}
+.conn{display:flex;flex-direction:column;gap:9px;justify-content:center;flex:1;padding:0 6px}
+.conn .l{height:1.5px;position:relative}
+.conn .l.down{background:var(--honey)}
+.conn .l.up{background:var(--mint-d)}
+.conn .l.down:after,.conn .l.up:after{
+  content:'';position:absolute;top:-3.5px;width:0;height:0;
+  border-top:4px solid transparent;border-bottom:4px solid transparent;
+}
+.conn .l.down:after{right:0;border-left:7px solid var(--honey)}
+.conn .l.up:after{left:0;border-right:7px solid var(--mint-d)}
+.legend{display:flex;gap:34px;align-items:center}
+.legend i{display:inline-block;width:26px;height:1.5px;margin-right:10px;vertical-align:middle}
+
+/* ---------- bars ---------- */
+.bars{display:flex;align-items:flex-end;gap:26px;height:300px}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.bar .v{font-family:'DM Mono',ui-monospace,Menlo,monospace;font-size:19px;font-weight:500;margin-bottom:10px}
+.bar .fill{width:100%;background:var(--honey);border-radius:4px 4px 0 0}
+.bar .x{font-family:'DM Mono',ui-monospace,Menlo,monospace;font-size:13px;color:var(--slate-2);margin-top:12px;letter-spacing:.04em}
+
+/* ---------- misc ---------- */
+.stack{display:flex;flex-direction:column}
+.row{display:flex}
+.tl{position:relative;height:120px}
+.tl .line{position:absolute;left:6%;right:6%;top:52px;height:1px;background:var(--rule)}
+.tl .node{position:absolute;top:32px;width:42px;height:48px;transform:translateX(-50%)}
+.tl .node svg{width:100%;height:100%}
+.tl .node polygon{fill:var(--honey)}
+.tl .cap{position:absolute;width:220px;transform:translateX(-50%);text-align:center}
+
+.console{background:#fff;border:1px solid var(--rule);border-radius:14px;overflow:hidden}
+.console .bar-top{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--rule)}
+.pill{font-family:'DM Mono',ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mint-d);background:var(--mint);border-radius:999px;padding:4px 12px}
+.readout{display:grid;grid-template-columns:1fr auto;gap:11px 20px;font-family:'DM Mono',ui-monospace,Menlo,monospace;font-size:14px;padding:20px 22px;border-top:1px solid var(--rule)}
+.readout .k{color:var(--slate-2)}
+.readout .v{color:var(--ink);text-align:right}
+
+.gw{width:100%;height:auto}
+.gw .body-l{fill:none;stroke:var(--ink);stroke-width:2.2}
+.gw .port{fill:none;stroke:var(--ink);stroke-width:2.2}
+.gw .led{fill:var(--mint-d)}
+.gw text{font-family:'DM Mono',ui-monospace,Menlo,monospace;font-size:13px;fill:var(--slate);letter-spacing:.06em}
+
+.chip{display:inline-block;border:1px solid rgba(200,144,27,.45);border-radius:999px;padding:5px 14px}
+.arrows{display:flex;align-items:center;justify-content:center;height:22px}
+.arrows svg{width:28px;height:22px;overflow:visible}
+.arrows line{stroke:var(--slate-2);stroke-width:1.5}
+.arrows path{fill:var(--slate-2)}
+
+/* Accessibility and presentation behavior */
+.slide:focus-visible{outline:4px solid var(--honey);outline-offset:-4px}
+@media (prefers-reduced-motion:reduce){.slide{transition:none}}
+
+/* ---------- print ---------- */
+body.print{overflow:auto;background:#fff}
+body.print #stage{position:static;display:block}
+body.print #reel{width:auto;height:auto;transform:none!important}
+body.print .slide{position:relative;inset:auto;opacity:1;pointer-events:auto;page-break-after:always;margin:0 auto}
+@page{size:1920px 1080px;margin:0}
+@media print{
+  body{overflow:visible;background:#fff}
+  #stage{position:static;display:block}
+  #reel{width:auto;height:auto;transform:none!important}
+  .slide{position:relative;inset:auto;opacity:1;page-break-after:always}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hex" viewBox="0 0 100 116">
+    <polygon points="50,1 99,29 99,87 50,115 1,87 1,29"/>
+  </symbol>
+</svg>
+
+<div id="stage"><div id="reel">
+
+<!-- ============ 01 COVER ============ -->
+<section class="slide">
+  <div class="lattice" data-lattice></div>
+  <div style="display:flex;height:100%;align-items:center;gap:70px">
+    <div style="flex:1.15">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:52px">
+        <svg class="hexb" style="margin:0"><use href="#hex" class="honey"/></svg>
+        <span class="label">Distributed energy platform &nbsp;·&nbsp; Seed</span>
+      </div>
+      <div class="display">kwhelectric</div>
+      <p class="lead" style="margin-top:34px">Switching on the grid we already built.</p>
+      <p class="micro" style="margin-top:250px">
+        Full stack &nbsp;·&nbsp; hardware gateway + SaaS &nbsp;·&nbsp;
+        <span style="color:var(--honey-d)">north star: megawatts under management</span>
+      </p>
+    </div>
+    <div style="flex:.85" class="field" data-cols="5" data-rows="5" data-mint="7,13,18" data-honey="12"></div>
+  </div>
+</section>
+
+<!-- ============ 02 PROBLEM ============ -->
+<section class="slide">
+  <div style="display:flex;gap:70px;height:100%">
+    <div style="flex:1.1">
+      <div class="hgroup">
+        <span class="label">02 · Problem</span>
+        <h1>The megawatts already exist.<br>They're just stranded.</h1>
+      </div>
+      <div class="bullets">
+        <div class="bullet"><svg class="hexb"><use href="#hex" class="hollow"/></svg><p class="body">Millions of batteries, solar arrays and EV chargers are already installed behind the meter.</p></div>
+        <div class="bullet"><svg class="hexb"><use href="#hex" class="hollow"/></svg><p class="body">Obsolete protocols, no monitoring, no grid-program eligibility.</p></div>
+        <div class="bullet"><svg class="hexb"><use href="#hex" class="hollow"/></svg><p class="body">Depreciating on a lender's balance sheet, earning nothing.</p></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:30px;margin-top:130px">
+        <div class="big">80%</div>
+        <p class="body" style="max-width:430px">of DER fleets still lack dispatchability — capped at pilots, leaking margin into custom integration work.</p>
+      </div>
+    </div>
+    <div style="flex:.9;display:flex;align-items:center">
+      <div class="field" style="width:100%" data-cols="6" data-rows="6" data-skip="2,3,8,15,16,21,26,27,32"></div>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>02 / 20</span></div>
+</section>
+
+<!-- ============ 03 INSIGHT ============ -->
+<section class="slide">
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding-bottom:80px">
+    <span class="label" style="margin-bottom:26px">03 · Insight</span>
+    <h1>The ugliness is the moat.</h1>
+    <p class="body" style="max-width:860px;margin-top:44px;font-size:var(--t-lead);line-height:1.45">
+      Everyone is fighting over next year's hardware. The installed base is bigger and untouched, because every vendor's protocol differs and every site is its own project.
+    </p>
+    <p class="lead ink" style="margin-top:34px">Do that work once, and you own ground nobody wants to fight for.</p>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>03 / 20</span></div>
+</section>
+
+<!-- ============ 04 WHY NOW ============ -->
+<section class="slide">
+  <div class="hgroup">
+    <span class="label">04 · Why now</span>
+    <h1>Two curves just crossed.</h1>
+    <p class="lead" style="margin-top:18px">DER growth has outrun the infrastructure built to carry it, and interconnection rules just made dispatchability mandatory.</p>
+  </div>
+  <div style="display:flex;gap:80px;margin-top:6px">
+    <div style="flex:1">
+      <span class="label mute">Installed DER capacity — illustrative</span>
+      <div class="bars" style="margin-top:26px;height:250px">
+        <div class="bar"><div class="v">4 TWh</div><div class="fill" style="height:12%"></div><div class="x">today</div></div>
+        <div class="bar"><div class="v">11 TWh</div><div class="fill" style="height:33%"></div><div class="x">+3 yrs</div></div>
+        <div class="bar"><div class="v">33 TWh</div><div class="fill" style="height:100%"></div><div class="x">+6 yrs</div></div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:46px;padding-top:10px">
+      <div style="display:flex;gap:24px;align-items:flex-start">
+        <div class="hexnum"><svg><use href="#hex" style="fill:var(--honey);stroke:none"/></svg><span style="color:#fff">I</span></div>
+        <div>
+          <div class="card-t" style="font-size:26px;font-weight:500;letter-spacing:-.02em">IEEE 2030.5</div>
+          <p class="body" style="margin-top:12px;max-width:520px">is becoming the utility-mandated interconnection standard, and there is no cheap way to speak it at the edge.</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:24px;align-items:flex-start">
+        <div class="hexnum"><svg><use href="#hex" style="fill:var(--honey);stroke:none"/></svg><span style="color:#fff">II</span></div>
+        <div>
+          <div style="font-size:26px;font-weight:500;letter-spacing:-.02em">Under $50 BOM</div>
+          <p class="body" style="margin-top:12px;max-width:520px">means edge hardware is finally cheap enough to put a gateway on every asset, not just the biggest ones.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>04 / 20</span></div>
+</section>
+
+<!-- ============ 05 SOLUTION ============ -->
+<section class="slide">
+  <div class="hgroup">
+    <span class="label">05 · Solution</span>
+    <h1 style="max-width:1250px">One translation layer.<br>Any application on one side, any asset on the other.</h1>
+  </div>
+  <div style="display:flex;align-items:stretch;gap:34px;height:340px;margin-top:56px">
+    <div class="card indigo" style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <span class="label indigo">Applications</span>
+      <p style="font-size:28px;font-weight:400;letter-spacing:-.02em;line-height:1.3;color:var(--indigo-d);max-width:400px">Apps plug in without touching assets.</p>
+    </div>
+    <div class="seam" style="width:72px"><svg class="seam-arrow" viewBox="0 0 124 18" aria-hidden="true"><line x1="8" y1="9" x2="116" y2="9"/><path d="M2 9 12 3v12z"/><path d="m122 9-10-6v12z"/></svg><span>Translation layer</span></div>
+    <div class="card mint" style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <span class="label">Assets</span>
+      <p style="font-size:28px;font-weight:400;letter-spacing:-.02em;line-height:1.3;color:var(--mint-d);max-width:400px">Assets connect without touching apps.</p>
+    </div>
+  </div>
+  <p class="micro" style="margin-top:38px;text-align:center">one integration, either direction — nothing behind it has to change</p>
+  <div class="foot"><span>kwhelectric</span><span>05 / 20</span></div>
+</section>
+
+<!-- ============ 06 ARCHITECTURE ============ -->
+<section class="slide">
+  <div class="head">
+    <span class="label">06 · Architecture</span>
+    <span class="micro">bidirectional translation core</span>
+  </div>
+  <div style="display:flex;gap:26px;height:600px">
+    <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+      <div class="card indigo" style="flex:1;padding:18px 22px"><div class="t c-indigo">grid DERMS</div><div class="sub">utility programs</div></div>
+      <div class="card indigo" style="flex:1;padding:18px 22px"><div class="t c-indigo">financing platform</div><div class="sub">securitisation</div></div>
+      <div class="card indigo" style="flex:1;padding:18px 22px"><div class="t c-indigo">external APIs</div><div class="sub">weather, price</div></div>
+      <div class="card indigo" style="flex:1;padding:18px 22px"><div class="t c-indigo">forecasting</div><div class="sub">site level</div></div>
+      <div class="card indigo" style="flex:1;padding:18px 22px"><div class="t c-indigo">optimisation</div><div class="sub">price aware</div></div>
+    </div>
+    <div style="width:88px;display:flex;flex-direction:column;justify-content:center;gap:14px">
+      <div class="conn" style="flex:none"><div class="l down"></div><div class="l up"></div></div>
+    </div>
+    <div class="card honey" style="flex:0 0 250px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+      <div style="font-size:34px;font-weight:500;color:#fff;letter-spacing:-.02em;line-height:1.2">Translation<br>layer</div>
+      <span class="label" style="color:rgba(255,255,255,.75);margin-top:20px;display:block">Bidirectional</span>
+    </div>
+    <div style="width:88px;display:flex;flex-direction:column;justify-content:center;gap:14px">
+      <div class="conn" style="flex:none"><div class="l down"></div><div class="l up"></div></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+      <div class="card mint" style="flex:1;padding:18px 22px"><div class="t c-mint">2030.5 server</div><div class="sub">standards northbound</div></div>
+      <div class="card mint" style="flex:1;padding:18px 22px"><div class="t c-mint">gateway</div><div class="sub">Modbus TCP southbound</div></div>
+      <div class="card mint" style="flex:1;padding:18px 22px"><div class="t c-mint">assets</div><div class="sub">BESS, PV, EVSE</div></div>
+      <div class="card mint" style="flex:1;padding:18px 22px"><div class="t c-mint">OEM cloud</div><div class="sub">vendor device APIs</div></div>
+      <div class="card mint" style="flex:1;padding:18px 22px"><div class="t c-mint">OEM devices</div><div class="sub">thermostat, EV, PV</div></div>
+    </div>
+  </div>
+  <p class="body ink" style="max-width:1100px;margin-top:26px;font-size:20px">The cloud decides strategy. The gateway executes and stays inside each asset's safe limits on its own.</p>
+  <div class="foot"><span>kwhelectric</span><span>06 / 20</span></div>
+</section>
+
+<!-- ============ 07 HOW IT WORKS ============ -->
+<section class="slide">
+  <div class="hgroup">
+    <span class="label">07 · How it works</span>
+    <h1>Control flows down. Data flows up.<br>One layer carries both.</h1>
+  </div>
+  <div style="display:flex;align-items:center;margin-top:140px">
+    <div class="card indigo" style="width:250px;height:170px;display:flex;flex-direction:column;justify-content:center">
+      <div class="t c-indigo" style="font-size:26px">apps</div><div class="sub">DERMS, financing</div>
+    </div>
+    <div class="conn"><div class="l down"></div><div class="l up"></div></div>
+    <div class="card honey" style="width:250px;height:170px;display:flex;flex-direction:column;justify-content:center">
+      <div class="t" style="font-size:26px;color:#fff">translation</div>
+      <div class="sub" style="color:rgba(255,255,255,.72)">one core</div>
+    </div>
+    <div class="conn"><div class="l down"></div><div class="l up"></div></div>
+    <div class="card mint" style="width:250px;height:170px;display:flex;flex-direction:column;justify-content:center">
+      <div class="t c-mint" style="font-size:26px">gateway</div><div class="sub">2030.5 edge</div>
+    </div>
+    <div class="conn"><div class="l down"></div><div class="l up"></div></div>
+    <div class="card mint" style="width:250px;height:170px;display:flex;flex-direction:column;justify-content:center">
+      <div class="t c-mint" style="font-size:26px">assets</div><div class="sub">BESS, PV</div>
+    </div>
+  </div>
+  <div class="legend micro" style="margin-top:120px">
+    <span><i style="background:var(--honey)"></i>control, cloud to asset</span>
+    <span><i style="background:var(--mint-d)"></i>data, asset to cloud</span>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>07 / 20</span></div>
+</section>
+
+<!-- ============ 08 PRODUCT ============ -->
+<section class="slide">
+  <div class="hgroup">
+    <span class="label">08 · Product</span>
+    <h1>Palm sized. Under $50 BOM.</h1>
+  </div>
+  <div style="display:flex;gap:60px;align-items:flex-start;margin-top:20px">
+    <div class="card" style="flex:1.05;padding:38px 40px">
+      <div style="margin-bottom:32px">
+        <span class="label honey">Protocol stack</span>
+        <p class="mono" style="font-size:19px;color:var(--ink);line-height:1.6">IEEE 2030.5, SunSpec, Modbus,<br>MQTT, Zigbee</p>
+      </div>
+      <hr class="rule">
+      <div style="margin:26px 0 32px">
+        <span class="label honey">Devices under management</span>
+        <p class="mono" style="font-size:19px;color:var(--ink);line-height:1.6">solar inverters, batteries, EV chargers,<br>smart meters, flexible loads</p>
+      </div>
+      <hr class="rule">
+      <div style="margin-top:26px">
+        <span class="label honey">Business model</span>
+        <p class="mono" style="font-size:19px;color:var(--ink);line-height:1.6">$150 one-time gateway license<br>plus recurring SaaS</p>
+      </div>
+    </div>
+    <div style="flex:1;padding-top:14px">
+      <svg class="gw" viewBox="0 0 520 300">
+        <rect class="body-l" x="150" y="70" width="230" height="160" rx="20"/>
+        <circle class="led" cx="358" cy="94" r="5"/>
+        <rect class="port" x="118" y="106" width="32" height="22" rx="4"/>
+        <rect class="port" x="118" y="172" width="32" height="22" rx="4"/>
+        <line class="body-l" x1="380" y1="150" x2="428" y2="150"/>
+        <path class="body-l" d="M420 143 L432 150 L420 157"/>
+        <text x="20" y="122" >CAN</text>
+        <text x="8" y="188">MODBUS</text>
+        <text x="404" y="132">IEEE 2030.5</text>
+      </svg>
+      <p class="micro" style="margin-top:26px;max-width:420px">hardware gateway or software-only license — same core either way. discovers, monitors and dispatches without a cloud round trip.</p>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>08 / 20</span></div>
+</section>
+
+<!-- ============ 09 APPLICATION STACK ============ -->
+<section class="slide">
+  <div class="hgroup">
+    <span class="label">09 · Application stack</span>
+    <h1>Four layers, one stack.</h1>
+  </div>
+  <div style="margin-top:14px">
+    <hr class="rule">
+    <div style="display:flex;align-items:center;gap:30px;padding:26px 0">
+      <div class="hexnum"><svg><use href="#hex" style="fill:var(--mint);stroke:var(--mint-d);stroke-width:5"/></svg><span class="c-mint">01</span></div>
+      <div style="width:280px;font-size:22px;font-weight:500;letter-spacing:-.015em">Edge Gateway</div>
+      <p class="body" style="max-width:720px">Discovers, monitors and dispatches DERs locally — no cloud round trip.</p>
+    </div>
+    <hr class="rule">
+    <div style="display:flex;align-items:center;gap:30px;padding:26px 0">
+      <div class="hexnum"><svg><use href="#hex" style="fill:var(--mint);stroke:var(--mint-d);stroke-width:5"/></svg><span class="c-mint">02</span></div>
+      <div style="width:280px;font-size:22px;font-weight:500;letter-spacing:-.015em">Protocol Translation</div>
+      <p class="body" style="max-width:720px">Speaks IEEE 2030.5 fluently to utilities and aggregators, regardless of device OEM.</p>
+    </div>
+    <hr class="rule">
+    <div style="display:flex;align-items:center;gap:30px;padding:26px 0">
+      <div class="hexnum"><svg><use href="#hex" style="fill:var(--mint);stroke:var(--mint-d);stroke-width:5"/></svg><span class="c-mint">03</span></div>
+      <div style="width:280px;font-size:22px;font-weight:500;letter-spacing:-.015em">Cloud Platform</div>
+      <p class="body" style="max-width:720px">Fleet management, provisioning, telemetry and analytics across every deployed gateway.</p>
+    </div>
+    <hr class="rule">
+    <div style="display:flex;align-items:center;gap:30px;padding:26px 0">
+      <div class="hexnum"><svg><use href="#hex" style="fill:var(--honey);stroke:none"/></svg><span style="color:#fff">04</span></div>
+      <div style="width:280px;font-size:22px;font-weight:500;letter-spacing:-.015em">Application Layer</div>
+      <p class="body" style="max-width:720px">Forecasting, P2P trading, demand flexibility, asset securitisation, asset health. Sold on top of the gateway — and each one sells more gateways.</p>
+    </div>
+    <hr class="rule">
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>09 / 20</span></div>
+</section>
+
+<!-- ============ 10 USE CASE 01 ============ -->
+<section class="slide">
+  <div class="hgroup" style="margin-bottom:34px">
+    <span class="label">Use case · 01</span>
+    <h1>Legacy BESS retrofit</h1>
+  </div>
+  <div style="display:flex;gap:70px">
+    <div style="flex:1.05">
+      <span class="label honey">Pain</span>
+      <p class="body" style="margin:12px 0 30px">A commissioned battery, Modbus only — invisible and ineligible.</p>
+      <span class="label honey">Control flow</span>
+      <p class="body" style="margin:12px 0 30px">Optimiser sets a schedule → translation maps it to that vendor's registers → gateway executes and holds.</p>
+      <span class="label">Data flow</span>
+      <p class="body" style="margin-top:12px">Registers polled and normalised → platform sees state of charge, power, faults, health.</p>
+    </div>
+    <div style="flex:1;display:flex;align-items:center">
+      <div class="card warm" style="width:100%;padding:52px 44px">
+        <span class="label honey">Result</span>
+        <p class="h1 c-honey" style="font-size:40px;margin-top:8px"><span class="mono">[X] MW</span> online in <span class="mono">[Y]</span> days.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>10 / 20</span></div>
+</section>
+
+<!-- ============ 11 USE CASE 02 ============ -->
+<section class="slide">
+  <div class="hgroup" style="margin-bottom:34px">
+    <span class="label">Use case · 02</span>
+    <h1>Financier portfolio</h1>
+  </div>
+  <div style="display:flex;gap:70px">
+    <div style="flex:1.05">
+      <span class="label honey">Pain</span>
+      <p class="body" style="margin:12px 0 30px">Hundreds of financed assets, no independent telemetry — residual value unknown.</p>
+      <span class="label">Data flow</span>
+      <p class="body" style="margin-top:12px">Mixed fleet reports in — via gateway and via OEM cloud — normalised into one asset model. The financier sees one portfolio view of health, cycles, output, degradation.</p>
+    </div>
+    <div style="flex:1;display:flex;align-items:center">
+      <div class="card warm" style="width:100%;padding:52px 44px">
+        <span class="label honey">Result</span>
+        <p class="h1 c-honey" style="font-size:40px;margin-top:8px">The entire book onboarded — not the connected fraction.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>11 / 20</span></div>
+</section>
+
+<!-- ============ 12 USE CASE 03 ============ -->
+<section class="slide">
+  <div class="hgroup" style="margin-bottom:34px">
+    <span class="label">Use case · 03</span>
+    <h1>OEM compliance</h1>
+  </div>
+  <div style="display:flex;gap:70px">
+    <div style="flex:1.05">
+      <span class="label honey">Pain</span>
+      <p class="body" style="margin:12px 0 30px">Needs grid-program eligibility without building a standards stack.</p>
+      <span class="label honey">Control flow</span>
+      <p class="body" style="margin:12px 0 30px">Utility issues a 2030.5 control → our server receives it → translation converts to the OEM's native API → device responds.</p>
+      <span class="label">Data flow</span>
+      <p class="body" style="margin-top:12px">Telemetry returns as conformant reporting.</p>
+    </div>
+    <div style="flex:1;display:flex;align-items:center">
+      <div class="card warm" style="width:100%;padding:52px 44px">
+        <span class="label honey">Result</span>
+        <p class="h1 c-honey" style="font-size:40px;margin-top:8px">The OEM keeps brand, cloud and customer. We supply compliance.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>12 / 20</span></div>
+</section>
+
+<!-- ============ 13 USE CASE 04 ============ -->
+<section class="slide">
+  <div class="hgroup" style="margin-bottom:34px">
+    <span class="label">Use case · 04</span>
+    <h1>VPP aggregation</h1>
+  </div>
+  <div style="display:flex;gap:70px">
+    <div style="flex:1.05">
+      <span class="label honey">Pain</span>
+      <p class="body" style="margin:12px 0 30px">Scattered assets cannot be dispatched as one resource.</p>
+      <span class="label honey">Control flow</span>
+      <p class="body" style="margin-top:12px">Grid signal arrives → optimiser allocates across the fleet → translation fans out per-asset commands in each native protocol → gateways execute in parallel.</p>
+    </div>
+    <div style="flex:1;display:flex;align-items:center">
+      <div class="card warm" style="width:100%;padding:52px 44px">
+        <span class="label honey">Result</span>
+        <p class="h1 c-honey" style="font-size:40px;margin-top:8px">Portfolio-level co-optimisation — structurally impossible for edge-only competitors.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>13 / 20</span></div>
+</section>
+
+<!-- ============ 14 LIVE PRODUCT ============ -->
+<section class="slide">
+  <div style="display:flex;gap:64px;height:100%">
+    <div style="flex:1">
+      <div class="hgroup">
+        <span class="label">14 · Live product</span>
+        <h1>Real telemetry,<br>real dispatch,<br>running today.</h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:26px;margin:6px 0 46px">
+        <div class="big-sm c-honey">340ms</div>
+        <p class="body" style="max-width:300px">dispatch latency,<br>measured live</p>
+      </div>
+      <hr class="rule">
+      <div class="bullet" style="margin:24px 0"><svg class="hexb"><use href="#hex" class="mint"/></svg>
+        <p class="body"><strong>Fleet dispatch map</strong> — real-time view of every gateway, asset state and active dispatch signal.</p></div>
+      <hr class="rule">
+      <div class="bullet" style="margin-top:24px"><svg class="hexb"><use href="#hex" class="mint"/></svg>
+        <p class="body"><strong>Forecasting and flexibility</strong> — demand and generation forecasts driving automated flexibility offers.</p></div>
+    </div>
+    <div style="flex:1;display:flex;align-items:center">
+      <div class="console" style="width:100%">
+        <div class="bar-top">
+          <span class="mono" style="font-size:15px">kWh Fleet Console</span>
+          <span class="pill">Live</span>
+        </div>
+        <div style="padding:26px 24px">
+          <div class="field" data-cols="6" data-rows="3" data-mint="1,4,7,11,15" data-honey="8,13"></div>
+        </div>
+        <div class="readout">
+          <span class="k" style="grid-column:1/-1;color:var(--ink)">BESS 004 · Kintech Synergy</span>
+          <span class="k">state of charge</span><span class="v">78%</span>
+          <span class="k">dispatch signal</span><span class="v" style="color:var(--mint-d)">Active</span>
+          <span class="k">latency</span><span class="v">340ms</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>14 / 20</span></div>
+</section>
+
+<!-- ============ 15 MARKET ============ -->
+<section class="slide">
+  <div class="hgroup">
+    <span class="label">15 · Market</span>
+    <h1>Stranded megawatts in one beachhead: <span class="mono c-honey">[named market]</span>.</h1>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:34px">
+    <div class="card" style="padding:44px 38px;height:330px;display:flex;flex-direction:column;justify-content:center">
+      <span class="label mute">Installed base</span>
+      <div class="big mono" style="font-size:60px;color:var(--ink)">[X GW]</div>
+      <p class="body" style="margin-top:20px;font-size:17px">behind the meter</p>
+    </div>
+    <div class="card mint" style="padding:44px 38px;height:330px;display:flex;flex-direction:column;justify-content:center">
+      <span class="label">Addressable stranded</span>
+      <div class="big mono c-mint" style="font-size:60px">[Y GW]</div>
+      <p class="body" style="margin-top:20px;font-size:17px">reachable via retrofit and OEM cloud</p>
+    </div>
+    <div class="card warm" style="padding:44px 38px;height:330px;display:flex;flex-direction:column;justify-content:center">
+      <span class="label honey">Annual SAM</span>
+      <div class="big mono c-honey" style="font-size:60px">[$Z]</div>
+      <p class="body" style="margin-top:20px;font-size:17px">SaaS, hardware and revenue share</p>
+    </div>
+  </div>
+  <p class="micro" style="margin-top:36px">Beachhead: India DISCOMs via Beckn DEG, expanding to U.S. utilities and aggregators on IEEE 2030.5.<br>Multi-market expansion is on the roadmap — not this slide.</p>
+  <div class="foot"><span>kwhelectric</span><span>15 / 20</span></div>
+</section>
+
+<!-- ============ 16 BUSINESS MODEL ============ -->
+<section class="slide">
+  <div class="hgroup">
+    <span class="label">16 · Business model</span>
+    <h1>Three revenue lines. Cost per MW falls as the cloud path scales.</h1>
+  </div>
+  <div style="display:flex;gap:44px;margin-top:16px">
+    <div style="flex:1;display:flex;flex-direction:column;gap:18px">
+      <div class="card mint" style="height:150px;display:flex;flex-direction:column;justify-content:center">
+        <span class="label">01 · One-time</span>
+        <div style="font-size:26px;font-weight:500;letter-spacing:-.02em">Gateway hardware</div>
+      </div>
+      <div class="card mint" style="height:150px;display:flex;flex-direction:column;justify-content:center">
+        <span class="label">02 · Recurring</span>
+        <div style="font-size:26px;font-weight:500;letter-spacing:-.02em">SaaS per asset and per MW</div>
+      </div>
+      <div class="card warm" style="height:150px;display:flex;flex-direction:column;justify-content:center">
+        <span class="label honey">03 · Upside</span>
+        <div class="c-honey" style="font-size:26px;font-weight:500;letter-spacing:-.02em">Share of grid-program and market revenue</div>
+      </div>
+    </div>
+    <div class="card warm" style="flex:1;padding:36px 40px">
+      <span class="label honey">Blended cost per MW onboarded</span>
+      <div class="bars" style="margin-top:34px;height:280px">
+        <div class="bar"><div class="fill" style="height:100%"></div><div class="x">yr 1</div></div>
+        <div class="bar"><div class="fill" style="height:70%"></div><div class="x">yr 2</div></div>
+        <div class="bar"><div class="fill" style="height:44%"></div><div class="x">yr 3</div></div>
+        <div class="bar"><div class="fill" style="height:27%"></div><div class="x">yr 4</div></div>
+      </div>
+      <p class="micro" style="margin-top:24px">[$/MW] declines as cloud onboarding outgrows hardware</p>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>16 / 20</span></div>
+</section>
+
+<!-- ============ 17 WHY WE WIN ============ -->
+<section class="slide">
+  <div class="hgroup">
+    <span class="label">17 · Why we win</span>
+    <h1>Five advantages that compound.</h1>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);grid-auto-rows:230px;margin-top:20px">
+    <div class="card mint"><span class="label">01</span><p class="body" style="color:var(--ink)">Device-profile library compounds — build once, unlock a whole model class forever.</p></div>
+    <div class="card mint"><span class="label">02</span><p class="body" style="color:var(--ink)">Retrofit reach nobody else has.</p></div>
+    <div class="card mint"><span class="label">03</span><p class="body" style="color:var(--ink)">Autonomous edge safety layer lets us command hardware we never installed.</p></div>
+    <div class="card mint"><span class="label">04</span><p class="body" style="color:var(--ink)">Standards-native, so grid programs accept us.</p></div>
+    <div class="card warm"><span class="label honey">05</span><p class="body c-honey">Translation in cloud and edge — we onboard mixed portfolios competitors cannot.</p></div>
+    <div style="display:flex;align-items:flex-end;padding:28px 10px">
+      <p class="body c-mute">Each profile built and each site retrofit widens a lead nobody else is chasing.</p>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>17 / 20</span></div>
+</section>
+
+<!-- ============ 18 TRACTION ============ -->
+<section class="slide">
+  <div class="hgroup" style="margin-bottom:24px">
+    <span class="label">18 · Traction</span>
+    <h1>A live channel into DISCOMs.</h1>
+  </div>
+  <div class="tl" data-timeline style="margin-top:56px">
+    <div class="line"></div>
+    <div class="node" style="left:9%"><svg><use href="#hex"/></svg></div>
+    <div class="node" style="left:37%"><svg><use href="#hex"/></svg></div>
+    <div class="node" style="left:65%"><svg><use href="#hex"/></svg></div>
+    <div class="node" style="left:91%"><svg><use href="#hex"/></svg></div>
+    <div class="cap" style="left:9%;top:-24px"><div style="font-size:19px;font-weight:500">Custom PCB</div><div class="micro">PCB Power India</div></div>
+    <div class="cap" style="left:37%;top:88px"><div style="font-size:19px;font-weight:500">Live telemetry</div><div class="micro">Kintech Synergy BESS</div></div>
+    <div class="cap" style="left:65%;top:-24px"><div style="font-size:19px;font-weight:500">DISCOM channel</div><div class="micro">5 DISCOMs via Beckn DEG</div></div>
+    <div class="cap" style="left:91%;top:88px"><div style="font-size:19px;font-weight:500">Piloting</div><div class="micro">2 plants live today</div></div>
+  </div>
+  <hr class="rule" style="margin-top:72px">
+  <div style="display:flex;gap:70px;padding:34px 0">
+    <div style="flex:1">
+      <div style="font-size:26px;font-weight:500;letter-spacing:-.02em">Zodiac Energy</div>
+      <span class="label" style="display:block;margin:10px 0 14px">NSE &amp; BSE listed generator</span>
+      <p class="body">Data sharing live — generation records feeding model training, gateway telemetry pilot in setup.</p>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:26px;font-weight:500;letter-spacing:-.02em">Kintech Synergy</div>
+      <span class="label" style="display:block;margin:10px 0 14px">BESS operator</span>
+      <p class="body">Live BESS assets streaming gateway telemetry, state of charge and dispatch validation.</p>
+    </div>
+  </div>
+  <hr class="rule">
+  <div style="display:flex;gap:70px;padding-top:26px" class="mono">
+    <span style="font-size:16px;color:var(--slate)"><span style="color:var(--ink)">[X]</span> device profiles built</span>
+    <span style="font-size:16px;color:var(--slate)"><span style="color:var(--ink)">[X]</span> sites live</span>
+    <span style="font-size:16px;color:var(--slate)"><span style="color:var(--honey-d)">[X] MW</span> under management</span>
+    <span style="font-size:16px;color:var(--slate)">2030.5 — <span style="color:var(--ink)">[status]</span></span>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>18 / 20</span></div>
+</section>
+
+<!-- ============ 19 TEAM ============ -->
+<section class="slide">
+  <div class="hgroup">
+    <span class="label">19 · Team</span>
+    <h1>Built by practitioners.</h1>
+  </div>
+  <div style="display:flex;gap:56px;margin-top:26px">
+    <div style="flex:1">
+      <div style="font-size:34px;font-weight:500;letter-spacing:-.025em">Arham Shah</div>
+      <span class="label honey" style="display:block;margin:12px 0 20px">Founder &amp; CEO</span>
+      <p class="body">M.S. Energy, Stanford<br>B.S. Industrial Engineering, UIUC<br>Ex-Tesla, Rivian, Beckn</p>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:34px;font-weight:500;letter-spacing:-.025em">Advisors</div>
+      <span class="label honey" style="display:block;margin:12px 0 20px">Industry leaders</span>
+      <div class="bullet" style="margin-bottom:18px"><svg class="hexb"><use href="#hex" class="hollow"/></svg>
+        <p class="body"><strong>Sujith Nair</strong><br>Co-Founder, Beckn</p></div>
+      <div class="bullet"><svg class="hexb"><use href="#hex" class="hollow"/></svg>
+        <p class="body"><strong>Dr. Pramod Varma</strong><br>Chief architect, UPI &amp; Aadhaar</p></div>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:34px;font-weight:500;letter-spacing:-.025em">Engineering</div>
+      <span class="label honey" style="display:block;margin:12px 0 20px">Founding builders</span>
+      <p class="body"><strong>Sudheer Kumar</strong><br>Deployment Engineer</p>
+      <p class="body" style="margin-top:18px"><strong>Yuvaraju Meenuga</strong><br>Integrations Engineer</p>
+    </div>
+  </div>
+  <hr class="rule" style="margin-top:64px">
+  <p class="lead ink" style="margin-top:34px;max-width:1150px">Four founding engineers, zero attrition, production PCB already in fabrication. The team that shipped the pilot is the team building the company.</p>
+  <div class="foot"><span>kwhelectric</span><span>19 / 20</span></div>
+</section>
+
+<!-- ============ 20 VISION + ASK ============ -->
+<section class="slide">
+  <div class="lattice" data-lattice></div>
+  <div style="display:flex;gap:60px;position:relative">
+    <div style="flex:1.2">
+      <div class="hgroup">
+        <span class="label">20 · Vision · Ask</span>
+        <h1>Financeable megawatts.</h1>
+      </div>
+      <p class="body" style="max-width:600px">Verified telemetry — normalised and timestamped — consumed by financing rails as ground truth.</p>
+      <p class="lead ink" style="margin-top:28px;max-width:600px">We don't do securitisation. We're the measurement layer that makes it possible.</p>
+      <hr class="rule" style="margin:44px 0 30px;max-width:600px">
+      <span class="label mute">18-month milestone</span>
+      <div style="display:flex;gap:60px;margin-top:20px">
+        <div><div class="big-sm mono c-mint">[X] MW</div><p class="micro" style="margin-top:10px">under management</p></div>
+        <div><div class="big-sm mono c-mint">[X]</div><p class="micro" style="margin-top:10px">device profiles shipped</p></div>
+      </div>
+    </div>
+    <div style="flex:.8;display:flex;flex-direction:column;gap:26px">
+      <div class="card warm" style="padding:44px 40px">
+        <span class="label honey">The ask</span>
+        <div class="big mono c-honey" style="margin-top:10px;font-size:54px">[$ amount]</div>
+        <p class="body c-honey" style="margin-top:18px;font-size:20px">SAFE, <span class="mono">[$ cap]</span> cap.</p>
+      </div>
+      <div class="field" style="padding:0 40px 0 10px" data-cols="4" data-rows="3" data-mint="0,1,3,4,6,7,9,10" data-honey="2,5,8,11"></div>
+    </div>
+  </div>
+  <p class="h1" style="position:absolute;left:96px;bottom:110px;font-size:34px;max-width:1150px">Everyone else is chasing next year's assets. We're switching on the ones already in the ground.</p>
+</section>
+
+<!-- ============ A1 LAYERED ARCHITECTURE ============ -->
+<section class="slide" style="background:var(--cool)">
+  <div class="head">
+    <span class="label mute">Appendix · Layered architecture</span>
+    <span class="micro">top: cloud · bottom: physical</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card cool" style="padding:18px 22px"><div class="t" style="font-size:19px">grid DERMS</div></div>
+      <div class="card cool" style="padding:18px 22px"><div class="t" style="font-size:19px">external APIs</div></div>
+      <div class="card cool" style="padding:18px 22px"><div class="t" style="font-size:19px">open networks</div></div>
+      <div class="card cool" style="padding:18px 22px"><div class="t" style="font-size:19px">financing rail</div></div>
+    </div>
+    <div class="arrows" aria-label="bidirectional flow"><svg viewBox="0 0 28 22" aria-hidden="true"><line x1="10" y1="18" x2="10" y2="4"/><path d="M10 1 6 7h8z"/><line x1="18" y1="4" x2="18" y2="18"/><path d="m18 21-4-6h8z"/></svg></div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="card indigo" style="padding:18px 22px"><div class="t c-indigo" style="font-size:19px">2030.5 server + client</div><div class="sub">any deployment mode</div></div>
+      <div class="card indigo" style="padding:18px 22px"><div class="t c-indigo" style="font-size:19px">universal API layer</div><div class="sub">REST, webhooks, streaming</div></div>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="card indigo" style="padding:18px 22px"><div class="t c-indigo" style="font-size:19px">forecasting</div><div class="sub">hyperlocal, site level</div></div>
+      <div class="card indigo" style="padding:18px 22px"><div class="t c-indigo" style="font-size:19px">optimisation</div><div class="sub">price and grid aware</div></div>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card indigo" style="padding:18px 22px"><div class="t c-indigo" style="font-size:19px">dispatch</div></div>
+      <div class="card indigo" style="padding:18px 22px"><div class="t c-indigo" style="font-size:19px">telemetry</div></div>
+      <div class="card indigo" style="padding:18px 22px"><div class="t c-indigo" style="font-size:19px">asset management</div></div>
+      <div class="card indigo" style="padding:18px 22px"><div class="t c-indigo" style="font-size:19px">OTA</div></div>
+    </div>
+    <div class="arrows" aria-label="bidirectional flow"><svg viewBox="0 0 28 22" aria-hidden="true"><line x1="10" y1="18" x2="10" y2="4"/><path d="M10 1 6 7h8z"/><line x1="18" y1="4" x2="18" y2="18"/><path d="m18 21-4-6h8z"/></svg></div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="card honey" style="padding:18px 22px"><div class="t" style="font-size:19px;color:#fff">cloud translation</div><div class="sub" style="color:rgba(255,255,255,.75)">vendor cloud APIs</div></div>
+      <div class="card honey" style="padding:18px 22px"><div class="t" style="font-size:19px;color:#fff">edge gateway</div><div class="sub" style="color:rgba(255,255,255,.75)">Modbus TCP southbound</div></div>
+    </div>
+    <div class="arrows" aria-label="bidirectional flow"><svg viewBox="0 0 28 22" aria-hidden="true"><line x1="10" y1="18" x2="10" y2="4"/><path d="M10 1 6 7h8z"/><line x1="18" y1="4" x2="18" y2="18"/><path d="m18 21-4-6h8z"/></svg></div>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card cool" style="padding:18px 22px"><div class="t" style="font-size:19px">BESS</div></div>
+      <div class="card cool" style="padding:18px 22px"><div class="t" style="font-size:19px">PV inverters</div></div>
+      <div class="card cool" style="padding:18px 22px"><div class="t" style="font-size:19px">EVSE</div></div>
+      <div class="card cool" style="padding:18px 22px"><div class="t" style="font-size:19px">meters and loads</div></div>
+    </div>
+  </div>
+  <p class="body ink" style="margin-top:32px;max-width:1100px;font-size:19px">The translation band sits between the software you own and the hardware you don't. That placement is the whole argument.</p>
+  <div class="foot"><span>kwhelectric</span><span>A · 01</span></div>
+</section>
+
+<!-- ============ A2 DEPLOYMENT MODES ============ -->
+<section class="slide" style="background:var(--cool)">
+  <div class="hgroup">
+    <span class="label mute">Appendix · Four deployment modes</span>
+    <h1>Same core, four ways in.</h1>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:24px">
+    <div class="card mint" style="height:400px;padding:34px 32px">
+      <span class="label">Mode 01</span>
+      <div style="font-size:26px;font-weight:500;letter-spacing:-.02em;margin-bottom:18px">Client only</div>
+      <p class="body" style="font-size:17px">Edge gateway speaks out to an existing server.</p>
+    </div>
+    <div class="card mint" style="height:400px;padding:34px 32px">
+      <span class="label">Mode 02</span>
+      <div style="font-size:26px;font-weight:500;letter-spacing:-.02em;margin-bottom:18px">Server only</div>
+      <p class="body" style="font-size:17px">2030.5 server receives utility controls in the cloud.</p>
+    </div>
+    <div class="card mint" style="height:400px;padding:34px 32px">
+      <span class="label">Mode 03</span>
+      <div style="font-size:26px;font-weight:500;letter-spacing:-.02em;margin-bottom:18px">Both</div>
+      <p class="body" style="font-size:17px">Server and client together — end to end through our stack.</p>
+    </div>
+    <div class="card warm" style="height:400px;padding:34px 32px">
+      <span class="label honey">Mode 04</span>
+      <div class="c-honey" style="font-size:26px;font-weight:500;letter-spacing:-.02em;margin-bottom:18px">With apps</div>
+      <p class="body c-honey" style="font-size:17px">Full platform — our forecasting and optimisation on top.</p>
+    </div>
+  </div>
+  <p class="micro" style="margin-top:38px">Each asset is onboarded by whichever path is cheapest.</p>
+  <div class="foot"><span>kwhelectric</span><span>A · 02</span></div>
+</section>
+
+<!-- ============ A3 CONTROL AUTHORITY ============ -->
+<section class="slide" style="background:var(--cool)">
+  <div class="hgroup">
+    <span class="label mute">Appendix · Control-authority boundary</span>
+    <h1>Economics in the cloud. Safety at the edge.</h1>
+  </div>
+  <div style="display:flex;align-items:stretch;gap:0;margin-top:34px;height:420px">
+    <div class="card warm" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px 44px">
+      <span class="label honey">Cloud</span>
+      <div class="c-honey" style="font-size:34px;font-weight:500;letter-spacing:-.025em;margin-bottom:22px">Economic dispatch</div>
+      <p class="body" style="font-size:19px">Price-aware scheduling and portfolio allocation — strategy decided centrally.</p>
+    </div>
+    <div style="width:96px;display:flex;align-items:center;justify-content:center;position:relative">
+      <div style="position:absolute;top:0;bottom:50%;width:1px;background:var(--honey)"></div>
+      <div style="position:absolute;top:50%;bottom:0;width:1px;background:var(--mint-d)"></div>
+      <span class="micro" style="background:var(--cool);padding:8px 0;writing-mode:vertical-rl;letter-spacing:.2em;z-index:1">boundary</span>
+    </div>
+    <div class="card mint" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px 44px">
+      <span class="label">Edge</span>
+      <div class="c-mint" style="font-size:34px;font-weight:500;letter-spacing:-.025em;margin-bottom:22px">Protective + grid-support</div>
+      <p class="body" style="font-size:19px">Runs autonomously and stays inside each asset's safe limits — even if the link drops.</p>
+    </div>
+  </div>
+  <div class="foot"><span>kwhelectric</span><span>A · 03</span></div>
+</section>
+
+</div></div>
+
+<script>
+(function(){
+  var W=1920,H=1080;
+
+  /* ---- hexagon fields ---- */
+  function buildField(el){
+    var cols=+el.dataset.cols, rows=+el.dataset.rows;
+    var mint=(el.dataset.mint||'').split(',').filter(Boolean).map(Number);
+    var honey=(el.dataset.honey||'').split(',').filter(Boolean).map(Number);
+    var skip=(el.dataset.skip||'').split(',').filter(Boolean).map(Number);
+    var w=100,h=116,vs=h*0.75,gap=8;
+    var vw=cols*(w+gap)+ (w+gap)/2, vh=(rows-1)*(vs+gap*0.75)+h;
+    var out='<svg viewBox="0 0 '+vw+' '+vh+'">';
+    for(var r=0;r<rows;r++){
+      for(var c=0;c<cols;c++){
+        var i=r*cols+c;
+        if(skip.indexOf(i)>-1) continue;
+        var x=c*(w+gap)+(r%2?(w+gap)/2:0);
+        var y=r*(vs+gap*0.75);
+        var cls = honey.indexOf(i)>-1 ? 'honey' : (mint.indexOf(i)>-1 ? 'mint' : 'hollow');
+        out+='<use href="#hex" class="'+cls+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'"/>';
+      }
+    }
+    el.innerHTML=out+'</svg>';
+  }
+  document.querySelectorAll('.field').forEach(buildField);
+
+  /* ---- faint lattice ---- */
+  document.querySelectorAll('[data-lattice]').forEach(function(el){
+    var w=140,h=162,vs=h*0.75,out='<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">';
+    for(var r=-1;r<Math.ceil(900/vs)+1;r++){
+      for(var c=-1;c<Math.ceil(1600/w)+1;c++){
+        var x=c*w+(r%2?w/2:0), y=r*vs;
+        out+='<use href="#hex" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'"/>';
+      }
+    }
+    el.innerHTML=out+'</svg>';
+  });
+
+  /* ---- timeline hex nodes ---- */
+  document.querySelectorAll('.tl .node use').forEach(function(u){
+    u.setAttribute('width','100');u.setAttribute('height','116');
+    u.parentNode.setAttribute('viewBox','0 0 100 116');
+  });
+  document.querySelectorAll('.tl .node use').forEach(function(u){ u.style.fill='var(--honey)'; });
+
+  /* ---- hexnum + hexb sizing ---- */
+  document.querySelectorAll('.hexnum svg, .hexb').forEach(function(s){
+    if(!s.getAttribute('viewBox')) s.setAttribute('viewBox','0 0 100 116');
+    s.querySelectorAll('use').forEach(function(u){
+      u.setAttribute('width','100');u.setAttribute('height','116');
+    });
+  });
+
+  /* ---- scale to viewport ---- */
+  var reel=document.getElementById('reel');
+  function fit(){
+    if(document.body.classList.contains('print')) return;
+    var s=Math.min(window.innerWidth/W, window.innerHeight/H);
+    reel.style.transform='scale('+s+')';
+  }
+  window.addEventListener('resize',fit);
+
+  /* ---- navigation ---- */
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  slides.forEach(function(slide,index){
+    var inner=document.createElement('div');
+    inner.className='slide-inner';
+    while(slide.firstChild) inner.appendChild(slide.firstChild);
+    slide.appendChild(inner);
+    slide.setAttribute('role','group');
+    slide.setAttribute('aria-roledescription','slide');
+    slide.setAttribute('aria-label','Slide '+(index+1)+' of '+slides.length);
+    slide.setAttribute('tabindex','-1');
+  });
+  var i=0;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){
+      s.classList.toggle('on',k===i);
+      s.setAttribute('aria-hidden',k===i?'false':'true');
+    });
+    location.hash=i+1;
+  }
+  document.addEventListener('keydown',function(e){
+    if(['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();show(i+1);}
+    if(['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key)>-1){e.preventDefault();show(i-1);}
+    if(e.key==='Home')show(0);
+    if(e.key==='End')show(slides.length-1);
+  });
+  document.addEventListener('click',function(e){ show(i + (e.clientX < window.innerWidth*0.25 ? -1 : 1)); });
+
+  if(location.search.indexOf('print')>-1){
+    document.body.classList.add('print');
+    slides.forEach(function(s){s.classList.add('on');});
+  }else{
+    var start=parseInt(location.hash.slice(1),10);
+    show(isNaN(start)?0:start-1);
+    fit();
+  }
+})();
+</script>
+</body>
+</html>

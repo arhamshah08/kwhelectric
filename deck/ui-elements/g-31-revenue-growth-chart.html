@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Revenue Growth Potential</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .win{ width:620px; height:420px; background:#fff; border:1.5px solid var(--ol); border-radius:22px; padding:26px 28px; color:var(--ink); display:flex; flex-direction:column; }
+  .h{ font-size:12px; font-weight:800; letter-spacing:.04em; color:var(--ink-60); }
+  .sub{ font-size:11px; color:var(--ink-60); margin-top:2px; }
+  .chart{ flex:1; margin-top:14px; }
+  .chart svg{ width:100%; height:100%; display:block; }
+  .years{ display:flex; margin-top:6px; }
+  .years span{ flex:1; text-align:center; font-size:11px; font-weight:700; }
+  .years span .s{ display:block; font-size:9.5px; font-weight:600; color:var(--ink-60); margin-top:2px; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="h">REVENUE GROWTH POTENTIAL (ARR)</div>
+  <div class="sub">$B / year</div>
+  <div class="chart">
+    <svg viewBox="0 0 560 260" preserveAspectRatio="none">
+      <line x1="0" y1="240" x2="560" y2="240" stroke="#E4EAE5"/>
+      <g fill="#16A34A">
+        <rect x="20"  y="212" width="70" height="28"  rx="6"/>
+        <rect x="130" y="184" width="70" height="56"  rx="6"/>
+        <rect x="240" y="152" width="70" height="88"  rx="6"/>
+        <rect x="350" y="98"  width="70" height="142" rx="6"/>
+        <rect x="460" y="30"  width="70" height="210" rx="6"/>
+      </g>
+      <g font-size="17" font-weight="800" fill="#0B0F0C" text-anchor="middle">
+        <text x="55"  y="202">$0.6B</text>
+        <text x="165" y="174">$1.2B</text>
+        <text x="275" y="142">$1.7B</text>
+        <text x="385" y="88">$2.9B</text>
+        <text x="495" y="20">$4.5B</text>
+      </g>
+    </svg>
+  </div>
+  <div class="years">
+    <span>Year 1<span class="s">5% SAM</span></span>
+    <span>Year 2<span class="s">10% SAM</span></span>
+    <span>Year 3<span class="s">15% SAM</span></span>
+    <span>Year 4<span class="s">20% SAM</span></span>
+    <span>Year 5<span class="s">25% SAM</span></span>
+  </div>
+</div>
+</body>
+</html>

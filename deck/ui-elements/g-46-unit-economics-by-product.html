@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Per-device economics, by product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-70:rgba(11,15,12,.7); --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5;
+          --ai:#0D9488; --ai-bg:#F0FDFA; --ent:#2563EB; --ent-bg:#EFF6FF; --lic:#7C3AED; --lic-bg:#F5F3FF; --neg:#DC2626; --neg-bg:#FEF2F2; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .slide{ width:1600px; background:#fff; color:var(--ink); padding:56px 64px 64px; }
+  .eyebrow{ font-size:13px; font-weight:700; color:var(--g); letter-spacing:.02em; }
+  .title{ font-size:44px; font-weight:800; line-height:1.15; margin-top:8px; }
+  .underline{ width:120px; height:3px; background:var(--g); margin-top:18px; }
+  .sub{ font-size:15px; font-weight:600; color:var(--ink-70); margin-top:14px; max-width:1020px; line-height:1.5; }
+
+  .table-card{ border:1.5px solid var(--ol); border-radius:20px; overflow:hidden; margin-top:36px; }
+  table{ width:100%; border-collapse:collapse; font-size:15px; }
+  thead th{ background:var(--g); color:#fff; font-size:13px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:14px 20px; text-align:right; }
+  thead th:first-child{ text-align:left; }
+  tbody td{ padding:13px 20px; text-align:right; border-bottom:1px solid var(--ol); }
+  tbody td:first-child{ text-align:left; color:var(--ink-70); font-weight:600; }
+  tr.section-head td{ padding-top:18px; font-size:13px; font-weight:800; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-60); border-bottom:1px solid var(--ink); }
+  tr.total td{ font-weight:800; color:var(--ink); border-bottom:2px solid var(--ol); }
+  tr.total td:first-child{ color:var(--ink); }
+  tr.highlight{ background:var(--g-bg); }
+  tr.stripe{ background:#FAFCFA; }
+  td.neg{ color:var(--neg); }
+  td.pos{ color:var(--g); }
+
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="eyebrow">kWh Electric &middot; 4-year financial model, base case</div>
+  <div class="title">Per-device economics, by product</div>
+  <div class="underline"></div>
+  <div class="sub">Blended revenue per device falls as the fleet scales past the fixed Enterprise/License base &mdash; but net contribution per device turns positive by Year 4 as OpEx is spread across far more devices.</div>
+  <div class="table-card">
+    <table><thead><tr><th style="width:280px">Per device / month</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Year 4</th></tr></thead><tbody><tr class="section-head"><td>Revenue per device, by product</td><td></td><td></td><td></td><td></td></tr><tr class=""><td>Platform SaaS</td><td class="">$3.00</td><td class="">$3.00</td><td class="">$3.00</td><td class="">$3.00</td></tr><tr class="stripe"><td>AI / Intelligence (blended)</td><td class="">$0.15</td><td class="">$0.38</td><td class="">$0.60</td><td class="">$0.82</td></tr><tr class=""><td>Enterprise (allocated)</td><td class="">$4.80</td><td class="">$4.27</td><td class="">$2.31</td><td class="">$1.07</td></tr><tr class="stripe"><td>Source license (allocated)</td><td class="">$5.00</td><td class="">$2.00</td><td class="">$0.78</td><td class="">$0.30</td></tr><tr class="total"><td>Total revenue / device</td><td class="">$12.95</td><td class="">$9.64</td><td class="">$6.69</td><td class="">$5.19</td></tr><tr class="total"><td>Total COGS / device</td><td class="neg">($2.12)</td><td class="neg">($1.01)</td><td class="neg">($0.62)</td><td class="neg">($0.48)</td></tr><tr class="total highlight stripe"><td>Gross profit / device</td><td class="pos">$10.83</td><td class="pos">$8.63</td><td class="pos">$6.07</td><td class="pos">$4.71</td></tr><tr class=""><td>OpEx / device (allocated)</td><td class="neg">($38.10)</td><td class="neg">($21.05)</td><td class="neg">($9.80)</td><td class="neg">($4.19)</td></tr><tr class="total highlight stripe"><td>Net contribution / device</td><td class="neg">($27.27)</td><td class="neg">($12.42)</td><td class="neg">($3.73)</td><td class="pos">+$0.52</td></tr></tbody></table>
+  </div>
+
+</div>
+</body>
+</html>

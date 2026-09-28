@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Modeled Outlook Chart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --ink:#0B0F0C; --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#EDEFED; }
+  body{ display:flex; align-items:center; justify-content:center; padding:40px; font-family:'DM Sans',sans-serif; }
+  .win{ width:640px; height:420px; background:#fff; border:1px solid var(--ol); border-radius:10px; padding:24px; display:flex; flex-direction:column; color:var(--ink); }
+  .h{ font-size:22px; font-weight:800; }
+  .chart{ flex:1; margin-top:10px; }
+  .chart svg{ width:100%; height:100%; display:block; }
+  .yl{ display:flex; justify-content:space-between; margin-top:4px; }
+  .yl span{ font-size:12px; font-weight:700; color:rgba(11,15,12,.5); }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="h">Modeled outlook</div>
+  <div class="chart">
+    <svg viewBox="0 -20 600 300" preserveAspectRatio="none">
+      <line x1="0" y1="260" x2="600" y2="260" stroke="#E4EAE5"/>
+      <g>
+        <rect x="40" y="252" width="70" height="8" fill="#16A34A"/>
+        <text x="75" y="238" font-size="14" font-weight="800" text-anchor="middle" fill="#0B0F0C">$0.96M</text>
+
+        <rect x="160" y="228" width="70" height="32" fill="#16A34A"/>
+        <rect x="160" y="216" width="70" height="12" fill="#E4EAE5"/>
+        <text x="195" y="204" font-size="14" font-weight="800" text-anchor="middle" fill="#0B0F0C">$3.49M</text>
+
+        <rect x="280" y="185" width="70" height="75" fill="#16A34A"/>
+        <rect x="280" y="165" width="70" height="20" fill="#E4EAE5"/>
+        <text x="315" y="150" font-size="14" font-weight="800" text-anchor="middle" fill="#0B0F0C">$9.64M</text>
+
+        <rect x="400" y="105" width="70" height="155" fill="#16A34A"/>
+        <rect x="400" y="70" width="70" height="35" fill="#E4EAE5"/>
+        <text x="435" y="55" font-size="14" font-weight="800" text-anchor="middle" fill="#0B0F0C">$22.1M</text>
+
+        <rect x="520" y="40" width="70" height="220" fill="#16A34A"/>
+        <rect x="520" y="10" width="70" height="30" fill="#E4EAE5"/>
+        <text x="555" y="2" font-size="16" font-weight="800" text-anchor="middle" fill="#0B0F0C">$43.0M</text>
+      </g>
+    </svg>
+  </div>
+  <div class="yl"><span>Year 1</span><span>Year 2</span><span>Year 3</span><span>Year 4</span><span>Year 5</span></div>
+</div>
+</body>
+</html>

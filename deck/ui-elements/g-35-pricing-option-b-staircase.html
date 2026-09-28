@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pricing — Option B: Staircase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6);
+    --ol:#E4EAE5;
+  }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+
+  .slide{ width:1600px; height:900px; background:#fff; position:relative; overflow:hidden; color:var(--ink); }
+
+  .title{ position:absolute; left:64px; top:48px; width:1000px; font-size:34px; font-weight:800; }
+  .underline{ position:absolute; left:64px; top:100px; width:120px; height:3px; background:var(--g); }
+  .sub{ position:absolute; left:64px; top:118px; font-size:15px; font-weight:600; color:var(--ink-60); }
+
+  svg.connectors{ position:absolute; left:0; top:0; width:1600px; height:900px; }
+
+  .box{ position:absolute; border:1.5px solid var(--ol); border-radius:22px; background:#fff; padding:26px 24px; display:flex; flex-direction:column; }
+  .box .step{ font-size:12px; font-weight:800; color:var(--g); }
+  .box .name{ font-size:21px; font-weight:800; margin-top:4px; }
+  .box .val{ font-size:26px; font-weight:800; margin-top:12px; color:var(--g); }
+  .box .desc{ font-size:12.5px; font-weight:500; color:var(--ink-60); margin-top:10px; line-height:1.5; }
+
+  .outcome{ background:var(--g); border-color:var(--g); color:#fff; }
+  .outcome .step{ color:#DCFCE7; }
+  .outcome .desc{ color:#DCFCE7; }
+  .outcome .val{ font-size:44px; color:#fff; }
+  .outcome .foot{ font-size:13px; font-weight:700; color:#DCFCE7; margin-top:10px; }
+
+  .baseline{ position:absolute; left:64px; right:64px; bottom:56px; }
+  .baseline-line{ height:2px; background:var(--ink); position:relative; }
+  .baseline-line::after{ content:""; position:absolute; right:-2px; top:-5px; width:0; height:0; border-left:10px solid var(--ink); border-top:6px solid transparent; border-bottom:6px solid transparent; }
+  .baseline-label{ text-align:center; font-size:14px; font-weight:700; color:var(--ink-60); margin-top:14px; }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <div class="title">Pricing model — Option B: staircase build</div>
+  <div class="underline"></div>
+  <div class="sub">Started with DR communications, then expanded capability and revenue step by step.</div>
+
+  <svg class="connectors" viewBox="0 0 1600 900">
+    <g fill="none" stroke="#16A34A" stroke-width="2.5" stroke-dasharray="1 8" stroke-linecap="round">
+      <path d="M400 560 C 440 500, 460 470, 500 450"/>
+      <path d="M790 460 C 830 400, 850 370, 890 350"/>
+      <path d="M1180 360 C 1220 300, 1240 270, 1280 250"/>
+    </g>
+    <g fill="#16A34A">
+      <path d="M500 450 l -14 -3 l 4 -13 z"/>
+      <path d="M890 350 l -14 -3 l 4 -13 z"/>
+      <path d="M1280 250 l -14 -3 l 4 -13 z"/>
+    </g>
+  </svg>
+
+  <div class="box" style="left:64px; top:560px; width:320px; height:220px;">
+    <div class="step">STAGE 1</div>
+    <div class="name">Layer 1 entry point</div>
+    <div class="val">$150K–250K</div>
+    <div class="desc">Gateway or customer license</div>
+  </div>
+
+  <div class="box" style="left:444px; top:460px; width:320px; height:320px;">
+    <div class="step">STAGE 2</div>
+    <div class="name">Standards + protocols</div>
+    <div class="val">$250K / yr</div>
+    <div class="desc">IEEE 2030.5 · SunSpec · Modbus · OpenADR</div>
+  </div>
+
+  <div class="box" style="left:824px; top:360px; width:320px; height:420px;">
+    <div class="step">STAGE 3</div>
+    <div class="name">Applications + intelligence</div>
+    <div class="val">$250K / yr</div>
+    <div class="desc">AI · digital twins · weather &amp; market APIs</div>
+  </div>
+
+  <div class="box outcome" style="left:1204px; top:250px; width:336px; height:530px;">
+    <div class="step">STAGE 4 — OUTCOME</div>
+    <div class="name">Program operations</div>
+    <div class="desc">Flexibility · forecasting · P2P trading · billing</div>
+    <div class="val">$525K ARR</div>
+    <div class="foot">+ Layer 1 upfront, before program operations</div>
+  </div>
+
+  <div class="baseline">
+    <div class="baseline-line"></div>
+    <div class="baseline-label">Cumulative capabilities and revenue growth</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Staircase Build — Detailed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ink-45:rgba(11,15,12,.45);
+    --ol:#E4EAE5;
+  }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+
+  .slide{ width:1600px; height:1050px; background:#fff; position:relative; overflow:hidden; color:var(--ink); }
+
+  .title{ position:absolute; left:64px; top:36px; width:1200px; font-size:32px; font-weight:800; line-height:1.15; }
+  .sub{ position:absolute; left:64px; top:80px; font-size:15px; font-weight:600; color:var(--ink-60); }
+  .upfront-lbl{ position:absolute; left:64px; top:222px; font-size:14px; font-weight:800; text-align:center; width:330px; line-height:1.3; }
+
+  svg.connectors{ position:absolute; left:0; top:0; width:1600px; height:1050px; }
+
+  .box{ position:absolute; border:1.5px solid var(--g); border-radius:18px; background:#fff; display:flex; flex-direction:column; overflow:hidden; }
+  .box-body{ padding:20px 22px; flex:1; overflow:hidden; }
+
+  .badge{ width:26px; height:26px; border-radius:50%; background:var(--g); color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .box-h{ display:flex; align-items:center; gap:10px; }
+  .box-h .t{ font-size:17px; font-weight:800; line-height:1.2; }
+  .box-h .s{ font-size:11.5px; font-weight:600; color:var(--ink-60); margin-top:2px; }
+  .hr{ height:1px; background:var(--ol); margin:12px 0; }
+
+  .sub-h{ display:flex; align-items:center; gap:8px; margin:10px 0 6px; }
+  .sub-h .badge2{ width:20px; height:20px; border-radius:50%; border:1.5px solid var(--g); color:var(--g); font-size:10.5px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .sub-h .t{ font-size:13.5px; font-weight:800; }
+
+  .li{ font-size:11.5px; font-weight:500; margin:5px 0; display:flex; align-items:baseline; flex-wrap:wrap; gap:6px; line-height:1.4; }
+  .li::before{ content:"•"; color:var(--ink-45); margin-right:-2px; }
+  .pill{ border:1.3px solid var(--g); color:var(--g); font-size:9px; font-weight:800; padding:1.5px 7px; border-radius:6px; white-space:nowrap; }
+
+  .or{ text-align:center; font-size:11px; font-weight:800; color:var(--ink-45); margin:8px 0; }
+
+  .price{ font-size:22px; font-weight:800; margin-top:6px; }
+  .tags{ display:flex; gap:6px; margin-top:8px; }
+
+  .ex-h{ font-size:12px; font-weight:800; margin-top:14px; margin-bottom:4px; }
+  .ex-li{ font-size:11.5px; font-weight:500; margin:4px 0 4px 14px; color:var(--ink); line-height:1.4; }
+
+  .desc{ font-size:12.5px; font-weight:600; color:var(--ink-60); margin-top:8px; line-height:1.45; }
+
+  .foot{ background:var(--g-bg); padding:12px 18px; display:flex; align-items:center; gap:10px; }
+  .foot .ic{ width:26px; height:26px; border-radius:50%; background:#fff; border:1.5px solid var(--g); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .foot .ic svg{ width:13px; height:13px; color:var(--g); }
+  .foot .t{ font-size:11px; font-weight:700; line-height:1.35; }
+
+  .recur-tag{ align-self:flex-start; margin-top:8px; }
+
+  .baseline{ position:absolute; left:64px; right:64px; top:942px; }
+  .baseline-line{ height:2px; background:var(--g); position:relative; }
+  .baseline-line::after{ content:""; position:absolute; right:-2px; top:-5px; width:0; height:0; border-left:10px solid var(--g); border-top:6px solid transparent; border-bottom:6px solid transparent; }
+  .baseline-label{ text-align:center; font-size:15px; font-weight:800; color:var(--ink); margin-top:12px; }
+
+  .legend{ position:absolute; left:64px; right:64px; top:1000px; display:flex; gap:32px; align-items:center; }
+  .legend .item{ display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--ink-60); }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <div class="title">Choose your Layer 1 entry point, then expand capability step by step</div>
+  <div class="sub">Started with DR communications interfaces, then expanded the stack over time.</div>
+  <div class="upfront-lbl">Upfront<br><span style="font-weight:600;color:var(--ink-60);">(Fixed + Variable)</span></div>
+
+  <svg class="connectors" viewBox="0 0 1600 1050">
+    <g fill="none" stroke="#16A34A" stroke-width="2.5" stroke-dasharray="1 8" stroke-linecap="round">
+      <path d="M400 480 C 430 440, 410 420, 440 400"/>
+      <path d="M780 400 C 810 360, 790 340, 820 320"/>
+      <path d="M1160 320 C 1190 280, 1170 260, 1200 240"/>
+    </g>
+    <g fill="#16A34A">
+      <path d="M440 400 l -14 -3 l 3 -13 z"/>
+      <path d="M820 320 l -14 -3 l 3 -13 z"/>
+      <path d="M1200 240 l -14 -3 l 3 -13 z"/>
+    </g>
+  </svg>
+
+  <!-- Box 1 — Layer 1 -->
+  <div class="box" style="left:64px; top:270px; width:330px; height:620px;">
+    <div class="box-body">
+      <div class="box-h"><div class="badge">1</div><div><div class="t">Layer 1</div><div class="s">Choose one entry point</div></div></div>
+      <div class="hr"></div>
+
+      <div class="sub-h"><div class="badge2">1A</div><div class="t">Gateway / GKE</div></div>
+      <div class="li">Utility GKE license: $150K one-time <span class="pill">FIXED</span></div>
+      <div class="li">Gateway: $200 / device <span class="pill">VARIABLE</span></div>
+      <div class="li">Customer license: $30 / endpoint <span class="pill">VARIABLE</span></div>
+
+      <div class="or">OR</div>
+
+      <div class="sub-h"><div class="badge2">1B</div><div class="t">Integrations</div></div>
+      <div class="li">5 OEM integrations: $125K one-time <span class="pill">FIXED</span></div>
+      <div class="li">$15K per OEM / utility: one-time <span class="pill">VARIABLE</span></div>
+      <div class="li">Platform maintenance: $25K / year <span class="pill">FIXED</span></div>
+      <div class="recur-tag"><span class="pill">RECURRING</span></div>
+    </div>
+  </div>
+
+  <!-- Box 2 — Standards + Protocols -->
+  <div class="box" style="left:444px; top:400px; width:330px; height:490px;">
+    <div class="box-body">
+      <div class="box-h"><div class="badge">2</div><div class="t">Add Standards + Protocols</div></div>
+      <div class="hr"></div>
+      <div class="price">$250K / year</div>
+      <div class="tags"><span class="pill">RECURRING</span><span class="pill">FIXED</span></div>
+      <div class="ex-h">Examples:</div>
+      <div class="ex-li">IEEE 2030.5</div>
+      <div class="ex-li">SunSpec</div>
+      <div class="ex-li">Modbus</div>
+      <div class="ex-li">OpenADR</div>
+      <div class="ex-li">OCPP</div>
+    </div>
+    <div class="foot"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18"/></svg></div><div class="t">Expands interoperability and utility-grade control</div></div>
+  </div>
+
+  <!-- Box 3 — Applications + Intelligence -->
+  <div class="box" style="left:824px; top:320px; width:330px; height:570px;">
+    <div class="box-body">
+      <div class="box-h"><div class="badge">3</div><div class="t">Add Applications + Intelligence</div></div>
+      <div class="hr"></div>
+      <div class="price">$250K / year</div>
+      <div class="tags"><span class="pill">RECURRING</span><span class="pill">FIXED</span></div>
+      <div class="ex-h">Examples:</div>
+      <div class="ex-li">AI dispatch</div>
+      <div class="ex-li">Forecasting</div>
+      <div class="ex-li">Digital twins</div>
+      <div class="ex-li">DER visibility</div>
+      <div class="ex-li">Anomaly detection</div>
+      <div class="ex-li">Weather APIs</div>
+      <div class="ex-li">Market APIs</div>
+      <div class="ex-li">Optimization</div>
+    </div>
+    <div class="foot"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 0 0-5 5c0 1.5.7 2.4 1.5 3.2C9.2 11 10 11.8 10 13v1h4v-1c0-1.2.8-2 1.5-2.8.8-.8 1.5-1.7 1.5-3.2a5 5 0 0 0-5-5z"/><path d="M9 17h6M10 21h4"/></svg></div><div class="t">Adds higher-value software and decision intelligence</div></div>
+  </div>
+
+  <!-- Box 4 — Program Operations -->
+  <div class="box" style="left:1204px; top:240px; width:332px; height:650px;">
+    <div class="box-body">
+      <div class="box-h"><div class="badge">4</div><div class="t">Program Operations</div></div>
+      <div class="hr"></div>
+      <div class="desc">Extends into operational programs and monetization</div>
+      <div class="ex-h">Examples:</div>
+      <div class="ex-li">Flexibility programs</div>
+      <div class="ex-li">Demand response</div>
+      <div class="ex-li">VPP operations</div>
+      <div class="ex-li">Forecasting</div>
+      <div class="ex-li">P2P trading</div>
+      <div class="ex-li">Billing</div>
+      <div class="ex-li">Settlement</div>
+      <div class="ex-li">Customer incentives</div>
+      <div class="ex-li">Market participation</div>
+    </div>
+    <div class="foot"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M11 20V4M18 20v-7"/></svg></div><div class="t">Additional recurring and program-based revenue</div></div>
+  </div>
+
+  <div class="baseline">
+    <div class="baseline-line"></div>
+    <div class="baseline-label">Cumulative capability and revenue increase step by step</div>
+  </div>
+
+  <div class="legend">
+    <div class="item"><span class="pill">FIXED</span> = Fixed amount</div>
+    <div class="item"><span class="pill">VARIABLE</span> = Usage based</div>
+    <div class="item"><span class="pill">UPFRONT</span> = One-time</div>
+    <div class="item"><span class="pill">RECURRING</span> = Recurring</div>
+  </div>
+
+</div>
+</body>
+</html>

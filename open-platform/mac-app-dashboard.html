@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>kWh Electric — Operations</title>
+  <style>
+    :root {
+      --canvas:#e8e2d4; --sidebar:#ece5d3; --surface:#fffdf7; --surface-2:#f7f2e5;
+      --surface-3:#f1ead8; --line:#e2d7bc; --line-strong:#d4c39b; --ink:#15100b;
+      --text:#4b4433; --muted:#776b4b; --honey:#a87312; --honey-2:#c2932a;
+      --honey-pale:#f3e6be; --good:#4f7229; --good-pale:#e7eed6; --critical:#9e2b25;
+      --critical-pale:#f6deda; --info:#5546a3; --info-pale:#ebe8fa;
+      --shadow:0 26px 70px rgba(60,42,10,.17),0 4px 14px rgba(60,42,10,.08);
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+      --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:var(--sans);color:var(--ink);background:var(--canvas)}
+    body{height:100vh;overflow:hidden;padding:12px}
+    button,input,select{font:inherit}
+    button{color:inherit}
+    button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{
+      outline:3px solid rgba(85,70,163,.25);outline-offset:2px
+    }
+    .app-window{width:100%;height:100%;max-width:1600px;margin:0 auto;background:var(--surface);
+      border:1px solid rgba(79,61,20,.2);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);
+      display:flex;flex-direction:column}
+    .titlebar{height:52px;flex:none;display:grid;grid-template-columns:225px minmax(320px,1fr) auto;
+      align-items:center;border-bottom:1px solid var(--line);background:rgba(255,253,247,.96)}
+    .traffic{display:flex;gap:8px;padding-left:18px;align-items:center}
+    .traffic span{width:12px;height:12px;border-radius:50%}.traffic span:nth-child(1){background:#ff5f57}
+    .traffic span:nth-child(2){background:#febc2e}.traffic span:nth-child(3){background:#28c840}
+    .history{display:flex;gap:6px;justify-self:start}
+    .icon-btn,.tool-btn{border:1px solid transparent;background:transparent;border-radius:8px;min-width:34px;height:34px;
+      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:.18s ease}
+    .icon-btn:hover,.tool-btn:hover{background:var(--surface-3);border-color:var(--line)}
+    .icon-btn:disabled{opacity:.35;cursor:default}.icon{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .global-tools{display:flex;align-items:center;gap:8px;padding-right:14px}
+    .search-button{width:250px;height:34px;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;
+      display:flex;align-items:center;gap:8px;padding:0 10px;color:var(--muted);cursor:pointer}
+    .search-button kbd{margin-left:auto;border:1px solid var(--line);background:var(--surface);border-radius:5px;padding:2px 6px;font:11px var(--mono)}
+    .global-state{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text);white-space:nowrap}
+    .live-dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 4px rgba(79,114,41,.12)}
+    .avatar{width:30px;height:30px;border-radius:50%;border:0;background:var(--ink);color:#fff;font-size:11px;font-weight:700;cursor:pointer}
+    .shell{min-height:0;flex:1;display:flex}
+    .sidebar{width:225px;flex:none;background:var(--sidebar);border-right:1px solid var(--line);padding:14px 10px 12px;
+      display:flex;flex-direction:column;overflow:auto}
+    .brand{display:flex;align-items:center;gap:9px;padding:2px 8px 14px;font-size:17px;font-weight:750;letter-spacing:-.02em}
+    .brand-mark{width:21px;height:21px;display:grid;place-items:center;background:var(--honey-2);
+      clip-path:polygon(25% 4%,75% 4%,100% 50%,75% 96%,25% 96%,0 50%)}
+    .brand-mark:after{content:"";width:9px;height:9px;background:var(--ink);clip-path:inherit}
+    .workspace{border:1px solid var(--line-strong);background:rgba(255,253,247,.58);border-radius:10px;padding:10px 11px;
+      margin:0 4px 14px;cursor:pointer}
+    .workspace-top{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:650}
+    .workspace-sub{font-size:11px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:6px}
+    .demo-badge{font:9px var(--mono);letter-spacing:.08em;background:var(--honey-pale);color:#73500f;border:1px solid #dfca8c;border-radius:4px;padding:2px 5px}
+    .nav-group{margin-bottom:12px}.nav-label{padding:6px 10px 5px;font:10px var(--mono);letter-spacing:.11em;color:var(--muted)}
+    .nav-item{width:100%;height:34px;border:0;background:transparent;border-radius:8px;padding:0 10px;display:flex;align-items:center;
+      gap:10px;color:var(--text);font-size:12.5px;text-align:left;cursor:pointer;position:relative;transition:.16s ease}
+    .nav-item:hover{background:rgba(255,253,247,.58);color:var(--ink)}.nav-item.active{background:var(--surface);color:var(--ink);font-weight:650;box-shadow:0 1px 2px rgba(60,42,10,.06)}
+    .nav-item.active:before{content:"";position:absolute;left:0;top:7px;bottom:7px;width:3px;border-radius:3px;background:var(--honey)}
+    .nav-item .icon{width:16px;height:16px}.nav-spacer{flex:1}
+    .badge-count{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--critical-pale);color:var(--critical);font:10px var(--mono);display:grid;place-items:center}
+    .sidebar-bottom{margin-top:auto}
+    .main{min-width:0;flex:1;background:var(--surface-2);display:flex;flex-direction:column}
+    .pagebar{height:58px;flex:none;border-bottom:1px solid var(--line);background:rgba(255,253,247,.92);display:flex;align-items:center;padding:0 22px;gap:12px}
+    .page-title{font-size:19px;font-weight:700;letter-spacing:-.02em}.page-sub{font-size:11px;color:var(--muted);margin-top:2px}
+    .page-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+    .btn{height:34px;border-radius:8px;padding:0 13px;border:1px solid var(--line-strong);background:var(--surface);font-size:12px;font-weight:620;cursor:pointer;display:inline-flex;align-items:center;gap:7px;justify-content:center;transition:.17s ease}
+    .btn:hover{background:var(--surface-3);transform:translateY(-1px)}.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+    .btn.primary:hover{background:#2a2117}.btn.honey{background:var(--honey);border-color:var(--honey);color:#fff}
+    .btn.danger{color:var(--critical);border-color:#dbaaa6}.btn.small{height:28px;padding:0 10px;font-size:11px}
+    .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .select{height:34px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:0 28px 0 10px;color:var(--text);font-size:12px}
+    .content{padding:18px 20px 28px;overflow:auto;min-height:0}.content:focus{outline:none}
+    .route-enter{animation:routeIn .24s ease both}@keyframes routeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+    .kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:10px;margin-bottom:12px}
+    .kpi{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:13px 14px;min-height:88px;cursor:pointer;transition:.16s ease}
+    .kpi:hover{border-color:var(--line-strong);box-shadow:0 5px 14px rgba(60,42,10,.07);transform:translateY(-1px)}
+    .eyebrow{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .metric{font-size:26px;font-weight:720;letter-spacing:-.04em;margin:8px 0 4px;font-variant-numeric:tabular-nums}.metric span{font-size:13px;color:var(--muted);font-weight:620;letter-spacing:0}
+    .delta{font-size:10.5px;color:var(--muted)}.delta.good{color:var(--good)}.delta.warn{color:var(--honey)}
+    .overview-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(330px,.9fr);gap:12px}
+    .panel{border:1px solid var(--line);background:var(--surface);border-radius:11px;overflow:hidden}
+    .panel + .panel{margin-top:12px}.panel-head{min-height:45px;padding:0 14px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--line)}
+    .panel-title{font-size:13px;font-weight:680}.panel-meta{margin-left:auto;font-size:10.5px;color:var(--muted)}
+    .panel-body{padding:14px}.panel-grid{display:grid;grid-template-columns:.72fr 1.5fr;gap:10px}
+    .mini-card{border:1px solid var(--line);border-radius:9px;background:var(--surface-2);padding:11px;min-height:130px}
+    .mini-title{font:9.5px var(--mono);letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+    .map{height:113px;position:relative;border-radius:7px;background:linear-gradient(135deg,#f2eddf,#eae2cf);overflow:hidden}
+    .map:before,.map:after{content:"";position:absolute;border:1px solid rgba(119,107,75,.12);width:140%;height:1px;transform:rotate(-18deg);top:45%;left:-20%}.map:after{transform:rotate(22deg);top:62%}
+    .map-dot{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--good);box-shadow:0 0 0 5px rgba(79,114,41,.12)}.map-dot.fault{background:var(--critical);box-shadow:0 0 0 5px rgba(158,43,37,.12)}
+    .legend{display:flex;gap:12px;align-items:center;font-size:9px;color:var(--muted);margin-top:8px}.legend i{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
+    .chart{width:100%;height:120px;display:block}.chart text{font:9px var(--mono);fill:var(--muted)}.chart .gridline{stroke:var(--line);stroke-width:1}.chart .line-a{stroke:var(--good);fill:none;stroke-width:2.2}.chart .line-b{stroke:var(--info);fill:none;stroke-width:1.7;stroke-dasharray:5 4}.chart .area{fill:rgba(79,114,41,.09)}
+    .table-wrap{overflow:auto}.data-table{width:100%;border-collapse:collapse;font-size:11.5px}.data-table th{text-align:left;font:9.5px var(--mono);letter-spacing:.07em;color:var(--muted);text-transform:uppercase;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+    .data-table td{padding:10px 12px;border-bottom:1px solid rgba(226,215,188,.7);color:var(--text);white-space:nowrap}.data-table tbody tr{cursor:pointer;transition:.14s ease}.data-table tbody tr:hover{background:var(--surface-2)}.data-table tbody tr:last-child td{border-bottom:0}
+    .data-table .strong{font-weight:650;color:var(--ink)}.data-table .num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+    .status{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:650;border:1px solid}
+    .status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}.status.good{color:var(--good);background:var(--good-pale);border-color:#bfd09e}.status.warn{color:#80560c;background:var(--honey-pale);border-color:#dfca8c}.status.bad{color:var(--critical);background:var(--critical-pale);border-color:#e5b7b2}.status.info{color:var(--info);background:var(--info-pale);border-color:#c9c2ee}.status.neutral{color:var(--muted);background:var(--surface-3);border-color:var(--line)}
+    .bars{height:128px;display:flex;align-items:end;gap:10px;padding:12px 4px 0}.bar-col{flex:1;min-width:28px;text-align:center;font:9px var(--mono);color:var(--muted)}.bar{width:100%;border-radius:4px 4px 2px 2px;background:var(--good);margin:5px 0 6px;position:relative}.bar.warn{background:var(--honey-2)}.bar.bad{background:var(--critical);box-shadow:0 0 0 4px rgba(158,43,37,.07)}.bar:before{content:attr(data-value);position:absolute;top:-15px;left:50%;transform:translateX(-50%);color:var(--ink);font-weight:700}
+    .opportunity-list,.event-list{display:flex;flex-direction:column}.opp-row,.event-row{display:grid;grid-template-columns:minmax(150px,1.2fr) minmax(180px,2fr) auto;gap:12px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line);cursor:pointer}.opp-row:last-child,.event-row:last-child{border-bottom:0}.opp-row:hover,.event-row:hover{background:var(--surface-2)}.opp-name{font-size:12px;font-weight:650}.opp-type{font:9px var(--mono);color:var(--muted);margin-top:3px;text-transform:uppercase}.opp-reason{font-size:11px;color:var(--text);line-height:1.35}
+    .page-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px}.stack{display:flex;flex-direction:column;gap:12px}
+    .filterbar{display:flex;align-items:center;gap:8px;margin-bottom:12px}.filterbar .grow{flex:1}.input{height:34px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:0 10px;color:var(--ink);min-width:0}.input::placeholder{color:#938767}.search-input{width:260px}
+    .tabs{display:flex;gap:4px;padding:4px;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;width:max-content}.tab{height:28px;border:0;background:transparent;border-radius:6px;padding:0 10px;font-size:11px;color:var(--muted);cursor:pointer}.tab.active{background:var(--surface);color:var(--ink);font-weight:650;box-shadow:0 1px 3px rgba(60,42,10,.08)}
+    .detail-hero{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}.asset-icon{width:52px;height:52px;border-radius:12px;background:var(--good-pale);color:var(--good);display:grid;place-items:center}.asset-icon .icon{width:26px;height:26px}.detail-title{font-size:21px;font-weight:720;letter-spacing:-.03em}.detail-sub{font-size:11px;color:var(--muted);margin-top:5px}.detail-actions{margin-left:auto;display:flex;gap:8px}
+    .stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.stat{padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2)}.stat-value{font-size:19px;font-weight:700;margin-top:7px;font-variant-numeric:tabular-nums}.stat-value small{font-size:10px;color:var(--muted)}
+    .code{font:11px/1.65 var(--mono);background:#201a12;color:#efe7d5;border-radius:9px;padding:14px;overflow:auto}.code .h{color:#e1b84f}.code .g{color:#98bd69}.code .p{color:#aea4df}
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(220px,1fr));gap:11px}.market-card{border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:14px;display:flex;flex-direction:column;min-height:205px;transition:.17s ease}.market-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(60,42,10,.08);border-color:var(--line-strong)}.market-top{display:flex;align-items:flex-start;gap:10px}.app-icon{width:38px;height:38px;border-radius:10px;background:var(--info-pale);color:var(--info);display:grid;place-items:center}.app-icon.honey{background:var(--honey-pale);color:var(--honey)}.app-icon.green{background:var(--good-pale);color:var(--good)}.market-name{font-size:13px;font-weight:700}.market-pub{font-size:10px;color:var(--muted);margin-top:3px}.market-desc{font-size:11px;line-height:1.45;color:var(--text);margin:12px 0}.reason-box{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:8px 9px;font-size:10.5px;line-height:1.35;color:var(--text);margin-bottom:12px}.card-footer{margin-top:auto;display:flex;align-items:center;gap:7px}
+    .progress{height:7px;border-radius:999px;background:var(--surface-3);overflow:hidden}.progress > span{display:block;height:100%;border-radius:inherit;background:var(--honey);transition:width .3s ease}.progress.good > span{background:var(--good)}
+    .trace{display:flex;flex-direction:column;gap:0}.trace-row{display:grid;grid-template-columns:28px 1fr auto;gap:10px;min-height:54px;position:relative}.trace-row:not(:last-child):before{content:"";position:absolute;left:13px;top:27px;bottom:-2px;width:1px;background:var(--line-strong)}.trace-node{width:27px;height:27px;border-radius:50%;background:var(--surface-3);border:1px solid var(--line-strong);display:grid;place-items:center;color:var(--muted);font-size:10px;z-index:1}.trace-row.done .trace-node{background:var(--good);border-color:var(--good);color:#fff}.trace-row.live .trace-node{background:var(--honey);border-color:var(--honey);color:#fff;animation:pulse 1.4s ease infinite}.trace-title{font-size:12px;font-weight:650;margin-top:4px}.trace-sub{font:10px/1.45 var(--mono);color:var(--muted);margin-top:3px}.trace-time{font:10px var(--mono);color:var(--muted);padding-top:6px}
+    @keyframes pulse{50%{box-shadow:0 0 0 7px rgba(168,115,18,.12)}}
+    .empty{padding:42px 20px;text-align:center;color:var(--muted)}.empty .icon{width:30px;height:30px;margin-bottom:10px}.empty h3{color:var(--ink);margin:0 0 6px;font-size:14px}.empty p{font-size:11px;margin:0 0 14px}
+    .scrim{position:fixed;inset:0;background:rgba(21,16,11,.5);z-index:50;display:none;align-items:center;justify-content:center;padding:22px}.scrim.open{display:flex;animation:fade .18s ease}@keyframes fade{from{opacity:0}to{opacity:1}}
+    .modal{width:min(880px,96vw);max-height:92vh;background:var(--surface);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;animation:modalIn .22s ease}
+    @keyframes modalIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+    .modal-head{min-height:58px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 18px;gap:11px}.modal-title{font-size:15px;font-weight:700}.modal-sub{font-size:10px;color:var(--muted);margin-top:3px}.modal-close{margin-left:auto}
+    .modal-body{padding:18px;overflow:auto}.modal-foot{min-height:58px;border-top:1px solid var(--line);padding:0 18px;display:flex;align-items:center;gap:8px}.modal-foot .push{margin-left:auto}
+    .steps{display:flex;gap:5px;margin-left:16px}.step-dot{width:20px;height:4px;border-radius:4px;background:var(--line)}.step-dot.done{background:var(--good)}.step-dot.active{background:var(--honey);width:34px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:650}.field .help{font-size:9.5px;color:var(--muted);line-height:1.35}.field input,.field select{height:38px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);padding:0 10px;color:var(--ink)}
+    .choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.choice{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:13px;cursor:pointer;transition:.15s ease}.choice:hover{border-color:var(--line-strong)}.choice.selected{border-color:var(--honey);box-shadow:0 0 0 2px rgba(168,115,18,.1);background:#fffaf0}.choice-title{font-size:12px;font-weight:680}.choice-desc{font-size:10px;color:var(--muted);line-height:1.4;margin-top:5px}
+    .section-note{border:1px solid var(--line);background:var(--surface-2);border-radius:9px;padding:11px 12px;font-size:10.5px;color:var(--text);line-height:1.45;margin-bottom:14px}
+    .check-row{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:8px}.check-row input{margin-top:2px}.check-title{font-size:11.5px;font-weight:650}.check-desc{font-size:9.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+    .side-sheet-wrap{position:fixed;inset:0;background:rgba(21,16,11,.36);z-index:55;display:none;justify-content:flex-end}.side-sheet-wrap.open{display:flex;animation:fade .18s ease}.sheet{width:min(510px,92vw);height:100%;background:var(--surface);border-left:1px solid var(--line);box-shadow:-16px 0 40px rgba(60,42,10,.16);display:flex;flex-direction:column;animation:sheetIn .22s ease}.sheet.wide{width:min(720px,94vw)}@keyframes sheetIn{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
+    .sheet-head{min-height:62px;border-bottom:1px solid var(--line);padding:0 18px;display:flex;align-items:center}.sheet-title{font-size:15px;font-weight:700}.sheet-body{padding:18px;overflow:auto;flex:1}.sheet-foot{min-height:60px;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:0 18px}.sheet-foot .push{margin-left:auto}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,15px);background:var(--ink);color:#fff;border-radius:9px;padding:11px 14px;font-size:11px;z-index:80;opacity:0;pointer-events:none;transition:.2s ease;box-shadow:0 12px 28px rgba(0,0,0,.25)}.toast.show{opacity:1;transform:translate(-50%,0)}
+    .palette{width:min(580px,94vw);background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}.palette-search{height:52px;border:0;border-bottom:1px solid var(--line);width:100%;padding:0 16px;font-size:14px;background:var(--surface);color:var(--ink)}.palette-list{padding:7px;max-height:360px;overflow:auto}.palette-item{height:40px;border-radius:7px;padding:0 10px;display:flex;align-items:center;gap:9px;font-size:12px;cursor:pointer}.palette-item:hover{background:var(--surface-2)}.palette-item .icon{color:var(--muted)}
+    @media(max-width:1150px){.titlebar{grid-template-columns:225px 1fr auto}.search-button{width:180px}.global-state span:last-child{display:none}.kpi-grid{grid-template-columns:repeat(3,1fr)}.overview-grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:850px){body{padding:0}.app-window{border-radius:0;border:0}.titlebar{grid-template-columns:68px 1fr auto}.sidebar{width:68px}.brand span:last-child,.workspace,.nav-label,.nav-item span,.badge-count{display:none}.brand{justify-content:center;padding-left:0;padding-right:0}.nav-item{justify-content:center;padding:0}.nav-item.active:before{left:2px}.search-button{width:40px}.search-button span,.search-button kbd{display:none}.global-state{display:none}.kpi-grid{grid-template-columns:repeat(2,1fr)}.page-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.panel-grid{grid-template-columns:1fr}.pagebar{padding:0 14px}.content{padding:14px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <div class="app-window" aria-label="kWh Electric operations application">
+    <header class="titlebar">
+      <div class="traffic" aria-label="Window controls"><span></span><span></span><span></span></div>
+      <div class="history">
+        <button class="icon-btn" id="backButton" data-action="history-back" aria-label="Back"></button>
+        <button class="icon-btn" id="forwardButton" data-action="history-forward" aria-label="Forward"></button>
+      </div>
+      <div class="global-tools">
+        <button class="search-button" data-action="open-search" aria-label="Search">
+          <span id="searchIcon"></span><span>Search fleet</span><kbd>⌘K</kbd>
+        </button>
+        <div class="global-state"><i class="live-dot"></i><span>All systems online</span><span>Updated 12 sec ago</span></div>
+        <button class="icon-btn" data-action="notifications" aria-label="Notifications"><span id="bellIcon"></span></button>
+        <button class="avatar" data-action="profile" aria-label="Profile">AS</button>
+      </div>
+    </header>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand"><i class="brand-mark"></i><span>kWh Electric</span></div>
+        <div class="workspace">
+          <div class="workspace-top"><span>Vellore Flex Fleet</span><span>⌄</span></div>
+          <div class="workspace-sub"><span class="demo-badge">DEMO</span><span>12 sites · Tamil Nadu</span></div>
+        </div>
+        <nav id="navigation" aria-label="Primary navigation"></nav>
+        <div class="sidebar-bottom" id="navigationBottom"></div>
+      </aside>
+      <main class="main">
+        <header class="pagebar">
+          <div><div class="page-title" id="pageTitle">Overview</div><div class="page-sub" id="pageSubtitle">Vellore Flex Fleet · 12 sites · live</div></div>
+          <div class="page-actions" id="pageActions"></div>
+        </header>
+        <section class="content" id="pageContent" tabindex="-1"></section>
+      </main>
+    </div>
+  </div>
+  <div class="scrim" id="modalLayer" role="dialog" aria-modal="true"></div>
+  <div class="side-sheet-wrap" id="sheetLayer"></div>
+  <div class="scrim" id="searchLayer">
+    <div class="palette" role="dialog" aria-modal="true" aria-label="Search fleet">
+      <input class="palette-search" id="paletteSearch" placeholder="Search sites, assets, gateways, apps and programs">
+      <div class="palette-list" id="paletteList"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <script>
+  (function(){
+    "use strict";
+
+    var previewParams=new URLSearchParams(window.location.search);
+    var previewRoute=previewParams.get("route")||"overview";
+    var state={
+      route:previewRoute,history:[previewRoute],historyIndex:0,assetTab:"summary",gatewayTab:previewParams.get("gatewayTab")||"overview",
+      programTab:"recommended",onboardingStep:1,onboardingScanned:false,onboardingMatches:["battery","peak","solar"],
+      installed:{battery:true,ev:true,solar:false,transformer:true},enrolled:{peak:false,solar:false},
+      installStep:1,installProgress:0,enrolStep:1,dispatchStep:1,dispatchProgress:0,eventAcknowledged:false,
+      profileComplete:true
+    };
+
+    var navGroups=[
+      {label:"Workspace",items:[
+        ["overview","Overview","home"],["sites","Sites","map"],["assets","Assets","battery"],["gateways","Gateways","gateway"],
+        ["dispatch","Dispatch","bolt"],["events","Events","bell","3"]
+      ]},
+      {label:"Installed apps",items:[
+        ["battery-app","Battery Dispatch","battery"],["ev-app","EV Smart Charging","car"],["transformer-app","Transformer Health","activity"]
+      ]},
+      {label:"Platform",items:[
+        ["marketplace","Marketplace","grid"],["programs","Programs & services","spark"],["usage","Usage & billing","chart"],["developer","Developer","code"]
+      ]}
+    ];
+    var bottomItems=[["settings","Settings","settings"],["help","Help","help"]];
+
+    var titles={
+      overview:["Overview","Vellore Flex Fleet · 12 sites · live"],sites:["Sites","Fleet inventory and service territories"],
+      assets:["Assets","49 normalised energy resources"],asset:["BESS-01 · Ranipet","Battery energy storage · Online · Controllable"],
+      gateways:["Gateways","12 edge gateways · 11 online"],gateway:["KWH-GTW-0042","Ranipet Flex Site · Online"],
+      dispatch:["Dispatch","Control events across sites and assets"],"dispatch-live":["Dispatch EVT-1048","BESS-01 · live delivery"],
+      events:["Events","3 active events require attention"],marketplace:["Marketplace","Apps matched to this fleet"],
+      programs:["Programs & services","Personalised using site, tariff and device compatibility"],
+      usage:["Usage & billing","July 2026 · managed cloud usage"],developer:["Developer","Normalised APIs, webhooks and activity"],
+      "battery-app":["Battery Dispatch","Installed on 9 gateways"],"ev-app":["EV Smart Charging","Installed on 4 gateways"],
+      "transformer-app":["Transformer Health","Installed on 7 gateways"],settings:["Settings","Workspace and policy configuration"],
+      help:["Help","Documentation and diagnostics"]
+    };
+
+    function icon(name){
+      var paths={
+        home:"<path d='M3 10.5 12 3l9 7.5'/><path d='M5 9.5V21h14V9.5M9 21v-7h6v7'/>",
+        map:"<path d='m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z'/><path d='M9 3v15M15 6v15'/>",
+        battery:"<rect x='3' y='6' width='17' height='12' rx='2'/><path d='M20 10h2v4h-2M7 10v4M10 10v4M13 10v4'/>",
+        gateway:"<rect x='3' y='5' width='18' height='14' rx='3'/><path d='M7 9h10M7 13h6'/><circle cx='17' cy='13' r='1'/>",
+        bolt:"<path d='m13 2-8 12h7l-1 8 8-12h-7z'/>",
+        bell:"<path d='M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4'/>",
+        car:"<path d='m5 11 2-5h10l2 5M3 14h18v5H3z'/><circle cx='7' cy='18' r='1.5'/><circle cx='17' cy='18' r='1.5'/>",
+        activity:"<path d='M3 12h4l2-6 4 12 2-6h6'/>",
+        grid:"<rect x='3' y='3' width='7' height='7' rx='1'/><rect x='14' y='3' width='7' height='7' rx='1'/><rect x='3' y='14' width='7' height='7' rx='1'/><rect x='14' y='14' width='7' height='7' rx='1'/>",
+        spark:"<path d='m12 2 1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z'/><path d='m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z'/>",
+        chart:"<path d='M4 20V10M10 20V4M16 20v-7M22 20H2'/>",
+        code:"<path d='m9 18-6-6 6-6M15 6l6 6-6 6'/>",
+        settings:"<circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z'/>",
+        help:"<circle cx='12' cy='12' r='9'/><path d='M9.5 9a2.5 2.5 0 1 1 3.4 2.3c-.9.4-.9 1.1-.9 1.7M12 17h.01'/>",
+        left:"<path d='m15 18-6-6 6-6'/>",right:"<path d='m9 18 6-6-6-6'/>",search:"<circle cx='11' cy='11' r='7'/><path d='m20 20-4-4'/>",
+        plus:"<path d='M12 5v14M5 12h14'/>",check:"<path d='m5 12 4 4L19 6'/>",close:"<path d='m6 6 12 12M18 6 6 18'/>",
+        download:"<path d='M12 3v12m0 0 5-5m-5 5-5-5M4 21h16'/>",filter:"<path d='M4 5h16M7 12h10M10 19h4'/>",
+        users:"<path d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2'/><circle cx='9' cy='7' r='4'/><path d='M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75'/>",
+        lock:"<rect x='4' y='10' width='16' height='11' rx='2'/><path d='M8 10V7a4 4 0 0 1 8 0v3'/>"
+      };
+      return "<svg class='icon' viewBox='0 0 24 24' aria-hidden='true'>"+(paths[name]||paths.grid)+"</svg>";
+    }
+
+    function status(text,type){return "<span class='status "+(type||"neutral")+"'>"+text+"</span>"}
+    function btn(label,action,kind,extra){return "<button class='btn "+(kind||"")+"' data-action='"+action+"' "+(extra||"")+">"+label+"</button>"}
+    function navHtml(items){var h="";items.forEach(function(it){h+="<button class='nav-item "+(state.route===it[0]?"active":"")+"' data-route='"+it[0]+"'>"+icon(it[2])+"<span>"+it[1]+"</span><i class='nav-spacer'></i>"+(it[3]?"<b class='badge-count'>"+it[3]+"</b>":"")+"</button>"});return h}
+    function renderNav(){
+      var h="";navGroups.forEach(function(g){h+="<div class='nav-group'><div class='nav-label'>"+g.label+"</div>"+navHtml(g.items)+"</div>"});
+      document.getElementById("navigation").innerHTML=h;document.getElementById("navigationBottom").innerHTML=navHtml(bottomItems);
+    }
+
+    function routeActions(route){
+      if(route==="overview")return "<select class='select'><option>Last 24 hours</option><option>Last 7 days</option></select><select class='select'><option>All feeders</option><option>Feeder F1</option><option>Feeder F2</option></select>"+btn(icon("plus")+" Add gateway","open-onboarding","primary");
+      if(route==="sites")return btn(icon("map")+" Map view","toast","")+btn(icon("plus")+" Add site","open-onboarding","primary");
+      if(route==="assets")return btn(icon("download")+" Export","toast","")+btn(icon("filter")+" Filters","toast","");
+      if(route==="gateways")return btn(icon("download")+" Diagnostics","toast","")+btn(icon("plus")+" Add gateway","open-onboarding","primary");
+      if(route==="dispatch")return btn(icon("plus")+" Create dispatch","open-dispatch","honey");
+      if(route==="events")return btn(icon("download")+" Export","toast","")+btn(icon("filter")+" Filters","toast","");
+      if(route==="marketplace")return "<select class='select'><option>Ranipet Flex Site</option><option>All sites</option></select>";
+      if(route==="programs")return "<select class='select'><option>Ranipet Flex Site</option><option>All sites</option></select>"+btn("Edit site profile","edit-profile","");
+      if(route==="usage")return "<select class='select'><option>July 2026</option><option>June 2026</option></select>"+btn(icon("download")+" Export CSV","toast","");
+      if(route==="asset")return btn("Open controls","open-controls","primary");
+      if(route==="gateway")return btn("Download diagnostics","toast","")+btn("More","toast","");
+      if(route==="dispatch-live")return btn("Cancel dispatch","cancel-dispatch","danger");
+      return "";
+    }
+
+    function navigate(route,push){
+      if(push!==false){state.history=state.history.slice(0,state.historyIndex+1);state.history.push(route);state.historyIndex=state.history.length-1}
+      state.route=route;render();
+    }
+    function historyGo(delta){var n=state.historyIndex+delta;if(n<0||n>=state.history.length)return;state.historyIndex=n;state.route=state.history[n];render()}
+
+    function render(){
+      renderNav();
+      var t=titles[state.route]||[state.route.charAt(0).toUpperCase()+state.route.slice(1),"Vellore Flex Fleet"];
+      document.getElementById("pageTitle").textContent=t[0];document.getElementById("pageSubtitle").textContent=t[1];
+      document.getElementById("pageActions").innerHTML=routeActions(state.route);
+      document.getElementById("backButton").disabled=state.historyIndex===0;document.getElementById("forwardButton").disabled=state.historyIndex>=state.history.length-1;
+      var content=document.getElementById("pageContent");content.innerHTML="<div class='route-enter'>"+routeContent(state.route)+"</div>";content.scrollTop=0;content.focus({preventScroll:true});
+    }
+
+    function lineChart(){
+      return "<svg class='chart' viewBox='0 0 430 130' role='img' aria-label='Active and reactive power over 24 hours'>"+
+        "<path class='gridline' d='M20 25h400M20 58h400M20 91h400M20 115h400'/>"+
+        "<path class='area' d='M20 101 C75 101 105 97 145 80 S220 30 260 35 330 84 420 98 L420 115H20z'/>"+
+        "<path class='line-a' d='M20 101 C75 101 105 97 145 80 S220 30 260 35 330 84 420 98'/>"+
+        "<path class='line-b' d='M20 86 C110 85 180 78 250 76 S350 83 420 85'/>"+
+        "<text x='20' y='128'>00</text><text x='119' y='128'>06</text><text x='218' y='128'>12</text><text x='318' y='128'>18</text><text x='405' y='128'>24</text></svg>";
+    }
+    function mapCard(){
+      return "<div class='mini-card'><div class='mini-title'>Site map</div><div class='map'>"+
+        "<i class='map-dot' style='left:22%;top:32%'></i><i class='map-dot' style='left:55%;top:18%'></i><i class='map-dot' style='left:66%;top:55%'></i><i class='map-dot' style='left:41%;top:61%'></i><i class='map-dot fault' style='left:31%;top:77%'></i>"+
+        "</div><div class='legend'><span><i style='background:var(--good)'></i>Online 11</span><span><i style='background:var(--critical)'></i>Fault 1</span></div></div>";
+    }
+    function transformerBars(){
+      var b=[["DT-01",62,""],["DT-02",78,""],["DT-03",45,""],["DT-07",112,"bad"],["DT-09",88,"warn"],["DT-11",70,""]];
+      return "<div class='bars'>"+b.map(function(x){return "<div class='bar-col'><div class='bar "+x[2]+"' data-value='"+x[1]+"' style='height:"+Math.min(104,x[1]*.84)+"px'></div>"+x[0]+"</div>"}).join("")+"</div>";
+    }
+
+    function overview(){
+      var k=[
+        ["DER sites online","11","/ 12","1 site requires attention",""],
+        ["Aggregate DER power","4.8","MW","+6.2% vs prior day","good"],
+        ["Reactive support","1.2","MVAr","0.3 MVAr available",""],
+        ["Transformers monitored","9","","All reporting","good"],
+        ["Active alarms","3","","2 critical · 1 warning","warn"]
+      ];
+      return "<div class='kpi-grid'>"+k.map(function(x,i){return "<div class='kpi' data-route='"+(i===4?"events":i===3?"gateways":"sites")+"'><div class='eyebrow'>"+x[0]+"</div><div class='metric'>"+x[1]+" <span>"+x[2]+"</span></div><div class='delta "+x[4]+"'>"+x[3]+"</div></div>"}).join("")+"</div>"+
+      "<div class='overview-grid'><div><section class='panel'><div class='panel-head'><div class='panel-title'>DER sites</div><span class='status good'>Model A · live</span><div class='panel-meta'>Updated 12 sec ago</div></div><div class='panel-body'><div class='panel-grid'>"+mapCard()+"<div class='mini-card'><div class='mini-title'>Active vs reactive power · 24h</div>"+lineChart()+"</div></div></div>"+siteTable(true)+"</section>"+
+      "<section class='panel'><div class='panel-head'><div class='panel-title'>Active events</div><div class='panel-meta'>3 requiring attention</div></div>"+eventRows()+"</section></div>"+
+      "<div><section class='panel'><div class='panel-head'><div class='panel-title'>Transformers</div><span class='status info'>Model B · 9 monitored</span></div><div class='panel-body'><div class='mini-title'>Loading · percent of rating</div>"+transformerBars()+"<div class='section-note' style='margin:12px 0 0'><b>DT-07</b> is operating at 112% on Feeder F2. Estimated thermal loss-of-life is 42%.</div></div>"+transformerTable()+"</section>"+
+      "<section class='panel'><div class='panel-head'><div class='panel-title'>Recommended opportunities</div><div class='panel-meta'><button class='btn small' data-route='programs'>View all</button></div></div>"+opportunityRows()+"</section></div></div>";
+    }
+    function siteTable(compact){
+      var rows=[
+        ["BESS-01 · Ranipet","F1","5","Online","842 kW","12 sec","good"],
+        ["SOLAR-04 · Vellore","F1","4","Online","1,310 kW","18 sec","good"],
+        ["INV-07 · Arcot","F2","3","Online","628 kW","9 sec","good"],
+        ["BESS-03 · Gudiyatham","F2","4","Fault","0 kW","6 min","bad"],
+        ["SOLAR-09 · Katpadi","F3","5","Online","974 kW","14 sec","good"]
+      ];
+      return "<div class='table-wrap'><table class='data-table'><thead><tr><th>Site</th><th>Feeder</th><th>Assets</th><th>Status</th><th style='text-align:right'>Live power</th><th>Last telemetry</th></tr></thead><tbody>"+rows.map(function(r){return "<tr data-route='assets'><td class='strong'>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td><td>"+status(r[3],r[6])+"</td><td class='num'>"+r[4]+"</td><td>"+r[5]+"</td></tr>"}).join("")+"</tbody></table></div>";
+    }
+    function transformerTable(){
+      var rows=[["DT-02 · Sathuvachari","F1","315 kVA","78%","good"],["DT-07 · Konavattam","F2","200 kVA","112%","bad"],["DT-09 · Thorapadi","F2","250 kVA","88%","warn"],["DT-11 · Bagayam","F3","400 kVA","70%","good"]];
+      return "<div class='table-wrap'><table class='data-table'><thead><tr><th>Transformer</th><th>Feeder</th><th>Rating</th><th style='text-align:right'>Loading</th></tr></thead><tbody>"+rows.map(function(r){return "<tr data-action='open-event'><td class='strong'>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td><td class='num'>"+status(r[3],r[4])+"</td></tr>"}).join("")+"</tbody></table></div>";
+    }
+    function eventRows(){
+      var rows=[
+        ["Critical","DT-07 overloaded at 112%","Feeder F2 · Konavattam","12:41:08","bad"],
+        ["Critical","BESS-03 offline","No telemetry for 6 minutes · Feeder F2","12:35:52","bad"],
+        ["Warning","Reverse power flow detected","High rooftop solar export · Feeder F2","12:18:30","warn"]
+      ];
+      return "<div class='event-list'>"+rows.map(function(r){return "<div class='event-row' data-action='open-event'><div>"+status(r[0],r[4])+"<div class='opp-type'>"+r[3]+"</div></div><div><div class='opp-name'>"+r[1]+"</div><div class='opp-type'>"+r[2]+"</div></div>"+btn("Inspect","open-event","small")+"</div>"}).join("")+"</div>";
+    }
+    function opportunityRows(){
+      var rows=[
+        ["Battery Dispatch","On-gateway app","BESS-01 exposes SoC, power limits and control.","Eligible","good","marketplace"],
+        ["Peak Flex Reward","DISCOM program","Commercial ToD tariff and 50 kW controllable capacity.","Likely eligible","warn","programs"],
+        ["Solar Export Guard","Cloud service","Export permission and two compatible inverters detected.","Eligible","good","programs"]
+      ];
+      return "<div class='opportunity-list'>"+rows.map(function(r){return "<div class='opp-row' data-route='"+r[5]+"'><div><div class='opp-name'>"+r[0]+"</div><div class='opp-type'>"+r[1]+"</div></div><div class='opp-reason'>"+r[2]+"</div>"+status(r[3],r[4])+"</div>"}).join("")+"</div>";
+    }
+
+    function sites(){
+      return "<div class='filterbar'><input class='input search-input' placeholder='Search sites'><select class='select'><option>All statuses</option><option>Online</option><option>Fault</option></select><select class='select'><option>All feeders</option><option>F1</option><option>F2</option></select><span class='grow'></span><span class='delta'>12 results</span></div><section class='panel'>"+siteTable(false)+"</section>";
+    }
+    function assets(){
+      var rows=[
+        ["BESS-01","Battery","Ranipet","Luminous / BESS-X","Modbus TCP","Controllable","-49.7 kW","Healthy","12 sec","good"],
+        ["SOLAR-04","Solar inverter","Vellore","Sungrow / SG125","SunSpec","Controllable","980 kW","Healthy","18 sec","good"],
+        ["EVSE-02","EV charger","Ranipet","Delta / UFC200","OCPP","Controllable","74 kW","Healthy","9 sec","good"],
+        ["XFMR-07","Transformer","Konavattam","Monarch sensor","DNP3","Monitor only","112%","Overloaded","5 sec","bad"],
+        ["METER-11","Revenue meter","Ranipet","Secure / Elite","MQTT","Monitor only","842 kW","Healthy","7 sec","good"]
+      ];
+      return "<div class='filterbar'><input class='input search-input' placeholder='Search assets'><select class='select'><option>All asset types</option><option>Battery</option><option>Solar</option></select><select class='select'><option>All capabilities</option><option>Controllable</option></select><span class='grow'></span><span class='delta'>49 assets</span></div><section class='panel'><div class='table-wrap'><table class='data-table'><thead><tr><th>Asset</th><th>Type</th><th>Site</th><th>Manufacturer / model</th><th>Driver</th><th>Control</th><th style='text-align:right'>Live</th><th>Health</th><th>Last telemetry</th></tr></thead><tbody>"+rows.map(function(r,i){return "<tr "+(i===0?"data-route='asset'":"data-action='toast'")+"><td class='strong'>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td><td>"+r[3]+"</td><td><span class='demo-badge'>"+r[4]+"</span></td><td>"+r[5]+"</td><td class='num'>"+r[6]+"</td><td>"+status(r[7],r[9])+"</td><td>"+r[8]+"</td></tr>"}).join("")+"</tbody></table></div></section>";
+    }
+    function assetDetail(){
+      var tabs=["summary","telemetry","controls","capabilities","driver","events"];
+      var h="<div class='detail-hero'><div class='asset-icon'>"+icon("battery")+"</div><div><div class='detail-title'>BESS-01 · Ranipet</div><div class='detail-sub'>Battery energy storage · "+status("Online","good")+" "+status("Controllable","info")+"</div></div><div class='detail-actions'>"+btn("Open controls","open-controls","primary")+"</div></div>";
+      h+="<div class='tabs' style='margin-bottom:12px'>"+tabs.map(function(t){return "<button class='tab "+(state.assetTab===t?"active":"")+"' data-asset-tab='"+t+"'>"+t.charAt(0).toUpperCase()+t.slice(1)+"</button>"}).join("")+"</div>";
+      if(state.assetTab==="summary")h+="<div class='stat-strip'><div class='stat'><div class='eyebrow'>State of charge</div><div class='stat-value'>68<small>%</small></div></div><div class='stat'><div class='eyebrow'>Live power</div><div class='stat-value'>-49.7<small> kW</small></div></div><div class='stat'><div class='eyebrow'>Available energy</div><div class='stat-value'>1.84<small> MWh</small></div></div><div class='stat'><div class='eyebrow'>State of health</div><div class='stat-value'>94<small>%</small></div></div></div><div class='page-grid' style='margin-top:12px'><section class='panel'><div class='panel-head'><div class='panel-title'>Power and state of charge · 24h</div></div><div class='panel-body'>"+lineChart()+"</div></section><div class='stack'><section class='panel'><div class='panel-head'><div class='panel-title'>Connected apps & services</div></div><div class='panel-body'><p class='opp-name'>Battery Dispatch</p><p class='delta'>Control within ±50 kW · active</p><p class='opp-name'>Peak Flex Reward</p><p class='delta'>Approval required · recommended</p></div></section><section class='panel'><div class='panel-head'><div class='panel-title'>Identity</div></div><div class='panel-body'><div class='delta'>Gateway</div><p class='opp-name'>KWH-GTW-0042</p><div class='delta'>Driver</div><p class='opp-name'>Modbus TCP · 10.0.12.31:502</p></div></section></div></div>";
+      if(state.assetTab==="telemetry")h+="<section class='panel'><div class='panel-head'><div class='panel-title'>Telemetry</div><div class='panel-meta'>Power · SoC · temperature</div></div><div class='panel-body'>"+lineChart()+"</div>"+telemetryTable()+"</section>";
+      if(state.assetTab==="capabilities")h+=capabilitiesPanel();
+      if(state.assetTab==="driver")h+="<div class='page-grid'><section class='panel'><div class='panel-head'><div class='panel-title'>Modbus TCP driver</div>"+status("Healthy","good")+"</div><div class='panel-body'><div class='form-grid'><div class='stat'><div class='eyebrow'>Endpoint</div><div class='stat-value' style='font:13px var(--mono)'>10.0.12.31:502</div></div><div class='stat'><div class='eyebrow'>Poll interval</div><div class='stat-value'>2<small> sec</small></div></div><div class='stat'><div class='eyebrow'>Last read</div><div class='stat-value'>12<small> sec ago</small></div></div><div class='stat'><div class='eyebrow'>Errors · 24h</div><div class='stat-value'>0</div></div></div></div></section><section class='panel'><div class='panel-head'><div class='panel-title'>Register mapping</div></div><div class='panel-body code'><span class='h'>40101</span> → power<br><span class='h'>40125</span> → stateOfCharge<br><span class='h'>40149</span> → powerLimit<br><span class='g'>validated · rw</span></div></section></div>";
+      if(state.assetTab==="controls")h+=controlsPanel();
+      if(state.assetTab==="events")h+="<section class='panel'>"+eventRows()+"</section>";
+      return h;
+    }
+    function telemetryTable(){
+      return "<div class='table-wrap'><table class='data-table'><thead><tr><th>Time</th><th style='text-align:right'>Power</th><th style='text-align:right'>SoC</th><th style='text-align:right'>Cell temp</th><th>Quality</th></tr></thead><tbody><tr><td>12:41:12</td><td class='num'>-49.7 kW</td><td class='num'>68.0%</td><td class='num'>31.4 °C</td><td>"+status("Good","good")+"</td></tr><tr><td>12:41:10</td><td class='num'>-49.5 kW</td><td class='num'>68.1%</td><td class='num'>31.3 °C</td><td>"+status("Good","good")+"</td></tr></tbody></table></div>";
+    }
+    function capabilitiesPanel(){
+      var rows=[["power","Read","Available"],["energy","Read","Available"],["stateOfCharge","Read","Available"],["powerLimit","Read / write","±50 kW"],["telemetry","Subscribe","2 sec"],["health","Read","Available"]];
+      return "<div class='page-grid'><section class='panel'><div class='panel-head'><div class='panel-title'>Normalised capabilities</div>"+status("Validated","good")+"</div><div class='table-wrap'><table class='data-table'><thead><tr><th>Capability</th><th>Access</th><th>Limit</th></tr></thead><tbody>"+rows.map(function(r){return "<tr><td class='strong'>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td></tr>"}).join("")+"</tbody></table></div></section><section class='panel'><div class='panel-head'><div class='panel-title'>Compatible opportunities</div></div>"+opportunityRows()+"</section></div>";
+    }
+    function controlsPanel(){
+      return "<div class='page-grid'><section class='panel'><div class='panel-head'><div class='panel-title'>Manual control</div></div><div class='panel-body'><div class='field'><label>Power limit</label><input type='range' min='-50' max='50' value='50'><div class='help'>Discharge 50 kW · current approved limit</div></div><div style='margin-top:14px'>"+btn("Review command","open-dispatch","honey")+"</div></div></section><section class='panel'><div class='panel-head'><div class='panel-title'>Control policy</div></div><div class='panel-body'><div class='check-row'><input type='checkbox' checked><div><div class='check-title'>Ask before external dispatch</div><div class='check-desc'>Programs may request control, but an operator confirms each event.</div></div></div><div class='check-row'><input type='checkbox' checked><div><div class='check-title'>Reserve 20% capacity</div><div class='check-desc'>Keep site resilience reserve unavailable to apps and programs.</div></div></div></div></section></div>";
+    }
+
+    function gateways(){
+      var rows=[
+        ["KWH-GTW-0042","Ranipet Flex Site","Online","3.2.1","5","5","3","Registered","8 sec","good"],
+        ["KWH-GTW-0037","Vellore Solar","Online","3.2.1","3","4","2","Registered","12 sec","good"],
+        ["KWH-GTW-0021","Gudiyatham BESS","Offline","3.1.8","2","4","1","Registered","6 min","bad"],
+        ["KWH-GTW-0018","Katpadi Solar","Online","3.2.1","3","5","2","Registered","16 sec","good"]
+      ];
+      return "<section class='panel'><div class='table-wrap'><table class='data-table'><thead><tr><th>Gateway</th><th>Site</th><th>Connectivity</th><th>Firmware</th><th>Drivers</th><th>Assets</th><th>Apps / services</th><th>Registration</th><th>Heartbeat</th></tr></thead><tbody>"+rows.map(function(r,i){return "<tr "+(i===0?"data-route='gateway'":"data-action='toast'")+"><td class='strong'>"+r[0]+"</td><td>"+r[1]+"</td><td>"+status(r[2],r[9])+"</td><td>"+r[3]+"</td><td>"+r[4]+"</td><td>"+r[5]+"</td><td>"+r[6]+"</td><td>"+r[7]+"</td><td>"+r[8]+"</td></tr>"}).join("")+"</tbody></table></div></section>";
+    }
+    function gatewayDetail(){
+      var tabs=["overview","interfaces","drivers","apps & services","certificates","logs","updates"];
+      var h="<div class='detail-hero'><div class='asset-icon'>"+icon("gateway")+"</div><div><div class='detail-title'>KWH-GTW-0042</div><div class='detail-sub'>Ranipet Flex Site · "+status("Online","good")+" Ethernet · 1 Gbps</div></div></div><div class='tabs' style='margin-bottom:12px'>"+tabs.map(function(t){return "<button class='tab "+(state.gatewayTab===t?"active":"")+"' data-gateway-tab='"+t+"'>"+t.charAt(0).toUpperCase()+t.slice(1)+"</button>"}).join("")+"</div>";
+      if(state.gatewayTab==="overview")h+="<div class='stat-strip'><div class='stat'><div class='eyebrow'>Uptime</div><div class='stat-value'>42<small> days</small></div></div><div class='stat'><div class='eyebrow'>CPU</div><div class='stat-value'>18<small>%</small></div></div><div class='stat'><div class='eyebrow'>Memory</div><div class='stat-value'>41<small>%</small></div></div><div class='stat'><div class='eyebrow'>Temperature</div><div class='stat-value'>44<small> °C</small></div></div></div><div class='overview-grid' style='margin-top:12px'><section class='panel'><div class='panel-head'><div class='panel-title'>Attached assets</div></div>"+assetMiniTable()+"</section><section class='panel'><div class='panel-head'><div class='panel-title'>Site profile</div>"+status("Complete","good")+"</div><div class='panel-body'><div class='delta'>Location</div><p class='opp-name'>Ranipet, Tamil Nadu · 632401</p><div class='delta'>DISCOM / tariff</div><p class='opp-name'>Tamil Nadu DISCOM · LT Commercial ToD</p><div class='delta'>Export permission</div><p class='opp-name'>Enabled · 200 kW</p>"+btn("Edit profile","edit-profile","small")+"</div></section></div>";
+      else if(state.gatewayTab==="apps & services")h+=gatewayConnections();
+      else if(state.gatewayTab==="drivers")h+="<section class='panel'><div class='table-wrap'><table class='data-table'><thead><tr><th>Driver</th><th>Version</th><th>Assets</th><th>Status</th><th>Last activity</th></tr></thead><tbody><tr><td class='strong'>Modbus TCP</td><td>2.8.1</td><td>1</td><td>"+status("Healthy","good")+"</td><td>8 sec</td></tr><tr><td class='strong'>SunSpec</td><td>1.4.3</td><td>1</td><td>"+status("Healthy","good")+"</td><td>12 sec</td></tr><tr><td class='strong'>OCPP</td><td>2.0.1</td><td>1</td><td>"+status("Healthy","good")+"</td><td>5 sec</td></tr><tr><td class='strong'>DNP3</td><td>1.9.0</td><td>1</td><td>"+status("Healthy","good")+"</td><td>14 sec</td></tr><tr><td class='strong'>MQTT</td><td>3.1.0</td><td>1</td><td>"+status("Healthy","good")+"</td><td>7 sec</td></tr></tbody></table></div></section>";
+      else h+="<section class='panel'><div class='empty'>"+icon("settings")+"<h3>"+state.gatewayTab.charAt(0).toUpperCase()+state.gatewayTab.slice(1)+"</h3><p>This operational view is ready for gateway data.</p>"+btn("Run demo action","toast","")+"</div></section>";
+      return h;
+    }
+    function assetMiniTable(){
+      return "<div class='table-wrap'><table class='data-table'><thead><tr><th>Asset</th><th>Driver</th><th>Capability</th><th>Status</th></tr></thead><tbody><tr data-route='asset'><td class='strong'>BESS-01</td><td>Modbus TCP</td><td>Read / write</td><td>"+status("Online","good")+"</td></tr><tr><td class='strong'>SOLAR-04</td><td>SunSpec</td><td>Read / write</td><td>"+status("Online","good")+"</td></tr><tr><td class='strong'>EVSE-02</td><td>OCPP</td><td>Read / write</td><td>"+status("Online","good")+"</td></tr><tr><td class='strong'>XFMR-07</td><td>DNP3</td><td>Read only</td><td>"+status("Warning","warn")+"</td></tr><tr><td class='strong'>METER-11</td><td>MQTT</td><td>Read only</td><td>"+status("Online","good")+"</td></tr></tbody></table></div>";
+    }
+    function gatewayConnections(){
+      var peak=state.enrolled.peak;
+      return "<div class='page-grid'><section class='panel'><div class='panel-head'><div class='panel-title'>Apps & services</div><div class='panel-meta'>Several services share one edge layer</div></div><div class='table-wrap'><table class='data-table'><thead><tr><th>Connection</th><th>Type</th><th>Assets</th><th>Data</th><th>Control</th><th>Priority</th><th>Status</th></tr></thead><tbody><tr><td class='strong'>Battery Dispatch</td><td>On-gateway app</td><td>BESS-01</td><td>Telemetry</td><td>±50 kW</td><td>1</td><td>"+status("Active","good")+"</td></tr><tr><td class='strong'>ToD Battery Optimisation</td><td>Cloud service</td><td>BESS-01, METER-11</td><td>15-min interval</td><td>Approval</td><td>2</td><td>"+status("Active","good")+"</td></tr>"+(peak?"<tr><td class='strong'>Peak Flex Reward</td><td>DISCOM program</td><td>BESS-01, METER-11</td><td>15-min interval</td><td>Approval</td><td>3</td><td>"+status("Enrolled","info")+"</td></tr>":"")+"</tbody></table></div></section><div class='stack'><section class='panel'><div class='panel-head'><div class='panel-title'>Control policy</div></div><div class='panel-body'><div class='delta'>Priority 1</div><p class='opp-name'>Battery Dispatch</p><div class='delta'>Reserved capacity</div><p class='opp-name'>20% · site resilience</p><div class='delta'>External programs</div><p class='opp-name'>Operator approval required</p>"+btn("Edit policy","open-conflict","small")+"</div></section><section class='panel'><div class='panel-head'><div class='panel-title'>Compatible now</div></div><div class='panel-body'><p class='opp-name'>Solar Export Guard</p><p class='delta'>2 inverters · export permission confirmed</p><div style='margin-top:10px'>"+btn("Review","program-solar","small")+"</div></div></section></div></div>";
+    }
+
+    function dispatch(){
+      return "<div class='tabs' style='margin-bottom:12px'><button class='tab active'>Active</button><button class='tab'>Scheduled</button><button class='tab'>Completed</button><button class='tab'>Failed</button></div><section class='panel'><div class='table-wrap'><table class='data-table'><thead><tr><th>Event</th><th>Source</th><th>Target</th><th style='text-align:right'>Requested</th><th style='text-align:right'>Delivered</th><th>Start</th><th>Duration</th><th>State</th><th>Success</th></tr></thead><tbody><tr data-route='dispatch-live'><td class='strong'>EVT-1048</td><td>Manual</td><td>BESS-01</td><td class='num'>50 kW</td><td class='num'>49.7 kW</td><td>12:41</td><td>15 min</td><td>"+status("Delivering","warn")+"</td><td>100%</td></tr><tr><td class='strong'>EVT-1047</td><td>ToD Optimisation</td><td>Ranipet batteries</td><td class='num'>80 kW</td><td class='num'>79.4 kW</td><td>11:20</td><td>30 min</td><td>"+status("Completed","good")+"</td><td>100%</td></tr><tr><td class='strong'>EVT-1046</td><td>Solar Export Guard</td><td>Vellore solar</td><td class='num'>120 kW</td><td class='num'>112 kW</td><td>09:05</td><td>20 min</td><td>"+status("Completed","good")+"</td><td>94%</td></tr></tbody></table></div></section>";
+    }
+    function dispatchLive(){
+      var p=state.dispatchProgress||62;var steps=[
+        ["Utility event received","DERControl · 50 kW · 15 min","0 ms"],
+        ["KWH-GTW-0042 accepted","IEEE 2030.5 client","122 ms"],
+        ["Command translated","Modbus write · register 40149 = 500","164 ms"],
+        ["BESS-01 responding","49.7 kW delivered · telemetry healthy","340 ms"]
+      ];
+      return "<div class='stat-strip'><div class='stat'><div class='eyebrow'>Requested</div><div class='stat-value'>50<small> kW</small></div></div><div class='stat'><div class='eyebrow'>Delivered</div><div class='stat-value'>49.7<small> kW</small></div></div><div class='stat'><div class='eyebrow'>Latency</div><div class='stat-value'>340<small> ms</small></div></div><div class='stat'><div class='eyebrow'>Remaining</div><div class='stat-value'>08:42</div></div></div><div class='overview-grid' style='margin-top:12px'><section class='panel'><div class='panel-head'><div class='panel-title'>Requested vs delivered power</div>"+status("Live","warn")+"</div><div class='panel-body'>"+lineChart()+"<div class='progress good'><span style='width:"+p+"%'></span></div><div class='delta' style='margin-top:7px'>"+p+"% of event duration complete</div></div></section><section class='panel'><div class='panel-head'><div class='panel-title'>Command trace</div></div><div class='panel-body trace'>"+steps.map(function(s,i){return "<div class='trace-row "+(i<3?"done":i===3?"live":"")+"'><div class='trace-node'>"+(i<3?icon("check"):i+1)+"</div><div><div class='trace-title'>"+s[0]+"</div><div class='trace-sub'>"+s[1]+"</div></div><div class='trace-time'>"+s[2]+"</div></div>"}).join("")+"</div></section></div>";
+    }
+
+    function events(){
+      return "<div class='filterbar'><input class='input search-input' placeholder='Search events'><select class='select'><option>All severity</option><option>Critical</option><option>Warning</option></select><select class='select'><option>Open</option><option>Acknowledged</option></select><span class='grow'></span></div><section class='panel'>"+eventRows()+"</section>";
+    }
+    function marketplace(){
+      var apps=[
+        ["battery","Battery Dispatch","kWh Electric","Coordinate batteries against schedules and grid events.","BESS-01 is controllable and exposes SoC and power limits.","Eligible","good","battery"],
+        ["ev","EV Smart Charging","kWh Electric","Shift charging without disrupting departure targets.","EVSE-02 supports OCPP smart charging profiles.","Eligible","good","ev"],
+        ["solar","Solar Controls","GridWorks · third-party","Manage export limits and inverter power factor.","Two SunSpec inverters and export permission detected.","Eligible","good","solar"],
+        ["transformer","Transformer Health","LineSense · third-party","Monitor loading, thermal ageing and reverse flow.","Nine transformer sensors provide required telemetry.","Installed","info","transformer"],
+        ["forecast","Fleet Forecasting","Northstar · third-party","Forecast site generation and flexible capacity.","Telemetry history is 3 days short of requirement.","Action required","warn","chart"],
+        ["carbon","Carbon Signals","OpenGrid · third-party","Schedule flexible load against marginal emissions.","Available for this service territory.","Eligible","good","spark"]
+      ];
+      return "<div class='filterbar'><input class='input search-input' placeholder='Search applications'><select class='select'><option>Compatible with Ranipet</option><option>All apps</option></select><select class='select'><option>All categories</option><option>Dispatch</option><option>Solar</option></select><span class='grow'></span></div><div class='cards'>"+apps.map(function(a){var installed=!!state.installed[a[0]];return "<article class='market-card'><div class='market-top'><div class='app-icon "+(a[7]==="solar"?"honey":a[7]==="battery"?"green":"")+"'>"+icon(a[7])+"</div><div><div class='market-name'>"+a[1]+"</div><div class='market-pub'>"+a[2]+"</div></div></div><div class='market-desc'>"+a[3]+"</div><div class='reason-box'><b>Why it matches:</b> "+a[4]+"</div><div class='card-footer'>"+status(installed?"Installed":a[5],installed?"info":a[6])+"<span class='nav-spacer'></span>"+(installed?btn("Open","toast","small"):btn("Install","install-"+a[0],"small primary"))+"</div></article>"}).join("")+"</div>";
+    }
+    function programs(){
+      var items=[
+        ["peak","Peak Flex Reward","DISCOM program","Likely eligible","Commercial ToD tariff, interval meter and 50 kW controllable capacity.","Account-holder consent required.","warn"],
+        ["tod","ToD Battery Optimisation","Cloud service","Eligible","ToD tariff, BESS-01 and METER-11 are compatible.","No missing requirements.","good"],
+        ["solar","Solar Export Guard","Cloud service","Eligible","Export permission and two SunSpec inverters detected.","No missing requirements.","good"],
+        ["ev","EV Managed Charging","DISCOM program","Action required","EVSE-02 supports managed charging.","EV tariff sub-category is missing.","warn"],
+        ["transformer","Transformer Health","On-gateway app","Eligible","DNP3 transformer telemetry is available.","No missing requirements.","good"],
+        ["vpp","Residential VPP","Aggregator program","Not compatible","Program is residential only.","Current tariff is LT Commercial.","bad"]
+      ];
+      return "<div class='tabs' style='margin-bottom:12px'><button class='tab active'>Recommended</button><button class='tab'>Connected</button><button class='tab'>Enrolments</button><button class='tab'>Not compatible</button></div><div class='cards'>"+items.map(function(a){var enrolled=a[0]==="peak"&&state.enrolled.peak;return "<article class='market-card'><div class='market-top'><div class='app-icon honey'>"+icon("spark")+"</div><div><div class='market-name'>"+a[1]+"</div><div class='market-pub'>"+a[2]+" · Sample program</div></div></div><div class='market-desc'>"+a[4]+"</div><div class='reason-box'><b>"+(a[5].indexOf("No missing")===0?"Ready:":"Still needed:")+"</b> "+a[5]+"</div><div class='card-footer'>"+status(enrolled?"Enrolled":a[3],enrolled?"info":a[6])+"<span class='nav-spacer'></span>"+(a[3]==="Not compatible"?btn("Why","program-"+a[0],"small"):enrolled?btn("Manage","program-"+a[0],"small"):btn(a[0]==="peak"?"Review":"Connect","program-"+a[0],"small primary"))+"</div></article>"}).join("")+"</div>";
+    }
+    function usage(){
+      return "<div class='kpi-grid' style='grid-template-columns:repeat(4,1fr)'><div class='kpi'><div class='eyebrow'>Projected invoice</div><div class='metric'>₹18,420</div><div class='delta'>Illustrative demo estimate</div></div><div class='kpi'><div class='eyebrow'>API calls</div><div class='metric'>12,480</div><div class='delta warn'>Alert threshold exceeded</div></div><div class='kpi'><div class='eyebrow'>Dispatch events</div><div class='metric'>842</div><div class='delta good'>98.2% success</div></div><div class='kpi'><div class='eyebrow'>Telemetry retained</div><div class='metric'>8.2 <span>GB</span></div><div class='delta'>37 devices managed</div></div></div><div class='overview-grid'><section class='panel'><div class='panel-head'><div class='panel-title'>Managed cloud usage</div><div class='panel-meta'>Daily · July 2026</div></div><div class='panel-body'>"+lineChart()+"</div><div class='table-wrap'><table class='data-table'><thead><tr><th>Metric</th><th style='text-align:right'>Current</th><th style='text-align:right'>Projected</th><th>Status</th></tr></thead><tbody><tr><td class='strong'>API calls</td><td class='num'>12,480</td><td class='num'>24,930</td><td>"+status("Alert threshold exceeded","warn")+"</td></tr><tr><td class='strong'>Dispatch events</td><td class='num'>842</td><td class='num'>1,580</td><td>"+status("Normal","good")+"</td></tr><tr><td class='strong'>Devices managed</td><td class='num'>37</td><td class='num'>42</td><td>"+status("Normal","good")+"</td></tr><tr><td class='strong'>Telemetry retained</td><td class='num'>8.2 GB</td><td class='num'>16.1 GB</td><td>"+status("Normal","good")+"</td></tr></tbody></table></div></section><section class='panel'><div class='panel-head'><div class='panel-title'>Free, open components</div></div><div class='panel-body'><div class='check-row'>"+icon("check")+"<div><div class='check-title'>IEEE 2030.5 client</div><div class='check-desc'>Unlimited local use</div></div></div><div class='check-row'>"+icon("check")+"<div><div class='check-title'>Core SDK</div><div class='check-desc'>Open source</div></div></div><div class='check-row'>"+icon("check")+"<div><div class='check-title'>Local gateway runtime</div><div class='check-desc'>Active</div></div></div><div class='check-row'>"+icon("check")+"<div><div class='check-title'>Basic local monitoring</div><div class='check-desc'>Active</div></div></div></div></section></div>";
+    }
+    function developer(){
+      return "<div class='tabs' style='margin-bottom:12px'><button class='tab active'>SDK</button><button class='tab'>API keys</button><button class='tab'>Webhooks</button><button class='tab'>Activity</button></div><div class='page-grid'><section class='panel'><div class='panel-head'><div class='panel-title'>Normalised asset API</div><div class='panel-meta'>JavaScript</div></div><div class='panel-body'><div class='code'><span class='p'>const</span> battery = <span class='p'>await</span> client.assets.get(<span class='h'>'BESS-01'</span>)<br><br><span class='p'>await</span> battery.setPowerLimit(<span class='g'>50</span>)<br>battery.subscribe(<span class='h'>'telemetry'</span>, handleReading)</div><div class='section-note' style='margin:12px 0 0'>The application calls a normalised capability. KWH-GTW-0042 resolves it through the current Modbus TCP driver.</div></div></section><section class='panel'><div class='panel-head'><div class='panel-title'>Recent API activity</div></div><div class='panel-body trace'><div class='trace-row done'><div class='trace-node'>"+icon("check")+"</div><div><div class='trace-title'>setPowerLimit(50)</div><div class='trace-sub'>BESS-01 · 200 OK</div></div><div class='trace-time'>340 ms</div></div><div class='trace-row done'><div class='trace-node'>"+icon("check")+"</div><div><div class='trace-title'>subscribe(telemetry)</div><div class='trace-sub'>METER-11 · connected</div></div><div class='trace-time'>12:40</div></div></div></section></div>";
+    }
+    function appRoute(type){
+      var name=type==="battery-app"?"Battery Dispatch":type==="ev-app"?"EV Smart Charging":"Transformer Health";
+      return "<div class='stat-strip'><div class='stat'><div class='eyebrow'>Sites active</div><div class='stat-value'>9</div></div><div class='stat'><div class='eyebrow'>Assets available</div><div class='stat-value'>18</div></div><div class='stat'><div class='eyebrow'>Events today</div><div class='stat-value'>4</div></div><div class='stat'><div class='eyebrow'>Success rate</div><div class='stat-value'>98.2<small>%</small></div></div></div><section class='panel' style='margin-top:12px'><div class='panel-head'><div class='panel-title'>"+name+" schedule · 24 hours</div>"+btn("Create event","open-dispatch","small honey")+"</div><div class='panel-body'>"+lineChart()+"</div></section>";
+    }
+    function simpleRoute(name){
+      return "<section class='panel'><div class='empty'>"+icon("settings")+"<h3>"+name+"</h3><p>This route is part of the persistent product shell.</p>"+btn("Return to overview","go-overview","")+"</div></section>";
+    }
+    function routeContent(route){
+      if(route==="overview")return overview();if(route==="sites")return sites();if(route==="assets")return assets();if(route==="asset")return assetDetail();
+      if(route==="gateways")return gateways();if(route==="gateway")return gatewayDetail();if(route==="dispatch")return dispatch();if(route==="dispatch-live")return dispatchLive();
+      if(route==="events")return events();if(route==="marketplace")return marketplace();if(route==="programs")return programs();if(route==="usage")return usage();if(route==="developer")return developer();
+      if(route==="battery-app"||route==="ev-app"||route==="transformer-app")return appRoute(route);return simpleRoute(titles[route]?titles[route][0]:route);
+    }
+
+    function modalShell(title,sub,body,foot,steps){
+      return "<div class='modal'><div class='modal-head'><div><div class='modal-title'>"+title+"</div><div class='modal-sub'>"+sub+"</div></div>"+(steps||"")+"<button class='icon-btn modal-close' data-action='close-modal' aria-label='Close'>"+icon("close")+"</button></div><div class='modal-body'>"+body+"</div><div class='modal-foot'>"+foot+"</div></div>";
+    }
+    function stepDots(current,total){var h="<div class='steps' aria-label='Step "+current+" of "+total+"'>";for(var i=1;i<=total;i++)h+="<i class='step-dot "+(i<current?"done":i===current?"active":"")+"'></i>";return h+"</div>"}
+    function openOnboarding(step){state.onboardingStep=step||1;renderOnboarding();document.getElementById("modalLayer").classList.add("open")}
+    function renderOnboarding(){
+      var s=state.onboardingStep,b="",title="",sub="",next="Continue",disabled="";
+      if(s===1){title="Add a gateway";sub="Step 1 of 7 · Site and deployment";b="<div class='section-note'>Start with a site name and choose how the kWh runtime will be deployed. Commerce stays outside this application.</div><div class='form-grid'><div class='field full'><label>Site name</label><input value='Ranipet Flex Site'></div></div><div class='choice-grid' style='margin-top:14px'><div class='choice selected'><div class='choice-title'>kWh Gateway</div><div class='choice-desc'>Claim a physical gateway already installed at the site.</div></div><div class='choice'><div class='choice-title'>Existing hardware</div><div class='choice-desc'>License the runtime onto compatible edge hardware.</div></div></div>"}
+      if(s===2){title="Claim gateway";sub="Step 2 of 7 · Verify hardware";b="<div class='section-note'>Enter the serial and claim code printed on the gateway. The demo values are already filled.</div><div class='form-grid'><div class='field'><label>Serial number</label><input value='KWH-GTW-0042'></div><div class='field'><label>Claim code</label><input value='RNPT-7K42'></div></div><div class='panel' style='margin-top:14px'><div class='panel-body'><div class='opp-name'>Gateway found</div><p class='delta'>Ethernet · 1 Gbps · firmware 3.2.1 · secure element verified</p>"+status("Ready to claim","good")+"</div></div>"}
+      if(s===3){title="Build the site profile";sub="Step 3 of 7 · Context for matching";b=profileForm()}
+      if(s===4){title="Discover devices";sub="Step 4 of 7 · Scan the local network";disabled=state.onboardingScanned?"":"disabled";b="<div class='section-note'>Scan Ethernet, RS-485, CAN and Wi-Fi interfaces. Rename or exclude devices before continuing.</div>"+(!state.onboardingScanned?"<div class='empty'>"+icon("search")+"<h3>Ready to scan this site</h3><p>The scan stays on the local gateway.</p>"+btn("Scan site","scan-site","primary")+"</div>":assetMiniTable());}
+      if(s===5){title="Review digital twins";sub="Step 5 of 7 · Confirm normalised mappings";b="<div class='section-note'>Five device dialects now resolve into the same asset interface. Select any row to inspect its mapping.</div>"+assetMiniTable()+"<div class='check-row' style='margin-top:12px'><input type='checkbox' checked><div><div class='check-title'>Confirm all five mappings</div><div class='check-desc'>Native addresses remain available under each asset's Driver tab.</div></div></div>"}
+      if(s===6){title="Matched opportunities";sub="Step 6 of 7 · Apps, services and programs";b="<div class='section-note'>These results combine the site profile, tariff, discovered capabilities and gateway health. Selecting a result saves it for review; it does not grant access.</div><div class='cards' style='grid-template-columns:1fr 1fr'><div class='market-card'><div class='market-name'>Battery Dispatch</div><div class='market-pub'>On-gateway app</div><div class='market-desc'>BESS-01 exposes SoC, power limits and Modbus write capability.</div>"+status("Eligible","good")+"</div><div class='market-card'><div class='market-name'>Peak Flex Reward</div><div class='market-pub'>DISCOM program · sample</div><div class='market-desc'>Commercial ToD tariff, interval meter and 50 kW controllable capacity.</div>"+status("Likely eligible","warn")+"</div><div class='market-card'><div class='market-name'>Solar Export Guard</div><div class='market-pub'>Cloud service</div><div class='market-desc'>Export permission and two compatible inverters were detected.</div>"+status("Eligible","good")+"</div><div class='market-card'><div class='market-name'>EV Managed Charging</div><div class='market-pub'>DISCOM program · sample</div><div class='market-desc'>EVSE-02 is compatible; EV tariff sub-category is still required.</div>"+status("Action required","warn")+"</div></div>"}
+      if(s===7){title="Site online";sub="Step 7 of 7 · Registration complete";next="Open site overview";b="<div class='empty' style='padding:16px'>"+icon("check")+"<h3>Ranipet Flex Site is ready</h3><p>Certificate installed and utility connection tested.</p></div><div class='stat-strip'><div class='stat'><div class='eyebrow'>Gateway</div><div class='stat-value'>1</div></div><div class='stat'><div class='eyebrow'>Assets</div><div class='stat-value'>5</div></div><div class='stat'><div class='eyebrow'>Drivers</div><div class='stat-value'>5</div></div><div class='stat'><div class='eyebrow'>Matches</div><div class='stat-value'>5</div></div></div><div class='section-note' style='margin-top:12px'>Registered as IEEE 2030.5 client. The utility operates the server; IEEE 2030.5 is one driver in the platform.</div>"}
+      var foot=(s>1?btn("Back","onboard-back",""):"<span></span>")+"<span class='push'></span>"+(s===6?btn("Decide later","onboard-next",""):"")+btn(next,"onboard-next","primary",disabled);
+      document.getElementById("modalLayer").innerHTML=modalShell(title,sub,b,foot,stepDots(s,7));
+    }
+    function profileForm(){
+      return "<div class='section-note'>Profile fields are sourced and remain in this workspace until you explicitly connect a provider. Required fields are shown first.</div><div class='form-grid'><div class='field'><label>Location</label><input value='Ranipet, Tamil Nadu · 632401'><div class='help'>Entered by user</div></div><div class='field'><label>DISCOM</label><select><option>Tamil Nadu DISCOM · demo profile</option></select><div class='help'>Suggested from service territory</div></div><div class='field'><label>Tariff</label><select><option>LT Commercial · ToD enabled</option></select></div><div class='field'><label>Contract demand</label><input value='100 kW'></div><div class='field'><label>Meter</label><input value='METER-11'><div class='help'>Read from METER-11</div></div><div class='field'><label>Export permission</label><select><option>Enabled · 200 kW limit</option></select></div><div class='field'><label>Primary goal</label><select><option>Lower bill + earn grid revenue</option></select></div><div class='field'><label>Automation</label><select><option>Ask before every control</option></select></div></div>";
+    }
+
+    function openSheet(html,wide){var l=document.getElementById("sheetLayer");l.innerHTML="<aside class='sheet "+(wide?"wide":"")+"' role='dialog' aria-modal='true'>"+html+"</aside>";l.classList.add("open")}
+    function closeSheet(){document.getElementById("sheetLayer").classList.remove("open")}
+    function sheetParts(title,sub,body,foot){return "<div class='sheet-head'><div><div class='sheet-title'>"+title+"</div><div class='modal-sub'>"+sub+"</div></div><button class='icon-btn modal-close' data-action='close-sheet' aria-label='Close'>"+icon("close")+"</button></div><div class='sheet-body'>"+body+"</div><div class='sheet-foot'>"+foot+"</div>"}
+    function openInstall(app){
+      state.installStep=1;state.installApp=app;renderInstall();
+    }
+    function renderInstall(){
+      var name=state.installApp==="solar"?"Solar Controls":state.installApp==="forecast"?"Fleet Forecasting":"Application",s=state.installStep,b="",foot="";
+      if(s===1){b="<div class='section-note'>Review permissions before installing "+name+" on KWH-GTW-0042.</div><div class='check-row'><input type='checkbox' checked><div><div class='check-title'>Read asset telemetry</div><div class='check-desc'>Power, energy, limits, health and availability.</div></div></div><div class='check-row'><input type='checkbox' checked><div><div class='check-title'>Request control</div><div class='check-desc'>Commands require operator approval under the current policy.</div></div></div>";foot=btn("Cancel","close-sheet","")+"<span class='push'></span>"+btn("Continue","install-next","primary")}
+      if(s===2){b="<div class='field'><label>Target site</label><select><option>Ranipet Flex Site · compatible</option></select></div><div class='section-note' style='margin-top:14px'><b>Compatible:</b> SOLAR-04 and SOLAR-09 expose SunSpec controls.<br><b>Excluded:</b> BESS-01 and EVSE-02 are not solar inverters.</div>";foot=btn("Back","install-back","")+"<span class='push'></span>"+btn("Install","install-next","primary")}
+      if(s===3){b="<div class='empty' style='padding:20px'><div class='progress' style='width:100%;margin-bottom:14px'><span style='width:"+state.installProgress+"%'></span></div><h3>"+(state.installProgress<100?"Installing "+name:"Installation complete")+"</h3><p>"+(state.installProgress<25?"Downloading package":state.installProgress<50?"Verifying signature":state.installProgress<78?"Installing on KWH-GTW-0042":state.installProgress<100?"Registering webhooks":"Ready to open")+"</p></div>";foot="<span class='push'></span>"+btn(state.installProgress<100?"Installing…":"Open app",state.installProgress<100?"none":"finish-install","primary",state.installProgress<100?"disabled":"")}
+      openSheet(sheetParts(name,"Install · step "+s+" of 3",b,foot));
+    }
+
+    function openProgram(id){
+      state.programId=id;state.enrolStep=1;renderProgram();
+    }
+    function renderProgram(){
+      var id=state.programId,name=id==="solar"?"Solar Export Guard":id==="ev"?"EV Managed Charging":id==="vpp"?"Residential VPP":"Peak Flex Reward",s=state.enrolStep,b="",foot="";
+      if(id==="vpp"){b="<div class='section-note'><b>Not compatible.</b> This sample program accepts residential tariffs only. Ranipet Flex Site is configured as LT Commercial.</div><div class='check-row'>"+icon("close")+"<div><div class='check-title'>Tariff requirement failed</div><div class='check-desc'>Required: residential. Current: LT Commercial.</div></div></div>";foot="<span class='push'></span>"+btn("Close","close-sheet","primary");openSheet(sheetParts(name,"Eligibility",b,foot));return}
+      if(s===1){b="<div class='section-note'>Sample program · illustrative eligibility. Review the account used for this connection.</div><div class='form-grid'><div class='field full'><label>Service connection</label><input value='SC-RNPT-11842'></div><div class='field full'><label>Account-holder relationship</label><select><option>Site operator · authorised</option></select></div></div>";foot=btn("Cancel","close-sheet","")+"<span class='push'></span>"+btn("Review eligibility","program-next","primary")}
+      if(s===2){b="<div class='check-row'>"+icon("check")+"<div><div class='check-title'>Service territory</div><div class='check-desc'>Ranipet · selected DISCOM territory</div></div></div><div class='check-row'>"+icon("check")+"<div><div class='check-title'>Tariff</div><div class='check-desc'>LT Commercial · ToD enabled</div></div></div><div class='check-row'>"+icon("check")+"<div><div class='check-title'>Flexible capacity</div><div class='check-desc'>BESS-01 · 50 kW controllable</div></div></div><div class='check-row'>"+icon("check")+"<div><div class='check-title'>Interval meter</div><div class='check-desc'>METER-11 · 15-minute data available</div></div></div>";foot=btn("Back","program-back","")+"<span class='push'></span>"+btn("Review access","program-next","primary")}
+      if(s===3){b="<div class='section-note'>Least privilege is selected by default. Compatibility alone never grants control.</div><div class='check-row'><input type='checkbox' checked><div><div class='check-title'>15-minute interval telemetry</div><div class='check-desc'>BESS-01 and METER-11 only.</div></div></div><div class='check-row'><input type='checkbox' checked><div><div class='check-title'>Request dispatch with approval</div><div class='check-desc'>The program can request up to 50 kW. An operator must approve every event.</div></div></div><div class='check-row'><input type='checkbox'><div><div class='check-title'>Automatic dispatch</div><div class='check-desc'>Off. Requires a separate control-policy review.</div></div></div>";foot=btn("Back","program-back","")+"<span class='push'></span>"+btn("Continue","program-next","primary")}
+      if(s===4){b="<div class='section-note'>Confirm connection to "+name+". You can revoke access from this program or the gateway at any time.</div><div class='trace'><div class='trace-row done'><div class='trace-node'>"+icon("check")+"</div><div><div class='trace-title'>Account verified</div><div class='trace-sub'>SC-RNPT-11842</div></div></div><div class='trace-row done'><div class='trace-node'>"+icon("check")+"</div><div><div class='trace-title'>Assets authorised</div><div class='trace-sub'>BESS-01 · METER-11</div></div></div><div class='trace-row'><div class='trace-node'>3</div><div><div class='trace-title'>Control policy</div><div class='trace-sub'>Approval required · priority 3</div></div></div></div>";foot=btn("Back","program-back","")+"<span class='push'></span>"+btn("Enrol","finish-program","honey")}
+      openSheet(sheetParts(name,"Connect · step "+s+" of 4",b,foot));
+    }
+
+    function openDispatch(){
+      state.dispatchStep=1;renderDispatchSheet();
+    }
+    function renderDispatchSheet(){
+      var s=state.dispatchStep,b="",foot="";
+      if(s===1){b="<div class='field'><label>Target</label><select><option>BESS-01 · Ranipet · 50 kW available</option></select></div><div class='section-note' style='margin-top:14px'>Available capacity already accounts for the 20% site resilience reserve.</div>";foot=btn("Cancel","close-sheet","")+"<span class='push'></span>"+btn("Continue","dispatch-next","primary")}
+      if(s===2){b="<div class='form-grid'><div class='field'><label>Direction</label><select><option>Discharge</option></select></div><div class='field'><label>Power</label><input value='50 kW'></div><div class='field'><label>Start</label><select><option>Now</option></select></div><div class='field'><label>Duration</label><select><option>15 minutes</option></select></div></div>";foot=btn("Back","dispatch-back","")+"<span class='push'></span>"+btn("Review","dispatch-next","primary")}
+      if(s===3){b="<div class='section-note'><b>Review command</b><br>BESS-01 will discharge at 50 kW for 15 minutes. The gateway will translate the request through Modbus TCP.</div><div class='trace'><div class='trace-row'><div class='trace-node'>1</div><div><div class='trace-title'>Normalised command</div><div class='trace-sub'>setPowerLimit(50)</div></div></div><div class='trace-row'><div class='trace-node'>2</div><div><div class='trace-title'>Gateway route</div><div class='trace-sub'>KWH-GTW-0042 · Modbus TCP</div></div></div><div class='trace-row'><div class='trace-node'>3</div><div><div class='trace-title'>Native command</div><div class='trace-sub'>write register 40149 = 500</div></div></div></div>";foot=btn("Back","dispatch-back","")+"<span class='push'></span>"+btn("Send dispatch","finish-dispatch","honey")}
+      openSheet(sheetParts("Create dispatch","Step "+s+" of 3",b,foot),true);
+    }
+
+    function openEvent(){
+      var body="<div style='display:flex;align-items:center;gap:8px;margin-bottom:14px'>"+status("Critical","bad")+"<span class='delta'>12:41:08</span></div><h3 style='font-size:17px;margin:0 0 6px'>DT-07 overloaded at 112%</h3><p class='delta'>Feeder F2 · Konavattam · threshold exceeded for 8 minutes</p><div class='stat-strip' style='grid-template-columns:repeat(3,1fr);margin:16px 0'><div class='stat'><div class='eyebrow'>Loading</div><div class='stat-value'>112<small>%</small></div></div><div class='stat'><div class='eyebrow'>Oil temp</div><div class='stat-value'>86<small> °C</small></div></div><div class='stat'><div class='eyebrow'>Loss-of-life</div><div class='stat-value'>42<small>%</small></div></div></div><div class='section-note'>Likely cause: high rooftop solar export and reverse power flow on Feeder F2.</div><div class='field'><label>Assignee</label><select><option>Grid operations · South</option></select></div>";
+      var foot=btn("Open transformer","toast","")+"<span class='push'></span>"+btn(state.eventAcknowledged?"Acknowledged":"Acknowledge","ack-event",state.eventAcknowledged?"":"primary",state.eventAcknowledged?"disabled":"")+btn("Create response","open-response","honey");
+      openSheet(sheetParts("Event EVT-2041","DT-07 · Active event",body,foot),true);
+    }
+    function openConflict(){
+      var body="<div class='section-note'>Battery Dispatch and Peak Flex Reward can both control BESS-01. Define priority before both are enabled.</div><div class='form-grid'><div class='field'><label>Priority 1</label><select><option>Battery Dispatch</option></select></div><div class='field'><label>Priority 2</label><select><option>ToD Battery Optimisation</option></select></div><div class='field'><label>Priority 3</label><select><option>Peak Flex Reward</option></select></div><div class='field'><label>Reserved capacity</label><input value='20%'></div><div class='field full'><label>External control</label><select><option>Request dispatch with operator approval</option></select></div></div>";
+      openSheet(sheetParts("Control policy","BESS-01 · shared services",body,btn("Cancel","close-sheet","")+"<span class='push'></span>"+btn("Save policy","save-conflict","primary")));
+    }
+    function openControls(){
+      var body="<div class='field'><label>Power limit</label><input type='range' min='-50' max='50' value='50'><div class='help'>Discharge 50 kW</div></div><div class='section-note' style='margin-top:14px'>Current site policy requires review before sending this command.</div>";
+      openSheet(sheetParts("BESS-01 controls","Normalised control · Modbus TCP",body,btn("Cancel","close-sheet","")+"<span class='push'></span>"+btn("Review command","open-response","honey")));
+    }
+
+    function renderSearch(query){
+      var items=[
+        ["BESS-01 · Ranipet","Asset · Battery","asset","battery"],["KWH-GTW-0042","Gateway · Ranipet Flex Site","gateway","gateway"],
+        ["DT-07 overloaded at 112%","Event · Critical","events","bell"],["Peak Flex Reward","Program · Likely eligible","programs","spark"],
+        ["Solar Controls","Marketplace app · Eligible","marketplace","grid"],["Usage & billing","Platform","usage","chart"]
+      ];
+      var q=(query||"").toLowerCase();var filtered=items.filter(function(x){return !q||x[0].toLowerCase().indexOf(q)>=0||x[1].toLowerCase().indexOf(q)>=0});
+      document.getElementById("paletteList").innerHTML=filtered.map(function(x){return "<div class='palette-item' data-route='"+x[2]+"'>"+icon(x[3])+"<div><div class='opp-name'>"+x[0]+"</div><div class='opp-type'>"+x[1]+"</div></div></div>"}).join("")||"<div class='empty'><h3>No results</h3><p>Try another site, asset or program.</p></div>";
+    }
+    function openSearch(){renderSearch("");var l=document.getElementById("searchLayer");l.classList.add("open");setTimeout(function(){document.getElementById("paletteSearch").focus()},20)}
+    function closeSearch(){document.getElementById("searchLayer").classList.remove("open")}
+    function toast(message){var t=document.getElementById("toast");t.textContent=message||"Demo action completed";t.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(function(){t.classList.remove("show")},2600)}
+
+    document.addEventListener("click",function(e){
+      var route=e.target.closest("[data-route]");if(route){closeSearch();closeSheet();navigate(route.getAttribute("data-route"));return}
+      var at=e.target.closest("[data-asset-tab]");if(at){state.assetTab=at.getAttribute("data-asset-tab");render();return}
+      var gt=e.target.closest("[data-gateway-tab]");if(gt){state.gatewayTab=gt.getAttribute("data-gateway-tab");render();return}
+      var a=e.target.closest("[data-action]");if(!a)return;var action=a.getAttribute("data-action");
+      if(action==="history-back")historyGo(-1);else if(action==="history-forward")historyGo(1);
+      else if(action==="open-search")openSearch();else if(action==="close-modal")document.getElementById("modalLayer").classList.remove("open");
+      else if(action==="open-onboarding"||action==="edit-profile")openOnboarding(action==="edit-profile"?3:1);
+      else if(action==="onboard-back"){state.onboardingStep=Math.max(1,state.onboardingStep-1);renderOnboarding()}
+      else if(action==="onboard-next"){if(state.onboardingStep===7){document.getElementById("modalLayer").classList.remove("open");navigate("overview");toast("Ranipet Flex Site is online")}else{state.onboardingStep++;renderOnboarding()}}
+      else if(action==="scan-site"){state.onboardingScanned=false;a.disabled=true;a.textContent="Scanning…";setTimeout(function(){state.onboardingScanned=true;renderOnboarding();toast("5 devices discovered")},900)}
+      else if(action==="install-next"){if(state.installStep<2){state.installStep++;renderInstall()}else{state.installStep=3;state.installProgress=8;renderInstall();var tm=setInterval(function(){state.installProgress=Math.min(100,state.installProgress+18);renderInstall();if(state.installProgress>=100)clearInterval(tm)},340)}}
+      else if(action==="install-back"){state.installStep--;renderInstall()}
+      else if(action==="finish-install"){state.installed[state.installApp]=true;closeSheet();render();toast("Application installed on KWH-GTW-0042")}
+      else if(action==="program-next"){state.enrolStep++;renderProgram()}else if(action==="program-back"){state.enrolStep--;renderProgram()}
+      else if(action==="finish-program"){state.enrolled.peak=true;closeSheet();render();toast("Peak Flex Reward enrolment submitted")}
+      else if(action.indexOf("install-")===0)openInstall(action.replace("install-",""));
+      else if(action.indexOf("program-")===0)openProgram(action.replace("program-",""));
+      else if(action==="open-dispatch"||action==="open-response"){closeSheet();openDispatch()}
+      else if(action==="dispatch-next"){state.dispatchStep++;renderDispatchSheet()}else if(action==="dispatch-back"){state.dispatchStep--;renderDispatchSheet()}
+      else if(action==="finish-dispatch"){closeSheet();state.dispatchProgress=12;navigate("dispatch-live");toast("Dispatch accepted by KWH-GTW-0042");var dt=setInterval(function(){state.dispatchProgress=Math.min(100,state.dispatchProgress+7);if(state.route==="dispatch-live")render();if(state.dispatchProgress>=100){clearInterval(dt);toast("Dispatch completed · 49.7 kW delivered")}},850)}
+      else if(action==="cancel-dispatch"){state.dispatchProgress=0;toast("Dispatch cancelled");navigate("dispatch")}
+      else if(action==="open-event")openEvent();else if(action==="ack-event"){state.eventAcknowledged=true;closeSheet();render();toast("Event acknowledged · Undo available")}
+      else if(action==="open-conflict")openConflict();else if(action==="save-conflict"){closeSheet();toast("Control policy saved")}
+      else if(action==="open-controls")openControls();else if(action==="close-sheet")closeSheet();
+      else if(action==="go-overview")navigate("overview");else if(action==="notifications"){navigate("events")}
+      else if(action==="profile")toast("Demo workspace · signed in as Arham");else if(action==="toast")toast();else if(action==="none")return;
+    });
+    document.getElementById("paletteSearch").addEventListener("input",function(e){renderSearch(e.target.value)});
+    document.getElementById("searchLayer").addEventListener("click",function(e){if(e.target===this)closeSearch()});
+    document.getElementById("sheetLayer").addEventListener("click",function(e){if(e.target===this)closeSheet()});
+    document.addEventListener("keydown",function(e){if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openSearch()}if(e.key==="Escape"){closeSearch();closeSheet();document.getElementById("modalLayer").classList.remove("open")}});
+
+    document.getElementById("backButton").innerHTML=icon("left");document.getElementById("forwardButton").innerHTML=icon("right");
+    document.getElementById("searchIcon").innerHTML=icon("search");document.getElementById("bellIcon").innerHTML=icon("bell");
+    render();
+    var previewDemo=previewParams.get("demo");
+    if(previewDemo==="onboarding")setTimeout(function(){openOnboarding(3)},20);
+    if(previewDemo==="program")setTimeout(function(){openProgram("peak")},20);
+    if(previewDemo==="dispatch")setTimeout(function(){openDispatch()},20);
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Operating Evidence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --ink:#0B0F0C; --ol:#E4EAE5; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#EDEFED; }
+  body{ display:flex; align-items:center; justify-content:center; padding:40px; font-family:'DM Sans',sans-serif; }
+  .win{ width:1000px; background:#fff; border:1px solid var(--ol); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; color:var(--ink); }
+  .chrome{ height:34px; flex-shrink:0; display:flex; align-items:center; gap:7px; padding:0 14px; border-bottom:1px solid var(--ol); }
+  .dot{ width:11px; height:11px; border-radius:50%; } .dot.r{ background:#EF4444; } .dot.y{ background:#F59E0B; }
+  .brand{ padding:20px 26px 24px; font-size:24px; font-weight:800; color:var(--g); }
+  .row{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; padding:0 26px 30px; }
+  .card{ text-align:center; }
+  .v{ font-size:44px; font-weight:800; }
+  .v.g{ color:var(--g); }
+  .l{ font-size:12.5px; color:rgba(11,15,12,.6); margin-top:6px; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="chrome"><div class="dot r"></div><div class="dot y"></div></div>
+  <div class="brand">kWh</div>
+  <div class="row">
+    <div class="card"><div class="v g">200+</div><div class="l">customer interviews</div></div>
+    <div class="card"><div class="v g">Live</div><div class="l">deployed stack</div></div>
+    <div class="card"><div class="v g">2</div><div class="l">full-time engineers</div></div>
+    <div class="card"><div class="v g">10</div><div class="l">aggregators onboarded</div></div>
+  </div>
+</div>
+</body>
+</html>

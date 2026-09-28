@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>kWh Neutral Layer — Corrected Layout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --ink:#0B0F0C; --ol:#D7E2DA; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .win{ width:1100px; height:660px; background:#fff; border:1px solid var(--ol); border-radius:22px; padding:24px; }
+  svg{ width:100%; height:100%; display:block; }
+  text{ font-family:'DM Sans',sans-serif; }
+</style>
+</head>
+<body>
+<div class="win">
+<svg viewBox="0 0 1100 610">
+  <!-- connectors: top grid-service pills down to bar -->
+  <g stroke="#B9DEC7" stroke-width="2" stroke-dasharray="4 5" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M240 96 V520"/>
+    <path d="M550 96 V520"/>
+    <path d="M860 96 V520"/>
+  </g>
+
+  <!-- top: grid services -->
+  <g>
+    <rect x="150" y="40" width="180" height="52" rx="8" fill="#fff" stroke="#0B0F0C" stroke-width="1.6"/>
+    <text x="240" y="71" font-size="15" font-weight="800" fill="#0B0F0C" text-anchor="middle">DERMS / VPP</text>
+    <rect x="460" y="40" width="180" height="52" rx="8" fill="#fff" stroke="#0B0F0C" stroke-width="1.6"/>
+    <text x="550" y="71" font-size="15" font-weight="800" fill="#0B0F0C" text-anchor="middle">NETWORK PLANNING</text>
+    <rect x="770" y="40" width="180" height="52" rx="8" fill="#fff" stroke="#0B0F0C" stroke-width="1.6"/>
+    <text x="860" y="71" font-size="15" font-weight="800" fill="#0B0F0C" text-anchor="middle">GRID SERVICES</text>
+  </g>
+  <text x="550" y="20" font-size="12" font-weight="800" fill="#0B0F0C" text-anchor="middle" letter-spacing="1">GRID APPLICATIONS</text>
+
+  <!-- left: DERs -->
+  <g font-size="12.5" font-weight="700" fill="#0B0F0C">
+    <rect x="24" y="140" width="150" height="56" rx="8" fill="#F3FAF5" stroke="#16A34A" stroke-width="1.6"/>
+    <text x="99" y="172" text-anchor="middle">BATTERY</text>
+    <rect x="24" y="212" width="150" height="56" rx="8" fill="#F3FAF5" stroke="#16A34A" stroke-width="1.6"/>
+    <text x="99" y="244" text-anchor="middle">EV CHARGER</text>
+    <rect x="24" y="284" width="150" height="56" rx="8" fill="#F3FAF5" stroke="#16A34A" stroke-width="1.6"/>
+    <text x="99" y="316" text-anchor="middle">INVERTER</text>
+    <rect x="24" y="356" width="150" height="56" rx="8" fill="#F3FAF5" stroke="#16A34A" stroke-width="1.6"/>
+    <text x="99" y="388" text-anchor="middle">METER</text>
+    <rect x="24" y="428" width="150" height="56" rx="8" fill="#F3FAF5" stroke="#16A34A" stroke-width="1.6"/>
+    <text x="99" y="460" text-anchor="middle">FLEXIBLE LOAD</text>
+  </g>
+  <text x="99" y="120" font-size="12" font-weight="800" fill="#0B0F0C" text-anchor="middle" letter-spacing="1">DERs</text>
+  <g stroke="#16A34A" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M174 168 H210 V532"/>
+    <path d="M174 240 H260 V532"/>
+    <path d="M174 312 H370 V532"/>
+    <path d="M174 384 H700 V532"/>
+    <path d="M174 456 H900 V532"/>
+  </g>
+
+  <!-- right: utility / aggregator / OEM layers -->
+  <g font-size="12.5" font-weight="700" fill="#0B0F0C">
+    <rect x="926" y="140" width="150" height="56" rx="8" fill="#F8FAF8" stroke="#0B0F0C" stroke-width="1.4"/>
+    <text x="1001" y="164" text-anchor="middle">UTILITIES</text>
+    <text x="1001" y="180" font-size="10" font-weight="500" fill="#6B7280" text-anchor="middle">Enterprise gateways</text>
+    <rect x="926" y="212" width="150" height="56" rx="8" fill="#F8FAF8" stroke="#0B0F0C" stroke-width="1.4"/>
+    <text x="1001" y="236" text-anchor="middle">AGGREGATORS</text>
+    <text x="1001" y="252" font-size="10" font-weight="500" fill="#6B7280" text-anchor="middle">Aggregation platforms</text>
+    <rect x="926" y="284" width="150" height="56" rx="8" fill="#F8FAF8" stroke="#0B0F0C" stroke-width="1.4"/>
+    <text x="1001" y="308" text-anchor="middle">OEMs</text>
+    <text x="1001" y="324" font-size="10" font-weight="500" fill="#6B7280" text-anchor="middle">OEM clouds</text>
+    <rect x="926" y="356" width="150" height="56" rx="8" fill="#F8FAF8" stroke="#0B0F0C" stroke-width="1.4"/>
+    <text x="1001" y="380" text-anchor="middle">APPLICATIONS</text>
+    <text x="1001" y="396" font-size="10" font-weight="500" fill="#6B7280" text-anchor="middle">Super-APIs</text>
+  </g>
+  <text x="1001" y="120" font-size="12" font-weight="800" fill="#0B0F0C" text-anchor="middle" letter-spacing="1">UTILITIES + AGGREGATORS</text>
+  <g stroke="#0B0F0C" stroke-width="1.6" stroke-dasharray="3 4" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M926 168 H860 V532"/>
+    <path d="M926 240 H760 V532"/>
+    <path d="M926 312 H480 V532"/>
+    <path d="M926 384 H300 V532"/>
+  </g>
+
+  <!-- bottom: kWh neutral layer, foundation, nothing below -->
+  <rect x="24" y="532" width="1052" height="66" rx="10" fill="#16A34A"/>
+  <text x="52" y="558" font-size="17" font-weight="800" fill="#fff">kWh</text>
+  <text x="52" y="578" font-size="12" font-weight="600" fill="#DCFCE7">Neutral communications layer</text>
+  <g font-size="11" font-weight="700" fill="#fff" text-anchor="middle">
+    <text x="440" y="558">OEM-AGNOSTIC EDGE</text>
+    <text x="620" y="558">OPEN GRID STANDARDS</text>
+    <text x="810" y="558">OFFLINE LOCAL CONTROL</text>
+    <text x="1000" y="558">NEUTRAL OWNER LAYER</text>
+  </g>
+</svg>
+</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Year 4 revenue mix, by product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-70:rgba(11,15,12,.7); --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5;
+          --ai:#0D9488; --ai-bg:#F0FDFA; --ent:#2563EB; --ent-bg:#EFF6FF; --lic:#7C3AED; --lic-bg:#F5F3FF; --neg:#DC2626; --neg-bg:#FEF2F2; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .slide{ width:1600px; background:#fff; color:var(--ink); padding:56px 64px 64px; }
+  .eyebrow{ font-size:13px; font-weight:700; color:var(--g); letter-spacing:.02em; }
+  .title{ font-size:44px; font-weight:800; line-height:1.15; margin-top:8px; }
+  .underline{ width:120px; height:3px; background:var(--g); margin-top:18px; }
+  .sub{ font-size:15px; font-weight:600; color:var(--ink-70); margin-top:14px; max-width:1020px; line-height:1.5; }
+
+  .mixbar-wrap{ margin-top:40px; border-radius:12px; overflow:hidden; }
+  .mix-rows{ margin-top:28px; display:flex; flex-direction:column; }
+  .mix-row{ display:grid; grid-template-columns:20px 240px 1fr 130px 90px; align-items:center; gap:18px; padding:18px 0; border-top:1px solid var(--ol); }
+  .mix-row:last-child{ border-bottom:1px solid var(--ol); }
+  .mix-dot{ width:16px; height:16px; border-radius:4px; }
+  .mix-name{ font-size:17px; font-weight:800; }
+  .mix-desc{ font-size:14px; font-weight:500; color:var(--ink-60); }
+  .mix-val{ font-size:20px; font-weight:800; text-align:right; }
+  .mix-pct{ font-size:15px; font-weight:700; color:var(--ink-60); text-align:right; }
+  .total-line{ display:flex; justify-content:space-between; margin-top:8px; padding-top:16px; border-top:2px solid var(--ink); font-size:18px; font-weight:800; }
+
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="eyebrow">kWh Electric &middot; 4-year financial model, base case</div>
+  <div class="title">Year 4 revenue mix, by product</div>
+  <div class="underline"></div>
+  <div class="sub">At full scale, Platform SaaS is the majority of revenue &mdash; Enterprise and Source License shrink as a share even as they keep growing in dollar terms.</div>
+  <div class="mixbar-wrap">
+    <svg viewBox="0 0 1416 64" width="1416" height="64">
+      <rect x="0.0" y="0" width="818.8" height="64" fill="#16A34A"/>
+      <text x="409.4" y="38" font-size="16" font-weight="800" fill="#fff" text-anchor="middle">58%</text>
+      <rect x="818.8" y="0" width="291.1" height="64" fill="#2563EB"/>
+      <text x="964.4" y="38" font-size="16" font-weight="800" fill="#fff" text-anchor="middle">21%</text>
+      <rect x="1110.0" y="0" width="225.2" height="64" fill="#0D9488"/>
+      <text x="1222.5" y="38" font-size="16" font-weight="800" fill="#fff" text-anchor="middle">16%</text>
+      <rect x="1335.1" y="0" width="80.9" height="64" fill="#7C3AED"/>
+    </svg>
+  </div>
+  <div class="mix-rows">
+    <div class="mix-row">
+      <div class="mix-dot" style="background:#16A34A"></div>
+      <div class="mix-name">Platform SaaS</div>
+      <div class="mix-desc">Flat per-device platform fee, billed monthly across the fleet.</div>
+      <div class="mix-val">$4.86M</div>
+      <div class="mix-pct">57.8%</div>
+    </div>
+    <div class="mix-row">
+      <div class="mix-dot" style="background:#2563EB"></div>
+      <div class="mix-name">Enterprise subscriptions</div>
+      <div class="mix-desc">Per-tenant subscription for utilities and aggregator partners.</div>
+      <div class="mix-val">$1.73M</div>
+      <div class="mix-pct">20.6%</div>
+    </div>
+    <div class="mix-row">
+      <div class="mix-dot" style="background:#0D9488"></div>
+      <div class="mix-name">AI / Intelligence</div>
+      <div class="mix-desc">Premium analytics add-on, priced per opted-in device.</div>
+      <div class="mix-val">$1.34M</div>
+      <div class="mix-pct">15.9%</div>
+    </div>
+    <div class="mix-row">
+      <div class="mix-dot" style="background:#7C3AED"></div>
+      <div class="mix-name">Source licensing</div>
+      <div class="mix-desc">One-off + maintenance fees for OEM/white-label deployments.</div>
+      <div class="mix-val">$480K</div>
+      <div class="mix-pct">5.7%</div>
+    </div>
+  </div>
+  <div class="total-line"><span>Total Year 4 revenue</span><span>$8.40M</span></div>
+
+</div>
+</body>
+</html>

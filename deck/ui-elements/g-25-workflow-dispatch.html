@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Workflow — Dispatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --g:#16A34A; --g-bg:#EAF7EE; --ink:#0B0F0C; --ink-60:rgba(11,15,12,.6); --ol:#E4EAE5; --y:#F7B719; --y-bg:#FEF6E4; }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ color-scheme:light; }
+  html,body{ background:#FFFFFF; }
+  body{ display:flex; align-items:center; justify-content:center; padding:0; font-family:'DM Sans',sans-serif; }
+  .win{ width:360px; height:640px; background:#fff; border:1px solid var(--ol); border-radius:22px; overflow:hidden; display:flex; flex-direction:column; color:var(--ink); }
+  .head{ display:flex; align-items:center; justify-content:space-between; padding:18px 18px 12px; border-bottom:1px solid var(--ol); }
+  .h-t{ font-size:19px; font-weight:800; }
+  .h-a{ font-size:13px; font-weight:700; color:var(--g); }
+  .body{ flex:1; padding:16px 18px; overflow:hidden; display:flex; flex-direction:column; gap:14px; }
+
+  .callout{ background:var(--y-bg); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:6px; }
+  .callout-h{ display:flex; align-items:center; gap:6px; font-size:15px; font-weight:800; color:#92600A; }
+  .callout-h svg{ width:14px; height:14px; color:var(--y); }
+  .fields{ display:flex; flex-direction:column; gap:5px; }
+  .field{ display:flex; justify-content:space-between; font-size:13px; }
+  .field .l{ color:var(--ink-60); }
+  .field .v{ font-weight:700; }
+
+  .prog-l{ font-size:12px; font-weight:700; color:var(--ink-60); }
+  .prog-track{ height:8px; background:var(--y-bg); border-radius:99px; margin-top:6px; overflow:hidden; }
+  .prog-fill{ height:100%; width:70%; background:var(--y); }
+  .prog-v{ font-size:13px; font-weight:700; margin-top:4px; }
+
+  .section{ display:flex; flex-direction:column; gap:6px; }
+  .foot{ display:flex; gap:8px; padding:14px 18px; border-top:1px solid var(--ol); margin-top:auto; }
+  .btn{ flex:1; text-align:center; font-size:15px; font-weight:700; padding:10px; border-radius:8px; }
+  .btn.cancel{ border:1px solid var(--ol); color:var(--ink); }
+  .btn.dispatch{ background:var(--y); color:#fff; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="head"><div class="h-t">Dispatch</div><div class="h-a">Create event</div></div>
+  <div class="body">
+    <div class="callout">
+      <div class="callout-h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-13h-7l0-7z"/></svg>Dispatch now</div>
+      <div class="fields">
+        <div class="field"><span class="l">Event ID</span><span class="v">EVT-25-0612-001</span></div>
+        <div class="field"><span class="l">Starts</span><span class="v">Today, 2:00 PM CT</span></div>
+        <div class="field"><span class="l">Duration</span><span class="v">60 min</span></div>
+        <div class="field"><span class="l">Target</span><span class="v">25.0 MW</span></div>
+        <div class="field"><span class="l">Ramp</span><span class="v">100% / 5 min</span></div>
+        <div class="field"><span class="l">Assets</span><span class="v">1,102</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="prog-l">Allocation preview</div>
+      <div class="prog-track"><div class="prog-fill"></div></div>
+      <div class="prog-v">25.0 MW</div>
+    </div>
+
+    <div class="section">
+      <div class="field"><span class="l">Dispatch method</span><span class="v">Economic</span></div>
+      <div class="field"><span class="l">Fallback</span><span class="v">Manual</span></div>
+      <div class="field"><span class="l">Notifications</span><span class="v">Enabled</span></div>
+    </div>
+  </div>
+  <div class="foot"><div class="btn cancel">Cancel</div><div class="btn dispatch">Dispatch</div></div>
+</div>
+</body>
+</html>
