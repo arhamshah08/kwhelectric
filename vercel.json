@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/gateway", "destination": "/gateway/index.html" },
+    { "source": "/gateway/", "destination": "/gateway/index.html" },
+    { "source": "/integrations", "destination": "/integrations/index.html" },
+    { "source": "/integrations/", "destination": "/integrations/index.html" },
+    { "source": "/intelligence", "destination": "/intelligence/index.html" },
+    { "source": "/intelligence/", "destination": "/intelligence/index.html" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": true
+}
