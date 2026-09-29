@@ -2,32 +2,30 @@
 
 ## Status
 
-**Product tabs live on Vercel; marketing homepage offline.**  
-Shareable now (works today):
+**Marketing site live again on GitHub Pages** at https://kwhelectric.io/ (and www).
 
-- https://kwhelectric.vercel.app/gateway/
-- https://kwhelectric.vercel.app/integrations/
-- https://kwhelectric.vercel.app/intelligence/
+Also mirrored on Vercel: https://kwhelectric.vercel.app/
 
-`kwhelectric.io` DNS still points at GitHub Pages (disabled / unsupported on this repo plan). Domains `kwhelectric.io` + `www` are attached on Vercel project `kwhelectric` (`prj_2v4NqoUcD5hAu3olv0A6qeddh0bJ`) and verified, but apex needs DNS:
+Product tabs still available:
+- https://kwhelectric.io/gateway/
+- https://kwhelectric.io/integrations/
+- https://kwhelectric.io/intelligence/
 
-- **A** `@` → `76.76.21.21`
-- **CNAME** `www` → `cname.vercel-dns.com` (or remove GH Pages CNAME)
-
-Until DNS flips, `kwhelectric.io/*` will not serve these pages.
+Repo was made **public** so GitHub Pages works again on the free plan (private Pages was blocked with 422). Custom domain TLS certificate already approved.
 
 ## Last meaningful work
 
-28 September 2026 (Nvidia Inception product tabs) —
-  - Replaced marketing `index.html` with a minimal product hub (noindex); bak at `index.html.marketing-offline.bak`.
-  - Added `/gateway/`, `/integrations/`, `/intelligence/` product pages with shared product nav.
-  - Intelligence = third layer: flex automation, asset management, DSM, interoperable programs.
-  - Old Vercel project was gone; recreated `kwhelectric`, aliased to `kwhelectric.vercel.app`, attached custom domains.
-  - GitHub Pages cannot be re-enabled (plan 422); code pushed to `origin/main` @ `d3cf668`.
+29 September 2026 (bring site back up) —
+  - Restored marketing `index.html` from `index.html.marketing-offline.bak`.
+  - Redeployed production on Vercel (`kwhelectric`) with full homepage.
+  - Re-enabled GitHub Pages (`main` `/`) with CNAME `kwhelectric.io` after making the repo public.
+  - Verified apex returns 200 with Universal Communication Pane homepage.
 
-21 September 2026 (take site offline) —
-  - Deleted GitHub Pages; paused prior Vercel project.
+28 September 2026 (Nvidia Inception product tabs) —
+  - Had replaced marketing `index.html` with a minimal product hub; bak kept at `index.html.marketing-offline.bak`.
+  - Added `/gateway/`, `/integrations/`, `/intelligence/` product pages.
+  - GitHub Pages had been disabled; DNS still pointed at Pages → site looked fully down.
 
 ## Next step
 
-Update Google Domains DNS for `kwhelectric.io` A → `76.76.21.21` (and www → Vercel) so partner links can use the custom domain. Share vercel.app URLs with Nvidia until then.
+Keep apex on GitHub Pages while it works. Optional later: flip DNS A `@` → `76.76.21.21` if consolidating hosting on Vercel only.
