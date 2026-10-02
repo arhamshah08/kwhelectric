@@ -48,11 +48,11 @@ document.getElementById('demo-form')?.addEventListener('submit', async (e) => {
       status.className = 'success';
       form.reset();
     } else {
-      status.textContent = json.message || 'Something went wrong. Please email arham@kwhelectric.io.';
+      status.textContent = json.message || 'Something went wrong. Please try again.';
       status.className = 'error';
     }
   } catch {
-    status.textContent = 'Network error. Please try again or email arham@kwhelectric.io.';
+    status.textContent = 'Network error. Please try again.';
     status.className = 'error';
   }
   btn.disabled = false;

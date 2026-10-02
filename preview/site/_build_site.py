@@ -139,7 +139,7 @@ def footer(prefix: str = "", depth: int = 0) -> str:
     <div>
       <h4>Company</h4>
       <a href="/">Home</a>
-      <a href="mailto:arham@kwhelectric.io">Contact</a>
+      <a href="/demo/">Contact</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -250,7 +250,6 @@ def build_demo():
       <li>Technical Q&amp;A on APIs, enrollment, and edge gateway options</li>
       <li>Next steps for a pilot or integration scoping call</li>
     </ul>
-    <p style="margin-top:24px;font-size:14px;">Prefer email? <a href="mailto:arham@kwhelectric.io" style="color:var(--bronze);font-weight:600;">arham@kwhelectric.io</a></p>
   </div>
   <form class="demo-form" id="demo-form">
     <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true" />
@@ -823,11 +822,11 @@ document.getElementById('demo-form')?.addEventListener('submit', async (e) => {
       status.className = 'success';
       form.reset();
     } else {
-      status.textContent = json.message || 'Something went wrong. Please email arham@kwhelectric.io.';
+      status.textContent = json.message || 'Something went wrong. Please try again.';
       status.className = 'error';
     }
   } catch {
-    status.textContent = 'Network error. Please try again or email arham@kwhelectric.io.';
+    status.textContent = 'Network error. Please try again.';
     status.className = 'error';
   }
   btn.disabled = false;
