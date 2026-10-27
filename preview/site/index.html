@@ -23,7 +23,7 @@
       font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       scroll-behavior: smooth;
     }
-    html, body { margin: 0; padding: 0; }
+    html, body { margin: 0; padding: 0; overflow-x: clip; }
     body { -webkit-font-smoothing: antialiased; background: #FFFBF0; }
     /* ── SMART DOT CURSOR (desktop) ── */
     @media (hover: hover) and (pointer: fine) {
@@ -82,12 +82,12 @@
       font-weight:700; color:#FFFBF0;
       letter-spacing:-0.035em; line-height:1.05;
       margin:0 auto 32px;
-      max-width:min(1020px, 85%);
+      max-width:min(1020px, 100%);
       text-align:center;
+      overflow-wrap:break-word;
     }
     .hero-line1 { display:block; width:100%; text-align:center; }
-    /* nowrap line is wider than the title box; text-align alone start-flushes overflow.
-       left:50% + translateX(-50%) centers the max-content box in the viewport. */
+    /* Desktop: keep the long second line on one row, centered even if wider than the title box. */
     .hero-line2 {
       display:block; width:max-content; max-width:none;
       white-space:nowrap; text-align:center;
@@ -111,7 +111,7 @@
       gap:56px clamp(40px, 6vw, 88px) !important;
     }
     .backed-logo {
-      border-radius:var(--box-radius); height:99px; width:99px; min-width:99px; max-width:99px; flex:0 0 99px;
+      border-radius:var(--box-radius); height:129px; width:129px; min-width:129px; max-width:129px; flex:0 0 129px;
       overflow:hidden; flex-shrink:0;
       background:#fff; display:flex; align-items:center; justify-content:center;
       padding:12px; box-sizing:border-box;
@@ -345,8 +345,19 @@
       [data-nav-links] { display: none !important; }
       [data-grid] { display: flex !important; flex-direction: column !important; gap: 24px !important; }
       #hero > div:last-child { padding: 0 clamp(16px, 4vw, 24px) !important; }
-      .hero-title { font-size: clamp(36px, 7.2vw, 54px); }
-      .hero-line2 { white-space: nowrap; letter-spacing: -0.03em; }
+      .hero-title {
+        max-width: 100%;
+        font-size: clamp(30px, 8vw, 42px);
+      }
+      .hero-line2 {
+        width: 100%;
+        max-width: 100%;
+        white-space: normal;
+        left: auto;
+        transform: none;
+        letter-spacing: -0.04em;
+      }
+      .hero-sub { font-size: clamp(18px, 4.8vw, 22px); }
       #problem { height: 32px !important; padding: 0 !important; }
       #how-it-works { padding: 64px 24px 0 !important; }
       /* Vertical honeycomb: transpose of laptop zigzag adjacency */
@@ -695,7 +706,7 @@
 <section id="who" class="kwh-prod kwh-prod--dark">
   <div class="who-hex-bg" aria-hidden="true"></div>
   <div class="kwh-prod-inner">
-    <h2 class="kwh-prod-h">Buyers</h2>
+    <h2 class="kwh-prod-h">Who it's for</h2>
     <div class="kwh-prod-grid">
       <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Aggregators</h3><p>Dispatch a unified fleet of any asset type, from any manufacturer, in real time.</p></div></div>
       <div class="kwh-prod-card"><div class="kwh-prod-body"><h3>Financiers</h3><p>Real-time visibility into the health and performance of every battery in your portfolio.</p></div></div>
@@ -713,18 +724,11 @@
 ══════════════════════════════════════════════════ -->
 <section id="contact" style="background:#CD7F32;padding:72px 48px 80px;">
   <div style="max-width:1160px;margin:0 auto;">
-    <h2 style="font-size:clamp(40px,4.5vw,66px);font-weight:700;color:#0B0B0E;text-align:center;line-height:1.08;margin:0 0 24px;letter-spacing:-0.03em;">
-      Talk to the <img src="assets/kwh-logo-mark.png?v=3" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> team.
-    </h2>
-    <p style="font-size:27px;color:#0B0B0E;text-align:center;line-height:1.68;max-width:520px;margin:0 auto 44px;font-weight:400;">
-      Connect with us about piloting the edge gateway or integrating with the cloud platform.
-    </p>
-
     <!-- Backed by carousel -->
-    <div style="max-width:720px;margin:0 auto 52px;text-align:center;padding-bottom:44px;">
+    <div style="max-width:936px;margin:0 auto 56px;text-align:center;">
       <p style="font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin:0 0 20px;">Supported By</p>
-      <div style="position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent);mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent);">
-        <div style="display:flex;align-items:center;gap:18px;animation:logo-scroll 26s linear infinite;width:max-content;">
+      <div style="position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 62px,#000 calc(100% - 62px),transparent);mask-image:linear-gradient(to right,transparent,#000 62px,#000 calc(100% - 62px),transparent);">
+        <div style="display:flex;align-items:center;gap:23px;animation:logo-scroll 26s linear infinite;width:max-content;">
           <div class="backed-logo backed-logo--cover"><img src="uploads/Samayang Logo.png" alt="Samayang" /></div>
           <div class="backed-logo backed-logo--ms"><img src="uploads/microsoft-for-startups.png" alt="Microsoft for Startups" /></div>
           <div class="backed-logo backed-logo--nvidia"><img src="uploads/nvidia-inception.png" alt="NVIDIA Inception Program" /></div>
@@ -740,6 +744,13 @@
         </div>
       </div>
     </div>
+
+    <h2 style="font-size:clamp(40px,4.5vw,66px);font-weight:700;color:#0B0B0E;text-align:center;line-height:1.08;margin:0 0 24px;letter-spacing:-0.03em;">
+      Talk to the <img src="assets/kwh-logo-mark.png?v=3" alt="kWh Electric" style="height:0.78em;vertical-align:-0.06em;display:inline-block;" /> team.
+    </h2>
+    <p style="font-size:27px;color:#0B0B0E;text-align:center;line-height:1.68;max-width:520px;margin:0 auto 44px;font-weight:400;">
+      Connect with us about piloting the edge gateway or integrating with the cloud platform.
+    </p>
 
     <div style="max-width:720px;margin:0 auto;">
     <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
@@ -810,7 +821,7 @@
       <a href="#product-gateway">Edge Gateway</a>
     </div>
     <div>
-      <h4>Buyers</h4>
+      <h4>Who it's for</h4>
       <a href="#who">Aggregators</a>
       <a href="#who">OEMs</a>
       <a href="#who">Financiers</a>
