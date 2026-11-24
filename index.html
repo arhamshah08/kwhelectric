@@ -452,7 +452,7 @@
       .card-front-right { gap:7px; }
     }
   </style>
-  <link rel="stylesheet" href="_shared/nav.css?v9">
+  <link rel="stylesheet" href="_shared/nav.css?v10">
 </helmet>
 
 <!-- ══════════════════════════════════════════════════
@@ -859,11 +859,11 @@ class Component extends DCLogic {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '14px 48px',
-        background: '#FFFBF0',
+        background: 'transparent',
         backdropFilter: 'none',
         WebkitBackdropFilter: 'none',
-        boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.08)' : '0 1px 0 rgba(0,0,0,0.05)',
-        transition: 'box-shadow 0.3s',
+        boxShadow: 'none',
+        isolation: 'isolate',
       },
       navLinkColor: '#0B0B0E',
       handleSubmit: async (e) => {
