@@ -8,7 +8,8 @@
   const dropdownItem = dropdownBtn?.closest('.kwh-nav-item');
 
   function onScroll() {
-    nav.classList.toggle('is-scrolled', window.scrollY > 70);
+    // Switch to frosted glass as soon as the page moves off the hero lockup
+    nav.classList.toggle('is-scrolled', window.scrollY > 8);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();

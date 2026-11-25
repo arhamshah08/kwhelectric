@@ -817,7 +817,7 @@ class Component extends DCLogic {
   state = { submitted: false, scrolled: false, submitting: false, formError: null };
 
   componentDidMount() {
-    const onScroll = () => this.setState({ scrolled: window.scrollY > 70 });
+    const onScroll = () => this.setState({ scrolled: window.scrollY > 8 });
     window.addEventListener('scroll', onScroll, { passive: true });
     this._cleanup = () => window.removeEventListener('scroll', onScroll);
   }
@@ -844,10 +844,10 @@ class Component extends DCLogic {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '10px 48px',
-        background: 'transparent',
-        backdropFilter: 'none',
-        WebkitBackdropFilter: 'none',
+        padding: '12px 48px',
+        background: scrolled ? 'rgba(255, 251, 240, 0.62)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(22px) saturate(1.25)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(22px) saturate(1.25)' : 'none',
         boxShadow: 'none',
       },
       navLinkColor: '#0B0B0E',
