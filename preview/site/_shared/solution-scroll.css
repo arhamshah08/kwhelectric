@@ -95,24 +95,32 @@
 .sol-visual {
   position: sticky;
   top: 108px;
-  height: min(52vh, 420px);
+  height: auto;
+  display: flex;
+  justify-content: center;
 }
 .sol-shell {
-  height: 100%;
-  border-radius: 2px;
-  padding: 18px;
+  /* Outer corner shares a center with the card: radius = card radius + gap + border. */
+  --viz-radius: 20px;
+  --shell-gap: 64px;
+  --shell-border: 1px;
+  width: min(100%, calc(360px + 2 * var(--shell-gap) + 2 * var(--shell-border)));
+  height: auto;
+  box-sizing: border-box;
+  border-radius: calc(var(--viz-radius) + var(--shell-gap) + var(--shell-border));
+  padding: var(--shell-gap);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
   background: color-mix(in srgb, var(--accent, var(--bronze)) 7%, var(--cream));
-  border: 1px solid color-mix(in srgb, var(--accent, var(--bronze)) 20%, transparent);
+  border: var(--shell-border) solid color-mix(in srgb, var(--accent, var(--bronze)) 20%, transparent);
   transition: background 0.6s ease, border-color 0.6s ease;
 }
 .sol-frame {
   position: absolute;
-  inset: 30px;
+  inset: var(--shell-gap);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,6 +130,9 @@
   pointer-events: none;
 }
 .sol-frame.is-active {
+  position: relative;
+  inset: auto;
+  width: 100%;
   opacity: 1;
   transform: perspective(1200px) rotateY(0) translateY(0) scale(1);
   pointer-events: auto;
@@ -129,9 +140,9 @@
 
 /* Live mockup UI kit (no image dependencies) */
 .viz {
-  width: min(360px, 100%);
+  width: 100%;
   background: #fff;
-  border-radius: 20px;
+  border-radius: var(--viz-radius, 20px);
   box-shadow: 0 24px 60px rgba(15, 12, 4, 0.16);
   padding: 22px 20px;
   font-size: 13px;
@@ -184,14 +195,16 @@
 /* Inline per-step visual (mobile only) */
 .sol-step-viz { display: none; }
 .sol-step-viz .sol-shell {
+  --shell-gap: 36px;
   height: auto;
-  min-height: 380px;
+  min-height: 0;
   margin-top: 18px;
-  border-radius: 22px;
+  width: 100%;
 }
 .sol-step-viz .sol-frame {
   position: relative;
-  inset: 0;
+  inset: auto;
+  width: 100%;
   opacity: 1;
   transform: none;
   pointer-events: auto;
